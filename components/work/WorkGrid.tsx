@@ -18,12 +18,12 @@ export default function WorkGrid() {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter projects">
+      <div className="flex flex-wrap gap-2" aria-label="Filter projects by category">
         {projectCategories.map((cat) => (
           <button
             key={cat}
-            role="tab"
-            aria-selected={active === cat}
+            type="button"
+            aria-pressed={active === cat}
             onClick={() => setActive(cat)}
             className={`rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors ${
               active === cat

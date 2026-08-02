@@ -67,12 +67,15 @@ export default function TerminalCard() {
         <span className="text-xs text-text-muted">~/src</span>
       </div>
       <div className="flex items-center gap-2 px-4 py-4 text-sm">
-        <span className="shrink-0 text-accent">sajid:~$</span>
-        <span className="text-text-primary">
+        <span aria-hidden="true" className="shrink-0 text-accent">sajid:~$</span>
+        <span aria-hidden="true" className="text-text-primary">
           {text}
           <span className="ml-0.5 inline-block h-4 w-[7px] animate-pulse bg-accent align-middle" />
         </span>
       </div>
+      <p className="sr-only">
+        Terminal: {LINES.join(" · ")}
+      </p>
     </div>
   );
 }

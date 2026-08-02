@@ -173,7 +173,7 @@ for message in stream.pending_and_new(group):
       { value: "30+", label: "extracted fields" },
     ],
     screenshots: [
-      { src: "/images/invoicepilot/invoice-gpt.png", alt: "Structured extraction sample from an invoice" },
+      { src: "/images/invoicepilot/invoice-gpt.webp", alt: "Structured extraction sample from an invoice" },
       { src: "/images/invoicepilot/invoice-1.webp", alt: "Sample invoice processed by the pipeline" },
       { src: "/images/invoicepilot/invoice-2.png", alt: "Sample invoice line data" },
     ],

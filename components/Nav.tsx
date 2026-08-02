@@ -98,6 +98,8 @@ export default function Nav() {
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
             className="grid h-9 w-9 place-items-center rounded-md border border-line text-text-secondary lg:hidden"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -106,7 +108,7 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div className="border-t border-line bg-bg/95 backdrop-blur-md lg:hidden">
+        <div id="mobile-menu" className="border-t border-line bg-bg/95 backdrop-blur-md lg:hidden">
           <nav className="container-site flex flex-col gap-1 py-4" aria-label="Mobile">
             {NAV_LINKS.map((link) => (
               <Link

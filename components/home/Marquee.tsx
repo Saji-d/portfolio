@@ -46,7 +46,10 @@ export default function Marquee() {
 
   return (
     <section aria-label="Technologies" className="relative overflow-hidden border-y border-line bg-surface/40 py-6">
-      <div className="marquee-track group flex w-max items-center gap-3 group-hover:[animation-play-state:paused]">
+      <div
+        aria-hidden="true"
+        className="marquee-track group flex w-max items-center gap-3 group-hover:[animation-play-state:paused]"
+      >
         {track.map((skill, i) => (
           <div key={i} className="flex items-center gap-3">
             <Pill skill={skill} />
@@ -54,6 +57,11 @@ export default function Marquee() {
           </div>
         ))}
       </div>
+      <ul className="sr-only">
+        {skills.map((skill) => (
+          <li key={skill}>{skill}</li>
+        ))}
+      </ul>
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-bg to-transparent" />
     </section>

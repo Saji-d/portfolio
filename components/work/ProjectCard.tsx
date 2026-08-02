@@ -69,9 +69,6 @@ export function CompactProjectCard({ project }: { project: Project }) {
         <h3 className="font-display text-base font-medium tracking-tight text-text-primary">
           {project.name}
         </h3>
-        {project.featured && (
-          <ArrowUpRight className="h-4 w-4 text-text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
-        )}
       </div>
       <p className="mt-1 text-sm text-text-secondary">{project.tagline}</p>
       <div className="mt-4 flex flex-wrap gap-1.5">
@@ -85,12 +82,5 @@ export function CompactProjectCard({ project }: { project: Project }) {
   const classes =
     "card-surface group block h-full p-5 transition-all duration-300 hover:border-accent/40";
 
-  if (project.featured) {
-    return (
-      <Link href={`/work/${project.slug}`} className={classes} aria-label={`${project.name}: ${project.tagline}`}>
-        {inner}
-      </Link>
-    );
-  }
   return <div className={classes}>{inner}</div>;
 }
