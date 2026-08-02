@@ -1,0 +1,94 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowUp, Mail } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import { NAV_LINKS, SITE } from "@/data/site";
+
+export default function Footer() {
+  return (
+    <footer className="relative z-10 border-t border-line">
+      <div className="container-site flex flex-col gap-10 py-12 md:flex-row md:items-start md:justify-between">
+        <div className="max-w-sm">
+          <div className="flex items-center gap-2">
+            <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-bold text-accent">
+              S
+            </span>
+            <span className="font-display font-medium tracking-tight">
+              {SITE.name}
+            </span>
+          </div>
+          <p className="mt-4 text-sm leading-relaxed text-text-secondary">
+            {SITE.tagline}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+          <div>
+            <p className="eyebrow mb-3">Navigate</p>
+            <ul className="space-y-2">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-text-secondary transition-colors hover:text-accent"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="eyebrow mb-3">Connect</p>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
+                >
+                  <Mail className="h-3.5 w-3.5" /> Email
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
+                >
+                  <GithubIcon className="h-3.5 w-3.5" /> GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
+                >
+                  <LinkedinIcon className="h-3.5 w-3.5" /> LinkedIn
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-line">
+        <div className="container-site flex flex-col items-center justify-between gap-3 py-6 sm:flex-row">
+          <p className="font-mono text-xs text-text-muted">
+            © {new Date().getFullYear()} {SITE.name}. Built with Next.js in Dhaka.
+          </p>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2 font-mono text-xs text-text-muted transition-colors hover:text-accent"
+            aria-label="Back to top"
+          >
+            back to top <ArrowUp className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </div>
+    </footer>
+  );
+}
