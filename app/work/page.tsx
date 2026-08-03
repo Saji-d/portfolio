@@ -3,9 +3,9 @@ import PageHeader from "@/components/PageHeader";
 import WorkGrid from "@/components/work/WorkGrid";
 
 export const metadata: Metadata = {
-  title: "Work",
+  title: "Projects",
   description:
-    "Selected projects — InvoicePilot, LedgerTurf, CaseVault, and more. Backend, AI/ML, and full-stack engineering.",
+    "All public repositories — InvoicePilot, CaseVault, LedgerTurf, NeuroScreen, and more. Search by title and filter by discipline.",
   alternates: { canonical: "/work" },
 };
 
@@ -14,8 +14,8 @@ export default function WorkPage() {
     <>
       <PageHeader
         eyebrow="[ 01 ] — Work"
-        title="Projects with engineering receipts."
-        lede="Every project below is backed by tests, decisions, and honest limitations — not just screenshots. Filter by discipline."
+        title="Every project, with the code attached."
+        lede="All public repositories — search by title, filter by discipline, and open the source. The featured four ship with full case studies."
       />
       <section className="container-site pb-28 pt-12">
         <WorkGrid />

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/data/projects";
-import { getFeaturedProjects } from "@/data/projects";
+import { getCaseStudyProjects } from "@/data/projects";
 import { StatusBadge, Pill } from "@/components/ui/Badge";
 import CodeBlock from "@/components/ui/CodeBlock";
 import Gallery from "@/components/work/Gallery";
@@ -33,9 +33,17 @@ function Section({
 }
 
 export default function CaseStudy({ project }: { project: Project }) {
-  const others = getFeaturedProjects()
+  const others = getCaseStudyProjects()
     .filter((p) => p.slug !== project.slug)
     .slice(0, 2);
+
+  const linkHrefs = new Set((project.links ?? []).map((l) => l.href).filter(Boolean));
+  const extraLinks = [
+    ...(project.github ? [{ label: "View Code", href: project.github }] : []),
+    ...(project.demo ? [{ label: "Live Demo", href: project.demo }] : []),
+    ...(project.thesis ? [{ label: "Thesis", href: project.thesis, internal: true }] : []),
+  ].filter((l) => !linkHrefs.has(l.href));
+  const actionLinks = [...(project.links ?? []).filter((l) => l.href), ...extraLinks];
 
   return (
     <article>
@@ -59,11 +67,19 @@ export default function CaseStudy({ project }: { project: Project }) {
             ))}
           </div>
 
-          {project.links?.some((l) => l.href) && (
+          {actionLinks.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-3">
-              {project.links
-                ?.filter((l) => l.href)
-                .map((link) => (
+              {actionLinks.map((link) =>
+                (link as { internal?: boolean }).internal ? (
+                  <Link
+                    key={link.label}
+                    href={link.href as string}
+                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                  >
+                    {link.label}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                ) : (
                   <a
                     key={link.label}
                     href={link.href}
@@ -74,7 +90,8 @@ export default function CaseStudy({ project }: { project: Project }) {
                     {link.label}
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
-                ))}
+                )
+              )}
             </div>
           )}
         </Reveal>

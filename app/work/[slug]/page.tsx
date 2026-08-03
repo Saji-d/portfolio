@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CaseStudy from "@/components/work/CaseStudy";
-import { getProject, getFeaturedProjects } from "@/data/projects";
+import { getProject, getCaseStudyProjects } from "@/data/projects";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getFeaturedProjects().map((p) => ({ slug: p.slug }));
+  return getCaseStudyProjects().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -32,7 +32,7 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProject(slug);
 
-  if (!project || !project.featured) {
+  if (!project || !project.caseStudy) {
     notFound();
   }
 

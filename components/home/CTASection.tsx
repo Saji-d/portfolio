@@ -11,7 +11,7 @@ export default function CTASection() {
           <div className="card-surface relative overflow-hidden p-10 text-center sm:p-16">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -bottom-32 left-1/2 h-64 w-[560px] -translate-x-1/2 rounded-full bg-accent-dim blur-[100px]"
+              className="pointer-events-none absolute -bottom-32 left-1/2 h-64 w-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(79,209,197,0.14),transparent)]"
             />
             <p className="eyebrow">[ 07 ] — Let&apos;s talk</p>
             <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-medium tracking-tight text-gradient sm:text-4xl">

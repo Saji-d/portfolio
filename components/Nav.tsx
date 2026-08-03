@@ -1,18 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, TerminalSquare } from "lucide-react";
+import { Menu, X, TerminalSquare, Command } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { NAV_LINKS, SITE } from "@/data/site";
 import { useTerminal } from "@/components/terminal-context";
+import { useCommandPalette } from "@/components/command-palette-context";
 
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { toggle } = useTerminal();
+  const { setOpen: setPaletteOpen } = useCommandPalette();
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -20,6 +24,24 @@ export default function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    menuRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        menuToggleRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.documentElement.style.overflow = prevOverflow;
+    };
+  }, [open]);
 
   return (
     <header
@@ -49,6 +71,7 @@ export default function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={active ? "page" : undefined}
                 className={`relative px-3 py-2 text-sm transition-colors ${
                   active ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
                 }`}
@@ -64,10 +87,18 @@ export default function Nav() {
 
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setPaletteOpen(true)}
+            aria-label="Open command palette"
+            title="Search (Ctrl+K)"
+            className="hidden h-10 w-10 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent sm:grid"
+          >
+            <Command className="h-4 w-4" />
+          </button>
+          <button
             onClick={toggle}
             aria-label="Toggle terminal mode"
             title="Terminal mode (`)"
-            className="grid h-9 w-9 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent"
+            className="grid h-10 w-10 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent"
           >
             <TerminalSquare className="h-4 w-4" />
           </button>
@@ -76,7 +107,7 @@ export default function Nav() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="hidden h-9 w-9 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent sm:grid"
+            className="hidden h-10 w-10 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent sm:grid"
           >
             <GithubIcon className="h-4 w-4" />
           </a>
@@ -85,7 +116,7 @@ export default function Nav() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="hidden h-9 w-9 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent sm:grid"
+            className="hidden h-10 w-10 place-items-center rounded-md border border-line text-text-secondary transition-colors hover:border-accent/50 hover:text-accent sm:grid"
           >
             <LinkedinIcon className="h-4 w-4" />
           </a>
@@ -96,11 +127,12 @@ export default function Nav() {
             Get in touch
           </Link>
           <button
+            ref={menuToggleRef}
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            className="grid h-9 w-9 place-items-center rounded-md border border-line text-text-secondary lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-md border border-line text-text-secondary lg:hidden"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -108,18 +140,29 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-line bg-bg/95 backdrop-blur-md lg:hidden">
+        <div
+          ref={menuRef}
+          id="mobile-menu"
+          className="border-t border-line bg-bg/95 backdrop-blur-md lg:hidden"
+        >
           <nav className="container-site flex flex-col gap-1 py-4" aria-label="Mobile">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm text-text-secondary transition-colors hover:bg-surface hover:text-text-primary"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className="rounded-md px-3 py-2.5 text-sm text-text-secondary transition-colors hover:bg-surface hover:text-text-primary"
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

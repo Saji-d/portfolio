@@ -149,7 +149,7 @@ function TerminalShell({ onExit }: { onExit: () => void }) {
         ].join("\n");
         break;
       case "work":
-        out = ["Featured projects:", renderProjects()].join("\n");
+        out = ["All projects ( * = featured ):", renderProjects()].join("\n");
         break;
       case "projects":
         out = arg ? renderProject(arg) : ["usage: projects <slug>", renderProjects()].join("\n");

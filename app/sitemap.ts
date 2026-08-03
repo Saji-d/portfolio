@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/data/site";
-import { getFeaturedProjects } from "@/data/projects";
+import { getCaseStudyProjects } from "@/data/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url;
@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
   ];
 
-  const projectRoutes: MetadataRoute.Sitemap = getFeaturedProjects().map((p) => ({
+  const projectRoutes: MetadataRoute.Sitemap = getCaseStudyProjects().map((p) => ({
     url: `${base}/work/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly",

@@ -1,5 +1,13 @@
 export type ProjectStatus = "ACTIVE" | "COMPLETE" | "CONCEPT";
-export type ProjectCategory = "Backend" | "AI/ML" | "Full-stack" | "Data" | "Graphics";
+export type ProjectCategory =
+  | "AI & ML"
+  | "Computer Vision"
+  | "NLP"
+  | "Full Stack"
+  | "Desktop"
+  | "Graphics"
+  | "Database"
+  | "Research";
 
 export interface ProjectLink {
   label: string;
@@ -38,6 +46,10 @@ export interface Project {
   year: string;
   category: ProjectCategory;
   featured: boolean;
+  caseStudy?: boolean;
+  github?: string;
+  demo?: string;
+  thesis?: string;
   stack: string[];
   links?: ProjectLink[];
   problem?: string[];
@@ -60,8 +72,9 @@ export const projects: Project[] = [
     role: "Backend / AI Engineer",
     status: "ACTIVE",
     year: "2026",
-    category: "Backend",
+    category: "AI & ML",
     featured: true,
+    caseStudy: true,
     stack: [
       "Python 3.11",
       "FastAPI",
@@ -175,13 +188,170 @@ for message in stream.pending_and_new(group):
     screenshots: [
       { src: "/images/invoicepilot/invoice-gpt.webp", alt: "Structured extraction sample from an invoice" },
       { src: "/images/invoicepilot/invoice-1.webp", alt: "Sample invoice processed by the pipeline" },
-      { src: "/images/invoicepilot/invoice-2.png", alt: "Sample invoice line data" },
+      { src: "/images/invoicepilot/invoice-2.webp", alt: "Sample invoice line data" },
     ],
     nextSteps: [
       "QuickBooks / Xero OAuth two-way sync — currently the named biggest integration risk.",
       "SOC 2 readiness suite (5 policy docs, trust center, RLS migrations) — continue toward audit.",
       "Public demo environment with seeded sample invoices so the pipeline is explorable without credentials.",
     ],
+  },
+  {
+    slug: "casevault",
+    name: "CaseVault",
+    tagline: "AI legal intelligence platform — concept & MVP",
+    summary:
+      "Document ingestion, citation-backed legal research, and a privacy-first vision for Bangladeshi law firms. Tagline: 'Don't trust AI. Verify AI.' Phase 1 MVP shipped; GraphRAG is designed for Phase 2.",
+    role: "Backend / AI Engineer",
+    status: "ACTIVE",
+    year: "2026",
+    category: "AI & ML",
+    featured: true,
+    caseStudy: true,
+    stack: ["FastAPI", "SQLAlchemy", "SQLite", "Next.js 16", "React 19", "Tailwind CSS v4", "framer-motion"],
+    links: [{ label: "Case study (this page)" }],
+    problem: [
+      "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
+      "Generic AI chatbots hallucinate citations — and firms cannot upload confidential client files to public AI tools without risking privacy.",
+    ],
+    solution: [
+      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
+      "The Next.js frontend is a dark-theme research workspace — hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
+      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker — targeting ~790ms to first token.",
+    ],
+    architecture: [
+      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
+      "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
+      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
+      "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
+      "  └──────────────────────────────────────────────────────────────────────┘",
+      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
+      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
+      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
+      "  └──────────────────────────────────────────────────────────────────────┘",
+    ],
+    decisions: [
+      {
+        title: "XSS-safe markdown without a heavy renderer",
+        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine — small surface, safe by default for legal content.",
+      },
+      {
+        title: "Relevance scoring at the repository layer",
+        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
+      },
+      {
+        title: "Phase-2 placeholders designed up front",
+        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
+      },
+    ],
+    highlights: [
+      {
+        title: "Relevance-scored search",
+        code: `def search(self, q: str, limit: int = 20) -> list[Document]:
+    like = f"%{escape_like(q)}%"
+    rows = self.session.query(Document).filter(
+        or_(Document.title.ilike(like),
+            Document.content.ilike(like))
+    ).order_by(relevance_rank(q)).limit(limit).all()
+    return rows`,
+        caption: "Keyword relevance rank prioritizes title matches over body matches.",
+      },
+    ],
+    metrics: [
+      { value: "46", label: "legal docs ingested" },
+      { value: "6", label: "product surfaces designed" },
+      { value: "790ms", label: "Phase-2 TTFT budget" },
+      { value: "0", label: "hallucinated citations (target)" },
+    ],
+    screenshots: [],
+    nextSteps: [
+      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
+      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
+    ],
+  },
+  {
+    slug: "neuronscreen",
+    name: "NeuroScreen",
+    tagline: "Hybrid ML + DL thesis for cognitive impairment detection",
+    summary:
+      "A CatBoost + ANN ensemble that detects cognitive impairment in insomniac university students — 95.20% accuracy, ROC-AUC 0.982, across a 2,237-student survey dataset.",
+    role: "ML Researcher",
+    status: "COMPLETE",
+    year: "2025–26",
+    category: "Research",
+    featured: true,
+    thesis: "/research/neuronscreen",
+    stack: ["Python", "CatBoost", "PyTorch", "Scikit-learn", "Pandas"],
+  },
+  {
+    slug: "finbert",
+    name: "Financial Sentiment Analysis (BERT)",
+    tagline: "Domain-fine-tuned financial sentiment classification",
+    summary:
+      "Fine-tuned FinBERT and BERT on financial text to show why domain-specific transformers win on jargon-heavy corpora — complete training pipeline in a Jupyter notebook.",
+    role: "ML Researcher",
+    status: "COMPLETE",
+    year: "2025",
+    category: "NLP",
+    featured: true,
+    github: "https://github.com/Saji-d/financial-sentiment-analysis-bert",
+    stack: ["PyTorch", "Hugging Face", "FinBERT", "BERT", "NLTK"],
+  },
+  {
+    slug: "cvpr-collection",
+    name: "Computer Vision & Pattern Recognition",
+    tagline: "Five computer-vision notebooks",
+    summary:
+      "EfficientNet face recognition, KNN multiclass classification, LBPH face recognition, MLP pattern recognition, and NN MNIST digit recognition.",
+    role: "CV Engineer",
+    status: "COMPLETE",
+    year: "2025",
+    category: "Computer Vision",
+    featured: true,
+    github: "https://github.com/Saji-d/computer-vision-and-pattern-recognition",
+    stack: ["Python", "PyTorch", "OpenCV", "Scikit-learn"],
+  },
+  {
+    slug: "natural-language-processing",
+    name: "Natural Language Processing",
+    tagline: "Sentiment analysis, preprocessing, and transformer models",
+    summary:
+      "NLP projects covering sentiment analysis, text preprocessing, and transformer-based models in Python — from classic TF-IDF pipelines to fine-tuned transformers.",
+    role: "ML Engineer",
+    status: "COMPLETE",
+    year: "2025",
+    category: "NLP",
+    featured: true,
+    github: "https://github.com/Saji-d/natural-language-processing",
+    stack: ["Python", "NLTK", "Scikit-learn", "Hugging Face"],
+  },
+  {
+    slug: "employee-family-registry",
+    name: "Employee & Family Registry",
+    tagline: ".NET API + React SPA with PDF CV export",
+    summary:
+      "Full-stack system built with .NET 10, PostgreSQL, and React — employee management, family relationships, search, and QuestPDF-generated CV/list documents.",
+    role: "Full-stack Engineer",
+    status: "COMPLETE",
+    year: "2026",
+    category: "Full Stack",
+    featured: true,
+    github: "https://github.com/Saji-d/employee-family-registry",
+    stack: [".NET", "ASP.NET Core", "EF Core", "PostgreSQL", "React", "Vite", "Tailwind", "QuestPDF"],
+  },
+  {
+    slug: "spark-powerhouse-gym-web",
+    name: "Spark Powerhouse Gym (Web)",
+    tagline: "Web-based gym management simulation",
+    summary:
+      "Gym management system simulation with user and admin roles, built with PHP, HTML, CSS, and JavaScript.",
+    role: "Full-stack Developer",
+    status: "COMPLETE",
+    year: "2024",
+    category: "Full Stack",
+    featured: true,
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-web",
+    stack: ["PHP", "HTML", "CSS", "JavaScript", "MySQL"],
   },
   {
     slug: "ledgerturf",
@@ -192,8 +362,11 @@ for message in stream.pending_and_new(group):
     role: "Full-stack Engineer",
     status: "COMPLETE",
     year: "2025",
-    category: "Full-stack",
-    featured: true,
+    category: "Full Stack",
+    featured: false,
+    caseStudy: true,
+    github: "https://github.com/Saji-d/ledgerturf",
+    demo: "https://ledgerturf.vercel.app",
     stack: ["React", "Vite", "Tailwind CSS", "Redux Toolkit", "Node.js", "Express", "MongoDB Atlas", "Mongoose", "Cloudinary", "JWT", "Vercel"],
     links: [
       { label: "Live demo", href: "https://ledgerturf.vercel.app", external: true },
@@ -262,78 +435,6 @@ try {
     ],
   },
   {
-    slug: "casevault",
-    name: "CaseVault",
-    tagline: "AI legal intelligence platform — concept & MVP",
-    summary:
-      "Document ingestion, citation-backed legal research, and a privacy-first vision for Bangladeshi law firms. Tagline: 'Don't trust AI. Verify AI.' Phase 1 MVP shipped; GraphRAG is designed for Phase 2.",
-    role: "Backend / AI Engineer",
-    status: "ACTIVE",
-    year: "2026",
-    category: "Backend",
-    featured: true,
-    stack: ["FastAPI", "SQLAlchemy", "SQLite", "Next.js 16", "React 19", "Tailwind CSS v4", "framer-motion"],
-    links: [{ label: "Case study (this page)" }],
-    problem: [
-      "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
-      "Generic AI chatbots hallucinate citations — and firms cannot upload confidential client files to public AI tools without risking privacy.",
-    ],
-    solution: [
-      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace — hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
-      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker — targeting ~790ms to first token.",
-    ],
-    architecture: [
-      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
-      "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
-      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
-      "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
-      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
-      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-    ],
-    decisions: [
-      {
-        title: "XSS-safe markdown without a heavy renderer",
-        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine — small surface, safe by default for legal content.",
-      },
-      {
-        title: "Relevance scoring at the repository layer",
-        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
-      },
-      {
-        title: "Phase-2 placeholders designed up front",
-        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
-      },
-    ],
-    highlights: [
-      {
-        title: "Relevance-scored search",
-        code: `def search(self, q: str, limit: int = 20) -> list[Document]:
-    like = f"%{escape_like(q)}%"
-    rows = self.session.query(Document).filter(
-        or_(Document.title.ilike(like),
-            Document.content.ilike(like))
-    ).order_by(relevance_rank(q)).limit(limit).all()
-    return rows`,
-        caption: "Keyword relevance rank prioritizes title matches over body matches.",
-      },
-    ],
-    metrics: [
-      { value: "46", label: "legal docs ingested" },
-      { value: "6", label: "product surfaces designed" },
-      { value: "790ms", label: "Phase-2 TTFT budget" },
-      { value: "0", label: "hallucinated citations (target)" },
-    ],
-    screenshots: [],
-    nextSteps: [
-      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
-      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
-    ],
-  },
-  {
     slug: "3d-city-simulation",
     name: "3D City Simulation",
     tagline: "OpenGL city with day/night cycles and live weather",
@@ -343,7 +444,9 @@ try {
     status: "COMPLETE",
     year: "2024",
     category: "Graphics",
-    featured: true,
+    featured: false,
+    caseStudy: true,
+    github: "https://github.com/Saji-d/3d-city-simulation-opengl",
     stack: ["C++", "OpenGL", "Code::Blocks", "GLUT"],
     links: [{ label: "Case study (this page)" }],
     problem: [
@@ -385,99 +488,101 @@ for (auto &p : particles) {
       { value: "WASD", label: "free camera controls" },
     ],
     screenshots: [
-      { src: "/images/3d-city/day-mode.png", alt: "Simulation City in daylight" },
-      { src: "/images/3d-city/night-mode.png", alt: "Simulation City at night" },
-      { src: "/images/3d-city/rain-mode.png", alt: "Simulation City under rain" },
-      { src: "/images/3d-city/snow-mode.png", alt: "Simulation City in snow" },
-      { src: "/images/3d-city/traffic-light-red.png", alt: "Traffic light state: red" },
-      { src: "/images/3d-city/traffic-light-green.png", alt: "Traffic light state: green" },
+      { src: "/images/3d-city/day-mode.webp", alt: "Simulation City in daylight" },
+      { src: "/images/3d-city/night-mode.webp", alt: "Simulation City at night" },
+      { src: "/images/3d-city/rain-mode.webp", alt: "Simulation City under rain" },
+      { src: "/images/3d-city/snow-mode.webp", alt: "Simulation City in snow" },
+      { src: "/images/3d-city/traffic-light-red.webp", alt: "Traffic light state: red" },
+      { src: "/images/3d-city/traffic-light-green.webp", alt: "Traffic light state: green" },
     ],
     nextSteps: [
       "Add textured buildings and reflections for a stronger visual pass.",
     ],
   },
   {
-    slug: "finbert",
-    name: "FinBERT Sentiment",
-    tagline: "Domain-fine-tuned financial sentiment analysis",
+    slug: "face-recognition-system",
+    name: "Face Recognition System",
+    tagline: "Real-time identification with OpenCV + LBPH",
     summary:
-      "Fine-tuned FinBERT against vanilla BERT on financial text to show why domain-specific transformers win on jargon-heavy corpora.",
-    role: "ML Researcher",
-    status: "COMPLETE",
-    year: "2025",
-    category: "AI/ML",
-    featured: false,
-    stack: ["PyTorch", "Hugging Face", "FinBERT", "NLTK", "Scikit-learn"],
-    links: [{ label: "GitHub", href: "https://github.com/Saji-d/natural-language-processing", external: true }],
-  },
-  {
-    slug: "employee-family-registry",
-    name: "Employee & Family Registry",
-    tagline: ".NET API + React SPA with PDF CV export",
-    summary:
-      "A take-home technical assessment: ASP.NET Core Web API with EF Core + PostgreSQL, a React front end, and QuestPDF-generated CV/list documents.",
-    role: "Full-stack Engineer",
-    status: "COMPLETE",
-    year: "2026",
-    category: "Full-stack",
-    featured: false,
-    stack: [".NET", "ASP.NET Core", "EF Core", "PostgreSQL", "React", "Vite", "Tailwind", "QuestPDF"],
-    links: [
-      { label: "GitHub", href: "https://github.com/Saji-d/employee-family-registry", external: true },
-    ],
-  },
-  {
-    slug: "rfm-risk",
-    name: "RFM Risk Model",
-    tagline: "Churn early-warning for high-value customers",
-    summary:
-      "RFM segmentation + K-Means clustering over the UK online-retail dataset to flag high-value customers drifting toward churn.",
-    role: "Data Scientist",
-    status: "COMPLETE",
-    year: "2025",
-    category: "Data",
-    featured: false,
-    stack: ["Python", "Pandas", "Scikit-learn", "K-Means"],
-  },
-  {
-    slug: "water-turbidity",
-    name: "Water Turbidity",
-    tagline: "EfficientNet-B0 with small real-world datasets",
-    summary:
-      "CVPR paper on fine-tuning EfficientNet-B0 to classify water turbidity (High/Low/Medium) from ~300 phone photos — with cat/dog/panda auxiliary data.",
-    role: "CV Researcher",
-    status: "COMPLETE",
-    year: "2025",
-    category: "AI/ML",
-    featured: false,
-    stack: ["PyTorch", "EfficientNet-B0", "Transfer Learning"],
-  },
-  {
-    slug: "cvpr-collection",
-    name: "CVPR Notebook Suite",
-    tagline: "Five computer-vision notebooks",
-    summary:
-      "EfficientNet face recognition, KNN multiclass classification, LBPH face recognition, MLP pattern recognition, and NN MNIST digit recognition.",
+      "Face recognition system using OpenCV and LBPH for real-time identification — detection, training, and recognition pipeline in a Jupyter notebook.",
     role: "CV Engineer",
     status: "COMPLETE",
     year: "2025",
-    category: "AI/ML",
+    category: "Computer Vision",
     featured: false,
-    stack: ["Python", "PyTorch", "OpenCV", "Scikit-learn"],
-    links: [{ label: "GitHub", href: "https://github.com/Saji-d/computer-vision-and-pattern-recognition", external: true }],
+    github: "https://github.com/Saji-d/face-recognition-system",
+    stack: ["Python", "OpenCV", "LBPH"],
   },
   {
-    slug: "twitter-sentiment",
-    name: "Twitter Sentiment",
-    tagline: "NLTK + TF-IDF tweet classification",
+    slug: "spark-powerhouse-gym-csharp",
+    name: "Spark Powerhouse Gym (C#)",
+    tagline: "C# WinForms gym management simulation",
     summary:
-      "Classic NLP pipeline — tokenization, TF-IDF vectorization, and linear models — to classify tweet sentiment.",
-    role: "ML Engineer",
+      "C# WinForms–based gym management system simulation with user and admin functionality.",
+    role: "Desktop Developer",
     status: "COMPLETE",
-    year: "2025",
-    category: "AI/ML",
+    year: "2024",
+    category: "Desktop",
     featured: false,
-    stack: ["Python", "NLTK", "Scikit-learn"],
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
+    stack: ["C#", "WinForms", ".NET"],
+  },
+  {
+    slug: "codingvibes-java-gui",
+    name: "CodingVibes Java GUI",
+    tagline: "Event-driven Java desktop application",
+    summary:
+      "Java-based GUI application developed as academic coursework, demonstrating event-driven programming and interface design.",
+    role: "Desktop Developer",
+    status: "COMPLETE",
+    year: "2024",
+    category: "Desktop",
+    featured: false,
+    github: "https://github.com/Saji-d/codingvibes-java-gui",
+    stack: ["Java", "Swing"],
+  },
+  {
+    slug: "online-bookstore-database-design",
+    name: "Online Bookstore Database Design",
+    tagline: "ER modeling, normalization, and SQL",
+    summary:
+      "Database course project: design and implementation of an Online Bookstore Management System using ER modeling, normalization, and SQL queries.",
+    role: "Database Designer",
+    status: "COMPLETE",
+    year: "2024",
+    category: "Database",
+    featured: false,
+    github: "https://github.com/Saji-d/online-bookstore-database-design",
+    stack: ["SQL", "MySQL", "ER Modeling"],
+  },
+  {
+    slug: "my-wedding-invitation",
+    name: "My Wedding Invitation",
+    tagline: "Luxury digital wedding invitation",
+    summary:
+      "A cinematic Next.js wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed from scratch and deployed on Vercel.",
+    role: "Full-stack Developer",
+    status: "COMPLETE",
+    year: "2026",
+    category: "Full Stack",
+    featured: false,
+    github: "https://github.com/Saji-d/my-wedding-invitation",
+    demo: "https://sajid-weds-dilruba.vercel.app",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+  },
+  {
+    slug: "portfolio",
+    name: "Portfolio",
+    tagline: "This site — engineered showcase of backend, AI & research work",
+    summary:
+      "Personal portfolio built with Next.js and TypeScript: deep case studies, research, an interactive terminal, and a design system tuned for performance and accessibility.",
+    role: "Full-stack Developer",
+    status: "ACTIVE",
+    year: "2026",
+    category: "Full Stack",
+    featured: false,
+    github: "https://github.com/Saji-d/portfolio",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Motion", "React 19"],
   },
 ];
 
@@ -489,11 +594,18 @@ export function getFeaturedProjects(): Project[] {
   return projects.filter((p) => p.featured);
 }
 
+export function getCaseStudyProjects(): Project[] {
+  return projects.filter((p) => p.caseStudy);
+}
+
 export const projectCategories: ("All" | ProjectCategory)[] = [
   "All",
-  "Backend",
-  "AI/ML",
-  "Full-stack",
-  "Data",
+  "AI & ML",
+  "Computer Vision",
+  "NLP",
+  "Full Stack",
+  "Desktop",
   "Graphics",
+  "Database",
+  "Research",
 ];

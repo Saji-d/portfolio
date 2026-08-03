@@ -46,7 +46,7 @@ export default function ResearchCard({ paper }: { paper: ResearchPaper }) {
   );
 
   const classes =
-    "card-surface group block h-full p-6 transition-all duration-300 hover:border-accent/40";
+    "card-surface group block h-full p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40";
 
   if (href) {
     return (

@@ -1,19 +1,6 @@
-"use client";
-
-import { useSyncExternalStore } from "react";
 import { skillGroups } from "@/data/skills";
 
 const skills = [...new Set(skillGroups.flatMap((g) => g.skills))];
-
-function subscribe(callback: () => void) {
-  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  mq.addEventListener("change", callback);
-  return () => mq.removeEventListener("change", callback);
-}
-
-function getSnapshot() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
 
 function Pill({ skill }: { skill: string }) {
   return (
@@ -27,35 +14,28 @@ function Separator() {
   return <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/40" />;
 }
 
-export default function Marquee() {
-  const reduced = useSyncExternalStore(subscribe, getSnapshot, () => true);
-
-  if (reduced) {
-    return (
-      <section aria-label="Technologies" className="border-y border-line bg-surface/40 py-6">
-        <div className="container-site flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-          {skills.map((skill) => (
-            <Pill key={skill} skill={skill} />
-          ))}
+function Segment({ hidden }: { hidden?: boolean }) {
+  return (
+    <div className={`marquee-segment flex items-center gap-3 ${hidden ? "marquee-segment-duplicate" : ""}`}>
+      {skills.map((skill) => (
+        <div key={skill} className="flex items-center gap-3">
+          <Pill skill={skill} />
+          <Separator />
         </div>
-      </section>
-    );
-  }
+      ))}
+    </div>
+  );
+}
 
-  const track = [...skills, ...skills];
-
+export default function Marquee() {
   return (
     <section aria-label="Technologies" className="relative overflow-hidden border-y border-line bg-surface/40 py-6">
       <div
         aria-hidden="true"
         className="marquee-track group flex w-max items-center gap-3 group-hover:[animation-play-state:paused]"
       >
-        {track.map((skill, i) => (
-          <div key={i} className="flex items-center gap-3">
-            <Pill skill={skill} />
-            <Separator />
-          </div>
-        ))}
+        <Segment />
+        <Segment hidden />
       </div>
       <ul className="sr-only">
         {skills.map((skill) => (

@@ -84,7 +84,7 @@ export default function AboutPage() {
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i * 0.04}>
-              <div className="card-surface h-full p-6 transition-all duration-300 hover:border-accent/40">
+              <div className="card-surface h-full p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40">
                 <v.icon className="h-5 w-5 text-accent" />
                 <h3 className="mt-4 font-display text-base font-medium tracking-tight text-text-primary">
                   {v.title}

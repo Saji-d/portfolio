@@ -30,7 +30,7 @@ export default function ResearchPage() {
           <Reveal>
             <Link
               href="/research/neuronscreen"
-              className="card-surface group block overflow-hidden p-8 transition-all duration-300 hover:border-accent/40 sm:p-10"
+              className="card-surface group block overflow-hidden p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-10"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="eyebrow">Featured thesis</p>

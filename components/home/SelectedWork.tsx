@@ -1,20 +1,20 @@
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import { ProjectCard } from "@/components/work/ProjectCard";
-import { projects } from "@/data/projects";
+import { getFeaturedProjects } from "@/data/projects";
 
 export default function SelectedWork() {
-  const featured = projects.filter((p) => p.featured).slice(0, 3);
+  const featured = getFeaturedProjects();
 
   return (
     <section className="py-24 sm:py-32">
       <div className="container-site">
         <SectionHeading
           index="02"
-          eyebrow="Selected Work"
+          eyebrow="Featured Work"
           title="Systems that earn trust."
-          lede="The flagship trio — an audited fintech pipeline, a deployed full-stack platform, and an AI legal-intelligence MVP."
-          actionLabel="All projects"
+          lede="Eight featured projects across fintech, ML, NLP, computer vision, and full-stack — every one with open code, and the four most involved backed by full case studies."
+          actionLabel="View all projects"
           actionHref="/work"
         />
 

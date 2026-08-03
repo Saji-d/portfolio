@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { MotionConfig } from "motion/react";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CursorGlow from "@/components/CursorGlow";
 import NetworkBackground from "@/components/NetworkBackground";
-import Terminal from "@/components/Terminal";
 import { TerminalProvider } from "@/components/terminal-context";
+import { CommandPaletteProvider } from "@/components/command-palette-context";
+import RouteProgress from "@/components/ui/RouteProgress";
 import JsonLd from "@/components/JsonLd";
 import { SITE } from "@/data/site";
 
@@ -27,6 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -95,17 +96,22 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <MotionConfig reducedMotion="user">
-          <JsonLd />
-          <NetworkBackground />
-          <CursorGlow />
-          <TerminalProvider>
+        <JsonLd />
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <RouteProgress />
+        <NetworkBackground />
+        <CursorGlow />
+        <TerminalProvider>
+          <CommandPaletteProvider>
             <Nav />
-            <main className="relative z-10">{children}</main>
+            <main id="main" className="relative z-10 outline-none">
+              {children}
+            </main>
             <Footer />
-            <Terminal />
-          </TerminalProvider>
-        </MotionConfig>
+          </CommandPaletteProvider>
+        </TerminalProvider>
       </body>
     </html>
   );

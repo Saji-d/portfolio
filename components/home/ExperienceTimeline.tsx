@@ -1,8 +1,6 @@
-"use client";
-
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
 import SectionHeading from "@/components/ui/SectionHeading";
+import Reveal from "@/components/ui/Reveal";
+import TimelineProgress from "@/components/ui/TimelineProgress";
 
 const steps = [
   {
@@ -29,13 +27,6 @@ const steps = [
 ];
 
 export default function ExperienceTimeline() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 75%", "end 55%"],
-  });
-  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
   return (
     <section className="py-24 sm:py-32">
       <div className="container-site">
@@ -46,12 +37,9 @@ export default function ExperienceTimeline() {
           lede="From a 5.00 SSC to a shipped fintech pipeline — every step was deliberate."
         />
 
-        <div ref={ref} className="relative mt-14">
+        <div className="relative mt-14">
           <div className="absolute bottom-0 left-4 top-0 w-px bg-line sm:left-1/2" />
-          <motion.div
-            style={{ scaleY: lineScale }}
-            className="absolute bottom-0 left-4 top-0 w-px origin-top bg-accent sm:left-1/2"
-          />
+          <TimelineProgress />
 
           <div className="space-y-12">
             {steps.map((step, i) => {
@@ -62,20 +50,14 @@ export default function ExperienceTimeline() {
                   className="relative grid gap-4 pl-12 sm:grid-cols-2 sm:pl-0"
                 >
                   <span className="absolute left-4 top-1 grid h-4 w-4 -translate-x-1/2 place-items-center sm:left-1/2">
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true, margin: "-20%" }}
-                      transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                      className="h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_16px_rgba(79,209,197,0.8)]"
-                    />
+                    <Reveal scale={0} y={0}>
+                      <span className="block h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_16px_rgba(79,209,197,0.8)]" />
+                    </Reveal>
                   </span>
 
-                  <motion.div
-                    initial={{ opacity: 0, x: leftSide ? -20 : 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-15%" }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  <Reveal
+                    x={leftSide ? -20 : 20}
+                    y={0}
                     className={`sm:px-8 ${leftSide ? "sm:text-right" : "sm:col-start-2"}`}
                   >
                     <div
@@ -96,7 +78,7 @@ export default function ExperienceTimeline() {
                         </span>
                       )}
                     </div>
-                  </motion.div>
+                  </Reveal>
                 </div>
               );
             })}

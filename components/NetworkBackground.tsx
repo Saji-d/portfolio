@@ -43,7 +43,7 @@ export default function NetworkBackground() {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const target = Math.min(90, Math.max(34, Math.floor((width * height) / 26000)));
+      const target = Math.min(80, Math.max(30, Math.floor((width * height) / 30000)));
       nodes = Array.from({ length: target }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -122,6 +122,10 @@ export default function NetworkBackground() {
       }
     }
 
+    function onResize() {
+      resize();
+    }
+
     resize();
     if (prefersReduced) {
       draw();
@@ -129,12 +133,12 @@ export default function NetworkBackground() {
       loop();
     }
 
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);

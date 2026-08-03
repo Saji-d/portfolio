@@ -33,7 +33,7 @@ export default function CurrentlySection() {
 
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {focuses.map((f) => (
-            <div key={f.title} className="card-surface group p-6 transition-all duration-300 hover:border-accent/40">
+            <div key={f.title} className="card-surface group p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40">
               <f.icon className="h-5 w-5 text-accent" />
               <h3 className="mt-4 font-display text-base font-medium tracking-tight text-text-primary">
                 {f.title}

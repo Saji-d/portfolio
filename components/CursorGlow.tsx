@@ -8,6 +8,7 @@ export default function CursorGlow() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const glowEl: HTMLDivElement = el;
 
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -18,31 +19,49 @@ export default function CursorGlow() {
     let ty = window.innerHeight / 3;
     let x = tx;
     let y = ty;
+    let lastMove = 0;
+    let visible = !document.hidden;
+
+    function tick() {
+      raf = requestAnimationFrame(tick);
+      if (!visible) return;
+      if (performance.now() - lastMove > 3000) return;
+      x += (tx - x) * 0.12;
+      y += (ty - y) * 0.12;
+      glowEl.style.transform = `translate3d(${x - 300}px, ${y - 300}px, 0)`;
+    }
 
     const onMove = (e: PointerEvent) => {
       tx = e.clientX;
       ty = e.clientY;
-      el.style.opacity = "1";
+      lastMove = performance.now();
+      glowEl.style.opacity = "1";
+      if (!raf) raf = requestAnimationFrame(tick);
     };
 
     const onLeave = () => {
-      el.style.opacity = "0";
+      glowEl.style.opacity = "0";
+      lastMove = 0;
     };
 
-    const tick = () => {
-      x += (tx - x) * 0.12;
-      y += (ty - y) * 0.12;
-      el.style.transform = `translate3d(${x - 300}px, ${y - 300}px, 0)`;
-      raf = requestAnimationFrame(tick);
+    const onVisibility = () => {
+      visible = !document.hidden;
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      } else if (!raf && lastMove) {
+        raf = requestAnimationFrame(tick);
+      }
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
-    raf = requestAnimationFrame(tick);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(raf);
     };
   }, []);

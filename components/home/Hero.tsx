@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import { ArrowRight, Download } from "lucide-react";
 import MagneticButton from "@/components/ui/MagneticButton";
 import TerminalCard from "@/components/home/TerminalCard";
@@ -15,44 +12,39 @@ const stats = [
   { value: "5x", label: "Dean's Award" },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
-};
+const delays = ["0s", "0.07s", "0.14s", "0.21s", "0.45s"];
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden pt-32 sm:pt-40">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-accent-dim blur-[120px]"
+        className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(79,209,197,0.14),transparent)]"
       />
       <div className="container-site relative">
-        <motion.div variants={container} initial="hidden" animate="show">
-          <motion.div variants={item}>
+        <div>
+          <div className="hero-enter" style={{ animationDelay: delays[0] }}>
             <Eyebrow>Software Engineer — Dhaka</Eyebrow>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            variants={item}
-            className="mt-5 max-w-4xl font-display text-5xl font-medium leading-[1.05] tracking-tight text-gradient sm:text-6xl lg:text-7xl"
+          <h1
+            className="hero-enter mt-5 max-w-4xl font-display text-5xl font-medium leading-[1.05] tracking-tight text-gradient sm:text-6xl lg:text-7xl"
+            style={{ animationDelay: delays[1] }}
           >
             Sajidur Rahman Sajid
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={item}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl"
+          <p
+            className="hero-enter mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl"
+            style={{ animationDelay: delays[2] }}
           >
             {SITE.tagline}
-          </motion.p>
+          </p>
 
-          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
+          <div
+            className="hero-enter mt-8 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: delays[3] }}
+          >
             <MagneticButton
               href="/work"
               className="bg-accent px-6 py-3 text-sm font-medium text-[#0B0E14] hover:bg-accent/90"
@@ -66,14 +58,12 @@ export default function Hero() {
             >
               <Download className="h-4 w-4" /> Download CV
             </MagneticButton>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-14 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
+        <div
+          className="hero-enter mt-14 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
+          style={{ animationDelay: delays[4] }}
         >
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-1">
             {stats.map((s) => (
@@ -81,7 +71,7 @@ export default function Hero() {
             ))}
           </div>
           <TerminalCard />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

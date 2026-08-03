@@ -10,27 +10,27 @@ import {
   type ReactNode,
 } from "react";
 
-interface TerminalContextValue {
+interface CommandPaletteContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
   toggle: () => void;
 }
 
-const TerminalContext = createContext<TerminalContextValue>({
+const CommandPaletteContext = createContext<CommandPaletteContextValue>({
   open: false,
   setOpen: () => {},
   toggle: () => {},
 });
 
-const LazyTerminal = dynamic(() => import("@/components/Terminal"));
+const LazyCommandPalette = dynamic(() => import("@/components/CommandPalette"));
 
-export function TerminalProvider({ children }: { children: ReactNode }) {
+export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const toggle = useCallback(() => setOpen((v) => !v), []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "`" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setOpen((v) => !v);
       }
@@ -48,13 +48,13 @@ export function TerminalProvider({ children }: { children: ReactNode }) {
   }, [open]);
 
   return (
-    <TerminalContext.Provider value={{ open, setOpen, toggle }}>
+    <CommandPaletteContext.Provider value={{ open, setOpen, toggle }}>
       {children}
-      {open && <LazyTerminal />}
-    </TerminalContext.Provider>
+      {open && <LazyCommandPalette />}
+    </CommandPaletteContext.Provider>
   );
 }
 
-export function useTerminal() {
-  return useContext(TerminalContext);
+export function useCommandPalette() {
+  return useContext(CommandPaletteContext);
 }

@@ -18,7 +18,7 @@ export default function ResearchSpotlight() {
         <Reveal className="mt-12">
           <Link
             href="/research/neuronscreen"
-            className="card-surface group block overflow-hidden p-8 transition-all duration-300 hover:border-accent/40 sm:p-10"
+            className="card-surface group block overflow-hidden p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-10"
           >
             <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
               <div>

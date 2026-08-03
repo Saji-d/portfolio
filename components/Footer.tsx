@@ -1,8 +1,7 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowUp, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import BackToTop from "@/components/ui/BackToTop";
 import { NAV_LINKS, SITE } from "@/data/site";
 
 export default function Footer() {
@@ -80,13 +79,7 @@ export default function Footer() {
           <p className="font-mono text-xs text-text-muted">
             © {new Date().getFullYear()} {SITE.name}. Built with Next.js in Dhaka.
           </p>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 font-mono text-xs text-text-muted transition-colors hover:text-accent"
-            aria-label="Back to top"
-          >
-            back to top <ArrowUp className="h-3.5 w-3.5" />
-          </button>
+          <BackToTop />
         </div>
       </div>
     </footer>
