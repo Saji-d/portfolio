@@ -33,7 +33,7 @@ interface Item {
 }
 
 function primaryHref(project: (typeof projects)[number]): string | undefined {
-  if (project.caseStudy) return `/work/${project.slug}`;
+  if (project.caseStudy) return `/projects/${project.slug}`;
   if (project.thesis) return project.thesis;
   return project.github;
 }

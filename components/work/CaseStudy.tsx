@@ -201,7 +201,7 @@ export default function CaseStudy({ project }: { project: Project }) {
           <Reveal>
             <p className="eyebrow">[ 09 ] — Keep exploring</p>
             <h2 className="mt-3 font-display text-2xl font-medium tracking-tight text-gradient sm:text-3xl">
-              More work
+              More projects
             </h2>
           </Reveal>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
@@ -210,10 +210,10 @@ export default function CaseStudy({ project }: { project: Project }) {
             ))}
           </div>
           <Link
-            href="/work"
+            href="/projects"
             className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-accent transition-opacity hover:opacity-80"
           >
-            Back to all work
+            Back to all projects
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

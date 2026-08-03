@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="bgG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0C111B"/>
+      <stop offset="0.55" stop-color="#0B0E14"/>
+      <stop offset="1" stop-color="#0E1832"/>
+    </linearGradient>
+    <radialGradient id="gA" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4FD1C5" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#4FD1C5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gB" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#7C7DFF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#7C7DFF" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="46" height="46" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="1.8" fill="#ffffff" fill-opacity="0.05"/>
+    </pattern>
+    <radialGradient id="vig" cx="0.5" cy="0.5" r="0.72">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+    </radialGradient>
+    <filter id="sh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="26" stdDeviation="30" flood-color="#000000" flood-opacity="0.5"/></filter>
+    
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bgG)"/>
+  <rect width="1600" height="1000" fill="url(#dots)"/>
+  <ellipse cx="240" cy="170" rx="600" ry="430" fill="url(#gA)"/>
+  <ellipse cx="1380" cy="850" rx="620" ry="470" fill="url(#gB)"/>
+  <rect width="1600" height="1000" fill="url(#vig)"/>
+  <clipPath id="pf"><rect x="380" y="240" width="840" height="520"/></clipPath><g>
+      <rect x="380" y="240" width="840" height="520" rx="20" fill="#151B28" stroke="rgba(255,255,255,0.10)" filter="url(#sh)"/>
+      <circle cx="410" cy="266" r="7" fill="#E05B5B" />
+      <circle cx="434" cy="266" r="7" fill="#E8B44B" />
+      <circle cx="458" cy="266" r="7" fill="#3FB28A" />
+      <rect x="520" y="258" width="260" height="12" rx="5" fill="#5E6B7C" />
+      <g><rect x="408" y="316" width="110" height="10" rx="5" fill="#9AA6B5" /><rect x="408" y="376" width="90" height="10" rx="5" fill="#5E6B7C" /><rect x="408" y="436" width="130" height="10" rx="5" fill="#9AA6B5" /><rect x="408" y="496" width="70" height="10" rx="5" fill="#5E6B7C" /><rect x="408" y="556" width="120" height="10" rx="5" fill="#9AA6B5" /><rect x="408" y="616" width="60" height="10" rx="5" fill="#5E6B7C" /><rect x="408" y="676" width="100" height="10" rx="5" fill="#9AA6B5" /></g>
+      <g clip-path="url(#pf)">
+        <line x1="380" y1="300" x2="1220" y2="300" stroke="rgba(255,255,255,0.10)" stroke-width="2" />
+        <rect x="432" y="316" width="200" height="12" rx="5" fill="#4FD1C5" />
+        <rect x="432" y="342" width="260" height="10" rx="5" fill="#7C7DFF" />
+        <rect x="432" y="368" width="150" height="10" rx="5" fill="#5E6B7C" />
+        <rect x="432" y="402" width="280" height="10" rx="5" fill="#E8B44B" />
+        <rect x="432" y="428" width="220" height="10" rx="5" fill="#5E6B7C" />
+        <rect x="432" y="454" width="310" height="10" rx="5" fill="#4FD1C5" />
+        <rect x="432" y="480" width="180" height="10" rx="5" fill="#7C7DFF" />
+        <rect x="432" y="506" width="240" height="10" rx="5" fill="#5E6B7C" />
+        <rect x="432" y="540" width="120" height="10" rx="5" fill="#E8B44B" />
+        <rect x="432" y="566" width="270" height="10" rx="5" fill="#4FD1C5" />
+        <rect x="432" y="316" width="12" height="12" fill="#0B0E14"/>
+        <rect x="432" y="620" width="460" height="96" rx="12" fill="#0C111C" stroke="rgba(255,255,255,0.10)"/>
+        <circle cx="458" cy="668" r="6" fill="#3FB28A" />
+        <path d="M472 652 l16 16 -16 16" stroke="#9AA6B5" stroke-width="4" fill="none"/>
+        <rect x="500" y="654" width="11" height="22" fill="#4FD1C5"/>
+        <rect x="936" y="620" width="260" height="96" rx="12" fill="#0C111C" stroke="rgba(255,255,255,0.10)"/>
+        <g><rect x="958" y="638" width="200" height="9" rx="5" fill="#4FD1C5" /><rect x="958" y="660" width="182" height="9" rx="5" fill="#3FB28A" /><rect x="958" y="682" width="164" height="9" rx="5" fill="#4FD1C5" /><rect x="958" y="704" width="146" height="9" rx="5" fill="#3FB28A" /></g>
+      </g>
+      <circle cx="280" cy="240" r="12" fill="#4FD1C5" opacity='0.5'/>
+      <circle cx="1460" cy="760" r="12" fill="#7C7DFF" opacity='0.5'/>
+      <circle cx="1430" cy="260" r="22" fill="none" stroke="#4FD1C5" stroke-opacity='0.4'/>
+      <circle cx="200" cy="800" r="10" fill="#7C7DFF" opacity='0.5'/>
+      </g></svg>

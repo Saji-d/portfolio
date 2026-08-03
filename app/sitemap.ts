@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${base}/work`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/research`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/resume`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const projectRoutes: MetadataRoute.Sitemap = getCaseStudyProjects().map((p) => ({
-    url: `${base}/work/${p.slug}`,
+    url: `${base}/projects/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.8,

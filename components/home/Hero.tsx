@@ -46,10 +46,10 @@ export default function Hero() {
             style={{ animationDelay: delays[3] }}
           >
             <MagneticButton
-              href="/work"
+              href="/projects"
               className="bg-accent px-6 py-3 text-sm font-medium text-[#0B0E14] hover:bg-accent/90"
             >
-              View work <ArrowRight className="h-4 w-4" />
+              View projects <ArrowRight className="h-4 w-4" />
             </MagneticButton>
             <MagneticButton
               href="/Sajidur_Rahman_Sajid.pdf"

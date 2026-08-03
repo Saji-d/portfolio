@@ -26,10 +26,10 @@ export default function NotFound() {
           Back home
         </MagneticButton>
         <Link
-          href="/work"
+          href="/projects"
           className="ml-3 inline-flex rounded-md border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
         >
-          View work
+          View projects
         </Link>
       </div>
     </section>

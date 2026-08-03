@@ -8,6 +8,7 @@ import NetworkBackground from "@/components/NetworkBackground";
 import { TerminalProvider } from "@/components/terminal-context";
 import { CommandPaletteProvider } from "@/components/command-palette-context";
 import RouteProgress from "@/components/ui/RouteProgress";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 import JsonLd from "@/components/JsonLd";
 import { SITE } from "@/data/site";
 
@@ -100,6 +101,7 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
+        <ScrollProgress />
         <RouteProgress />
         <NetworkBackground />
         <CursorGlow />

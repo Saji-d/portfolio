@@ -20,7 +20,7 @@ export async function generateMetadata({
   return {
     title: project.name,
     description: project.tagline,
-    alternates: { canonical: `/work/${project.slug}` },
+    alternates: { canonical: `/projects/${project.slug}` },
   };
 }
 

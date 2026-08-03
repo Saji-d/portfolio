@@ -47,7 +47,7 @@ export default function CurrentlySection() {
 
         <div className="mt-8">
           <Link
-            href="/work/invoicepilot"
+            href="/projects/invoicepilot"
             className="group inline-flex items-center gap-2 text-sm font-medium text-accent transition-opacity hover:opacity-80"
           >
             Read the InvoicePilot case study

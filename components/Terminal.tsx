@@ -125,7 +125,7 @@ function TerminalShell({ onExit }: { onExit: () => void }) {
           "Available commands:",
           "  help                     show this list",
           "  whoami                   about me",
-          "  work                     list projects",
+          "  projects                 list projects",
           "  projects <slug>          project detail",
           "  research                 thesis & research",
           "  skills                   skill groups",
@@ -147,9 +147,6 @@ function TerminalShell({ onExit }: { onExit: () => void }) {
           `BSc CSE, AIUB — CGPA 3.92/4.00 · 5× Dean's Award`,
           `Thesis: NeuroScreen hybrid ensemble (95.20% acc, 0.982 AUC)`,
         ].join("\n");
-        break;
-      case "work":
-        out = ["All projects ( * = featured ):", renderProjects()].join("\n");
         break;
       case "projects":
         out = arg ? renderProject(arg) : ["usage: projects <slug>", renderProjects()].join("\n");
