@@ -5,7 +5,7 @@ import WorkGrid from "@/components/work/WorkGrid";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "All public repositories — LedgerTurf, FinBERT, Face Recognition, 3D City, and more. Search by title and filter by discipline.",
+    "A curated collection of software engineering, AI, computer vision, graphics, database, and production systems I've built — search by title and filter by discipline.",
   alternates: { canonical: "/projects" },
 };
 
@@ -15,7 +15,7 @@ export default function ProjectsPage() {
       <PageHeader
         eyebrow="[ 01 ] — Projects"
         title="Every project, with the code attached."
-        lede="The full library — search by title, filter by discipline, and open the source. Several ship with live demos and full case studies."
+        lede="A curated collection of software engineering, AI, computer vision, graphics, database, and production systems I've built."
       />
       <section className="container-site pb-28 pt-12">
         <WorkGrid />

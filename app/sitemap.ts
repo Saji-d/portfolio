@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/data/site";
 import { getCaseStudyProjects } from "@/data/projects";
+import { researchPapers } from "@/data/research";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url;
@@ -22,14 +23,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const researchRoutes: MetadataRoute.Sitemap = researchPapers.map((p) => ({
+    url: `${base}/research/${p.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
   return [
     ...staticRoutes,
     ...projectRoutes,
-    {
-      url: `${base}/research/neuronscreen`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
+    ...researchRoutes,
   ];
 }

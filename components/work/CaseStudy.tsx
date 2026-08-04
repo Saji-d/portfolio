@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/data/projects";
 import { getCaseStudyProjects } from "@/data/projects";
-import { StatusBadge, Pill } from "@/components/ui/Badge";
+import { StatusBadge, Pill, ProjectBadgeChip } from "@/components/ui/Badge";
 import CodeBlock from "@/components/ui/CodeBlock";
 import Gallery from "@/components/work/Gallery";
 import Reveal from "@/components/ui/Reveal";
@@ -37,13 +37,11 @@ export default function CaseStudy({ project }: { project: Project }) {
     .filter((p) => p.slug !== project.slug)
     .slice(0, 2);
 
-  const linkHrefs = new Set((project.links ?? []).map((l) => l.href).filter(Boolean));
-  const extraLinks = [
+  const actionLinks = [
     ...(project.github ? [{ label: "View Code", href: project.github }] : []),
     ...(project.demo ? [{ label: "Live Demo", href: project.demo }] : []),
     ...(project.thesis ? [{ label: "Thesis", href: project.thesis, internal: true }] : []),
-  ].filter((l) => !linkHrefs.has(l.href));
-  const actionLinks = [...(project.links ?? []).filter((l) => l.href), ...extraLinks];
+  ];
 
   return (
     <article>
@@ -51,8 +49,11 @@ export default function CaseStudy({ project }: { project: Project }) {
         <Reveal>
           <div className="flex flex-wrap items-center gap-3">
             <StatusBadge status={project.status} />
-            <span className="font-mono text-xs text-text-muted">{project.year}</span>
             <span className="font-mono text-xs text-text-muted">{project.role}</span>
+            <ProjectBadgeChip>{project.category}</ProjectBadgeChip>
+            {project.badges.map((badge) => (
+              <ProjectBadgeChip key={badge}>{badge}</ProjectBadgeChip>
+            ))}
           </div>
           <h1 className="mt-5 max-w-4xl font-display text-4xl font-medium leading-[1.05] tracking-tight text-gradient sm:text-5xl lg:text-6xl">
             {project.name}
@@ -206,7 +207,11 @@ export default function CaseStudy({ project }: { project: Project }) {
           </Reveal>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {others.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
+              <ProjectCard
+                key={p.slug}
+                project={p}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+              />
             ))}
           </div>
           <Link

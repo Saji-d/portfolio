@@ -30,3 +30,12 @@ export function Pill({ children }: { children: string }) {
     </span>
   );
 }
+
+export function ProjectBadgeChip({ children }: { children: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+      {children}
+    </span>
+  );
+}

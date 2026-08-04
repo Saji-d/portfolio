@@ -1,19 +1,16 @@
 export type ProjectStatus = "ACTIVE" | "COMPLETE" | "CONCEPT";
+
+export type ProjectBadge = "Professional" | "Production" | "Research" | "Featured";
+
 export type ProjectCategory =
-  | "AI & ML"
-  | "Computer Vision"
-  | "NLP"
-  | "Full Stack"
+  | "Professional"
+  | "Natural Language Processing"
+  | "Computer Vision and Pattern Recognition"
   | "Desktop"
+  | "Web"
   | "Graphics"
   | "Database"
-  | "Research";
-
-export interface ProjectLink {
-  label: string;
-  href?: string;
-  external?: boolean;
-}
+  | "Creative";
 
 export interface ProjectMetric {
   value: string;
@@ -43,16 +40,15 @@ export interface Project {
   summary: string;
   role: string;
   status: ProjectStatus;
-  year: string;
   category: ProjectCategory;
+  badges: ProjectBadge[];
   featured: boolean;
-  cover?: string;
+  cover: string;
   caseStudy?: boolean;
   github?: string;
   demo?: string;
   thesis?: string;
   stack: string[];
-  links?: ProjectLink[];
   problem?: string[];
   solution?: string[];
   architecture?: string[];
@@ -67,125 +63,136 @@ export const projects: Project[] = [
   {
     slug: "invoicepilot",
     name: "InvoicePilot",
-    tagline: "AI invoice microservice + Web3 cryptographic seal engine",
+    tagline: "Audit-ready invoice operations, sealed on-chain",
     summary:
-      "Enterprise invoice-processing platform: an 11-stage AI pipeline, Redis Streams async workers, and an append-only Solidity seal registry for tamper-evident audit trails.",
+      "Audit-grade invoice processing: extraction, normalization, business and fraud rule checks, human approval, then a cryptographic on-chain seal of the exact uploaded bytes — hash-only, so no invoice data ever lands on-chain.",
     role: "Backend / AI Engineer",
     status: "ACTIVE",
-    year: "2026",
-    category: "AI & ML",
-    featured: false,
-    cover: "/images/art/invoicepilot.webp",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/invoicepilot_thumbnail.png",
     caseStudy: true,
-    stack: [
-      "Python 3.11",
-      "FastAPI",
-      "Fastify",
-      "PostgreSQL",
-      "Redis Streams",
-      "BullMQ",
-      "React 19",
-      "Solidity",
-      "Foundry",
-      "Viem",
-      "Turnkey KMS",
-      "Mindee OCR",
-      "Cloudflare R2",
-      "Docker",
-    ],
-    links: [{ label: "Case study (this page)" }],
+    stack: ["FastAPI", "Fastify", "BullMQ", "PostgreSQL", "Solidity"],
     problem: [
-      "Bookkeeping firms and small businesses drown in manual data entry — hours spent transcribing invoices, matching purchase orders, and reconciling duplicates.",
-      "Duplicate payments, PO mismatches, and fraud go undetected because there is no structured audit trail, and files are scattered across inboxes and drives.",
-      "Existing tools either cannot process varied invoice formats at enterprise scale or offer no tamper-evident record of what was processed, when, and by whom.",
+      "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates — an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
+      "Duplicate payments and fraud slip through because there is no structured audit trail, and any claim that an invoice was processed rests on someone's word.",
+      "Generic extraction tools pull fields but cannot vouch that the extracted data matches the file — so automation stops before approval, exactly where the hours get saved.",
     ],
     solution: [
-      "InvoicePilot is a three-sub-system platform. The AI pipeline turns any invoice file — PDF, webp, jpeg, png — into structured, validated line data. An async engine absorbs spikes without blocking request threads. A Web3 seal kernel anchors every processed record on-chain.",
-      "The AI/ML service runs an 11-stage pipeline: file validation → Mindee OCR extraction (30+ fields, per-field confidence) → transformation → normalization (10 functions for currencies, vendor names, dates, emails, phones, URLs) → exact-match duplicate detection → a 12-rule business-logic engine → a 9-rule fraud engine → classification → validation → persistence.",
-      "Processing is decoupled through Redis Streams consumer groups. A Fastify API gateway fronts the system with JWT auth (Supabase JWKS), RBAC, sliding-window rate limiting, Redis query caching, and AES-256-GCM encryption for vendor bank details at rest.",
+      "InvoicePilot runs one end-to-end pipeline per document: capture → extraction → normalization → duplicate, business, and fraud checks → human approval → on-chain cryptographic seal → accounting sync. A sha-256 of the exact uploaded bytes is the document's identity, re-verified by the AI service, so a seal can never cover a file that doesn't match its hash.",
+      "OCR and sealing are deliberately one pipeline — what the OCR extracts is what gets sealed on-chain. Two ingest routes (sync and async) fold onto the same invoices row through a single shared, frozen mapper, so the same document always produces the same on-chain hash.",
+      "Async work runs on BullMQ workers — extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync — while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
     ],
     architecture: [
-      "                     ┌───────────────────────────────────────────────┐",
-      "                     │  Fastify API Gateway                          │",
-      "                     │  JWT (Supabase JWKS) · RBAC · rate-limit      │",
-      "                     └──────────────┬────────────────────────────────┘",
-      "                                    │ HTTPS / multipart",
-      "                                    ▼",
-      "                     ┌───────────────────────────────────────────────┐",
-      "                     │  invoice-ai-service (FastAPI)                 │",
-      "                     │  11-stage pipeline · 30+ fields · validation  │",
-      "                     └──────────────┬────────────────────────────────┘",
-      "                                    │ XADD  (Redis Streams)",
-      "                                    ▼",
-      "                     ┌───────────────────────────────────────────────┐",
-      "                     │  Async workers  ·  asyncio.Semaphore(5)       │",
-      "                     │  retry (3×, backoff) · DLQ (7-day TTL)        │",
-      "                     └──────────────┬────────────────────────────────┘",
-      "                                    │  RLS + service role",
-      "                                    ▼",
-      "                     ┌───────────────────────────────────────────────┐",
-      "                     │  PostgreSQL (Supabase, Row-Level Security)    │",
-      "                     └──────────────┬────────────────────────────────┘",
-      "                                    │  hash + type + ts + signer",
-      "                                    ▼",
-      "                     ┌───────────────────────────────────────────────┐",
-      "                     │  BullMQ seal worker → SealRegistry.sol        │",
-      "                     │  Viem + Turnkey KMS · append-only · no PII    │",
-      "                     └───────────────────────────────────────────────┘",
+      "  Frontend (Vite + React) · Supabase auth · Cloudflare R2",
+      "        │  multipart upload / presigned R2 URL",
+      "        ▼",
+      "  Fastify API — JWT (Supabase JWKS) · RBAC · rate-limit · audit log",
+      "        │                          │",
+      "        │ sync /invoices/process   │ async /invoices → BullMQ",
+      "        ▼                          ▼",
+      "  invoice-ai-service (FastAPI)     Worker queues",
+      "   verify sha-256 · OCR (Mindee)    invoice-extraction · duplicate-check",
+      "   transform · normalize ·          anomaly-check · blockchain-seal",
+      "   business rules (12) · fraud (9)  solidinvoice-sync",
+      "   classify · validate · persist",
+      "        │                          │",
+      "        ▼──────────────────────────▼",
+      "  PostgreSQL 17 — RLS FORCE · NOBYPASSRLS service role",
+      "        │",
+      "        ▼",
+      "  SealRegistry.sol (Base Sepolia)",
+      "   { recordHash, recordType, sealedAt, sealedBy } — append-only, no PII",
     ],
     decisions: [
       {
         title: "Hash-only on-chain (privacy by design)",
-        body: "The contract stores only {recordHash, recordType, sealedAt, sealedBy} — never invoice amounts or PII. Records are anchored with sha256(domainTag + canonicalJSON(payload)) using NFC normalization, minor-unit money, and RFC3339 UTC. Clients can verify a document without any sensitive data leaving their control.",
+        body: "The contract stores only {recordHash, recordType, sealedAt, sealedBy} — never amounts, PII, or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
       },
       {
-        title: "Provider-agnostic OCR boundary",
-        body: "Exactly one file imports the Mindee SDK. Every other module consumes a neutral `DocumentFields` interface, so OCR vendors can be swapped or A/B-tested without touching the pipeline.",
-      },
-      {
-        title: "Signer abstraction",
-        body: "Seal signing runs in two modes — local keypair for dev, Turnkey enclave KMS for production — behind a single `SealSigner` interface. The audit logs record which signer produced each seal.",
+        title: "The frozen anti-fabrication mapper",
+        body: "The AI service emits {value: 0.0, present: false} for a field it never found. The one shared mapper omits any key the extractor did not produce instead of writing a zero — so a $0 invoice invented from a default can never reach an approver, let alone a seal. It is deliberately frozen in shared-types so both ingest routes seal identical bytes.",
       },
       {
         title: "RLS FORCE + service-role split",
-        body: "Tenant isolation is enforced at the database, not the ORM. The API connects with a service role and row-level security FORCE policies keep multi-tenant reads scoped no matter how the query is written.",
+        body: "Tenant isolation is enforced at the database, not the ORM. The API sets per-request GUCs, the worker connects with app.current_role='service' under a NOBYPASSRLS production role, and FORCE ROW LEVEL SECURITY keeps reads tenant-scoped however the query is written.",
       },
       {
-        title: "Soft-ref seals, crash-safe reclaim",
-        body: "Seals are soft references (no hard FK) so the ledger stays append-only, and the worker uses XCLAIM idle-reclaim so a crashed consumer's stream entries resume instead of silently dropping.",
+        title: "AES-256-GCM for PII at rest",
+        body: "Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized, and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext — the rest of the system never sees it.",
+      },
+      {
+        title: "Versioned, frozen approval hashes",
+        body: "The hashing kernel lives in shared-types behind a versioned domain tag (invoicepilot/approval/v1). v1 seals must stay verifiable forever, so a changed sealed-field set ships as approval-v2 rather than an edit to the payload builder.",
+      },
+      {
+        title: "Verify never writes",
+        body: "The public verify path recomputes sha-256 in-process and calls a keyless view function on-chain: no DB write, no audit row, no signer. Every outcome — match, mismatch, not-yet-sealed, chain error, payload error — resolves explicitly and never throws.",
       },
     ],
     highlights: [
       {
-        title: "Canonical seal hash",
-        code: `from hashlib import sha256
-from utils import canonical_json  # stable key order + NFC
-
-def seal_hash(payload: dict) -> bytes:
-    domain = b"invoice-pilot.v1"          # domain tag, versioned
-    data = canonical_json(payload)        # deterministic serialization
-    return sha256(domain + data.encode("utf-8")).digest()`,
-        caption: "Versioned domain tag prevents cross-domain replay of hashes.",
+        title: "The hash kernel — one payload becomes a bytes32",
+        code: `// shared-types/src/canonical.ts — the backend-agnostic seal core.
+// recordHash = '0x' + sha256( domainTag + '\\n' + canonicalJSON(payload) )
+export function computeRecordHash(
+  payload: unknown,
+  domainTag: string,
+): \`0x\${string}\` {
+  return \`0x\${sha256Hex(domainTag + '\\n' + canonicalJSON(payload))}\`;
+}`,
+        caption: "RFC 8785 (JCS) canonical JSON + a versioned domain tag make the hash deterministic across languages — the Python service extracts, TypeScript seals, Solidity verifies.",
       },
       {
-        title: "Async engine with bounded concurrency",
-        code: `# Redis Streams consumer group
-stream, group = "invoices:processing", "workers"
-
-for message in stream.pending_and_new(group):
-    async with asyncio.Semaphore(5):      # max 5 concurrent
-        await asyncio.to_thread(run_pipeline, message)  # release GIL
-        await xack(stream, group, message)              # commit offset`,
-        caption: "Concurrency capped at 5 to bound downstream load and DB connections.",
+        title: "The anti-fabrication rule (frozen mapper)",
+        code: `// AI emits { value: 0.0, present: false } for fields it never found.
+// A mapper checking only typeof value === 'number' writes amount 0,
+// marks the invoice approvable — then it gets SEALED ON-CHAIN.
+// So every key is OMITTED unless the extractor produced it:
+export interface ExtractedInvoiceFields {
+  vendorName?: string;       // nfc'd, varchar(255)
+  invoiceNumber?: string;    // nfc'd, varchar(128)
+  amount?: string;           // fixed-4 decimal, numeric(19,4)
+  currency?: string;         // /^[A-Z]{3}$/
+  lineItems?: NormalizedLineItem[]; // jsonb, sealed as-stored
+}`,
+        caption: "An invoice with no extracted total is never handed to an approver — the exact $0-invoice-sealed bug this branch exists to kill.",
+      },
+      {
+        title: "The single on-chain write, with a fee policy",
+        code: `// seal.ts — the only tx this worker ever pays for.
+const [block, suggestedTip] = await Promise.all([
+  publicClient.getBlock(),
+  publicClient.estimateMaxPriorityFeePerGas(),
+]);
+const fees = computeSealFees({
+  baseFeePerGas: block.baseFeePerGas,
+  suggestedPriorityFeePerGas: suggestedTip,
+  maxPriorityFeeWei: config.maxPriorityFeeWei,
+  baseFeeMultiplier: config.baseFeeMultiplier,
+  maxFeeCapWei: config.maxFeeCapWei,
+});
+if (fees.maxFeePerGas > config.maxFeeCapWei) {
+  throw new Error('seal: chain is expensive — not submitting, retry later');
+}
+const txHash = await walletClient.writeContract({
+  address: SEAL_CONTRACT_ADDRESS, abi: sealRegistryAbi,
+  functionName: 'sealRecord',
+  args: [recordHash, RECORD_TYPE_APPROVAL],
+  maxFeePerGas: fees.maxFeePerGas,
+  maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
+});`,
+        caption: "The tip is our number, not the RPC's — a seal is never urgent, so over a hard fee cap the job waits for a cheaper block instead of overpaying.",
       },
     ],
     metrics: [
-      { value: "218", label: "pytest cases passing" },
-      { value: "11", label: "processing stages" },
-      { value: "9", label: "fraud rules" },
-      { value: "12", label: "business rules" },
-      { value: "5", label: "bounded async workers" },
-      { value: "30+", label: "extracted fields" },
+      { value: "146", label: "AI-service pytest cases" },
+      { value: "366", label: "API tests · 43 files" },
+      { value: "12+9", label: "business + fraud rules" },
+      { value: "4", label: "BullMQ seal & check workers" },
+      { value: "78.6k", label: "gas per on-chain seal" },
+      { value: "1", label: "frozen shared mapper" },
     ],
     screenshots: [
       { src: "/images/invoicepilot/invoice-gpt.webp", alt: "Structured extraction sample from an invoice" },
@@ -193,195 +200,28 @@ for message in stream.pending_and_new(group):
       { src: "/images/invoicepilot/invoice-2.webp", alt: "Sample invoice line data" },
     ],
     nextSteps: [
-      "QuickBooks / Xero OAuth two-way sync — currently the named biggest integration risk.",
-      "SOC 2 readiness suite (5 policy docs, trust center, RLS migrations) — continue toward audit.",
+      "Reconcile schema drift: base SQL defines 7 invoice_status values, the code enum has 12, the SOC 2 spec lists 15 — align before the base schema is ever re-imported.",
+      "Add a per-currency minor-unit exponent table (JPY=0, BHD=3) before any non-2-decimal currency reaches production.",
+      "Backfill pre-006 rows and replace the rule-based anomaly placeholder with the planned Isolation Forest path.",
       "Public demo environment with seeded sample invoices so the pipeline is explorable without credentials.",
     ],
-  },
-  {
-    slug: "casevault",
-    name: "CaseVault",
-    tagline: "AI legal intelligence platform — concept & MVP",
-    summary:
-      "Document ingestion, citation-backed legal research, and a privacy-first vision for Bangladeshi law firms. Tagline: 'Don't trust AI. Verify AI.' Phase 1 MVP shipped; GraphRAG is designed for Phase 2.",
-    role: "Backend / AI Engineer",
-    status: "ACTIVE",
-    year: "2026",
-    category: "AI & ML",
-    featured: false,
-    cover: "/images/art/casevault.webp",
-    caseStudy: true,
-    stack: ["FastAPI", "SQLAlchemy", "SQLite", "Next.js 16", "React 19", "Tailwind CSS v4", "framer-motion"],
-    links: [{ label: "Case study (this page)" }],
-    problem: [
-      "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
-      "Generic AI chatbots hallucinate citations — and firms cannot upload confidential client files to public AI tools without risking privacy.",
-    ],
-    solution: [
-      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace — hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
-      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker — targeting ~790ms to first token.",
-    ],
-    architecture: [
-      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
-      "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
-      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
-      "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
-      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
-      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-    ],
-    decisions: [
-      {
-        title: "XSS-safe markdown without a heavy renderer",
-        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine — small surface, safe by default for legal content.",
-      },
-      {
-        title: "Relevance scoring at the repository layer",
-        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
-      },
-      {
-        title: "Phase-2 placeholders designed up front",
-        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
-      },
-    ],
-    highlights: [
-      {
-        title: "Relevance-scored search",
-        code: `def search(self, q: str, limit: int = 20) -> list[Document]:
-    like = f"%{escape_like(q)}%"
-    rows = self.session.query(Document).filter(
-        or_(Document.title.ilike(like),
-            Document.content.ilike(like))
-    ).order_by(relevance_rank(q)).limit(limit).all()
-    return rows`,
-        caption: "Keyword relevance rank prioritizes title matches over body matches.",
-      },
-    ],
-    metrics: [
-      { value: "46", label: "legal docs ingested" },
-      { value: "6", label: "product surfaces designed" },
-      { value: "790ms", label: "Phase-2 TTFT budget" },
-      { value: "0", label: "hallucinated citations (target)" },
-    ],
-    screenshots: [],
-    nextSteps: [
-      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
-      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
-    ],
-  },
-  {
-    slug: "neuronscreen",
-    name: "NeuroScreen",
-    tagline: "Hybrid ML + DL thesis for cognitive impairment detection",
-    summary:
-      "A CatBoost + ANN ensemble that detects cognitive impairment in insomniac university students — 95.20% accuracy, ROC-AUC 0.982, across a 2,237-student survey dataset.",
-    role: "ML Researcher",
-    status: "COMPLETE",
-    year: "2025–26",
-    category: "Research",
-    featured: false,
-    cover: "/images/art/neuronscreen.webp",
-    thesis: "/research/neuronscreen",
-    stack: ["Python", "CatBoost", "PyTorch", "Scikit-learn", "Pandas"],
-  },
-  {
-    slug: "finbert",
-    name: "FinBERT / NLP",
-    tagline: "Domain-fine-tuned financial sentiment classification",
-    summary:
-      "Fine-tuned FinBERT and BERT on financial text to show why domain-specific transformers win on jargon-heavy corpora — complete training pipeline in a Jupyter notebook.",
-    role: "ML Researcher",
-    status: "COMPLETE",
-    year: "2025",
-    category: "NLP",
-    featured: true,
-    cover: "/images/art/finbert.webp",
-    github: "https://github.com/Saji-d/financial-sentiment-analysis-bert",
-    stack: ["PyTorch", "Hugging Face", "FinBERT", "BERT", "NLTK"],
-  },
-  {
-    slug: "cvpr-collection",
-    name: "Computer Vision & Pattern Recognition",
-    tagline: "Five computer-vision notebooks",
-    summary:
-      "EfficientNet face recognition, KNN multiclass classification, LBPH face recognition, MLP pattern recognition, and NN MNIST digit recognition.",
-    role: "CV Engineer",
-    status: "COMPLETE",
-    year: "2025",
-    category: "Computer Vision",
-    featured: false,
-    cover: "/images/art/cvpr-collection.webp",
-    github: "https://github.com/Saji-d/computer-vision-and-pattern-recognition",
-    stack: ["Python", "PyTorch", "OpenCV", "Scikit-learn"],
-  },
-  {
-    slug: "natural-language-processing",
-    name: "Natural Language Processing",
-    tagline: "Sentiment analysis, preprocessing, and transformer models",
-    summary:
-      "NLP projects covering sentiment analysis, text preprocessing, and transformer-based models in Python — from classic TF-IDF pipelines to fine-tuned transformers.",
-    role: "ML Engineer",
-    status: "COMPLETE",
-    year: "2025",
-    category: "NLP",
-    featured: false,
-    cover: "/images/art/natural-language-processing.webp",
-    github: "https://github.com/Saji-d/natural-language-processing",
-    stack: ["Python", "NLTK", "Scikit-learn", "Hugging Face"],
-  },
-  {
-    slug: "employee-family-registry",
-    name: "Employee & Family Registry",
-    tagline: ".NET API + React SPA with PDF CV export",
-    summary:
-      "Full-stack system built with .NET 10, PostgreSQL, and React — employee management, family relationships, search, and QuestPDF-generated CV/list documents.",
-    role: "Full-stack Engineer",
-    status: "COMPLETE",
-    year: "2026",
-    category: "Full Stack",
-    featured: true,
-    cover: "/images/art/employee-family-registry.webp",
-    github: "https://github.com/Saji-d/employee-family-registry",
-    stack: [".NET", "ASP.NET Core", "EF Core", "PostgreSQL", "React", "Vite", "Tailwind", "QuestPDF"],
-  },
-  {
-    slug: "spark-powerhouse-gym-web",
-    name: "Spark Gym Web",
-    tagline: "Web-based gym management simulation",
-    summary:
-      "Gym management system simulation with user and admin roles, built with PHP, HTML, CSS, and JavaScript.",
-    role: "Full-stack Developer",
-    status: "COMPLETE",
-    year: "2024",
-    category: "Full Stack",
-    featured: true,
-    cover: "/images/art/spark-powerhouse-gym-web.webp",
-    github: "https://github.com/Saji-d/spark-powerhouse-gym-web",
-    stack: ["PHP", "HTML", "CSS", "JavaScript", "MySQL"],
   },
   {
     slug: "ledgerturf",
     name: "LedgerTurf",
     tagline: "Turf booking ecosystem — live on Vercel",
     summary:
-      "Full-stack MERN platform for booking football and cricket turfs in Dhaka, with real-time slot availability, role-based dashboards, and a deployed production demo.",
+      "Real-time turf booking for Dhaka: players find grounds on a map, owners publish slots, and every reservation is protected by an overlap check — live in production on Vercel.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
-    year: "2025",
-    category: "Full Stack",
+    category: "Professional",
+    badges: ["Production"],
     featured: true,
-    cover: "/images/art/ledgerturf.webp",
+    cover: "/images/thumbnails/ledgerturf_thumbnail.png",
     caseStudy: true,
     github: "https://github.com/Saji-d/ledgerturf",
     demo: "https://ledgerturf.vercel.app",
-    stack: ["React", "Vite", "Tailwind CSS", "Redux Toolkit", "Node.js", "Express", "MongoDB Atlas", "Mongoose", "Cloudinary", "JWT", "Vercel"],
-    links: [
-      { label: "Live demo", href: "https://ledgerturf.vercel.app", external: true },
-      { label: "GitHub", href: "https://github.com/Saji-d/ledgerturf", external: true },
-    ],
+    stack: ["Next.js", "TypeScript", "Mapbox"],
     problem: [
       "Turf owners in Dhaka booked slots over phone and WhatsApp — double-booking was routine, availability was never current, and players had no way to compare grounds.",
       "Timezones and 24-hour clock confusion made 'is this slot free right now' a genuinely hard query to answer correctly.",
@@ -445,23 +285,154 @@ try {
     ],
   },
   {
-    slug: "3d-city-simulation",
-    name: "3D City",
-    tagline: "OpenGL city with day/night cycles and live weather",
+    slug: "casevault",
+    name: "CaseVault GraphRAG",
+    tagline: "Citation-backed legal research workspace",
     summary:
-      "A 3D procedurally laid-out city rendered in C++/OpenGL with dynamic day/night lighting, rain and snow, and working traffic-light logic — a pure graphics engineering showcase.",
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations — built around 'verify, don't trust AI.'",
+    role: "Backend / AI Engineer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: [],
+    featured: true,
+    cover: "/images/thumbnails/casevault_thumbnail.png",
+    caseStudy: true,
+    stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
+    problem: [
+      "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
+      "Generic AI chatbots hallucinate citations — and firms cannot upload confidential client files to public AI tools without risking privacy.",
+    ],
+    solution: [
+      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
+      "The Next.js frontend is a dark-theme research workspace — hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
+      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker — targeting ~790ms to first token.",
+    ],
+    architecture: [
+      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
+      "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
+      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
+      "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
+      "  └──────────────────────────────────────────────────────────────────────┘",
+      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
+      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
+      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
+      "  └──────────────────────────────────────────────────────────────────────┘",
+    ],
+    decisions: [
+      {
+        title: "XSS-safe markdown without a heavy renderer",
+        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine — small surface, safe by default for legal content.",
+      },
+      {
+        title: "Relevance scoring at the repository layer",
+        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
+      },
+      {
+        title: "Phase-2 placeholders designed up front",
+        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
+      },
+    ],
+    highlights: [
+      {
+        title: "Relevance-scored search",
+        code: `def search(self, q: str, limit: int = 20) -> list[Document]:
+    like = f"%{escape_like(q)}%"
+    rows = self.session.query(Document).filter(
+        or_(Document.title.ilike(like),
+            Document.content.ilike(like))
+    ).order_by(relevance_rank(q)).limit(limit).all()
+    return rows`,
+        caption: "Keyword relevance rank prioritizes title matches over body matches.",
+      },
+    ],
+    metrics: [
+      { value: "46", label: "legal docs ingested" },
+      { value: "6", label: "product surfaces designed" },
+      { value: "790ms", label: "Phase-2 TTFT budget" },
+      { value: "0", label: "hallucinated citations (target)" },
+    ],
+    screenshots: [],
+    nextSteps: [
+      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
+      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
+    ],
+  },
+  {
+    slug: "finbert",
+    name: "FinBERT Financial Sentiment Analysis",
+    tagline: "Domain-tuned financial sentiment classification",
+    summary:
+      "A comparative study proving domain-tuned transformers beat generic models on financial jargon — fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
+    role: "ML Researcher",
+    status: "COMPLETE",
+    category: "Natural Language Processing",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/finbert_thumbnail.png",
+    github: "https://github.com/Saji-d/financial-sentiment-analysis-bert",
+    stack: ["BERT", "Transformers", "PyTorch", "NLP"],
+  },
+  {
+    slug: "codingvibes-java-gui",
+    name: "CodingVibes Learning Platform",
+    tagline: "Event-driven Java learning application",
+    summary:
+      "An interactive learning platform with courses, quizzes, and progress tracking — engineered around a clean event-driven architecture with persistent state behind every screen.",
+    role: "Desktop Developer",
+    status: "COMPLETE",
+    category: "Desktop",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/codingvibes_thumbnail.png",
+    github: "https://github.com/Saji-d/codingvibes-java-gui",
+    stack: ["Java", "Swing", "MySQL"],
+  },
+  {
+    slug: "face-recognition-system",
+    name: "Face Recognition System",
+    tagline: "Real-time face identification",
+    summary:
+      "A complete face identification pipeline — detect faces in video, train embeddings on a known set, then identify people in real time — from dataset to inference in one reproducible notebook.",
+    role: "CV Engineer",
+    status: "COMPLETE",
+    category: "Computer Vision and Pattern Recognition",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/face_recognition_thumbnail.png",
+    github: "https://github.com/Saji-d/face-recognition-system",
+    stack: ["Python", "OpenCV", "FaceNet"],
+  },
+  {
+    slug: "spark-powerhouse-gym-csharp",
+    name: "SparkPowerhouse Gym Desktop",
+    tagline: "C# WinForms gym management simulation",
+    summary:
+      "A Windows gym-management app that separates member and admin workflows — memberships, payments, and daily records kept in one role-aware system.",
+    role: "Desktop Developer",
+    status: "COMPLETE",
+    category: "Desktop",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/sparkpowerhouse_gym_desktop_thumbnail.png",
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
+    stack: ["C#", "WinForms", "SQL Server"],
+  },
+  {
+    slug: "3d-city-simulation",
+    name: "3D Procedural City Generator",
+    tagline: "A living procedural city — day, night, rain, snow",
+    summary:
+      "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic — a pure graphics engineering showcase.",
     role: "Graphics Engineer",
     status: "COMPLETE",
-    year: "2024",
     category: "Graphics",
-    featured: true,
-    cover: "/images/3d-city/day-mode.webp",
-    caseStudy: true,
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/3d_city_thumbnail.webp",
     github: "https://github.com/Saji-d/3d-city-simulation-opengl",
-    stack: ["C++", "OpenGL", "Code::Blocks", "GLUT"],
-    links: [{ label: "Case study (this page)" }],
+    stack: ["C++", "OpenGL", "SFML"],
     problem: [
-      "Computer graphics coursework needed to demonstrate mastery of the full OpenGL pipeline — geometry, lighting, and interaction — rather than a single static scene.",
+      "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline — geometry, lighting, and interaction — rather than a single static scene.",
     ],
     solution: [
       "Simulation City builds an entire block grid with buildings, roads, and vehicles. A day/night cycle interpolates ambient and directional light; weather modes toggle particle rain and snow; and traffic lights cycle red → green with keyboard-controlled camera navigation.",
@@ -511,104 +482,70 @@ for (auto &p : particles) {
     ],
   },
   {
-    slug: "face-recognition-system",
-    name: "Face Recognition (Computer Vision)",
-    tagline: "Real-time identification with OpenCV + LBPH",
+    slug: "spark-powerhouse-gym-web",
+    name: "SparkPowerhouse Gym Web",
+    tagline: "Web-based gym management simulation",
     summary:
-      "Face recognition system using OpenCV and LBPH for real-time identification — detection, training, and recognition pipeline in a Jupyter notebook.",
-    role: "CV Engineer",
+      "A web gym-management simulation with distinct member and admin areas — class booking, memberships, and billing kept in one session-driven application.",
+    role: "Web Developer",
     status: "COMPLETE",
-    year: "2025",
-    category: "Computer Vision",
-    featured: true,
-    cover: "/images/art/face-recognition-system.webp",
-    github: "https://github.com/Saji-d/face-recognition-system",
-    stack: ["Python", "OpenCV", "LBPH"],
+    category: "Web",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/sparkpowerhouse_gym_web_thumbnail.png",
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-web",
+    stack: ["PHP", "JavaScript", "CSS", "MySQL"],
   },
   {
-    slug: "spark-powerhouse-gym-csharp",
-    name: "Spark Gym Desktop (C#)",
-    tagline: "C# WinForms gym management simulation",
+    slug: "employee-family-registry",
+    name: "Employee & Family Registry",
+    tagline: ".NET API + React SPA with PDF CV export",
     summary:
-      "C# WinForms–based gym management system simulation with user and admin functionality.",
-    role: "Desktop Developer",
+      "An employee registry with family-relationship trees, full-text search, and on-demand PDF CV and list exports — one API serving a polished workspace.",
+    role: "Full-stack Engineer",
     status: "COMPLETE",
-    year: "2024",
     category: "Desktop",
-    featured: true,
-    cover: "/images/art/spark-powerhouse-gym-csharp.webp",
-    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
-    stack: ["C#", "WinForms", ".NET"],
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/registry_thumbnail.png",
+    github: "https://github.com/Saji-d/employee-family-registry",
+    stack: ["C#", "SQL Server"],
   },
   {
-    slug: "codingvibes-java-gui",
-    name: "CodingVibes",
-    tagline: "Event-driven Java desktop application",
+    slug: "my-wedding-invitation",
+    name: "Interactive Wedding Invitation",
+    tagline: "Luxury digital wedding invitation",
     summary:
-      "Java-based GUI application developed as academic coursework, demonstrating event-driven programming and interface design.",
-    role: "Desktop Developer",
+      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed from scratch and deployed live.",
+    role: "Creative Developer",
     status: "COMPLETE",
-    year: "2024",
-    category: "Desktop",
-    featured: true,
-    cover: "/images/art/codingvibes-java-gui.webp",
-    github: "https://github.com/Saji-d/codingvibes-java-gui",
-    stack: ["Java", "Swing"],
+    category: "Creative",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/wedding_thumbnail.png",
+    github: "https://github.com/Saji-d/my-wedding-invitation",
+    demo: "https://sajid-weds-dilruba.vercel.app",
+    stack: ["Next.js", "Tailwind CSS", "Framer Motion"],
   },
   {
     slug: "online-bookstore-database-design",
     name: "Online Bookstore Database",
     tagline: "ER modeling, normalization, and SQL",
     summary:
-      "Database course project: design and implementation of an Online Bookstore Management System using ER modeling, normalization, and SQL queries.",
+      "A fully normalized relational design for an online bookstore — every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
     role: "Database Designer",
     status: "COMPLETE",
-    year: "2024",
     category: "Database",
-    featured: true,
-    cover: "/images/art/online-bookstore-database-design.webp",
-    github: "https://github.com/Saji-d/online-bookstore-database-design",
-    stack: ["SQL", "MySQL", "ER Modeling"],
-  },
-  {
-    slug: "my-wedding-invitation",
-    name: "Wedding Invitation Website",
-    tagline: "Luxury digital wedding invitation",
-    summary:
-      "A cinematic Next.js wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed from scratch and deployed on Vercel.",
-    role: "Full-stack Developer",
-    status: "COMPLETE",
-    year: "2026",
-    category: "Full Stack",
-    featured: true,
-    cover: "/images/art/my-wedding-invitation.webp",
-    github: "https://github.com/Saji-d/my-wedding-invitation",
-    demo: "https://sajid-weds-dilruba.vercel.app",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-  },
-  {
-    slug: "portfolio",
-    name: "Portfolio",
-    tagline: "This site — engineered showcase of backend, AI & research work",
-    summary:
-      "Personal portfolio built with Next.js and TypeScript: deep case studies, research, an interactive terminal, and a design system tuned for performance and accessibility.",
-    role: "Full-stack Developer",
-    status: "ACTIVE",
-    year: "2026",
-    category: "Full Stack",
+    badges: [],
     featured: false,
-    cover: "/images/art/portfolio.webp",
-    github: "https://github.com/Saji-d/portfolio",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Motion", "React 19"],
+    cover: "/images/thumbnails/database_thumbnail.png",
+    github: "https://github.com/Saji-d/online-bookstore-database-design",
+    stack: ["SQL", "Normalization", "ER Diagram"],
   },
 ];
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
-}
-
-export function getFeaturedProjects(): Project[] {
-  return projects.filter((p) => p.featured);
 }
 
 export function getCaseStudyProjects(): Project[] {
@@ -617,12 +554,12 @@ export function getCaseStudyProjects(): Project[] {
 
 export const projectCategories: ("All" | ProjectCategory)[] = [
   "All",
-  "AI & ML",
-  "Computer Vision",
-  "NLP",
-  "Full Stack",
+  "Professional",
+  "Natural Language Processing",
+  "Computer Vision and Pattern Recognition",
   "Desktop",
+  "Web",
   "Graphics",
   "Database",
-  "Research",
+  "Creative",
 ];

@@ -1,7 +1,6 @@
 import Hero from "@/components/home/Hero";
 import Marquee from "@/components/home/Marquee";
-import SelectedWork from "@/components/home/SelectedWork";
-import CurrentlySection from "@/components/home/CurrentlySection";
+import ProjectsSection from "@/components/home/ProjectsSection";
 import ResearchSpotlight from "@/components/home/ResearchSpotlight";
 import ExperienceTimeline from "@/components/home/ExperienceTimeline";
 import SkillsSection from "@/components/home/SkillsSection";
@@ -12,8 +11,7 @@ export default function Home() {
     <>
       <Hero />
       <Marquee />
-      <SelectedWork />
-      <CurrentlySection />
+      <ProjectsSection />
       <ResearchSpotlight />
       <ExperienceTimeline />
       <SkillsSection />

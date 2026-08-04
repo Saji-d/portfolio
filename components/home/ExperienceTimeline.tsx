@@ -31,7 +31,7 @@ export default function ExperienceTimeline() {
     <section className="py-24 sm:py-32">
       <div className="container-site">
         <SectionHeading
-          index="05"
+          index="04"
           eyebrow="Experience"
           title="A path engineered, not walked."
           lede="From a 5.00 SSC to a shipped fintech pipeline — every step was deliberate."

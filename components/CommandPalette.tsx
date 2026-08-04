@@ -148,9 +148,9 @@ export default function CommandPalette() {
           id: `project-${p.slug}`,
           group: "Projects",
           label: p.name,
-          hint: `${p.category} · ${p.year}`,
+          hint: `${p.category}${p.badges.length ? ` · ${p.badges.join(", ")}` : ""}`,
           icon: Folder,
-          keywords: `${p.name} ${p.tagline} ${p.category} ${p.stack.join(" ")}`,
+          keywords: `${p.name} ${p.tagline} ${p.category} ${p.badges.join(" ")} ${p.stack.join(" ")}`,
           external: href?.startsWith("http"),
           run: () => href && go(href, href.startsWith("http")),
         };

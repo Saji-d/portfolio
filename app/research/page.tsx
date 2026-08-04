@@ -9,7 +9,7 @@ import { researchPapers } from "@/data/research";
 export const metadata: Metadata = {
   title: "Research",
   description:
-    "Thesis and research — NeuroScreen hybrid ensemble, FinBERT sentiment, water turbidity, and explainable Bangla toxicity detection.",
+    "Thesis and research — NeuroScreen hybrid ensemble, Twitter sentiment analysis, early-warning customer churn, image-based water turbidity, and explainable Bangla toxicity detection.",
   alternates: { canonical: "/research" },
 };
 
@@ -29,7 +29,7 @@ export default function ResearchPage() {
         {featured && (
           <Reveal>
             <Link
-              href="/research/neuronscreen"
+              href={`/research/${featured.slug}`}
               className="card-surface group block overflow-hidden p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-10"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">

@@ -3,9 +3,9 @@
 import { memo, useDeferredValue, useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import { projects, projectCategories, type ProjectCategory } from "@/data/projects";
-import { CompactProjectCard } from "@/components/work/ProjectCard";
+import { ProjectCard } from "@/components/work/ProjectCard";
 
-const MemoCard = memo(CompactProjectCard);
+const MemoCard = memo(ProjectCard);
 
 function matchesQuery(p: (typeof projects)[number], q: string): boolean {
   if (!q) return true;
@@ -15,8 +15,8 @@ function matchesQuery(p: (typeof projects)[number], q: string): boolean {
     p.summary,
     p.category,
     p.role,
+    ...p.badges,
     ...p.stack,
-    ...(p.links ?? []).map((l) => l.label),
   ]
     .join(" ")
     .toLowerCase();
@@ -91,7 +91,11 @@ export default function WorkGrid() {
           className="grid-enter mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
           {filtered.map((p) => (
-            <MemoCard key={p.slug} project={p} />
+            <MemoCard
+              key={p.slug}
+              project={p}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            />
           ))}
         </div>
       ) : (
