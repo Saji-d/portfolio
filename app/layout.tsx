@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     description: SITE.tagline,
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.webp",
         width: 1200,
         height: 630,
         alt: `${SITE.name} — ${SITE.role}`,
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE.name} — ${SITE.role}`,
     description: SITE.tagline,
-    images: ["/og-image.png"],
+    images: ["/og-image.webp"],
   },
   robots: { index: true, follow: true },
 };
