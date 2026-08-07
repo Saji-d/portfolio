@@ -10,6 +10,10 @@ interface Node {
   pulse: number;
 }
 
+const ACCENT = "79, 209, 197";
+const ACCENT_2 = "124, 125, 255";
+const FRAME_MS = 33;
+
 export default function NetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -32,9 +36,7 @@ export default function NetworkBackground() {
     let width = 0;
     let height = 0;
     let dpr = 1;
-
-    const ACCENT = "79, 209, 197";
-    const ACCENT_2 = "124, 125, 255";
+    let lastDraw = 0;
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -43,7 +45,7 @@ export default function NetworkBackground() {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const target = Math.min(80, Math.max(30, Math.floor((width * height) / 30000)));
+      const target = Math.min(64, Math.max(26, Math.floor((width * height) / 40000)));
       nodes = Array.from({ length: target }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -58,18 +60,20 @@ export default function NetworkBackground() {
     }
 
     function draw() {
-      ctx.clearRect(0, 0, width, height);
       const range = linkRange();
+      const rangeSq = range * range;
+
+      ctx.clearRect(0, 0, width, height);
 
       for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
-          const a = nodes[i];
           const b = nodes[j];
           const dx = a.x - b.x;
           const dy = a.y - b.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < range) {
-            const alpha = (1 - dist / range) * 0.14;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < rangeSq) {
+            const alpha = (1 - Math.sqrt(distSq) / range) * 0.14;
             ctx.strokeStyle = `rgba(${ACCENT}, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -81,15 +85,13 @@ export default function NetworkBackground() {
       }
 
       for (const n of nodes) {
-        n.pulse += 0.02;
+        n.pulse += 0.03;
         const glow = 0.35 + 0.3 * Math.sin(n.pulse);
         ctx.fillStyle = `rgba(${ACCENT_2}, ${glow * 0.8})`;
         ctx.beginPath();
         ctx.arc(n.x, n.y, 1.4, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      raf = requestAnimationFrame(draw);
     }
 
     function tick() {
@@ -101,15 +103,13 @@ export default function NetworkBackground() {
       }
     }
 
-    function step() {
+    function loop(now: number) {
+      if (!running) return;
+      raf = requestAnimationFrame(loop);
+      if (now - lastDraw < FRAME_MS) return;
+      lastDraw = now;
       tick();
       draw();
-    }
-
-    function loop() {
-      if (!running) return;
-      step();
-      raf = requestAnimationFrame(loop);
     }
 
     function onVisibility() {
@@ -118,7 +118,8 @@ export default function NetworkBackground() {
         cancelAnimationFrame(raf);
       } else if (!running) {
         running = true;
-        loop();
+        lastDraw = 0;
+        raf = requestAnimationFrame(loop);
       }
     }
 
@@ -130,13 +131,15 @@ export default function NetworkBackground() {
     if (prefersReduced) {
       draw();
     } else {
-      loop();
+      lastDraw = 0;
+      raf = requestAnimationFrame(loop);
     }
 
     window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
+      running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);

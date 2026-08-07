@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const LINES = [
   "pip install trust",
@@ -15,43 +15,59 @@ const HOLD_MS = 1600;
 const ERASE_MS = 14;
 
 export default function TerminalCard() {
-  const [lineIdx, setLineIdx] = useState(0);
-  const [text, setText] = useState("");
-  const [phase, setPhase] = useState<"typing" | "holding" | "erasing">("typing");
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const textRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const line = LINES[lineIdx];
+    const el = textRef.current;
+    if (!el) return;
 
-    if (phase === "typing") {
-      if (text.length < line.length) {
-        const t = setTimeout(() => setText(line.slice(0, text.length + 1)), TYPE_MS);
-        timers.current.push(t);
+    let lineIdx = 0;
+    let text = "";
+    let phase: "typing" | "holding" | "erasing" = "typing";
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let visible = true;
+
+    const tick = () => {
+      timer = null;
+      if (!visible) return;
+      const line = LINES[lineIdx];
+
+      if (phase === "typing") {
+        if (text.length < line.length) {
+          text = line.slice(0, text.length + 1);
+          timer = setTimeout(tick, TYPE_MS);
+        } else {
+          phase = "holding";
+          timer = setTimeout(tick, HOLD_MS);
+        }
+      } else if (phase === "holding") {
+        phase = "erasing";
+        timer = setTimeout(tick, HOLD_MS);
+      } else if (text.length > 0) {
+        text = text.slice(0, -1);
+        timer = setTimeout(tick, ERASE_MS);
       } else {
-        const t = setTimeout(() => setPhase("holding"), HOLD_MS);
-        timers.current.push(t);
+        lineIdx = (lineIdx + 1) % LINES.length;
+        phase = "typing";
+        timer = setTimeout(tick, 300);
       }
-    } else if (phase === "holding") {
-      const t = setTimeout(() => setPhase("erasing"), HOLD_MS);
-      timers.current.push(t);
-    } else if (phase === "erasing") {
-      if (text.length > 0) {
-        const t = setTimeout(() => setText(text.slice(0, -1)), ERASE_MS);
-        timers.current.push(t);
-      } else {
-        const t = setTimeout(() => {
-          setLineIdx((i) => (i + 1) % LINES.length);
-          setPhase("typing");
-        }, 300);
-        timers.current.push(t);
-      }
-    }
+
+      el.textContent = text;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible && !timer) timer = setTimeout(tick, TYPE_MS);
+    });
+    observer.observe(el);
+
+    timer = setTimeout(tick, TYPE_MS);
 
     return () => {
-      timers.current.forEach(clearTimeout);
-      timers.current = [];
+      observer.disconnect();
+      if (timer) clearTimeout(timer);
     };
-  }, [text, phase, lineIdx]);
+  }, []);
 
   return (
     <div className="card-surface overflow-hidden font-mono">
@@ -69,7 +85,7 @@ export default function TerminalCard() {
       <div className="flex items-center gap-2 px-4 py-4 text-sm">
         <span aria-hidden="true" className="shrink-0 text-accent">sajid:~$</span>
         <span aria-hidden="true" className="text-text-primary">
-          {text}
+          <span ref={textRef} />
           <span className="ml-0.5 inline-block h-4 w-[7px] animate-pulse bg-accent align-middle" />
         </span>
       </div>

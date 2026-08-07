@@ -4,8 +4,8 @@ export type ProjectBadge = "Professional" | "Production" | "Research" | "Feature
 
 export type ProjectCategory =
   | "Professional"
-  | "Natural Language Processing"
-  | "Computer Vision and Pattern Recognition"
+  | "NLP"
+  | "CVPR"
   | "Desktop"
   | "Web"
   | "Graphics"
@@ -365,7 +365,7 @@ try {
       "A comparative study proving domain-tuned transformers beat generic models on financial jargon — fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
     role: "ML Researcher",
     status: "COMPLETE",
-    category: "Natural Language Processing",
+    category: "NLP",
     badges: [],
     featured: false,
     cover: "/images/thumbnails/finbert-thumbnail.webp",
@@ -395,7 +395,7 @@ try {
       "A complete face identification pipeline — detect faces in video, train embeddings on a known set, then identify people in real time — from dataset to inference in one reproducible notebook.",
     role: "CV Engineer",
     status: "COMPLETE",
-    category: "Computer Vision and Pattern Recognition",
+    category: "CVPR",
     badges: [],
     featured: false,
     cover: "/images/thumbnails/face-recognition-thumbnail.webp",
@@ -555,8 +555,8 @@ export function getCaseStudyProjects(): Project[] {
 export const projectCategories: ("All" | ProjectCategory)[] = [
   "All",
   "Professional",
-  "Natural Language Processing",
-  "Computer Vision and Pattern Recognition",
+  "NLP",
+  "CVPR",
   "Desktop",
   "Web",
   "Graphics",

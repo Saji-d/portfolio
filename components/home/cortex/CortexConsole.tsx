@@ -1,14 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import Lenis from "lenis";
 import {
   AnimatePresence,
   motion,
   MotionConfig,
-  useMotionTemplate,
   useMotionValue,
-  useReducedMotion,
   useSpring,
 } from "motion/react";
 import { CornerDownLeft } from "lucide-react";
@@ -73,7 +70,6 @@ export default function CortexConsole() {
   const [lastCmd, setLastCmd] = useState<string | null>(null);
   const [clock, setClock] = useState("");
 
-  const reduced = useReducedMotion();
   const sessionId = useId().replace(/[^a-z0-9]/gi, "").slice(-4);
 
   const run = useCallback((raw: string) => {
@@ -142,23 +138,16 @@ export default function CortexConsole() {
     return () => window.clearInterval(iv);
   }, []);
 
-  useEffect(() => {
-    if (reduced) return;
-    const lenis = new Lenis({ autoRaf: true, lerp: 0.08 });
-    return () => lenis.destroy();
-  }, [reduced]);
-
-  const glowX = useMotionValue(50);
-  const glowY = useMotionValue(50);
+  const glowX = useMotionValue(0);
+  const glowY = useMotionValue(0);
   const springX = useSpring(glowX, { stiffness: 55, damping: 18 });
   const springY = useSpring(glowY, { stiffness: 55, damping: 18 });
-  const glowBg = useMotionTemplate`radial-gradient(520px at ${springX}% ${springY}%, rgba(79, 209, 197, 0.07), transparent 70%)`;
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = rootRef.current?.getBoundingClientRect();
     if (!rect) return;
-    glowX.set(((e.clientX - rect.left) / rect.width) * 100);
-    glowY.set(((e.clientY - rect.top) / rect.height) * 100);
+    glowX.set(e.clientX - rect.left - rect.width / 2);
+    glowY.set(e.clientY - rect.top - rect.height / 2);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -202,8 +191,13 @@ export default function CortexConsole() {
         />
         <motion.div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{ background: glowBg }}
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[160%] w-[160%]"
+          style={{
+            x: springX,
+            y: springY,
+            background:
+              "radial-gradient(520px at 50% 50%, rgba(79, 209, 197, 0.07), transparent 70%)",
+          }}
         />
         {PARTICLES.map((p, i) => (
           <span

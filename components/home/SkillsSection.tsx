@@ -7,7 +7,7 @@ export default function SkillsSection() {
     <section className="py-24 sm:py-32">
       <div className="container-site">
         <SectionHeading
-          index="05"
+          index="06"
           eyebrow="Capabilities"
           title="Tools I reach for under pressure."
           lede="A backend-and-AI core, with the frontend and Web3 skills to ship end-to-end when it counts."

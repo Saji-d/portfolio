@@ -2,27 +2,21 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import TimelineProgress from "@/components/ui/TimelineProgress";
 
-const steps = [
+const experiences = [
   {
     period: "May 2026 — Present",
-    title: "LedgerCross",
-    detail: "Software Developer Trainee — InvoicePilot, Redis Streams, Solidity seals",
-    tag: "NOW",
+    company: "Ledgercross",
+    position: "Software Developer Trainee",
+    detail:
+      "Building production-grade AI software and backend systems for enterprise finance. Contributing to InvoicePilot's intelligent invoice processing platform, OCR pipeline integration, validation workflows, fraud detection features, and scalable backend services while collaborating in an agile development team.",
+    tag: "Present",
   },
   {
-    period: "Feb — Apr 2026",
-    title: "BSS Internship",
-    detail: "Software Engineer Intern — shipped 18 responsive projects + 6 assigned tasks",
-  },
-  {
-    period: "2022 — 2026",
-    title: "5× Dean's Award",
-    detail: "AIUB Merit Scholar (70% waiver) across the CSE program",
-  },
-  {
-    period: "Sep 2022 — Apr 2026",
-    title: "AIUB · BSc CSE",
-    detail: "CGPA 3.92 / 4.00 — thesis: NeuroScreen hybrid ensemble (0.982 AUC)",
+    period: "Feb 2026 — Apr 2026",
+    company: "Bangladesh Software Solutions",
+    position: "Software Engineering Intern",
+    detail:
+      "Developed and delivered responsive web applications for multiple client projects. Worked across frontend and backend development, implemented production-ready features, fixed bugs, collaborated with the development team, and successfully completed assigned client deliverables within deadlines.",
   },
 ];
 
@@ -34,7 +28,7 @@ export default function ExperienceTimeline() {
           index="04"
           eyebrow="Experience"
           title="A path engineered, not walked."
-          lede="From a 5.00 SSC to a shipped fintech pipeline — every step was deliberate."
+          lede="Professional work across two companies — enterprise fintech to client delivery."
         />
 
         <div className="relative mt-14">
@@ -42,11 +36,11 @@ export default function ExperienceTimeline() {
           <TimelineProgress />
 
           <div className="space-y-12">
-            {steps.map((step, i) => {
+            {experiences.map((experience, i) => {
               const leftSide = i % 2 === 0;
               return (
                 <div
-                  key={step.title}
+                  key={experience.company}
                   className="relative grid gap-4 pl-12 sm:grid-cols-2 sm:pl-0"
                 >
                   <span className="absolute left-4 top-1 grid h-4 w-4 -translate-x-1/2 place-items-center sm:left-1/2">
@@ -64,17 +58,20 @@ export default function ExperienceTimeline() {
                       className={`flex flex-col gap-1 ${leftSide ? "sm:items-end" : ""}`}
                     >
                       <p className="font-mono text-xs text-text-muted">
-                        {step.period}
+                        {experience.period}
                       </p>
-                      <h3 className="font-display text-lg font-medium tracking-tight text-text-primary">
-                        {step.title}
+                      <h3 className="font-display text-xl font-semibold tracking-tight text-text-primary">
+                        {experience.company}
                       </h3>
-                      <p className="text-sm leading-relaxed text-text-secondary">
-                        {step.detail}
+                      <p className="font-mono text-sm font-medium text-accent">
+                        {experience.position}
                       </p>
-                      {step.tag && (
+                      <p className="text-sm leading-relaxed text-text-secondary">
+                        {experience.detail}
+                      </p>
+                      {experience.tag && (
                         <span className="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
-                          {step.tag}
+                          {experience.tag}
                         </span>
                       )}
                     </div>

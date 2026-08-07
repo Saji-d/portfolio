@@ -71,13 +71,13 @@ export const resume = {
       org: "BAF Shaheen College Dhaka",
       degree: "Higher Secondary Certificate (HSC), Science",
       detail: "GPA 5.00 / 5.00",
-      period: "2019 — 2021",
+      period: "Jun 2019 — Dec 2021",
     },
     {
       org: "Kurmitola High School & College",
       degree: "Secondary School Certificate (SSC), Science",
       detail: "GPA 5.00 / 5.00",
-      period: "2017 — 2019",
+      period: "Jan 2017 — Feb 2019",
     },
   ],
   thesis: {
