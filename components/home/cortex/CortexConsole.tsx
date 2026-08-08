@@ -68,7 +68,14 @@ export default function CortexConsole() {
   const [view, setView] = useState<ViewId | null>(null);
   const [log, setLog] = useState<LogEntry[]>([]);
   const [lastCmd, setLastCmd] = useState<string | null>(null);
-  const [clock, setClock] = useState("");
+
+  const clockRef = useRef<HTMLSpanElement>(null);
+  const bootInterval = useRef<number | null>(null);
+  const bootTimeout = useRef<number | null>(null);
+
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const sessionId = useId().replace(/[^a-z0-9]/gi, "").slice(-4);
 
@@ -109,30 +116,45 @@ export default function CortexConsole() {
     if (!el) return;
     const io = new IntersectionObserver(
       (entries) => {
-        if (!entries[0].isIntersecting || bootedRef.current) return;
+        const visible = entries[0].isIntersecting;
+        el.dataset.cortexAnimPaused = visible ? "false" : "true";
+        if (!visible || bootedRef.current) return;
         bootedRef.current = true;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          run("whoami");
+          return;
+        }
         const word = "whoami";
         let i = 0;
-        const iv = window.setInterval(() => {
+        bootInterval.current = window.setInterval(() => {
           i += 1;
           setInput(word.slice(0, i));
           if (i >= word.length) {
-            window.clearInterval(iv);
-            window.setTimeout(() => run("whoami"), 280);
+            window.clearInterval(bootInterval.current!);
+            bootInterval.current = null;
+            bootTimeout.current = window.setTimeout(() => run("whoami"), 280);
           }
         }, 48);
       },
       { threshold: 0.3 },
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (bootInterval.current) window.clearInterval(bootInterval.current);
+      if (bootTimeout.current) window.clearTimeout(bootTimeout.current);
+    };
   }, [run]);
 
   useEffect(() => {
-    const tick = () =>
-      setClock(
-        new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-      );
+    const el = clockRef.current;
+    const tick = () => {
+      if (!el) return;
+      el.textContent = new Date().toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    };
     tick();
     const iv = window.setInterval(tick, 30000);
     return () => window.clearInterval(iv);
@@ -144,6 +166,7 @@ export default function CortexConsole() {
   const springY = useSpring(glowY, { stiffness: 55, damping: 18 });
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (prefersReduced) return;
     const rect = rootRef.current?.getBoundingClientRect();
     if (!rect) return;
     glowX.set(e.clientX - rect.left - rect.width / 2);
@@ -203,6 +226,7 @@ export default function CortexConsole() {
           <span
             key={i}
             aria-hidden="true"
+            data-cortex-anim
             className="animate-cortex-float pointer-events-none absolute rounded-full bg-accent/25"
             style={{
               left: `${p.left}%`,
@@ -217,7 +241,7 @@ export default function CortexConsole() {
 
         <div className="relative flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-5">
           <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-text-muted">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" data-cortex-anim />
             {CONSOLE_LABEL}
             <span className="hidden text-text-muted/60 sm:inline">{CONSOLE_VERSION}</span>
           </div>
@@ -226,7 +250,7 @@ export default function CortexConsole() {
               <span className="h-1.5 w-1.5 rounded-full bg-success" />
               online
             </span>
-            <span className="hidden sm:inline">{clock}</span>
+            <span ref={clockRef} className="hidden sm:inline" />
             <span className="hidden md:inline">0x{sessionId}</span>
           </div>
         </div>
@@ -282,9 +306,9 @@ export default function CortexConsole() {
           <AnimatePresence mode="wait">
             <motion.div
               key={view ?? "idle"}
-              initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
               className="px-4 py-6 sm:px-5"
             >
@@ -299,7 +323,7 @@ export default function CortexConsole() {
               {view === null && (
                 <div className="flex min-h-[280px] flex-col items-center justify-center gap-3 text-center">
                   <div className="font-mono text-sm text-text-muted">
-                    awaiting input<span className="animate-caret text-accent">_</span>
+                    awaiting input<span className="animate-caret text-accent" data-cortex-anim>_</span>
                   </div>
                   <p className="max-w-sm text-sm leading-relaxed text-text-muted">
                     run <span className="text-accent">help</span> or click a command above

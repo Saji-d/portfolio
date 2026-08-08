@@ -7,6 +7,7 @@ export default function ScrollProgress() {
   const raf = useRef(0);
 
   useEffect(() => {
+    let last = -1;
     const update = () => {
       raf.current = 0;
       const bar = barRef.current;
@@ -14,6 +15,8 @@ export default function ScrollProgress() {
       const el = document.documentElement;
       const max = el.scrollHeight - el.clientHeight;
       const progress = max > 0 ? Math.min(1, el.scrollTop / max) : 0;
+      if (progress === last) return;
+      last = progress;
       bar.style.transform = `scaleX(${progress.toFixed(4)})`;
     };
     const onScroll = () => {

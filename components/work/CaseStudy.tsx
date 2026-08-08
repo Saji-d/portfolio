@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import type { Project } from "@/data/projects";
-import { getCaseStudyProjects } from "@/data/projects";
+import type { Project } from "@/data/projects.full";
+import { getCaseStudyProjects } from "@/data/projects.full";
 import { StatusBadge, Pill, ProjectBadgeChip } from "@/components/ui/Badge";
 import CodeBlock from "@/components/ui/CodeBlock";
 import Gallery from "@/components/work/Gallery";
@@ -210,7 +210,7 @@ export default function CaseStudy({ project }: { project: Project }) {
               <ProjectCard
                 key={p.slug}
                 project={p}
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes="(min-width: 768px) 50vw, 100vw"
               />
             ))}
           </div>

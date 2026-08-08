@@ -236,6 +236,10 @@
   animation: caret-blink 1.1s steps(2, start) infinite;
 }
 
+[data-cortex-anim-paused="true"] [data-cortex-anim] {
+  animation-play-state: paused !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

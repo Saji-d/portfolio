@@ -1,17 +1,6 @@
-import dynamic from "next/dynamic";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
-
-const CortexConsole = dynamic(
-  () => import("@/components/home/cortex/CortexConsole"),
-  {
-    loading: () => (
-      <div className="flex min-h-[540px] items-center justify-center rounded-2xl border border-line bg-surface/60 font-mono text-xs text-text-muted">
-        cortex loading<span className="animate-caret text-accent">_</span>
-      </div>
-    ),
-  },
-);
+import CortexLazyGate from "@/components/home/cortex/CortexLazyGate";
 
 function NeuralBackdropSvg() {
   const nodes = Array.from({ length: 16 }).map((_, i) => ({
@@ -83,7 +72,7 @@ export default function CortexSection() {
         </div>
 
         <div className="mt-10">
-          <CortexConsole />
+          <CortexLazyGate />
         </div>
 
         <noscript>

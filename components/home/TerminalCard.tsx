@@ -21,33 +21,40 @@ export default function TerminalCard() {
     const el = textRef.current;
     if (!el) return;
 
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = LINES[LINES.length - 1];
+      return;
+    }
+
     let lineIdx = 0;
     let text = "";
-    let phase: "typing" | "holding" | "erasing" = "typing";
+    let phase: "typing" | "erasing" = "typing";
     let timer: ReturnType<typeof setTimeout> | null = null;
     let visible = true;
+    let done = false;
 
     const tick = () => {
       timer = null;
-      if (!visible) return;
+      if (done || !visible) return;
       const line = LINES[lineIdx];
 
       if (phase === "typing") {
         if (text.length < line.length) {
           text = line.slice(0, text.length + 1);
           timer = setTimeout(tick, TYPE_MS);
+        } else if (lineIdx === LINES.length - 1) {
+          done = true;
+          el.textContent = text;
+          return;
         } else {
-          phase = "holding";
+          phase = "erasing";
           timer = setTimeout(tick, HOLD_MS);
         }
-      } else if (phase === "holding") {
-        phase = "erasing";
-        timer = setTimeout(tick, HOLD_MS);
       } else if (text.length > 0) {
         text = text.slice(0, -1);
         timer = setTimeout(tick, ERASE_MS);
       } else {
-        lineIdx = (lineIdx + 1) % LINES.length;
+        lineIdx += 1;
         phase = "typing";
         timer = setTimeout(tick, 300);
       }
@@ -57,7 +64,7 @@ export default function TerminalCard() {
 
     const observer = new IntersectionObserver((entries) => {
       visible = entries[0].isIntersecting;
-      if (visible && !timer) timer = setTimeout(tick, TYPE_MS);
+      if (visible && !timer && !done) timer = setTimeout(tick, TYPE_MS);
     });
     observer.observe(el);
 

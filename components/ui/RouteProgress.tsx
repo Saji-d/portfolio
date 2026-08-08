@@ -30,7 +30,7 @@ export default function RouteProgress() {
     timerRef.current = window.setTimeout(() => {
       cancelAnimationFrame(rafRef.current);
       setProgress(1);
-      window.setTimeout(() => {
+      timerRef.current = window.setTimeout(() => {
         setVisible(false);
         setProgress(0);
       }, 220);

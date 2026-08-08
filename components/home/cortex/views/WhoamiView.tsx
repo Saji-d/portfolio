@@ -70,6 +70,7 @@ export default function WhoamiView() {
                   {active && (
                     <span
                       aria-hidden="true"
+                      data-cortex-anim
                       className="animate-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-accent"
                     />
                   )}
@@ -90,6 +91,7 @@ export default function WhoamiView() {
       <div className="card-surface relative overflow-hidden p-5 sm:p-6">
         <div
           aria-hidden="true"
+          data-cortex-anim
           className="animate-scan-sweep pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-accent/[0.07] to-transparent"
         />
         <div className="flex items-center gap-3">

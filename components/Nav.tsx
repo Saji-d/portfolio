@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, TerminalSquare, Command } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { NAV_LINKS, SITE } from "@/data/site";
@@ -14,6 +13,13 @@ function isActive(pathname: string, href: string): boolean {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
+interface PillRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -22,6 +28,32 @@ export default function Nav() {
   const { setOpen: setPaletteOpen } = useCommandPalette();
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const [pill, setPill] = useState<PillRect | null>(null);
+
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const measure = () => {
+      const link = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+      if (!link) {
+        setPill(null);
+        return;
+      }
+      const navRect = nav.getBoundingClientRect();
+      const rect = link.getBoundingClientRect();
+      setPill({
+        left: rect.left - navRect.left,
+        top: rect.top - navRect.top,
+        width: rect.width,
+        height: rect.height,
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(nav);
+    return () => ro.disconnect();
+  }, [pathname]);
 
   useEffect(() => {
     let raf = 0;
@@ -81,9 +113,22 @@ export default function Nav() {
           </Link>
 
           <nav
-            className="hidden items-center gap-1 lg:flex"
+            ref={navRef}
+            className="relative hidden items-center gap-1 lg:flex"
             aria-label="Primary"
           >
+            {pill && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute rounded-full border border-accent/30 bg-accent-dim transition-[left,top,width,height] duration-500 ease-[cubic-bezier(0.34,1.2,0.4,1)]"
+                style={{
+                  left: pill.left,
+                  top: pill.top,
+                  width: pill.width,
+                  height: pill.height,
+                }}
+              />
+            )}
             {NAV_LINKS.map((link) => {
               const active = isActive(pathname, link.href);
               return (
@@ -97,17 +142,6 @@ export default function Nav() {
                       : "text-text-secondary hover:text-text-primary"
                   }`}
                 >
-                  {active && (
-                    <motion.span
-                      layoutId="nav-active-pill"
-                      transition={{
-                        type: "spring",
-                        bounce: 0.18,
-                        duration: 0.55,
-                      }}
-                      className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
-                    />
-                  )}
                   <span className="relative z-10">{link.label}</span>
                 </Link>
               );
@@ -168,44 +202,40 @@ export default function Nav() {
           </div>
         </div>
 
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              key="mobile-menu"
-              ref={menuRef}
-              id="mobile-menu"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden lg:hidden"
-            >
-              <nav
-                className="flex flex-col gap-1 px-3 pb-3 pt-1"
-                aria-label="Mobile"
-              >
-                {NAV_LINKS.map((link) => {
-                  const active = isActive(pathname, link.href);
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      aria-current={active ? "page" : undefined}
-                      className={`rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
-                        active
-                          ? "bg-accent-dim text-accent"
-                          : "text-text-secondary hover:bg-surface hover:text-text-primary"
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  );
-                })}
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div
+          ref={menuRef}
+          id="mobile-menu"
+          aria-hidden={!open}
+          inert={!open}
+          className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-[240ms] ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
+            open
+              ? "grid-rows-[1fr] opacity-100"
+              : "pointer-events-none grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <nav className="flex flex-col gap-1 px-3 pb-3 pt-1" aria-label="Mobile">
+              {NAV_LINKS.map((link) => {
+                const active = isActive(pathname, link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
+                      active
+                        ? "bg-accent-dim text-accent"
+                        : "text-text-secondary hover:bg-surface hover:text-text-primary"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
       </div>
     </header>
   );

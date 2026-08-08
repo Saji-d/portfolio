@@ -46,6 +46,20 @@ export default function ProjectsView() {
 
   useEffect(() => {
     if (!isDesktop) return;
+    let rafId = 0;
+    const same = (a: MeasuredEdge[], b: MeasuredEdge[]) =>
+      a.length === b.length &&
+      a.every((e, i) => {
+        const f = b[i];
+        return (
+          f &&
+          e.id === f.id &&
+          e.x1 === f.x1 &&
+          e.y1 === f.y1 &&
+          e.x2 === f.x2 &&
+          e.y2 === f.y2
+        );
+      });
     const measure = () => {
       const root = containerRef.current;
       if (!root) return;
@@ -65,15 +79,23 @@ export default function ProjectsView() {
           y2: rb.top - rootRect.top + rb.height / 2,
         });
       }
-      setEdges(next);
+      setEdges((prev) => (same(prev, next) ? prev : next));
+    };
+    const schedule = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        measure();
+      });
     };
     measure();
-    const ro = new ResizeObserver(measure);
+    const ro = new ResizeObserver(schedule);
     if (containerRef.current) ro.observe(containerRef.current);
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", schedule, { passive: true });
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       ro.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", schedule);
     };
   }, [isDesktop]);
 

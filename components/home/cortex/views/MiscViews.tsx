@@ -33,7 +33,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
   return (
     <div className="flex min-h-[320px] flex-col items-center justify-center gap-5 text-center">
       <div className="font-mono text-sm text-text-secondary">
-        session ended<span className="animate-caret text-accent">_</span>
+        session ended<span className="animate-caret text-accent" data-cortex-anim>_</span>
       </div>
       <p className="max-w-sm text-sm leading-relaxed text-text-muted">
         Thanks for poking around inside the machine. When you&apos;re ready, the work is

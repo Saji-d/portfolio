@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CaseStudy from "@/components/work/CaseStudy";
-import { getProject, getCaseStudyProjects } from "@/data/projects";
+import { getProject, getCaseStudyProjects } from "@/data/projects.full";
 
 export const dynamicParams = false;
 

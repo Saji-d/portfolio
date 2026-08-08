@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import ResearchCard from "@/components/research/ResearchCard";
-import { getResearch, researchPapers } from "@/data/research";
+import { getResearch, researchPapers } from "@/data/research.full";
 import { SITE } from "@/data/site";
 
 export const dynamicParams = false;

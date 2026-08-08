@@ -26,25 +26,33 @@ export default function NetworkBackground() {
     const canvas: HTMLCanvasElement = canvasEl;
     const ctx: CanvasRenderingContext2D = ctxEl;
 
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let prefersReduced = reducedMotion.matches;
 
     let nodes: Node[] = [];
     let raf = 0;
-    let running = true;
+    let running = false;
+    let visible = true;
+    let pageHidden = false;
     let width = 0;
     let height = 0;
     let dpr = 1;
     let lastDraw = 0;
+    let range = 150;
+    let rangeSq = range * range;
 
     function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      const nextWidth = window.innerWidth;
+      const nextHeight = window.innerHeight;
+      const mobile = nextWidth < 768;
+      dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2);
+      width = nextWidth;
+      height = nextHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      range = mobile ? 120 : 150;
+      rangeSq = range * range;
       const target = Math.min(64, Math.max(26, Math.floor((width * height) / 40000)));
       nodes = Array.from({ length: target }, () => ({
         x: Math.random() * width,
@@ -55,14 +63,7 @@ export default function NetworkBackground() {
       }));
     }
 
-    function linkRange() {
-      return width < 768 ? 120 : 150;
-    }
-
     function draw() {
-      const range = linkRange();
-      const rangeSq = range * range;
-
       ctx.clearRect(0, 0, width, height);
 
       for (let i = 0; i < nodes.length; i++) {
@@ -103,6 +104,29 @@ export default function NetworkBackground() {
       }
     }
 
+    function start() {
+      if (running || prefersReduced || !visible || pageHidden) return;
+      running = true;
+      lastDraw = 0;
+      raf = requestAnimationFrame(loop);
+    }
+
+    function stop() {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(raf);
+    }
+
+    function sync() {
+      if (prefersReduced) {
+        stop();
+        draw();
+      } else {
+        stop();
+        start();
+      }
+    }
+
     function loop(now: number) {
       if (!running) return;
       raf = requestAnimationFrame(loop);
@@ -113,36 +137,46 @@ export default function NetworkBackground() {
     }
 
     function onVisibility() {
-      if (document.hidden) {
-        running = false;
-        cancelAnimationFrame(raf);
-      } else if (!running) {
-        running = true;
-        lastDraw = 0;
-        raf = requestAnimationFrame(loop);
-      }
+      pageHidden = document.hidden;
+      sync();
     }
 
     function onResize() {
       resize();
+      if (prefersReduced) draw();
     }
 
+    function onMotionChange(event: MediaQueryListEvent) {
+      prefersReduced = event.matches;
+      sync();
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        visible = entries[entries.length - 1]?.isIntersecting ?? true;
+        sync();
+      },
+      { threshold: 0 }
+    );
+
     resize();
+    observer.observe(canvasEl);
     if (prefersReduced) {
       draw();
     } else {
-      lastDraw = 0;
-      raf = requestAnimationFrame(loop);
+      start();
     }
 
     window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
+    reducedMotion.addEventListener("change", onMotionChange);
 
     return () => {
-      running = false;
-      cancelAnimationFrame(raf);
+      stop();
+      observer.disconnect();
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      reducedMotion.removeEventListener("change", onMotionChange);
     };
   }, []);
 

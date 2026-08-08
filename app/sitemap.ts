@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/data/site";
-import { getCaseStudyProjects } from "@/data/projects";
-import { researchPapers } from "@/data/research";
+import { getCaseStudyProjects } from "@/data/projects.full";
+import { researchPapers } from "@/data/research.full";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url;

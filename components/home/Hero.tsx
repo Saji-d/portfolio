@@ -1,4 +1,5 @@
 import { ArrowRight, Download } from "lucide-react";
+import Image from "next/image";
 import MagneticButton from "@/components/ui/MagneticButton";
 import TerminalCard from "@/components/home/TerminalCard";
 import Eyebrow from "@/components/ui/Eyebrow";
@@ -72,6 +73,17 @@ export default function Hero() {
           </div>
           <TerminalCard />
         </div>
+
+        <Image
+          src="/images/hero.webp"
+          alt="Portrait of Sajidur Rahman Sajid"
+          width={1080}
+          height={1339}
+          priority
+          sizes="240px"
+          className="hero-enter pointer-events-none absolute right-28 top-0.5 hidden h-auto w-60 rounded-2xl xl:block"
+          style={{ animationDelay: delays[4] }}
+        />
       </div>
     </section>
   );

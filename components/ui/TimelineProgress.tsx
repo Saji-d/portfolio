@@ -11,11 +11,15 @@ export default function TimelineProgress() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
+    let lastP = -1;
 
     const update = () => {
       raf = 0;
       if (reduced) {
-        el.style.transform = "scaleY(1)";
+        if (lastP !== 1) {
+          lastP = 1;
+          el.style.transform = "scaleY(1)";
+        }
         return;
       }
       const vh = window.innerHeight;
@@ -24,6 +28,8 @@ export default function TimelineProgress() {
       const end = vh * 0.55;
       const range = rect.height + (start - end);
       const p = Math.min(1, Math.max(0, (start - rect.top) / range));
+      if (p === lastP) return;
+      lastP = p;
       el.style.transform = `scaleY(${p.toFixed(4)})`;
     };
 
