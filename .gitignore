@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Real-ESRGAN local super-resolution tooling (not part of the project)
+/venv/
+/realesrgan-bin/
+/realesrgan-ncnn-vulkan.zip
+/RealESRGAN_x2plus.pth
+/enhance_hero.py

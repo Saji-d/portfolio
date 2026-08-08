@@ -77,12 +77,12 @@ export default function Hero() {
         <Image
           src="/images/hero.webp"
           alt="Portrait of Sajidur Rahman Sajid"
-          width={1458}
-          height={2188}
+          width={2916}
+          height={4376}
           priority
           quality={100}
           sizes="240px"
-          className="hero-enter pointer-events-none absolute right-28 top-[-25px] hidden h-auto w-60 rounded-2xl xl:block"
+          className="hero-enter pointer-events-none absolute right-28 top-[-25px] block h-auto w-60 rounded-2xl"
           style={{ animationDelay: delays[4] }}
         />
       </div>
