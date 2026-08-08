@@ -75,7 +75,7 @@ export default function Hero() {
         </div>
 
         <Image
-          src="/images/hero.webp"
+          src="/images/hero.png"
           alt="Portrait of Sajidur Rahman Sajid"
           width={1080}
           height={1339}
