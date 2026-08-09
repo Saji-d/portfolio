@@ -14,7 +14,7 @@ export function HelpView() {
       </div>
 
       <ul className="card-surface mt-3 divide-y divide-line font-mono text-xs">
-        {TERMINAL_COMMANDS.map((cmd) => (
+        {TERMINAL_COMMANDS.filter((c) => !/\s/.test(c.id)).map((cmd) => (
           <li key={cmd.id} className="flex items-baseline gap-3 px-4 py-1.5">
             <span className="w-32 shrink-0 text-accent">{cmd.id}</span>
             <span className="text-text-secondary">{cmd.desc}</span>

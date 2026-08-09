@@ -13,6 +13,7 @@ export const TERMINAL_COMMANDS: TerminalCommand[] = [
   { id: "skills", desc: "the engineer network" },
   { id: "timeline", desc: "education & career" },
   { id: "contact", desc: "contact details" },
+  { id: "synapse", desc: "awaken the neural network" },
   { id: "clear", desc: "clear the screen" },
   { id: "exit", desc: "close the terminal" },
 ];

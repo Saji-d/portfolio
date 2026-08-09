@@ -19,6 +19,7 @@ import ResearchView from "./views/ResearchView";
 import ContactView from "./views/ContactView";
 import ProjectDetailView from "./views/ProjectDetailView";
 import AboutView from "./views/AboutView";
+import SynapseOverlay from "./SynapseOverlay";
 import { ExitView, HelpView, NotFoundView } from "./views/MiscViews";
 
 type ViewId =
@@ -30,6 +31,7 @@ type ViewId =
   | "research"
   | "contact"
   | "project-detail"
+  | "synapse"
   | "help"
   | "exit"
   | "not-found";
@@ -81,6 +83,7 @@ export default function CortexConsole() {
   const [log, setLog] = useState<LogEntry[]>([]);
   const [lastCmd, setLastCmd] = useState<string | null>(null);
   const [projectSlug, setProjectSlug] = useState<string | null>(null);
+  const [synapseActive, setSynapseActive] = useState(false);
 
   const clockRef = useRef<HTMLSpanElement>(null);
   const bootInterval = useRef<number | null>(null);
@@ -122,6 +125,12 @@ export default function CortexConsole() {
         setLastCmd(text);
         setView("not-found");
       }
+      return;
+    }
+    if (name === "synapse") {
+      setLastCmd(text);
+      setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: "synapse" }]);
+      setSynapseActive(true);
       return;
     }
     const target = VIEW_FOR[name];
@@ -382,6 +391,10 @@ export default function CortexConsole() {
               type="button"
               onClick={() => {
                 setLastCmd(entry.cmd);
+                if (entry.view === "synapse") {
+                  setSynapseActive(true);
+                  return;
+                }
                 if (entry.view === "project-detail") {
                   const m = entry.cmd.match(/^projects\s+(\S+)/);
                   if (m) setProjectSlug(m[1]);
@@ -395,6 +408,9 @@ export default function CortexConsole() {
           ))}
         </div>
       </div>
+      {synapseActive && (
+        <SynapseOverlay onDone={() => setSynapseActive(false)} />
+      )}
     </MotionConfig>
   );
 }

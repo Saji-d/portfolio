@@ -6,18 +6,18 @@ import { BrainCircuit } from "lucide-react";
 import { SKILL_NETWORK, type SkillNetworkNode } from "@/data/skills";
 
 const POSITIONS: Record<string, { x: number; y: number }> = {
-  research: { x: 50, y: 13 },
+  nlp: { x: 50, y: 13 },
   "ai-engineering": { x: 21, y: 30 },
   "computer-vision": { x: 79, y: 30 },
-  "machine-learning": { x: 23, y: 72 },
+  "machine-learning": { x: 17, y: 59 },
   databases: { x: 42, y: 84 },
-  backend: { x: 76, y: 72 },
+  backend: { x: 83, y: 61 },
 };
 
-const NLP_Y = 88;
-const NLP_MIN_LEFT = 73;
-const NLP_MAX_LEFT = 82;
-const NLP_RIGHT_GAP = 138;
+const RESEARCH_Y = 88;
+const RESEARCH_MIN_LEFT = 73;
+const RESEARCH_MAX_LEFT = 82;
+const RESEARCH_RIGHT_GAP = 138;
 
 const pillClass = (on: boolean) =>
   `absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-full border px-1.5 py-1 font-mono text-[clamp(0.4375rem,2.1cqw,0.75rem)] leading-none transition-colors sm:gap-1.5 sm:px-2 sm:py-1.5 ${
@@ -29,10 +29,12 @@ const pillClass = (on: boolean) =>
 export default function SkillsNetwork() {
   const [active, setActive] = useState<string | null>(null);
   const [selected, setSelected] = useState<SkillNetworkNode | null>(null);
-  const [nlpX, setNlpX] = useState(NLP_MAX_LEFT);
+  const [researchX, setResearchX] = useState(RESEARCH_MAX_LEFT);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const nlpNode = SKILL_NETWORK.disciplines.find((n) => n.id === "nlp");
+  const researchNode = SKILL_NETWORK.disciplines.find(
+    (n) => n.id === "research",
+  );
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -40,8 +42,10 @@ export default function SkillsNetwork() {
     const update = () => {
       const w = el.getBoundingClientRect().width;
       if (!w) return;
-      const fitted = 100 - (NLP_RIGHT_GAP / w) * 100;
-      setNlpX(Math.max(NLP_MIN_LEFT, Math.min(NLP_MAX_LEFT, fitted)));
+      const fitted = 100 - (RESEARCH_RIGHT_GAP / w) * 100;
+      setResearchX(
+        Math.max(RESEARCH_MIN_LEFT, Math.min(RESEARCH_MAX_LEFT, fitted)),
+      );
     };
     update();
     const ro = new ResizeObserver(update);
@@ -81,18 +85,20 @@ export default function SkillsNetwork() {
               />
             );
           })}
-          {nlpNode && (
+          {researchNode && (
             <line
               x1={50}
               y1={50}
-              x2={nlpX}
-              y2={NLP_Y}
+              x2={researchX}
+              y2={RESEARCH_Y}
               vectorEffect="non-scaling-stroke"
               strokeWidth={
-                active === nlpNode.id || selected?.id === nlpNode.id ? 1.5 : 1
+                active === researchNode.id || selected?.id === researchNode.id
+                  ? 1.5
+                  : 1
               }
               className={
-                active === nlpNode.id || selected?.id === nlpNode.id
+                active === researchNode.id || selected?.id === researchNode.id
                   ? "stroke-accent"
                   : "stroke-accent/35"
               }
@@ -152,29 +158,33 @@ export default function SkillsNetwork() {
           );
         })}
 
-        {nlpNode && (
+        {researchNode && (
           <button
             type="button"
-            aria-pressed={selected?.id === nlpNode.id}
-            onMouseEnter={() => setActive(nlpNode.id)}
+            aria-pressed={selected?.id === researchNode.id}
+            onMouseEnter={() => setActive(researchNode.id)}
             onMouseLeave={() => setActive(null)}
-            onFocus={() => setActive(nlpNode.id)}
+            onFocus={() => setActive(researchNode.id)}
             onBlur={() => setActive(null)}
             onClick={() =>
-              setSelected(selected?.id === nlpNode.id ? null : nlpNode)
+              setSelected(
+                selected?.id === researchNode.id ? null : researchNode,
+              )
             }
-            className={pillClass(active === nlpNode.id || selected?.id === nlpNode.id)}
-            style={{ left: `${nlpX}%`, top: `${NLP_Y}%` }}
+            className={pillClass(
+              active === researchNode.id || selected?.id === researchNode.id,
+            )}
+            style={{ left: `${researchX}%`, top: `${RESEARCH_Y}%` }}
           >
             <span
               aria-hidden="true"
               className={`h-1 w-1 rounded-full ${
-                active === nlpNode.id || selected?.id === nlpNode.id
+                active === researchNode.id || selected?.id === researchNode.id
                   ? "bg-accent"
                   : "bg-accent/60"
               }`}
             />
-            {nlpNode.label}
+            {researchNode.label}
           </button>
         )}
       </div>
