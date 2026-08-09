@@ -44,7 +44,11 @@ function NeuralBackdropSvg() {
 
 export default function CortexSection() {
   return (
-    <section aria-label="Interactive intro" className="relative overflow-hidden py-24 sm:py-32">
+    <section
+      id="cortex"
+      aria-label="Interactive intro"
+      className="relative scroll-mt-24 overflow-hidden pb-10 pt-14 sm:pb-12 sm:pt-16"
+    >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.035)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)]" />
         <NeuralBackdropSvg />
@@ -58,20 +62,13 @@ export default function CortexSection() {
             <Eyebrow index="01">cortex</Eyebrow>
           </Reveal>
           <Reveal delay={0.08}>
-            <h2 className="mt-3 font-display text-3xl font-medium tracking-tight text-gradient sm:text-4xl">
-              Peek inside the machine.
+            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+              Run a command. Follow the rabbit hole.
             </h2>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <p className="mt-4 text-base leading-relaxed text-text-secondary">
-              This isn&apos;t an about page. It&apos;s the console to the engineer&apos;s
-              brain — run a command, poke around, and learn the person by exploring the
-              system.
-            </p>
           </Reveal>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-4">
           <CortexLazyGate />
         </div>
 

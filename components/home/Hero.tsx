@@ -3,14 +3,7 @@ import Image from "next/image";
 import MagneticButton from "@/components/ui/MagneticButton";
 import TerminalCard from "@/components/home/TerminalCard";
 import Eyebrow from "@/components/ui/Eyebrow";
-import Stat from "@/components/ui/Stat";
-
-const stats = [
-  { value: "3.92", label: "CGPA / 4.00" },
-  { value: "5x", label: "Dean's Award" },
-  { value: "2+", label: "Years Building Software" },
-  { value: "70%", label: "Merit Scholarship" },
-];
+import HeroStats from "@/components/home/HeroStats";
 
 const delays = ["0s", "0.07s", "0.14s", "0.21s", "0.45s"];
 
@@ -38,9 +31,9 @@ export default function Hero() {
             className="hero-enter mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl"
             style={{ animationDelay: delays[2] }}
           >
-            I build backend systems and ML pipelines that hold up under real
-            traffic — and I sweat the details that make software feel good to
-            use.
+            I enjoy building software and figuring things out along the way.
+            Most of my work is around backend systems and AI/ML, with a few
+            trips across the stack when a project calls for it.
           </p>
 
           <div
@@ -64,14 +57,10 @@ export default function Hero() {
         </div>
 
         <div
-          className="hero-enter mt-14 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
+          className="hero-enter mt-6 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
           style={{ animationDelay: delays[4] }}
         >
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-1">
-            {stats.map((s) => (
-              <Stat key={s.label} value={s.value} label={s.label} />
-            ))}
-          </div>
+          <HeroStats />
           <TerminalCard />
         </div>
 

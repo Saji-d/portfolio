@@ -1,17 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
-const LINES = [
-  "pip install trust",
-  "218 tests passed — 0 failed",
-  "Redis Streams -> seal -> verify",
-  "pipeline status: ACTIVE",
-  "ready for your hardest problems",
-];
+import { PROMPT, TERMINAL_SCRIPT } from "@/components/home/cortex/terminal";
 
 const TYPE_MS = 34;
-const HOLD_MS = 1600;
+const HOLD_MS = 1200;
 const ERASE_MS = 14;
 
 export default function TerminalCard() {
@@ -22,7 +15,7 @@ export default function TerminalCard() {
     if (!el) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.textContent = LINES[LINES.length - 1];
+      el.textContent = TERMINAL_SCRIPT[TERMINAL_SCRIPT.length - 1];
       return;
     }
 
@@ -36,13 +29,13 @@ export default function TerminalCard() {
     const tick = () => {
       timer = null;
       if (done || !visible) return;
-      const line = LINES[lineIdx];
+      const line = TERMINAL_SCRIPT[lineIdx];
 
       if (phase === "typing") {
         if (text.length < line.length) {
           text = line.slice(0, text.length + 1);
           timer = setTimeout(tick, TYPE_MS);
-        } else if (lineIdx === LINES.length - 1) {
+        } else if (lineIdx === TERMINAL_SCRIPT.length - 1) {
           done = true;
           el.textContent = text;
           return;
@@ -85,19 +78,19 @@ export default function TerminalCard() {
             <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
           </div>
-          <span className="text-xs text-text-muted">zsh — portfolio</span>
+          <span className="text-xs text-text-muted">cortex — compact</span>
         </div>
-        <span className="text-xs text-text-muted">~/src</span>
+        <span className="text-xs text-text-muted">~/brain</span>
       </div>
       <div className="flex items-center gap-2 px-4 py-4 text-sm">
-        <span aria-hidden="true" className="shrink-0 text-accent">sajid:~$</span>
-        <span aria-hidden="true" className="text-text-primary">
+        <span aria-hidden="true" className="shrink-0 text-accent">{PROMPT}</span>
+        <span aria-hidden="true" className="min-w-0 flex-1 truncate text-text-primary">
           <span ref={textRef} />
-          <span className="ml-0.5 inline-block h-4 w-[7px] animate-pulse bg-accent align-middle" />
         </span>
+        <span aria-hidden="true" className="ml-0.5 inline-block h-4 w-[7px] shrink-0 animate-pulse bg-accent align-middle" />
       </div>
       <p className="sr-only">
-        Terminal: {LINES.join(" · ")}
+        Terminal: {TERMINAL_SCRIPT.join(" · ")}
       </p>
     </div>
   );

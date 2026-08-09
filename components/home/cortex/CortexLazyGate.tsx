@@ -13,7 +13,7 @@ const CortexConsole = dynamic(
 
 function Skeleton() {
   return (
-    <div className="flex min-h-[540px] items-center justify-center rounded-2xl border border-line bg-surface/60 font-mono text-xs text-text-muted">
+    <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-line bg-surface/60 font-mono text-xs text-text-muted">
       cortex loading<span className="animate-caret text-accent">_</span>
     </div>
   );

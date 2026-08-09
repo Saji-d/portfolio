@@ -3,10 +3,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, TerminalSquare, Command } from "lucide-react";
+import { Menu, X, Command } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { NAV_LINKS, SITE } from "@/data/site";
-import { useTerminal } from "@/components/terminal-context";
 import { useCommandPalette } from "@/components/command-palette-context";
 
 function isActive(pathname: string, href: string): boolean {
@@ -24,7 +23,6 @@ export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { toggle } = useTerminal();
   const { setOpen: setPaletteOpen } = useCommandPalette();
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -156,14 +154,6 @@ export default function Nav() {
               className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-surface/60 text-text-secondary transition-colors hover:border-accent/50 hover:text-accent"
             >
               <Command className="h-4 w-4" />
-            </button>
-            <button
-              onClick={toggle}
-              aria-label="Toggle terminal mode"
-              title="Terminal mode (`)"
-              className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-surface/60 text-text-secondary transition-colors hover:border-accent/50 hover:text-accent"
-            >
-              <TerminalSquare className="h-4 w-4" />
             </button>
             <a
               href={SITE.github}

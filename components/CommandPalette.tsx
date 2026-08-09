@@ -11,14 +11,12 @@ import {
   GraduationCap,
   Mail,
   Search,
-  TerminalSquare,
   type LucideIcon,
 } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/data/site";
 import { projects } from "@/data/projects";
 import { neuronscreen } from "@/data/research";
 import { useCommandPalette } from "@/components/command-palette-context";
-import { useTerminal } from "@/components/terminal-context";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 
 interface Item {
@@ -60,7 +58,6 @@ function fuzzyScore(query: string, text: string): number {
 export default function CommandPalette() {
   const router = useRouter();
   const { setOpen } = useCommandPalette();
-  const { setOpen: setTerminalOpen } = useTerminal();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -88,18 +85,6 @@ export default function CommandPalette() {
         keywords: `${link.label} ${link.href}`,
         run: () => go(link.href),
       })),
-      {
-        id: "act-terminal",
-        group: "Actions",
-        label: "Open terminal",
-        hint: "backtick (`)",
-        icon: TerminalSquare,
-        keywords: "terminal shell open",
-        run: () => {
-          setOpen(false);
-          setTerminalOpen(true);
-        },
-      },
       {
         id: "act-email",
         group: "Actions",
@@ -165,7 +150,7 @@ export default function CommandPalette() {
         run: () => go("/research/neuronscreen"),
       },
     ],
-    [go, setOpen, setTerminalOpen]
+    [go, setOpen]
   );
 
   const filtered = useMemo(() => {

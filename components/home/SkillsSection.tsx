@@ -17,7 +17,7 @@ export default function SkillsSection() {
           {skillGroups.map((group, i) => (
             <Reveal key={group.label} delay={i * 0.04}>
               <div className="card-surface h-full p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40">
-                <h3 className="font-mono text-xs font-medium uppercase tracking-widest text-accent">
+                <h3 className="font-mono text-xs font-semibold uppercase tracking-widest text-accent">
                   {group.label}
                 </h3>
                 <div className="mt-4 flex flex-wrap gap-1.5">

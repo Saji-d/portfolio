@@ -34,6 +34,7 @@ export default function NetworkBackground() {
     let running = false;
     let visible = true;
     let pageHidden = false;
+    let idleTimer = 0;
     let width = 0;
     let height = 0;
     let dpr = 1;
@@ -151,6 +152,15 @@ export default function NetworkBackground() {
       sync();
     }
 
+    function onActivity() {
+      clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
+        stop();
+        draw();
+      }, 4000);
+      start();
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         visible = entries[entries.length - 1]?.isIntersecting ?? true;
@@ -166,16 +176,27 @@ export default function NetworkBackground() {
     } else {
       start();
     }
+    idleTimer = window.setTimeout(() => {
+      stop();
+      draw();
+    }, 4000);
 
     window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("scroll", onActivity, { passive: true });
+    window.addEventListener("pointermove", onActivity, { passive: true });
+    window.addEventListener("keydown", onActivity, { passive: true });
     reducedMotion.addEventListener("change", onMotionChange);
 
     return () => {
       stop();
+      clearTimeout(idleTimer);
       observer.disconnect();
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("scroll", onActivity);
+      window.removeEventListener("pointermove", onActivity);
+      window.removeEventListener("keydown", onActivity);
       reducedMotion.removeEventListener("change", onMotionChange);
     };
   }, []);

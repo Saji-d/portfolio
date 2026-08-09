@@ -9,20 +9,27 @@ import {
   useSpring,
 } from "motion/react";
 import { CornerDownLeft } from "lucide-react";
+import { getProject } from "@/data/projects";
 import { COMMANDS, CONSOLE_LABEL, CONSOLE_VERSION, PROMPT } from "./lib";
 import WhoamiView from "./views/WhoamiView";
 import SkillsView from "./views/SkillsView";
 import ProjectsView from "./views/ProjectsView";
-import JourneyView from "./views/JourneyView";
+import TimelineView from "./views/TimelineView";
 import ResearchView from "./views/ResearchView";
+import ContactView from "./views/ContactView";
+import ProjectDetailView from "./views/ProjectDetailView";
+import AboutView from "./views/AboutView";
 import { ExitView, HelpView, NotFoundView } from "./views/MiscViews";
 
 type ViewId =
   | "whoami"
+  | "about"
   | "skills"
   | "projects"
-  | "journey"
+  | "timeline"
   | "research"
+  | "contact"
+  | "project-detail"
   | "help"
   | "exit"
   | "not-found";
@@ -34,12 +41,14 @@ interface LogEntry {
 }
 
 const VIEW_FOR: Record<string, ViewId> = {
-  whoami: "whoami",
-  skills: "skills",
-  projects: "projects",
-  journey: "journey",
-  research: "research",
   help: "help",
+  whoami: "whoami",
+  about: "about",
+  projects: "projects",
+  timeline: "timeline",
+  research: "research",
+  skills: "skills",
+  contact: "contact",
 };
 
 let logCounter = 0;
@@ -62,6 +71,7 @@ const PARTICLES = [
 export default function CortexConsole() {
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
   const bootedRef = useRef(false);
   const historyRef = useRef<string[]>([]);
   const histIdx = useRef(0);
@@ -70,6 +80,7 @@ export default function CortexConsole() {
   const [view, setView] = useState<ViewId | null>(null);
   const [log, setLog] = useState<LogEntry[]>([]);
   const [lastCmd, setLastCmd] = useState<string | null>(null);
+  const [projectSlug, setProjectSlug] = useState<string | null>(null);
 
   const clockRef = useRef<HTMLSpanElement>(null);
   const bootInterval = useRef<number | null>(null);
@@ -78,33 +89,49 @@ export default function CortexConsole() {
   const sessionId = useId().replace(/[^a-z0-9]/gi, "").slice(-4);
 
   const run = useCallback((raw: string) => {
-    const cmd = raw.trim().toLowerCase();
+    const text = raw.trim();
     setInput("");
-    if (!cmd) return;
-    if (historyRef.current[historyRef.current.length - 1] !== cmd) {
-      historyRef.current = [...historyRef.current, cmd].slice(-9);
+    if (!text) return;
+    const [name, ...rest] = text.toLowerCase().split(/\s+/);
+    const arg = rest.join(" ");
+    if (historyRef.current[historyRef.current.length - 1] !== text) {
+      historyRef.current = [...historyRef.current, text].slice(-9);
     }
     histIdx.current = historyRef.current.length;
 
-    if (cmd === "clear") {
+    if (name === "clear") {
       setLog([]);
       setLastCmd(null);
-      setView("whoami");
+      setProjectSlug(null);
+      setView(null);
       return;
     }
-    if (cmd === "exit") {
-      setLastCmd(cmd);
+    if (name === "exit") {
+      setLastCmd(text);
       setView("exit");
       return;
     }
-    const target = VIEW_FOR[cmd];
+    if (name === "projects" && arg) {
+      if (getProject(arg)) {
+        setProjectSlug(arg);
+        setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: "project-detail" }]);
+        setLastCmd(text);
+        setView("project-detail");
+      } else {
+        setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: "not-found" }]);
+        setLastCmd(text);
+        setView("not-found");
+      }
+      return;
+    }
+    const target = VIEW_FOR[name];
     if (target) {
-      setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd, view: target }]);
-      setLastCmd(cmd);
+      setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: target }]);
+      setLastCmd(text);
       setView(target);
     } else {
-      setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd, view: "not-found" }]);
-      setLastCmd(cmd);
+      setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: "not-found" }]);
+      setLastCmd(text);
       setView("not-found");
     }
   }, []);
@@ -157,6 +184,10 @@ export default function CortexConsole() {
     const iv = window.setInterval(tick, 30000);
     return () => window.clearInterval(iv);
   }, []);
+
+  useEffect(() => {
+    outputRef.current?.scrollTo({ top: 0 });
+  }, [view]);
 
   const glowX = useMotionValue(0);
   const glowY = useMotionValue(0);
@@ -237,7 +268,7 @@ export default function CortexConsole() {
           />
         ))}
 
-        <div className="relative flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-5">
+        <div className="relative flex items-center justify-between gap-3 border-b border-line px-4 py-2 sm:px-5">
           <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-text-muted">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" data-cortex-anim />
             {CONSOLE_LABEL}
@@ -254,7 +285,7 @@ export default function CortexConsole() {
         </div>
 
         <form
-          className="relative flex items-center gap-3 border-b border-line px-4 py-3 sm:px-5"
+          className="relative flex items-center gap-3 border-b border-line px-4 py-2 sm:px-5"
           onSubmit={(e) => e.preventDefault()}
         >
           <label htmlFor="cortex-input" className="sr-only">
@@ -279,13 +310,13 @@ export default function CortexConsole() {
           </kbd>
         </form>
 
-        <div className="relative flex flex-wrap items-center gap-2 border-b border-line px-4 py-3 sm:px-5">
+        <div className="relative flex flex-wrap items-center gap-2 border-b border-line px-4 py-2 sm:px-5">
           {COMMANDS.map((cmd) => (
             <button
               key={cmd.id}
               type="button"
               onClick={() => run(cmd.id)}
-              title={cmd.hint}
+              title={cmd.desc}
               className={`rounded-full border px-3 py-1 font-mono text-xs transition-colors ${
                 lastCmd === cmd.id
                   ? "border-accent/60 bg-accent-dim text-accent"
@@ -300,7 +331,7 @@ export default function CortexConsole() {
           </span>
         </div>
 
-        <div className="relative min-h-[540px] sm:min-h-[560px]">
+        <div ref={outputRef} className="console-scroll relative h-[320px] overflow-y-auto sm:h-[400px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={view ?? "idle"}
@@ -308,23 +339,28 @@ export default function CortexConsole() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
-              className="px-4 py-6 sm:px-5"
+              className="px-4 py-3 sm:px-5"
             >
               {view === "whoami" && <WhoamiView />}
+              {view === "about" && <AboutView />}
               {view === "skills" && <SkillsView />}
               {view === "projects" && <ProjectsView />}
-              {view === "journey" && <JourneyView />}
+              {view === "timeline" && <TimelineView />}
               {view === "research" && <ResearchView />}
+              {view === "contact" && <ContactView />}
+              {view === "project-detail" && (
+                <ProjectDetailView slug={projectSlug ?? ""} key={projectSlug ?? "none"} />
+              )}
               {view === "help" && <HelpView />}
               {view === "exit" && <ExitView onReconnect={() => run("clear")} />}
               {view === "not-found" && <NotFoundView cmd={lastCmd ?? ""} />}
               {view === null && (
-                <div className="flex min-h-[280px] flex-col items-center justify-center gap-3 text-center">
+                <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 text-center">
                   <div className="font-mono text-sm text-text-muted">
                     awaiting input<span className="animate-caret text-accent" data-cortex-anim>_</span>
                   </div>
                   <p className="max-w-sm text-sm leading-relaxed text-text-muted">
-                    run <span className="text-accent">help</span> or click a command above
+                    run <span className="text-accent">help </span>  or click a command above
                     to explore what&apos;s inside.
                   </p>
                 </div>
@@ -333,7 +369,7 @@ export default function CortexConsole() {
           </AnimatePresence>
         </div>
 
-        <div className="relative flex flex-wrap items-center gap-2 border-t border-line px-4 py-3 sm:px-5">
+        <div className="relative flex flex-wrap items-center gap-2 border-t border-line px-4 py-2 sm:px-5">
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-text-muted">
             history
           </span>
@@ -346,6 +382,10 @@ export default function CortexConsole() {
               type="button"
               onClick={() => {
                 setLastCmd(entry.cmd);
+                if (entry.view === "project-detail") {
+                  const m = entry.cmd.match(/^projects\s+(\S+)/);
+                  if (m) setProjectSlug(m[1]);
+                }
                 setView(entry.view);
               }}
               className="rounded-md border border-line bg-surface-2 px-2 py-0.5 font-mono text-xs text-text-secondary transition-colors hover:border-accent/40 hover:text-accent"

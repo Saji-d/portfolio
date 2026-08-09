@@ -5,7 +5,6 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CursorGlow from "@/components/CursorGlow";
 import NetworkBackground from "@/components/NetworkBackground";
-import { TerminalProvider } from "@/components/terminal-context";
 import { CommandPaletteProvider } from "@/components/command-palette-context";
 import RouteProgress from "@/components/ui/RouteProgress";
 import ScrollProgress from "@/components/ui/ScrollProgress";
@@ -104,15 +103,13 @@ export default function RootLayout({
         <RouteProgress />
         <NetworkBackground />
         <CursorGlow />
-        <TerminalProvider>
-          <CommandPaletteProvider>
-            <Nav />
-            <main id="main" className="relative z-10 outline-none">
-              {children}
-            </main>
-            <Footer />
-          </CommandPaletteProvider>
-        </TerminalProvider>
+        <CommandPaletteProvider>
+          <Nav />
+          <main id="main" className="relative z-10 outline-none">
+            {children}
+          </main>
+          <Footer />
+        </CommandPaletteProvider>
       </body>
     </html>
   );

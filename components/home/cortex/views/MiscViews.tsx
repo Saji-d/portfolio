@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Power, RefreshCw } from "lucide-react";
-import { COMMANDS } from "../lib";
+import { TERMINAL_COMMANDS } from "../lib";
 
 export function HelpView() {
   return (
@@ -13,16 +13,16 @@ export function HelpView() {
         <span>{`// available commands`}</span>
       </div>
 
-      <ul className="card-surface mt-4 divide-y divide-line font-mono text-sm">
-        {COMMANDS.map((cmd) => (
-          <li key={cmd.id} className="flex items-center gap-4 px-5 py-3">
-            <span className="w-24 shrink-0 text-accent">{cmd.id}</span>
-            <span className="text-text-secondary">{cmd.hint}</span>
+      <ul className="card-surface mt-3 divide-y divide-line font-mono text-xs">
+        {TERMINAL_COMMANDS.map((cmd) => (
+          <li key={cmd.id} className="flex items-baseline gap-3 px-4 py-1.5">
+            <span className="w-32 shrink-0 text-accent">{cmd.id}</span>
+            <span className="text-text-secondary">{cmd.desc}</span>
           </li>
         ))}
       </ul>
 
-      <p className="mt-4 font-mono text-[11px] text-text-muted">
+      <p className="mt-3 font-mono text-[11px] text-text-muted">
         &gt; type a command above, or click it · `clear` resets the session
       </p>
     </div>
@@ -31,7 +31,7 @@ export function HelpView() {
 
 export function ExitView({ onReconnect }: { onReconnect: () => void }) {
   return (
-    <div className="flex min-h-[320px] flex-col items-center justify-center gap-5 text-center">
+    <div className="flex min-h-[260px] flex-col items-center justify-center gap-5 text-center">
       <div className="font-mono text-sm text-text-secondary">
         session ended<span className="animate-caret text-accent" data-cortex-anim>_</span>
       </div>
@@ -66,7 +66,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
 
 export function NotFoundView({ cmd }: { cmd: string }) {
   return (
-    <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 text-center">
+    <div className="flex min-h-[260px] flex-col items-center justify-center gap-4 text-center">
       <div className="font-mono text-sm text-danger">
         bash: <span className="text-text-primary">{cmd}</span>: command not found
       </div>

@@ -2,26 +2,22 @@ import type { Project } from "@/data/projects";
 import type { ResearchStudy } from "@/data/research";
 import { projects } from "@/data/projects";
 import { researchPapers } from "@/data/research";
+import {
+  TERMINAL_COMMANDS,
+  type TerminalCommand,
+} from "@/data/terminal";
 
 export const CONSOLE_LABEL = "cortex — self-inspection console";
 export const CONSOLE_VERSION = "v2.4.1";
 export const PROMPT = "sajid@brain:~$";
 
-export interface CommandDef {
-  id: string;
-  hint: string;
-}
+export type CommandDef = TerminalCommand;
 
-export const COMMANDS: CommandDef[] = [
-  { id: "whoami", hint: "read identity" },
-  { id: "skills", hint: "open the neural map" },
-  { id: "projects", hint: "traverse the dependency graph" },
-  { id: "journey", hint: "walk the roadmap" },
-  { id: "research", hint: "browse the archive" },
-  { id: "help", hint: "list commands" },
-  { id: "clear", hint: "reset the session" },
-  { id: "exit", hint: "end the session" },
-];
+export { TERMINAL_COMMANDS };
+
+export const COMMANDS: CommandDef[] = TERMINAL_COMMANDS.filter(
+  (c) => !/\s/.test(c.id),
+);
 
 export const WHOAMI_ROLES: string[] = [
   "software engineer",
@@ -48,98 +44,6 @@ export const WHOAMI_LINKS = [
     label: "linkedin",
     value: "in/sajidur-rahman-sajid",
     href: "https://www.linkedin.com/in/sajidur-rahman-sajid/",
-  },
-];
-
-export interface SkillNode {
-  id: string;
-  label: string;
-  x: number;
-  y: number;
-}
-
-export const SKILL_NODES: SkillNode[] = [
-  { id: "research", label: "Research", x: 24, y: 12 },
-  { id: "ai", label: "AI Engineering", x: 15, y: 36 },
-  { id: "ml", label: "Machine Learning", x: 27, y: 70 },
-  { id: "nlp", label: "Natural Language Processing", x: 50, y: 12 },
-  { id: "cv", label: "Computer Vision", x: 79, y: 26 },
-  { id: "backend", label: "Backend", x: 83, y: 60 },
-  { id: "db", label: "Databases", x: 58, y: 86 },
-];
-
-export const SKILLS_MOBILE: string[] = [
-  "Machine Learning",
-  "Computer Vision",
-  "Natural Language Processing",
-  "Backend",
-  "Databases",
-  "Research",
-  "AI Engineering",
-];
-
-export const SKILL_DETAILS: Record<string, string[]> = {
-  research: ["CatBoost", "SHAP / LIME", "PyTorch", "Streamlit"],
-  ai: ["FastAPI", "React", "PostgreSQL", "Solidity"],
-  ml: ["PyTorch", "Hugging Face", "Scikit-learn", "Pandas"],
-  nlp: ["Transformers", "BanglaBERT", "NLTK", "TF-IDF"],
-  cv: ["OpenCV", "FaceNet", "EfficientNet"],
-  backend: ["FastAPI", "Node.js", "Redis Streams", "BullMQ"],
-  db: ["PostgreSQL", "MySQL", "MongoDB", "Qdrant"],
-};
-
-export interface JourneyStop {
-  step: string;
-  label: string;
-  period: string;
-  note: string;
-  x: number;
-  current?: boolean;
-}
-
-export const JOURNEY: JourneyStop[] = [
-  {
-    step: "01",
-    label: "Desktop",
-    period: "2022 — 23",
-    note: "First programs shipped as windows apps — CodingVibes, gym suites, Swing and WinForms.",
-    x: 4,
-  },
-  {
-    step: "02",
-    label: "Web",
-    period: "2023",
-    note: "Full-stack web projects — session-driven apps, responsive interfaces, REST wiring.",
-    x: 22,
-  },
-  {
-    step: "03",
-    label: "Database",
-    period: "2023",
-    note: "Relational design — full normalization, ER mapping, query-heavy systems.",
-    x: 40,
-  },
-  {
-    step: "04",
-    label: "Machine Learning",
-    period: "2024",
-    note: "Coursework turned models — FinBERT sentiment, classical NLP pipelines.",
-    x: 58,
-  },
-  {
-    step: "05",
-    label: "Research",
-    period: "2025",
-    note: "Thesis and papers — NeuroScreen hybrid ensemble, turbidity, BanglaBERT, churn.",
-    x: 76,
-  },
-  {
-    step: "06",
-    label: "Production AI",
-    period: "2026 — now",
-    note: "LedgerCross — InvoicePilot and CaseVault. Verified, shipped, live.",
-    x: 94,
-    current: true,
   },
 ];
 

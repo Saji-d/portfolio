@@ -134,7 +134,7 @@ export default function ProjectsView() {
 
         <div className="relative flex flex-col gap-4 lg:flex-row">
           {FLOW_COLUMNS.map((col, colIdx) => (
-            <div key={col.label} className="flex flex-1 flex-col gap-3">
+            <div key={col.label} className="flex flex-1 flex-col gap-2.5">
               <div className="flex items-center gap-2">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${DOT_TONE[col.tone]}`}
@@ -160,7 +160,7 @@ export default function ProjectsView() {
                           : { ...node, col: colIdx, row: rowIdx },
                       )
                     }
-                    className={`group w-full rounded-xl border p-4 text-left transition-all duration-300 ${
+                    className={`group w-full rounded-xl border p-3 text-left transition-all duration-300 ${
                       isHovered || selected?.id === node.id
                         ? "border-accent/50 bg-surface-2"
                         : "border-line bg-surface hover:border-line-strong"
@@ -224,7 +224,7 @@ export default function ProjectsView() {
         )}
       </AnimatePresence>
 
-      <p className="mt-4 font-mono text-[11px] text-text-muted">
+      <p className="mt-3 font-mono text-[11px] text-text-muted">
         &gt; the graph follows a build path — production, research, vision, craft · click a node
       </p>
     </div>

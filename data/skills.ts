@@ -51,3 +51,53 @@ export const skillGroups: SkillGroup[] = [
     skills: ["Git", "pytest", "CI / CD", "Vercel", "Linux", "Npm Workspaces"],
   },
 ];
+
+export interface SkillNetworkNode {
+  id: string;
+  label: string;
+  techs: string[];
+}
+
+export const SKILL_NETWORK: {
+  center: string;
+  disciplines: SkillNetworkNode[];
+} = {
+  center: "THE ENGINEER",
+  disciplines: [
+    {
+      id: "research",
+      label: "Research",
+      techs: ["CatBoost", "Scikit-learn", "SHAP / LIME", "Pandas"],
+    },
+    {
+      id: "ai-engineering",
+      label: "AI Engineering",
+      techs: ["PyTorch", "Hugging Face", "Transformers", "LLMs"],
+    },
+    {
+      id: "computer-vision",
+      label: "Computer Vision",
+      techs: ["OpenCV", "FaceNet", "EfficientNet-B0", "Transfer Learning"],
+    },
+    {
+      id: "machine-learning",
+      label: "Machine Learning",
+      techs: ["Scikit-learn", "CatBoost", "PyTorch", "NumPy", "Pandas"],
+    },
+    {
+      id: "databases",
+      label: "Databases",
+      techs: ["PostgreSQL", "MongoDB", "MySQL", "Qdrant", "Neo4j"],
+    },
+    {
+      id: "backend",
+      label: "Backend",
+      techs: ["FastAPI", "Node.js", "Express", "Redis Streams", "BullMQ", "Docker"],
+    },
+    {
+      id: "nlp",
+      label: "Natural Language Processing",
+      techs: ["Transformers", "BERT", "Hugging Face", "TF-IDF"],
+    },
+  ],
+};
