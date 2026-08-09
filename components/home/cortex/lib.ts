@@ -53,6 +53,7 @@ export interface FlowItem {
   id: string;
   title: string;
   tag: FlowTag;
+  card: string;
   tagline: string;
   href: string;
 }
@@ -80,6 +81,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "invoicepilot",
         title: "InvoicePilot",
         tag: "production",
+        card: "AI invoice extraction, normalization, validation and fraud detection.",
         tagline: pj("invoicepilot").summary,
         href: "/projects/invoicepilot",
       },
@@ -87,6 +89,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "casevault",
         title: "CaseVault GraphRAG",
         tag: "production",
+        card: "Privacy-first legal research with GraphRAG retrieval and cited AI summaries.",
         tagline: pj("casevault").summary,
         href: "/projects/casevault",
       },
@@ -94,6 +97,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "ledgerturf",
         title: "LedgerTurf",
         tag: "production",
+        card: "Real-time turf booking with map discovery and slot conflict protection.",
         tagline: pj("ledgerturf").summary,
         href: "/projects/ledgerturf",
       },
@@ -107,6 +111,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "neuronscreen",
         title: "NeuroScreen",
         tag: "research",
+        card: "CatBoost + ANN ensemble for cognitive-impairment detection.",
         tagline: rs("neuronscreen").oneLiner,
         href: "/research/neuronscreen",
       },
@@ -114,6 +119,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "finbert",
         title: "FinBERT",
         tag: "research",
+        card: "Fine-tuned FinBERT vs BERT on financial sentiment in one notebook.",
         tagline: pj("finbert").tagline,
         href: "/projects/finbert",
       },
@@ -121,6 +127,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "twitter-sentiment",
         title: "Twitter Sentiment",
         tag: "research",
+        card: "TF-IDF + Multinomial Naïve Bayes on 200k balanced tweets.",
         tagline: rs("twitter-sentiment").oneLiner,
         href: "/research/twitter-sentiment",
       },
@@ -134,6 +141,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "face-recognition",
         title: "Face Recognition",
         tag: "project",
+        card: "Real-time face detection and recognition pipeline.",
         tagline: pj("face-recognition-system").tagline,
         href: "/projects/face-recognition-system",
       },
@@ -141,6 +149,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "water-turbidity",
         title: "Water Turbidity",
         tag: "research",
+        card: "EfficientNet-B0 turbidity classification on 300+ real-world images.",
         tagline: rs("water-turbidity").oneLiner,
         href: "/research/water-turbidity",
       },
@@ -148,6 +157,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "3d-city",
         title: "3D City Generator",
         tag: "project",
+        card: "Procedural city with day-night lighting, rain, snow and traffic logic.",
         tagline: pj("3d-city-simulation").tagline,
         href: "/projects/3d-city-simulation",
       },
@@ -161,6 +171,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "codingvibes",
         title: "CodingVibes",
         tag: "project",
+        card: "Interactive Java learning platform with courses, quizzes, and progress.",
         tagline: pj("codingvibes-java-gui").tagline,
         href: "/projects/codingvibes-java-gui",
       },
@@ -168,6 +179,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "employee-registry",
         title: "Employee Registry",
         tag: "project",
+        card: "Employee registry with family trees, full-text search, and PDF exports.",
         tagline: pj("employee-family-registry").tagline,
         href: "/projects/employee-family-registry",
       },
@@ -175,6 +187,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         id: "wedding",
         title: "Wedding Invitation",
         tag: "project",
+        card: "Cinematic digital invitation with RSVP, countdown, and gallery.",
         tagline: pj("my-wedding-invitation").tagline,
         href: "/projects/my-wedding-invitation",
       },

@@ -39,6 +39,7 @@ function useDesktop() {
 
 export default function ProjectsView() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const isDesktop = useDesktop();
   const [edges, setEdges] = useState<MeasuredEdge[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -99,6 +100,26 @@ export default function ProjectsView() {
     };
   }, [isDesktop]);
 
+  useEffect(() => {
+    if (!selected) return;
+    const id = window.requestAnimationFrame(() => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      const scroller = panel.closest<HTMLElement>(".console-scroll");
+      if (!scroller) return;
+      const rect = panel.getBoundingClientRect();
+      const top =
+        rect.top - scroller.getBoundingClientRect().top + scroller.scrollTop;
+      const bottom = top + rect.height;
+      const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+      const target = Math.min(maxScroll, Math.max(0, bottom - scroller.clientHeight + 12));
+      if (Math.abs(target - scroller.scrollTop) > 1) {
+        scroller.scrollTo({ top: target, behavior: "smooth" });
+      }
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [selected]);
+
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
@@ -107,21 +128,29 @@ export default function ProjectsView() {
         <span>{`// dependency graph · ${FLOW_COLUMNS.length} clusters`}</span>
       </div>
 
-      <div ref={containerRef} className="relative mt-4">
+      <div ref={containerRef} className="relative mt-2">
         {isDesktop && (
           <svg
             className="pointer-events-none absolute inset-0 h-full w-full"
             aria-hidden="true"
           >
             {edges.map((e) => {
-              const lit = hovered !== null && (e.id.startsWith(`${hovered}->`) || e.id.endsWith(`->${hovered}`));
+              const lit =
+                hovered !== null &&
+                (e.id.startsWith(`${hovered}->`) || e.id.endsWith(`->${hovered}`));
+              const on =
+                selected !== null &&
+                (e.id.startsWith(`${selected.id}->`) ||
+                  e.id.endsWith(`->${selected.id}`));
               return (
                 <motion.path
                   key={e.id}
                   d={`M ${e.x1} ${e.y1} C ${(e.x1 + e.x2) / 2} ${e.y1}, ${(e.x1 + e.x2) / 2} ${e.y2}, ${e.x2} ${e.y2}`}
                   fill="none"
-                  stroke={lit ? "rgba(79, 209, 197, 0.9)" : "rgba(124, 125, 255, 0.22)"}
-                  strokeWidth={1}
+                  stroke={
+                    lit || on ? "rgba(79, 209, 197, 0.9)" : "rgba(124, 125, 255, 0.22)"
+                  }
+                  strokeWidth={lit || on ? 1.5 : 1}
                   pathLength={1}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
@@ -132,9 +161,9 @@ export default function ProjectsView() {
           </svg>
         )}
 
-        <div className="relative flex flex-col gap-4 lg:flex-row">
+        <div className="relative flex flex-col gap-3 lg:flex-row lg:gap-3">
           {FLOW_COLUMNS.map((col, colIdx) => (
-            <div key={col.label} className="flex flex-1 flex-col gap-2.5">
+            <div key={col.label} className="flex flex-1 flex-col gap-2">
               <div className="flex items-center gap-2">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${DOT_TONE[col.tone]}`}
@@ -146,6 +175,7 @@ export default function ProjectsView() {
               </div>
               {col.items.map((node, rowIdx) => {
                 const isHovered = hovered === node.id;
+                const isSelected = selected?.id === node.id;
                 return (
                   <button
                     key={node.id}
@@ -155,13 +185,11 @@ export default function ProjectsView() {
                     onMouseLeave={() => setHovered(null)}
                     onClick={() =>
                       setSelected(
-                        selected?.id === node.id
-                          ? null
-                          : { ...node, col: colIdx, row: rowIdx },
+                        isSelected ? null : { ...node, col: colIdx, row: rowIdx },
                       )
                     }
-                    className={`group w-full rounded-xl border p-3 text-left transition-all duration-300 ${
-                      isHovered || selected?.id === node.id
+                    className={`group w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 ${
+                      isHovered || isSelected
                         ? "border-accent/50 bg-surface-2"
                         : "border-line bg-surface hover:border-line-strong"
                     }`}
@@ -176,11 +204,11 @@ export default function ProjectsView() {
                         {node.tag}
                       </span>
                     </div>
-                    <p className="mt-2 font-display text-sm font-medium text-text-primary">
+                    <p className="mt-1 font-display text-sm font-medium text-text-primary">
                       {node.title}
                     </p>
-                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-text-muted">
-                      {node.tagline}
+                    <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-text-muted">
+                      {node.card}
                     </p>
                   </button>
                 );
@@ -193,39 +221,41 @@ export default function ProjectsView() {
       <AnimatePresence mode="wait">
         {selected && (
           <motion.div
+            ref={panelRef}
             key={selected.id}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="card-surface mt-4 border-accent/20 p-5"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="card-surface mt-3 border-accent/20 p-3"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+              <div className="min-w-0 flex-1">
+                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted">
                   inspecting {selected.tag}
                 </span>
-                <h4 className="mt-1 font-display text-base font-medium text-text-primary">
+                <h4 className="mt-0.5 font-display text-sm font-medium text-text-primary">
                   {selected.title}
                 </h4>
+                <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-text-secondary">
+                  {selected.tagline}
+                </p>
               </div>
               <a
                 href={selected.href}
-                className="group inline-flex items-center gap-1.5 font-mono text-xs text-accent transition-opacity hover:opacity-80"
+                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] text-accent transition-opacity hover:opacity-80"
               >
                 open node
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-              {selected.tagline}
-            </p>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <p className="mt-3 font-mono text-[11px] text-text-muted">
-        &gt; the graph follows a build path — production, research, vision, craft · click a node
+      <p className="mt-2 font-mono text-[11px] text-text-muted">
+        &gt; the graph follows a build path — production, research, vision, craft ·
+        click a node
       </p>
     </div>
   );

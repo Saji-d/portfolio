@@ -14,10 +14,10 @@ const POSITIONS: Record<string, { x: number; y: number }> = {
   backend: { x: 76, y: 72 },
 };
 
-const NLP_Y = 54;
-const NLP_MIN_LEFT = 77;
-const NLP_MAX_LEFT = 87;
-const NLP_RIGHT_GAP = 118;
+const NLP_Y = 88;
+const NLP_MIN_LEFT = 73;
+const NLP_MAX_LEFT = 82;
+const NLP_RIGHT_GAP = 138;
 
 const pillClass = (on: boolean) =>
   `absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-full border px-1.5 py-1 font-mono text-[clamp(0.4375rem,2.1cqw,0.75rem)] leading-none transition-colors sm:gap-1.5 sm:px-2 sm:py-1.5 ${
@@ -52,9 +52,9 @@ export default function SkillsNetwork() {
   return (
     <div
       ref={containerRef}
-      className="relative mx-auto w-full max-w-lg @container"
+      className="relative mx-auto w-full max-w-xl @container"
     >
-      <div className="relative aspect-[8/5] w-full">
+      <div className="relative aspect-[9/5] w-full">
         <svg
           className="absolute inset-0 h-full w-full"
           viewBox="0 0 100 100"
@@ -185,17 +185,17 @@ export default function SkillsNetwork() {
             key={selected.id}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-xl border border-line bg-surface-2/60 px-3 py-2.5"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="mx-auto mt-2 flex w-fit max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-md border border-line bg-surface-2/40 px-2 py-1"
           >
-            <span className="mr-1 font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+            <span className="mr-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted">
               {selected.label}
             </span>
             {selected.techs.map((tech) => (
               <span
                 key={tech}
-                className="rounded-full border border-accent/25 bg-accent-dim/40 px-2.5 py-0.5 font-mono text-[10px] text-accent"
+                className="rounded-md border border-accent/20 bg-accent-dim/30 px-1.5 py-0.5 font-mono text-[10px] text-accent"
               >
                 {tech}
               </span>
