@@ -69,7 +69,15 @@ function GlassChip({
   );
 }
 
-function CoverImage({ project, sizes }: { project: Project; sizes: string }) {
+function CoverImage({
+  project,
+  sizes,
+  compact = false,
+}: {
+  project: Project;
+  sizes: string;
+  compact?: boolean;
+}) {
   const href = primaryHref(project);
   const pro = isProfessional(project);
 
@@ -105,19 +113,23 @@ function CoverImage({ project, sizes }: { project: Project; sizes: string }) {
     </>
   );
 
+  const coverClass = compact
+    ? "relative block aspect-[16/8] overflow-hidden bg-surface-2"
+    : "relative block aspect-video overflow-hidden bg-surface-2";
+
   if (href) {
     return (
       <SmartLink
         href={href}
         ariaLabel={`${project.name}: ${project.tagline}`}
-        className="relative block aspect-video overflow-hidden bg-surface-2"
+        className={coverClass}
       >
         {art}
       </SmartLink>
     );
   }
 
-  return <div className="relative aspect-video overflow-hidden bg-surface-2">{art}</div>;
+  return <div className={coverClass}>{art}</div>;
 }
 
 function CardButton({
@@ -154,9 +166,19 @@ function CardButton({
   return <Link href={href} className={classes}>{inner}</Link>;
 }
 
-function ProjectActions({ project }: { project: Project }) {
+function ProjectActions({
+  project,
+  compact = false,
+}: {
+  project: Project;
+  compact?: boolean;
+}) {
   return (
-    <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
+    <div
+      className={`flex flex-wrap gap-2 border-t border-line ${
+        compact ? "mt-3 pt-3" : "mt-4 pt-4"
+      }`}
+    >
       {project.github && (
         <CardButton href={project.github} external icon={GithubIcon} primary>
           GitHub
@@ -179,9 +201,11 @@ function ProjectActions({ project }: { project: Project }) {
 export function ProjectCard({
   project,
   sizes,
+  compact = false,
 }: {
   project: Project;
   sizes: string;
+  compact?: boolean;
 }) {
   const href = primaryHref(project);
   const pro = isProfessional(project);
@@ -201,8 +225,8 @@ export function ProjectCard({
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-accent via-accent-2 to-transparent"
           />
         )}
-        <CoverImage project={project} sizes={sizes} />
-        <div className="flex flex-1 flex-col p-5">
+        <CoverImage project={project} sizes={sizes} compact={compact} />
+        <div className={`flex flex-1 flex-col ${compact ? "p-4" : "p-5"}`}>
           <h3 className="font-display text-lg font-medium tracking-tight text-text-primary">
             {href ? (
               <SmartLink
@@ -215,10 +239,18 @@ export function ProjectCard({
               project.name
             )}
           </h3>
-          <p className="mt-1.5 flex-1 text-sm leading-relaxed text-text-muted">
+          <p
+            className={`flex-1 text-sm leading-relaxed text-text-muted ${
+              compact ? "mt-1" : "mt-1.5"
+            }`}
+          >
             {project.tagline}
           </p>
-          <div className="mt-4 flex flex-wrap gap-1.5">
+          <div
+            className={`flex flex-wrap gap-1.5 ${
+              compact ? "mt-3" : "mt-4"
+            }`}
+          >
             {project.stack.slice(0, 5).map((tech) => (
               <Pill key={tech}>{tech}</Pill>
             ))}
@@ -228,7 +260,7 @@ export function ProjectCard({
               </span>
             )}
           </div>
-          <ProjectActions project={project} />
+          <ProjectActions project={project} compact={compact} />
         </div>
       </article>
     </TiltCard>
