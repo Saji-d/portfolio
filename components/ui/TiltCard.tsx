@@ -2,6 +2,11 @@
 
 import { useRef, type ReactNode } from "react";
 
+const reducedMotion =
+  typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : null;
+
 interface TiltCardProps {
   children: ReactNode;
   className?: string;
@@ -14,7 +19,7 @@ export default function TiltCard({ children, className, max = 3 }: TiltCardProps
   function onMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion?.matches) return;
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;

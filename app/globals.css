@@ -116,6 +116,15 @@
   color: transparent;
 }
 
+@utility text-neon {
+  background: linear-gradient(180deg, #f0fbf9 0%, #bdf3ea 40%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(79, 209, 197, 0.3));
+}
+
 @utility card-surface {
   background-color: var(--surface);
   border: 1px solid var(--border);

@@ -44,6 +44,8 @@ const VIEW_FOR: Record<string, ViewId> = {
 
 let logCounter = 0;
 
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
 const PARTICLES = [
   { left: 6, top: 18, size: 2, dur: 7, delay: 0 },
   { left: 12, top: 70, size: 2, dur: 8, delay: 1.2 },
@@ -72,10 +74,6 @@ export default function CortexConsole() {
   const clockRef = useRef<HTMLSpanElement>(null);
   const bootInterval = useRef<number | null>(null);
   const bootTimeout = useRef<number | null>(null);
-
-  const prefersReduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const sessionId = useId().replace(/[^a-z0-9]/gi, "").slice(-4);
 
@@ -166,7 +164,7 @@ export default function CortexConsole() {
   const springY = useSpring(glowY, { stiffness: 55, damping: 18 });
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (prefersReduced) return;
+    if (reducedMotion.matches) return;
     const rect = rootRef.current?.getBoundingClientRect();
     if (!rect) return;
     glowX.set(e.clientX - rect.left - rect.width / 2);

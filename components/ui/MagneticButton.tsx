@@ -3,6 +3,11 @@
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
 
+const reducedMotion =
+  typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : null;
+
 interface MagneticButtonProps {
   children: ReactNode;
   href?: string;
@@ -25,7 +30,7 @@ export default function MagneticButton({
   function onMove(e: React.MouseEvent) {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion?.matches) return;
     const rect = el.getBoundingClientRect();
     const dx = (e.clientX - rect.left - rect.width / 2) * 0.15;
     const dy = (e.clientY - rect.top - rect.height / 2) * 0.3;

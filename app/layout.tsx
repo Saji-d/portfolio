@@ -95,7 +95,7 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
+      <body id="top" className="min-h-full">
         <JsonLd />
         <a href="#main" className="skip-link">
           Skip to content

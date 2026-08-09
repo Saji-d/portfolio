@@ -21,7 +21,7 @@ function Segment({ hidden }: { hidden?: boolean }) {
 
 export default function Marquee() {
   return (
-    <section aria-label="Technologies" className="relative py-5">
+    <section aria-label="Technologies" className="relative pt-10 pb-5">
       <div className="container-site relative overflow-hidden rounded-full border border-line bg-surface/40 py-3">
         <div
           aria-hidden="true"
