@@ -2,13 +2,17 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { ResearchStudy } from "@/data/research";
 
-export default function ResearchCard({ paper }: { paper: ResearchStudy }) {
+export default function ResearchCard({
+  paper,
+  onOpen,
+}: {
+  paper: ResearchStudy;
+  onOpen?: (slug: string) => void;
+}) {
   const href = `/research/${paper.slug}`;
-  return (
-    <Link
-      href={href}
-      className="card-surface group block h-full p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40"
-    >
+
+  const inner = (
+    <>
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-wrap gap-1.5">
           {paper.tags.map((t) => (
@@ -22,13 +26,9 @@ export default function ResearchCard({ paper }: { paper: ResearchStudy }) {
         </div>
         <ArrowUpRight className="h-4 w-4 shrink-0 text-text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
       </div>
-      <h3 className="card-title mt-3">
-        {paper.title}
-      </h3>
+      <h3 className="card-title mt-3">{paper.title}</h3>
       <p className="mt-1 card-meta">{paper.field}</p>
-      <p className="mt-2.5 body-copy text-text-secondary">
-        {paper.summary}
-      </p>
+      <p className="mt-2.5 body-copy text-text-secondary">{paper.summary}</p>
       {paper.metrics && (
         <div className="mt-3 flex gap-5">
           {paper.metrics.map((m) => (
@@ -41,6 +41,27 @@ export default function ResearchCard({ paper }: { paper: ResearchStudy }) {
           ))}
         </div>
       )}
+    </>
+  );
+
+  const classes =
+    "card-surface group block h-full p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40";
+
+  if (onOpen) {
+    return (
+      <button
+        type="button"
+        onClick={() => onOpen(paper.slug)}
+        className={`${classes} w-full text-left`}
+      >
+        {inner}
+      </button>
+    );
+  }
+
+  return (
+    <Link href={href} className={classes}>
+      {inner}
     </Link>
   );
 }

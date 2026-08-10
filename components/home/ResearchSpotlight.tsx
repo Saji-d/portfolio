@@ -1,8 +1,13 @@
+"use client";
+
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import ResearchShowcase from "@/components/research/ResearchShowcase";
+import { useOverlay } from "@/components/overlay-context";
 
 export default function ResearchSpotlight() {
+  const { openResearch } = useOverlay();
+
   return (
     <section
       id="research"
@@ -20,7 +25,7 @@ export default function ResearchSpotlight() {
         </Reveal>
 
         <div className="mt-5">
-          <ResearchShowcase />
+          <ResearchShowcase onOpenResearch={openResearch} />
         </div>
       </div>
     </section>

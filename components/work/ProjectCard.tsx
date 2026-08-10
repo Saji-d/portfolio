@@ -73,13 +73,16 @@ function CoverImage({
   project,
   sizes,
   compact = false,
+  onOpenCaseStudy,
 }: {
   project: Project;
   sizes: string;
   compact?: boolean;
+  onOpenCaseStudy?: (slug: string) => void;
 }) {
   const href = primaryHref(project);
   const pro = isProfessional(project);
+  const opensCaseStudy = Boolean(onOpenCaseStudy && project.caseStudy);
 
   const art = (
     <>
@@ -117,6 +120,19 @@ function CoverImage({
     ? "relative block aspect-[16/8] overflow-hidden bg-surface-2"
     : "relative block aspect-video overflow-hidden bg-surface-2";
 
+  if (opensCaseStudy) {
+    return (
+      <button
+        type="button"
+        onClick={() => onOpenCaseStudy?.(project.slug)}
+        aria-label={`${project.name}: ${project.tagline}`}
+        className={`${coverClass} w-full cursor-pointer text-left`}
+      >
+        {art}
+      </button>
+    );
+  }
+
   if (href) {
     return (
       <SmartLink
@@ -138,12 +154,14 @@ function CardButton({
   icon: Icon,
   children,
   primary = false,
+  onClick,
 }: {
-  href: string;
+  href?: string;
   external?: boolean;
   icon: LucideIcon | ComponentType<{ className?: string }>;
   children: ReactNode;
   primary?: boolean;
+  onClick?: () => void;
 }) {
   const classes = `inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-all ${
     primary
@@ -156,6 +174,13 @@ function CardButton({
       {children}
     </>
   );
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={classes}>
+        {inner}
+      </button>
+    );
+  }
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
@@ -163,15 +188,17 @@ function CardButton({
       </a>
     );
   }
-  return <Link href={href} className={classes}>{inner}</Link>;
+  return <Link href={href!} className={classes}>{inner}</Link>;
 }
 
 function ProjectActions({
   project,
   compact = false,
+  onOpenCaseStudy,
 }: {
   project: Project;
   compact?: boolean;
+  onOpenCaseStudy?: (slug: string) => void;
 }) {
   return (
     <div
@@ -189,11 +216,19 @@ function ProjectActions({
           Live Demo
         </CardButton>
       )}
-      {project.caseStudy && (
-        <CardButton href={`/projects/${project.slug}`} icon={BookOpen}>
-          Case Study
-        </CardButton>
-      )}
+      {project.caseStudy &&
+        (onOpenCaseStudy ? (
+          <CardButton
+            icon={BookOpen}
+            onClick={() => onOpenCaseStudy(project.slug)}
+          >
+            Case Study
+          </CardButton>
+        ) : (
+          <CardButton href={`/projects/${project.slug}`} icon={BookOpen}>
+            Case Study
+          </CardButton>
+        ))}
     </div>
   );
 }
@@ -202,13 +237,16 @@ export function ProjectCard({
   project,
   sizes,
   compact = false,
+  onOpenCaseStudy,
 }: {
   project: Project;
   sizes: string;
   compact?: boolean;
+  onOpenCaseStudy?: (slug: string) => void;
 }) {
   const href = primaryHref(project);
   const pro = isProfessional(project);
+  const opensCaseStudy = Boolean(onOpenCaseStudy && project.caseStudy);
 
   return (
     <TiltCard className="h-full">
@@ -225,10 +263,23 @@ export function ProjectCard({
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-accent via-accent-2 to-transparent"
           />
         )}
-        <CoverImage project={project} sizes={sizes} compact={compact} />
+        <CoverImage
+          project={project}
+          sizes={sizes}
+          compact={compact}
+          onOpenCaseStudy={onOpenCaseStudy}
+        />
         <div className={`flex flex-1 flex-col ${compact ? "p-4" : "p-5"}`}>
           <h3 className="card-title">
-            {href ? (
+            {opensCaseStudy ? (
+              <button
+                type="button"
+                onClick={() => onOpenCaseStudy?.(project.slug)}
+                className="text-left transition-colors group-hover:text-accent"
+              >
+                {project.name}
+              </button>
+            ) : href ? (
               <SmartLink
                 href={href}
                 className="transition-colors group-hover:text-accent"
@@ -260,7 +311,11 @@ export function ProjectCard({
               </span>
             )}
           </div>
-          <ProjectActions project={project} compact={compact} />
+          <ProjectActions
+            project={project}
+            compact={compact}
+            onOpenCaseStudy={onOpenCaseStudy}
+          />
         </div>
       </article>
     </TiltCard>

@@ -3,14 +3,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Command } from "lucide-react";
+import { ArrowUpRight, Command, Menu, X } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
-import { NAV_LINKS, SITE } from "@/data/site";
+import { NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
 import { useCommandPalette } from "@/components/command-palette-context";
-
-function isActive(pathname: string, href: string): boolean {
-  return href === "/" ? pathname === "/" : pathname.startsWith(href);
-}
 
 interface PillRect {
   left: number;
@@ -23,17 +19,56 @@ export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const { setOpen: setPaletteOpen } = useCommandPalette();
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const [pill, setPill] = useState<PillRect | null>(null);
 
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const sections = NAV_LINKS.map((link) =>
+      document.getElementById(link.section)
+    ).filter((el): el is HTMLElement => Boolean(el));
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-80px 0px -55% 0px", threshold: 0 }
+    );
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const handleSectionClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    section: string
+  ) => {
+    setOpen(false);
+    if (pathname !== "/") return;
+    e.preventDefault();
+    document.getElementById(section)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    window.history.replaceState(null, "", `/#${section}`);
+  };
+
   useLayoutEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
     const measure = () => {
-      const link = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+      const link = nav.querySelector<HTMLAnchorElement>(
+        'a[aria-current]:not([data-resume])'
+      );
       if (!link) {
         setPill(null);
         return;
@@ -51,7 +86,7 @@ export default function Nav() {
     const ro = new ResizeObserver(measure);
     ro.observe(nav);
     return () => ro.disconnect();
-  }, [pathname]);
+  }, [pathname, activeSection]);
 
   useEffect(() => {
     let raf = 0;
@@ -128,13 +163,14 @@ export default function Nav() {
               />
             )}
             {NAV_LINKS.map((link) => {
-              const active = isActive(pathname, link.href);
+              const active = pathname === "/" && activeSection === link.section;
               return (
                 <Link
-                  key={link.href}
+                  key={link.section}
                   href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`relative rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                  onClick={(e) => handleSectionClick(e, link.section)}
+                  aria-current={active ? "true" : undefined}
+                  className={`relative rounded-full px-3 py-2 text-sm font-medium transition-colors ${
                     active
                       ? "text-text-primary"
                       : "text-text-secondary hover:text-text-primary"
@@ -144,6 +180,15 @@ export default function Nav() {
                 </Link>
               );
             })}
+            <Link
+              href={RESUME_LINK.href}
+              data-resume
+              aria-current={pathname === "/resume" ? "page" : undefined}
+              className="relative ml-1 inline-flex items-center gap-1 rounded-full px-3 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent"
+            >
+              <span className="relative z-10">{RESUME_LINK.label}</span>
+              <ArrowUpRight className="h-3 w-3" />
+            </Link>
           </nav>
 
           <div className="flex items-center gap-1.5">
@@ -174,7 +219,8 @@ export default function Nav() {
               <LinkedinIcon className="h-4 w-4" />
             </a>
             <Link
-              href="/contact"
+              href="/#contact"
+              onClick={(e) => handleSectionClick(e, "contact")}
               className="hidden rounded-lg bg-accent px-4 py-2 text-sm font-medium text-[#0B0E14] transition-all hover:bg-accent/90 hover:shadow-[0_0_24px_rgba(79,209,197,0.35)] md:block"
             >
               Get in touch
@@ -206,13 +252,13 @@ export default function Nav() {
           <div className="min-h-0 overflow-hidden">
             <nav className="flex flex-col gap-1 px-3 pb-3 pt-1" aria-label="Mobile">
               {NAV_LINKS.map((link) => {
-                const active = isActive(pathname, link.href);
+                const active = pathname === "/" && activeSection === link.section;
                 return (
                   <Link
-                    key={link.href}
+                    key={link.section}
                     href={link.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={active ? "page" : undefined}
+                    onClick={(e) => handleSectionClick(e, link.section)}
+                    aria-current={active ? "true" : undefined}
                     className={`rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
                       active
                         ? "bg-accent-dim text-accent"
@@ -223,6 +269,19 @@ export default function Nav() {
                   </Link>
                 );
               })}
+              <Link
+                href={RESUME_LINK.href}
+                onClick={() => setOpen(false)}
+                aria-current={pathname === "/resume" ? "page" : undefined}
+                className={`flex items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
+                  pathname === "/resume"
+                    ? "bg-accent-dim text-accent"
+                    : "text-text-secondary hover:bg-surface hover:text-text-primary"
+                }`}
+              >
+                {RESUME_LINK.label}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
             </nav>
           </div>
         </div>

@@ -17,11 +17,23 @@ export const SITE = {
     "Open to software engineering roles in backend, platform, and applied ML — plus select freelance and product collaborations.",
 } as const;
 
-export const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "Research", href: "/research" },
-  { label: "About", href: "/about" },
-  { label: "Resume", href: "/resume" },
-  { label: "Contact", href: "/contact" },
+export interface NavSectionLink {
+  label: string;
+  section: string;
+  href: string;
+}
+
+export const NAV_LINKS: readonly NavSectionLink[] = [
+  { label: "Home", section: "home", href: "/#home" },
+  { label: "Projects", section: "projects", href: "/#projects" },
+  { label: "Research", section: "research", href: "/#research" },
+  { label: "Experience", section: "experience", href: "/#experience" },
+  { label: "Education", section: "education", href: "/#education" },
+  { label: "Capabilities", section: "capabilities", href: "/#capabilities" },
+  { label: "Contact", section: "contact", href: "/#contact" },
 ] as const;
+
+export const RESUME_LINK = {
+  label: "Resume",
+  href: "/resume",
+} as const;

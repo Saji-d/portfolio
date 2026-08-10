@@ -9,7 +9,11 @@ const delays = ["0s", "0.07s", "0.14s", "0.21s", "0.45s"];
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-32 sm:pt-40">
+    <section
+      id="home"
+      aria-label="Home"
+      className="relative scroll-mt-24 overflow-hidden pt-32 sm:pt-40"
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(79,209,197,0.14),transparent)]"

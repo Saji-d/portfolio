@@ -1,11 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import { ProjectCard } from "@/components/work/ProjectCard";
 import { projects } from "@/data/projects";
+import { useOverlay } from "@/components/overlay-context";
 
 export default function ProjectsSection() {
+  const { openProject } = useOverlay();
+
   return (
     <section
       id="projects"
@@ -38,6 +43,7 @@ export default function ProjectsSection() {
                 project={p}
                 compact
                 sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                onOpenCaseStudy={openProject}
               />
             </Reveal>
           ))}

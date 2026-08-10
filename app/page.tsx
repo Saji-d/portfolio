@@ -7,10 +7,11 @@ import ExperienceTimeline from "@/components/home/ExperienceTimeline";
 import EducationSection from "@/components/home/EducationSection";
 import ContactSection from "@/components/home/ContactSection";
 import SkillsSection from "@/components/home/SkillsSection";
+import { OverlayProvider } from "@/components/overlay-context";
 
 export default function Home() {
   return (
-    <>
+    <OverlayProvider>
       <Hero />
       <Marquee />
       <CortexSection />
@@ -20,6 +21,6 @@ export default function Home() {
       <EducationSection />
       <SkillsSection />
       <ContactSection />
-    </>
+    </OverlayProvider>
   );
 }
