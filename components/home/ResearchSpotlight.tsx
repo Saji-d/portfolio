@@ -7,7 +7,7 @@ export default function ResearchSpotlight() {
     <section
       id="research"
       aria-label="Research"
-      className="relative scroll-mt-24 pb-16 pt-14 sm:pb-20 sm:pt-16"
+      className="relative scroll-mt-24 pb-12 pt-14 sm:pb-16 sm:pt-16"
     >
       <div className="container-site">
         <Reveal>

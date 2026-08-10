@@ -7,7 +7,7 @@ import { NAV_LINKS, SITE } from "@/data/site";
 export default function Footer() {
   return (
     <footer className="relative z-10 border-t border-line">
-      <div className="container-site flex flex-col gap-10 py-12 md:flex-row md:items-start md:justify-between">
+      <div className="container-site flex flex-col gap-8 py-8 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <div className="flex items-center gap-2">
             <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-bold text-accent">
@@ -75,9 +75,9 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-line">
-        <div className="container-site flex flex-col items-center justify-between gap-3 py-6 sm:flex-row">
+        <div className="container-site flex flex-col items-center justify-between gap-3 py-4 sm:flex-row">
           <p className="font-mono text-xs text-text-muted">
-            © {new Date().getFullYear()} {SITE.name}. Built with Next.js in Dhaka.
+            © {new Date().getFullYear()} {SITE.name}.
           </p>
           <BackToTop />
         </div>

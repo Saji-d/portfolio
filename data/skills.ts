@@ -43,7 +43,7 @@ export const skillGroups: SkillGroup[] = [
     skills: ["MongoDB", "SQLite", "Supabase", "Cloudflare R2", "Qdrant", "Neo4j"],
   },
   {
-    label: "Web3",
+    label: "Blockchain",
     skills: ["Solidity", "Foundry", "OpenZeppelin", "Viem", "Turnkey KMS"],
   },
   {

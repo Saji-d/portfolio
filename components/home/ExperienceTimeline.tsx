@@ -25,7 +25,7 @@ export default function ExperienceTimeline() {
     <section
       id="experience"
       aria-label="Experience"
-      className="relative scroll-mt-24 pb-16 pt-14 sm:pb-20 sm:pt-16"
+      className="relative scroll-mt-24 pb-12 pt-14 sm:pb-16 sm:pt-16"
     >
       <div className="container-site">
         <Reveal>
@@ -41,7 +41,7 @@ export default function ExperienceTimeline() {
           <div className="absolute bottom-0 left-4 top-0 w-px bg-line sm:left-1/2" />
           <TimelineProgress />
 
-          <div className="space-y-12">
+          <div className="space-y-8">
             {experiences.map((experience, i) => {
               const leftSide = i % 2 === 0;
               return (

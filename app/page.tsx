@@ -5,8 +5,8 @@ import ProjectsSection from "@/components/home/ProjectsSection";
 import ResearchSpotlight from "@/components/home/ResearchSpotlight";
 import ExperienceTimeline from "@/components/home/ExperienceTimeline";
 import EducationSection from "@/components/home/EducationSection";
+import ContactSection from "@/components/home/ContactSection";
 import SkillsSection from "@/components/home/SkillsSection";
-import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
       <ExperienceTimeline />
       <EducationSection />
       <SkillsSection />
-      <CTASection />
+      <ContactSection />
     </>
   );
 }

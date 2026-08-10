@@ -7,7 +7,7 @@ export default function SkillsSection() {
     <section
       id="capabilities"
       aria-label="Capabilities"
-      className="relative scroll-mt-24 pb-16 pt-14 sm:pb-20 sm:pt-16"
+      className="relative scroll-mt-24 pb-12 pt-10 sm:pb-14 sm:pt-12"
     >
       <div className="container-site">
         <Reveal>
