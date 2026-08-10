@@ -1,5 +1,5 @@
-import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
+import Eyebrow from "@/components/ui/Eyebrow";
 import TimelineProgress from "@/components/ui/TimelineProgress";
 
 const experiences = [
@@ -22,16 +22,22 @@ const experiences = [
 
 export default function ExperienceTimeline() {
   return (
-    <section className="py-24 sm:py-32">
+    <section
+      id="experience"
+      aria-label="Experience"
+      className="relative scroll-mt-24 pb-16 pt-14 sm:pb-20 sm:pt-16"
+    >
       <div className="container-site">
-        <SectionHeading
-          index="04"
-          eyebrow="Experience"
-          title="A path engineered, not walked."
-          lede="Professional work across two companies — enterprise fintech to client delivery."
-        />
+        <Reveal>
+          <div className="max-w-2xl">
+            <Eyebrow index="04">Experience</Eyebrow>
+            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+              Production code, questionable sleep, surprisingly solid systems.
+            </h2>
+          </div>
+        </Reveal>
 
-        <div className="relative mt-14">
+        <div className="relative mt-8">
           <div className="absolute bottom-0 left-4 top-0 w-px bg-line sm:left-1/2" />
           <TimelineProgress />
 

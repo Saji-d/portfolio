@@ -13,12 +13,9 @@ export default function ResearchSpotlight() {
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="03">Research</Eyebrow>
-            <h2 className="mt-3 font-display text-2xl font-medium tracking-tight text-gradient sm:text-3xl">
-              Featured thesis
-            </h2>
-            <p className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
               Where the models meet the messy real world.
-            </p>
+            </h2>
           </div>
         </Reveal>
 
