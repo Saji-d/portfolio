@@ -17,7 +17,7 @@ export default function Footer() {
               {SITE.name}
             </span>
           </div>
-          <p className="mt-4 text-sm leading-relaxed text-text-secondary">
+          <p className="mt-4 body-copy text-text-secondary">
             {SITE.tagline}
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function Footer() {
 
       <div className="border-t border-line">
         <div className="container-site flex flex-col items-center justify-between gap-3 py-4 sm:flex-row">
-          <p className="font-mono text-xs text-text-muted">
+          <p className="card-meta">
             © {new Date().getFullYear()} {SITE.name}.
           </p>
           <BackToTop />

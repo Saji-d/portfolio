@@ -31,7 +31,7 @@ export default function ExperienceTimeline() {
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="04">Experience</Eyebrow>
-            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+            <h2 className="section-title">
               Production code, questionable sleep, surprisingly solid systems.
             </h2>
           </div>
@@ -63,16 +63,16 @@ export default function ExperienceTimeline() {
                     <div
                       className={`flex flex-col gap-1 ${leftSide ? "sm:items-end" : ""}`}
                     >
-                      <p className="font-mono text-xs text-text-muted">
+                      <p className="card-meta">
                         {experience.period}
                       </p>
-                      <h3 className="font-display text-xl font-semibold tracking-tight text-text-primary">
+                      <h3 className="card-title-xl">
                         {experience.company}
                       </h3>
                       <p className="font-mono text-sm font-medium text-accent">
                         {experience.position}
                       </p>
-                      <p className="text-sm leading-relaxed text-text-secondary">
+                      <p className="body-copy text-text-secondary">
                         {experience.detail}
                       </p>
                       {experience.tag && (

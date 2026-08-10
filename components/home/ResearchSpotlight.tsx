@@ -7,19 +7,19 @@ export default function ResearchSpotlight() {
     <section
       id="research"
       aria-label="Research"
-      className="relative scroll-mt-24 pb-12 pt-14 sm:pb-16 sm:pt-16"
+      className="relative scroll-mt-24 pb-10 pt-10 sm:pb-12 sm:pt-12"
     >
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="03">Research</Eyebrow>
-            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+            <h2 className="section-title">
               Where the models meet the messy real world.
             </h2>
           </div>
         </Reveal>
 
-        <div className="mt-8">
+        <div className="mt-5">
           <ResearchShowcase />
         </div>
       </div>

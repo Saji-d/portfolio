@@ -62,7 +62,7 @@ export default function CortexSection() {
             <Eyebrow index="01">cortex</Eyebrow>
           </Reveal>
           <Reveal delay={0.08}>
-            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+            <h2 className="section-title">
               Run a command. Follow the rabbit hole.
             </h2>
           </Reveal>

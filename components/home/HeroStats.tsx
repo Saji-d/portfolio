@@ -82,7 +82,7 @@ export default function HeroStats() {
               {s.value.toFixed(s.decimals) + s.suffix}
             </span>
           </div>
-          <p className="mt-1 font-mono text-xs text-text-muted">{s.label}</p>
+          <p className="mt-1 card-meta">{s.label}</p>
         </div>
       ))}
     </div>

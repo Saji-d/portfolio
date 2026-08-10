@@ -53,10 +53,10 @@ export default function ContactSection() {
           >
             <motion.div variants={fadeUp}>
               <Eyebrow index="07">Contact</Eyebrow>
-              <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+              <h2 className="section-title">
                 Got a problem worth engineering?
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-text-muted">
+              <p className="section-lead">
                 A role, a collaboration, or a hard technical problem — email is the
                 fastest way to reach me.
               </p>
@@ -79,7 +79,7 @@ export default function ContactSection() {
                       <c.icon className="h-4 w-4" />
                     </span>
                     <span className="min-w-0">
-                      <span className="block font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                      <span className="block mono-label text-text-muted">
                         {c.label}
                       </span>
                       <span className="mt-0.5 block truncate font-mono text-sm text-text-primary transition-colors group-hover:text-accent">
@@ -98,11 +98,11 @@ export default function ContactSection() {
                     <MapPin className="h-4 w-4" />
                   </span>
                   <div className="min-w-0">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                    <p className="mono-label text-text-muted">
                       Location
                     </p>
                     <p className="mt-0.5 text-sm text-text-primary">{SITE.location}</p>
-                    <p className="mt-0.5 font-mono text-xs text-text-muted">
+                    <p className="mt-0.5 card-meta">
                       {SITE.timezone} · remote-friendly
                     </p>
                   </div>
@@ -115,10 +115,10 @@ export default function ContactSection() {
                     <Clock className="h-4 w-4" />
                   </span>
                   <div className="min-w-0">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                    <p className="mono-label text-text-muted">
                       Availability
                     </p>
-                    <p className="mt-0.5 text-sm leading-relaxed text-text-primary">
+                    <p className="mt-0.5 body-copy text-text-primary">
                       {SITE.availability}
                     </p>
                   </div>

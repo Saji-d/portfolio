@@ -14,7 +14,7 @@ export default function ResearchShowcase() {
         <Reveal>
           <Link
             href={`/research/${featured.slug}`}
-            className="card-surface group block overflow-hidden p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-10"
+            className="card-surface group block overflow-hidden p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-8"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="eyebrow">Featured thesis</p>
@@ -23,20 +23,20 @@ export default function ResearchShowcase() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
             </div>
-            <h2 className="mt-4 max-w-3xl font-display text-2xl font-medium tracking-tight text-gradient sm:text-3xl">
+            <h2 className="feature-title mt-3 max-w-3xl">
               {featured.title}
             </h2>
-            <p className="mt-3 max-w-2xl leading-relaxed text-text-secondary">
+            <p className="mt-2.5 max-w-2xl body-copy text-text-secondary">
               {featured.summary}
             </p>
             {featured.metrics && (
-              <div className="mt-6 flex flex-wrap gap-8">
+              <div className="mt-4 flex flex-wrap gap-6">
                 {featured.metrics.map((m) => (
                   <div key={m.label}>
                     <div className="font-display text-2xl font-medium tracking-tight text-accent">
                       {m.value}
                     </div>
-                    <div className="font-mono text-xs text-text-muted">{m.label}</div>
+                    <div className="card-meta">{m.label}</div>
                   </div>
                 ))}
               </div>
@@ -45,7 +45,7 @@ export default function ResearchShowcase() {
         </Reveal>
       )}
 
-      <div className="mt-12 grid gap-5 md:grid-cols-2">
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
         {rest.map((paper, i) => (
           <Reveal key={paper.slug} delay={(i % 2) * 0.05}>
             <ResearchCard paper={paper} />

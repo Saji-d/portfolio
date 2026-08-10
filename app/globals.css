@@ -131,6 +131,96 @@
   border-radius: 1rem;
 }
 
+/* Shared homepage typography — keyed by semantic role, not per-section.
+   .section-title    → the heading line directly beneath each section eyebrow
+   .section-lead     → the optional descriptive paragraph under a section title
+   .feature-title    → the flagship/prominent display title (gradient)
+   .card-title       → standard card title        (18px)
+   .card-title-xl    → prominent card title       (20px)
+   .body-copy        → card / description body    (14px, 1.625)
+   .card-meta        → mono metadata              (12px)
+   .mono-label       → micro mono labels          (10px, uppercase) */
+@layer components {
+  .section-title {
+    margin-top: 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--text-secondary);
+  }
+
+  .section-lead {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: var(--text-muted);
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    background: linear-gradient(180deg, var(--text-primary) 0%, rgba(230, 234, 242, 0.62) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+  }
+
+  .card-title-xl {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+  }
+
+  .body-copy {
+    font-size: 0.875rem;
+    line-height: 1.625;
+  }
+
+  .card-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--text-muted);
+  }
+
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (min-width: 40rem) {
+  .section-title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  .feature-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
 @keyframes marquee-scroll {
   from {
     transform: translateX(0);

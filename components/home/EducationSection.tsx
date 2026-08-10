@@ -83,7 +83,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
         <div className="flex flex-1 flex-col gap-1.5 p-3.5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="max-w-xl">
-              <h3 className="font-display text-xl font-medium tracking-tight text-gradient sm:text-2xl">
+              <h3 className="feature-title">
                 {entry.institution}
               </h3>
               <p className="mt-0.5 text-sm font-medium text-accent">
@@ -94,7 +94,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
               <div className="font-display text-2xl font-medium tracking-tight text-accent">
                 {entry.gpa}
               </div>
-              <div className="mt-0.5 font-mono text-xs text-text-muted">
+              <div className="mt-0.5 card-meta">
                 {entry.gpaLabel}
               </div>
             </div>
@@ -144,13 +144,13 @@ function SchoolCard({ entry }: { entry: EducationEntry }) {
         </div>
 
         <div className="flex flex-1 flex-col gap-1 p-3">
-          <h3 className="font-display text-lg font-medium tracking-tight text-text-primary">
+          <h3 className="card-title">
             {entry.institution}
           </h3>
-          <p className="text-sm leading-relaxed text-text-secondary">
+          <p className="body-copy text-text-secondary">
             {entry.degree}
           </p>
-          <p className="mt-0.5 font-mono text-xs text-text-muted">
+          <p className="mt-0.5 card-meta">
             {entry.period}
           </p>
 
@@ -159,11 +159,11 @@ function SchoolCard({ entry }: { entry: EducationEntry }) {
               <div className="font-display text-xl font-medium tracking-tight text-accent">
                 {entry.gpa}
               </div>
-              <div className="mt-0.5 font-mono text-[10px] text-text-muted">
+              <div className="mt-0.5 card-meta">
                 {entry.gpaLabel}
               </div>
             </div>
-            <span className="inline-flex items-center gap-1.5 font-mono text-xs text-text-muted">
+            <span className="inline-flex items-center gap-1.5 card-meta">
               <MapPin className="h-3.5 w-3.5" />
               Dhaka
             </span>
@@ -188,7 +188,7 @@ export default function EducationSection() {
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="05">Education</Eyebrow>
-            <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+            <h2 className="section-title">
               Built the fundamentals, then taught the code what to do with them.
             </h2>
           </div>

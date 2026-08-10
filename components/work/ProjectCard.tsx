@@ -227,7 +227,7 @@ export function ProjectCard({
         )}
         <CoverImage project={project} sizes={sizes} compact={compact} />
         <div className={`flex flex-1 flex-col ${compact ? "p-4" : "p-5"}`}>
-          <h3 className="font-display text-lg font-medium tracking-tight text-text-primary">
+          <h3 className="card-title">
             {href ? (
               <SmartLink
                 href={href}
@@ -240,7 +240,7 @@ export function ProjectCard({
             )}
           </h3>
           <p
-            className={`flex-1 text-sm leading-relaxed text-text-muted ${
+            className={`flex-1 body-copy text-text-muted ${
               compact ? "mt-1" : "mt-1.5"
             }`}
           >

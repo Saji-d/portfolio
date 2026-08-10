@@ -17,7 +17,7 @@ export default function ProjectsSection() {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
               <Eyebrow index="02">Projects</Eyebrow>
-              <h2 className="mt-1 font-display text-lg font-medium tracking-tight text-text-secondary sm:text-xl">
+              <h2 className="section-title">
                 Built things. Broke things. Shipped things.
               </h2>
             </div>
