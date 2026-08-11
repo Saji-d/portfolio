@@ -15,7 +15,7 @@ export default function ProjectsSection() {
     <section
       id="projects"
       aria-label="Projects"
-      className="relative scroll-mt-24 pb-12 pt-14 sm:pb-16 sm:pt-16"
+      className="section-chapter relative pb-10 sm:pb-12"
     >
       <div className="container-site">
         <Reveal>

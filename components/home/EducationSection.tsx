@@ -33,16 +33,6 @@ const education: EducationEntry[] = [
     featured: true,
   },
   {
-    institution: "BAF Shaheen College Dhaka",
-    degree: "Higher Secondary Certificate (HSC) · Science",
-    gpa: "5.00",
-    gpaLabel: "GPA / 5.00",
-    period: "Jun 2019 — Dec 2021",
-    location: "Dhaka, Bangladesh",
-    image: "/images/education/baf-shaheen.webp",
-    imageAlt: "BAF Shaheen College Dhaka logo",
-  },
-  {
     institution: "Kurmitola High School & College",
     degree: "Secondary School Certificate (SSC) · Science",
     gpa: "5.00",
@@ -51,6 +41,16 @@ const education: EducationEntry[] = [
     location: "Dhaka, Bangladesh",
     image: "/images/education/kurmitola.webp",
     imageAlt: "Kurmitola High School & College logo",
+  },
+  {
+    institution: "BAF Shaheen College Dhaka",
+    degree: "Higher Secondary Certificate (HSC) · Science",
+    gpa: "5.00",
+    gpaLabel: "GPA / 5.00",
+    period: "Jun 2019 — Dec 2021",
+    location: "Dhaka, Bangladesh",
+    image: "/images/education/baf-shaheen.webp",
+    imageAlt: "BAF Shaheen College Dhaka logo",
   },
 ];
 
@@ -182,7 +182,7 @@ export default function EducationSection() {
     <section
       id="education"
       aria-label="Education"
-      className="relative scroll-mt-24 pb-8 pt-8 sm:pb-9 sm:pt-10"
+      className="section-chapter relative pb-10 sm:pb-12"
     >
       <div className="container-site">
         <Reveal>
@@ -194,7 +194,7 @@ export default function EducationSection() {
           </div>
         </Reveal>
 
-        <div className="mt-2.5 space-y-3">
+        <div className="space-y-3">
           {featured && (
             <Reveal>
               <FeaturedCard entry={featured} />

@@ -24,13 +24,25 @@ export interface NavSectionLink {
 }
 
 export const NAV_LINKS: readonly NavSectionLink[] = [
-  { label: "Home", section: "home", href: "/#home" },
   { label: "Projects", section: "projects", href: "/#projects" },
   { label: "Research", section: "research", href: "/#research" },
   { label: "Experience", section: "experience", href: "/#experience" },
   { label: "Education", section: "education", href: "/#education" },
   { label: "Capabilities", section: "capabilities", href: "/#capabilities" },
-  { label: "Contact", section: "contact", href: "/#contact" },
+] as const;
+
+export const CORTEX_LINK: NavSectionLink = {
+  label: "Cortex",
+  section: "cortex",
+  href: "/#cortex",
+} as const;
+
+// Every in-page scroll destination the nav needs to track for active-state
+// and hash-on-load handling, in document order (Cortex sits between the
+// hero and Projects on the page, ahead of the main link group).
+export const ALL_SECTION_LINKS: readonly NavSectionLink[] = [
+  CORTEX_LINK,
+  ...NAV_LINKS,
 ] as const;
 
 export const RESUME_LINK = {

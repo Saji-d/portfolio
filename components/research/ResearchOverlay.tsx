@@ -263,7 +263,7 @@ function StudyBody({
             </p>
             <a
               href={`mailto:${SITE.email}?subject=NeuroScreen thesis request`}
-              className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-[#0B0E14] transition-colors hover:bg-accent/90"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent/90"
             >
               Request the thesis <ArrowRight className="h-4 w-4" />
             </a>

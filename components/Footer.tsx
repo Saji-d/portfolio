@@ -7,6 +7,10 @@ import { NAV_LINKS, SITE } from "@/data/site";
 export default function Footer() {
   return (
     <footer className="relative z-10 border-t border-line">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"
+      />
       <div className="container-site flex flex-col gap-8 py-8 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <div className="flex items-center gap-2">
@@ -75,9 +79,9 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-line">
-        <div className="container-site flex flex-col items-center justify-between gap-3 py-4 sm:flex-row">
+        <div className="container-site flex flex-col items-center justify-between gap-2 py-4 sm:flex-row sm:gap-3">
           <p className="card-meta">
-            © {new Date().getFullYear()} {SITE.name}.
+            {`© ${new Date().getFullYear()} ${SITE.name} · built with Next.js, Tailwind CSS & Motion`}
           </p>
           <BackToTop />
         </div>

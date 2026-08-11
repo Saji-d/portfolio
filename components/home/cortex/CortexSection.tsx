@@ -47,40 +47,57 @@ export default function CortexSection() {
     <section
       id="cortex"
       aria-label="Interactive intro"
-      className="relative scroll-mt-24 overflow-hidden pb-10 pt-14 sm:pb-12 sm:pt-16"
+      className="section-chapter relative overflow-hidden"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.035)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)]" />
-        <NeuralBackdropSvg />
-        <div className="absolute -left-24 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-3xl" />
-        <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-accent-2/5 blur-3xl" />
-      </div>
-
-      <div className="container-site relative">
-        <div className="max-w-2xl">
-          <Reveal>
-            <Eyebrow index="01">cortex</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h2 className="section-title">
-              Run a command. Follow the rabbit hole.
-            </h2>
-          </Reveal>
+      {/* A full-bleed console zone, breaking out of the normal container
+          rhythm every other section follows — this is the one place on the
+          page meant to feel like you've stepped into a different mode, not
+          another card section. */}
+      <div className="relative left-1/2 w-screen -translate-x-1/2 border-y border-line bg-surface/40 py-10 sm:py-12">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(var(--grid-dot)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)]" />
+          <NeuralBackdropSvg />
+          <div className="absolute -left-24 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-3xl" />
+          <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-accent-2/5 blur-3xl" />
         </div>
 
-        <div className="mt-4">
-          <CortexLazyGate />
-        </div>
+        <div className="container-site relative">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="max-w-2xl">
+              <Reveal>
+                <Eyebrow index="01">cortex</Eyebrow>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h2 className="section-title">
+                  Run a command. Follow the rabbit hole.
+                </h2>
+              </Reveal>
+            </div>
+            <Reveal delay={0.12}>
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-accent">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                </span>
+                system online
+              </span>
+            </Reveal>
+          </div>
 
-        <noscript>
-          <p className="mt-4 font-mono text-xs text-text-muted">
-            The console needs JavaScript. See{" "}
-            <a href="/resume" className="text-accent">
-              the resume
-            </a>{" "}
-            instead.
-          </p>
-        </noscript>
+          <div className="mt-4">
+            <CortexLazyGate />
+          </div>
+
+          <noscript>
+            <p className="mt-4 font-mono text-xs text-text-muted">
+              The console needs JavaScript. See{" "}
+              <a href="/resume" className="text-accent">
+                the resume
+              </a>{" "}
+              instead.
+            </p>
+          </noscript>
+        </div>
       </div>
     </section>
   );

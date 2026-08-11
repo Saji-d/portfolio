@@ -4,6 +4,7 @@ import MagneticButton from "@/components/ui/MagneticButton";
 import TerminalCard from "@/components/home/TerminalCard";
 import Eyebrow from "@/components/ui/Eyebrow";
 import HeroStats from "@/components/home/HeroStats";
+import HeroMarquee from "@/components/home/HeroMarquee";
 
 const delays = ["0s", "0.07s", "0.14s", "0.21s", "0.45s"];
 
@@ -66,6 +67,10 @@ export default function Hero() {
         >
           <HeroStats />
           <TerminalCard />
+        </div>
+
+        <div className="hero-enter mt-16 sm:mt-20" style={{ animationDelay: delays[4] }}>
+          <HeroMarquee />
         </div>
 
         <Image

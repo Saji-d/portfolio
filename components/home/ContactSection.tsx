@@ -41,7 +41,7 @@ export default function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="relative scroll-mt-24 pb-8 pt-10 sm:pb-10 sm:pt-12"
+      className="relative scroll-mt-0 pb-10 pt-[calc(var(--nav-offset)_+_2.5rem)] sm:pb-12"
     >
       <div className="container-site">
         <MotionConfig reducedMotion="user">
@@ -51,15 +51,23 @@ export default function ContactSection() {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px 0px -60px 0px" }}
           >
-            <motion.div variants={fadeUp}>
-              <Eyebrow index="07">Contact</Eyebrow>
-              <h2 className="section-title">
-                Got a problem worth engineering?
-              </h2>
-              <p className="section-lead">
-                A role, a collaboration, or a hard technical problem — email is the
-                fastest way to reach me.
-              </p>
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-wrap items-start justify-between gap-4"
+            >
+              <div className="max-w-2xl">
+                <Eyebrow index="07">Contact</Eyebrow>
+                <h2 className="section-title">
+                  Got a problem worth engineering?
+                </h2>
+              </div>
+              <span className="mt-1 inline-flex shrink-0 items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 font-mono text-xs font-medium text-success">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+                </span>
+                Open to opportunities
+              </span>
             </motion.div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -73,9 +81,13 @@ export default function ContactSection() {
                     href={c.href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
-                    className="card-surface group flex h-full items-center gap-3 px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(79,209,197,0.45)]"
+                    className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(79,209,197,0.45)]"
                   >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[250%] skew-x-12 bg-gradient-to-r from-transparent via-accent/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[450%]"
+                    />
+                    <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
                       <c.icon className="h-4 w-4" />
                     </span>
                     <span className="min-w-0">

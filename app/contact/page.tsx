@@ -115,7 +115,7 @@ export default function ContactPage() {
             </div>
             <a
               href={`mailto:${SITE.email}`}
-              className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-medium text-[#0B0E14] transition-colors hover:bg-accent/90"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-ink transition-colors hover:bg-accent/90"
             >
               <Mail className="h-4 w-4" /> Email me
             </a>

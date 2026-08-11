@@ -21,7 +21,7 @@ export default function NotFound() {
       <div className="mt-8">
         <MagneticButton
           href="/"
-          className="bg-accent px-6 py-3 text-sm font-medium text-[#0B0E14] hover:bg-accent/90"
+          className="bg-accent px-6 py-3 text-sm font-medium text-accent-ink hover:bg-accent/90"
         >
           Back home
         </MagneticButton>

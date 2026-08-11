@@ -1,5 +1,4 @@
 import Hero from "@/components/home/Hero";
-import Marquee from "@/components/home/Marquee";
 import CortexSection from "@/components/home/cortex/CortexSection";
 import ProjectsSection from "@/components/home/ProjectsSection";
 import ResearchSpotlight from "@/components/home/ResearchSpotlight";
@@ -13,7 +12,6 @@ export default function Home() {
   return (
     <OverlayProvider>
       <Hero />
-      <Marquee />
       <CortexSection />
       <ProjectsSection />
       <ResearchSpotlight />

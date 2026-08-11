@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TimelineProgress from "@/components/ui/TimelineProgress";
@@ -17,72 +20,129 @@ const experiences = [
     position: "Software Engineering Intern",
     detail:
       "Developed and delivered responsive web applications for multiple client projects. Worked across frontend and backend development, implemented production-ready features, fixed bugs, collaborated with the development team, and successfully completed assigned client deliverables within deadlines.",
+    tag: "Complete",
   },
 ];
 
 export default function ExperienceTimeline() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const entryRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const els = entryRefs.current.filter((el): el is HTMLDivElement => Boolean(el));
+    if (els.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const idx = Number((entry.target as HTMLElement).dataset.entryIndex);
+          if (!Number.isNaN(idx)) setActiveIndex(idx);
+        }
+      },
+      { rootMargin: "-35% 0px -45% 0px", threshold: 0 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       id="experience"
       aria-label="Experience"
-      className="relative scroll-mt-24 pb-12 pt-14 sm:pb-16 sm:pt-16"
+      className="section-chapter relative pb-16 sm:pb-20"
     >
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="04">Experience</Eyebrow>
             <h2 className="section-title">
-              Production code, questionable sleep, surprisingly solid systems.
+              From client deliverables to fraud-detection pipelines in production.
             </h2>
           </div>
         </Reveal>
 
-        <div className="relative mt-8">
-          <div className="absolute bottom-0 left-4 top-0 w-px bg-line sm:left-1/2" />
-          <TimelineProgress />
+        <div className="relative mt-8 lg:mt-12">
+          {/* Single-column rail (mobile / tablet) */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-y-2 left-[15px] w-px bg-line lg:hidden"
+          />
+          <div className="lg:hidden">
+            <TimelineProgress />
+          </div>
+          {/* Shared central axis (desktop) */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-line lg:block"
+          />
 
-          <div className="space-y-8">
+          <div className="space-y-5 lg:space-y-10">
             {experiences.map((experience, i) => {
-              const leftSide = i % 2 === 0;
+              const isCurrent = i === 0;
+              const active = isCurrent || activeIndex === i;
               return (
-                <div
-                  key={experience.company}
-                  className="relative grid gap-4 pl-12 sm:grid-cols-2 sm:pl-0"
-                >
-                  <span className="absolute left-4 top-1 grid h-4 w-4 -translate-x-1/2 place-items-center sm:left-1/2">
-                    <Reveal scale={0} y={0}>
-                      <span className="block h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_16px_rgba(79,209,197,0.8)]" />
-                    </Reveal>
-                  </span>
-
-                  <Reveal
-                    x={leftSide ? -20 : 20}
-                    y={0}
-                    className={`sm:px-8 ${leftSide ? "sm:text-right" : "sm:col-start-2"}`}
+                <Reveal key={experience.company} delay={i * 0.08} y={16}>
+                  <div
+                    ref={(el) => {
+                      entryRefs.current[i] = el;
+                    }}
+                    data-entry-index={i}
+                    className="relative"
                   >
-                    <div
-                      className={`flex flex-col gap-1 ${leftSide ? "sm:items-end" : ""}`}
+                    {/* Node riding on the rail / central axis */}
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-5 grid h-[30px] w-[30px] place-items-center lg:left-1/2 lg:-ml-[15px]"
                     >
-                      <p className="card-meta">
-                        {experience.period}
-                      </p>
-                      <h3 className="card-title-xl">
-                        {experience.company}
-                      </h3>
-                      <p className="font-mono text-sm font-medium text-accent">
-                        {experience.position}
-                      </p>
-                      <p className="body-copy text-text-secondary">
-                        {experience.detail}
-                      </p>
-                      {experience.tag && (
-                        <span className="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+                      <span
+                        className={`rounded-full transition-all duration-500 ${
+                          active
+                            ? "h-2.5 w-2.5 bg-accent shadow-[0_0_16px_rgba(79,209,197,0.8)]"
+                            : "h-2 w-2 bg-text-muted"
+                        }`}
+                      />
+                    </span>
+
+                    <article
+                      className={`card-surface ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-0.5 ${
+                        isCurrent
+                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(79,209,197,0.5)] lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
+                          : "hover:border-accent/40 lg:ml-[calc(50%_+_2rem)] lg:mr-0"
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface-2/60 px-4 py-2.5">
+                        <span className="font-mono text-xs text-text-muted">
+                          {experience.period}
+                        </span>
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider transition-colors duration-500 ${
+                            isCurrent
+                              ? "border-accent/30 bg-accent-dim text-accent"
+                              : "border-line bg-surface text-text-muted"
+                          }`}
+                        >
+                          <span
+                            className={`h-1.5 w-1.5 rounded-full ${
+                              isCurrent ? "animate-pulse bg-accent" : "bg-text-muted"
+                            }`}
+                          />
                           {experience.tag}
                         </span>
-                      )}
-                    </div>
-                  </Reveal>
-                </div>
+                      </div>
+
+                      <div className="p-4 sm:p-5">
+                        <h3 className="card-title-xl">{experience.company}</h3>
+                        <p className="mt-0.5 font-mono text-sm font-medium text-accent">
+                          {experience.position}
+                        </p>
+                        <p className="mt-2 body-copy text-text-secondary">
+                          {experience.detail}
+                        </p>
+                      </div>
+                    </article>
+                  </div>
+                </Reveal>
               );
             })}
           </div>

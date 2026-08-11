@@ -49,7 +49,7 @@ export default function ResumePage() {
           <a
             href="/Sajidur_Rahman_Sajid.pdf"
             download="Sajidur_Rahman_Sajid.pdf"
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-medium text-[#0B0E14] transition-colors hover:bg-accent/90"
+            className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-ink transition-colors hover:bg-accent/90"
           >
             <Download className="h-4 w-4" /> Download PDF
           </a>

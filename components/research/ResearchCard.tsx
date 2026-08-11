@@ -26,14 +26,14 @@ export default function ResearchCard({
         </div>
         <ArrowUpRight className="h-4 w-4 shrink-0 text-text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
       </div>
-      <h3 className="card-title mt-3">{paper.title}</h3>
+      <h3 className="card-title mt-3 line-clamp-2">{paper.title}</h3>
       <p className="mt-1 card-meta">{paper.field}</p>
-      <p className="mt-2.5 body-copy text-text-secondary">{paper.summary}</p>
+      <p className="mt-2 line-clamp-3 body-copy text-text-secondary">{paper.summary}</p>
       {paper.metrics && (
-        <div className="mt-3 flex gap-5">
+        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
           {paper.metrics.map((m) => (
             <div key={m.label}>
-              <div className="font-display text-xl font-medium tracking-tight text-accent">
+              <div className="font-display text-lg font-medium tracking-tight text-accent">
                 {m.value}
               </div>
               <div className="card-meta">{m.label}</div>
@@ -45,7 +45,7 @@ export default function ResearchCard({
   );
 
   const classes =
-    "card-surface group block h-full p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40";
+    "card-surface group block h-full p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40";
 
   if (onOpen) {
     return (

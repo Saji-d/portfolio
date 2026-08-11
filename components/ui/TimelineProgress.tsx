@@ -51,7 +51,7 @@ export default function TimelineProgress() {
     <div
       ref={lineRef}
       aria-hidden="true"
-      className="absolute bottom-0 left-4 top-0 w-px origin-top bg-accent sm:left-1/2"
+      className="absolute bottom-1 left-[15px] top-2 w-px origin-top bg-accent"
       style={{ transform: "scaleY(0)" }}
     />
   );

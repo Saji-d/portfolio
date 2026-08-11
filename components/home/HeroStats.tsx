@@ -16,11 +16,12 @@ const STATS: Stat[] = [
   { value: 2, decimals: 0, suffix: "+", label: "Years Building" },
 ];
 
-const DURATION_MS = 1000;
+const DURATION_MS = 1400;
 
 export default function HeroStats() {
   const gridRef = useRef<HTMLDivElement>(null);
   const valueRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -31,6 +32,8 @@ export default function HeroStats() {
       STATS.forEach((s, i) => {
         const el = valueRefs.current[i];
         if (el) el.textContent = finalText(s);
+        const bar = barRefs.current[i];
+        if (bar) bar.style.transform = "scaleX(1)";
       });
     };
 
@@ -52,6 +55,8 @@ export default function HeroStats() {
             STATS.forEach((s, i) => {
               const el = valueRefs.current[i];
               if (el) el.textContent = (s.value * eased).toFixed(s.decimals);
+              const bar = barRefs.current[i];
+              if (bar) bar.style.transform = `scaleX(${eased.toFixed(4)})`;
             });
             raf = requestAnimationFrame(tick);
           } else {
@@ -83,6 +88,11 @@ export default function HeroStats() {
             </span>
           </div>
           <p className="mt-1 card-meta">{s.label}</p>
+          <span
+            aria-hidden="true"
+            className="mt-1.5 block h-px w-full origin-left scale-x-0 bg-gradient-to-r from-accent to-transparent transition-transform duration-100"
+            ref={(el) => { barRefs.current[i] = el; }}
+          />
         </div>
       ))}
     </div>

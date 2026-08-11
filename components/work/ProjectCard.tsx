@@ -9,7 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Project } from "@/data/projects";
-import { Pill } from "@/components/ui/Badge";
+import { Pill, StatusBadge } from "@/components/ui/Badge";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import TiltCard from "@/components/ui/TiltCard";
 
@@ -60,7 +60,7 @@ function GlassChip({
     <span
       className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider backdrop-blur-md ${
         accent
-          ? "border-accent/50 bg-accent text-[#0B0E14]"
+          ? "border-accent/50 bg-accent text-accent-ink"
           : "border-white/10 bg-[#0B0E14]/60 text-text-secondary"
       }`}
     >
@@ -96,6 +96,31 @@ function CoverImage({
       <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14]/85 via-[#0B0E14]/10 to-[#0B0E14]/20" />
       <div className="absolute inset-0 bg-[#0B0E14]/0 transition-colors duration-300 group-hover:bg-[#0B0E14]/20" />
 
+      {/* Inspection scan-line — a thin light band sweeping the cover on
+          hover, reinforcing "running system being inspected" rather than a
+          static screenshot. The animation always runs; only its opacity is
+          hover-gated, so there's no start/stop jank. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      >
+        <span className="animate-scan-sweep absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-accent/25 to-transparent" />
+      </div>
+
+      {/* Targeting-reticle corners — reveal on hover, framing the cover like a system under inspection. */}
+      <span
+        aria-hidden="true"
+        className="absolute left-2.5 top-2.5 h-3.5 w-3.5 -translate-x-1 -translate-y-1 border-l border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute right-2.5 top-2.5 h-3.5 w-3.5 translate-x-1 -translate-y-1 border-r border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute bottom-2.5 left-2.5 h-3.5 w-3.5 -translate-x-1 translate-y-1 border-b border-l border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
+      />
+
       <div className="absolute left-3 top-3 flex max-w-[calc(100%-6rem)] flex-wrap gap-1.5">
         <GlassChip accent={pro}>{project.category}</GlassChip>
         {project.badges.map((badge) => (
@@ -104,13 +129,13 @@ function CoverImage({
       </div>
 
       {pro && (
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#0B0E14] shadow-[0_4px_20px_rgba(79,209,197,0.45)]">
+        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-accent-ink shadow-[0_4px_20px_rgba(79,209,197,0.45)]">
           <Star className="h-3 w-3 fill-current" />
           Featured
         </span>
       )}
 
-      <span className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-accent text-[#0B0E14] opacity-0 shadow-[0_8px_24px_rgba(79,209,197,0.45)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      <span className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-accent text-accent-ink opacity-0 shadow-[0_8px_24px_rgba(79,209,197,0.45)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <ArrowUpRight className="h-4 w-4" />
       </span>
     </>
@@ -270,26 +295,29 @@ export function ProjectCard({
           onOpenCaseStudy={onOpenCaseStudy}
         />
         <div className={`flex flex-1 flex-col ${compact ? "p-4" : "p-5"}`}>
-          <h3 className="card-title">
-            {opensCaseStudy ? (
-              <button
-                type="button"
-                onClick={() => onOpenCaseStudy?.(project.slug)}
-                className="text-left transition-colors group-hover:text-accent"
-              >
-                {project.name}
-              </button>
-            ) : href ? (
-              <SmartLink
-                href={href}
-                className="transition-colors group-hover:text-accent"
-              >
-                {project.name}
-              </SmartLink>
-            ) : (
-              project.name
-            )}
-          </h3>
+          <div className="flex items-start justify-between gap-3">
+            <h3 className="card-title">
+              {opensCaseStudy ? (
+                <button
+                  type="button"
+                  onClick={() => onOpenCaseStudy?.(project.slug)}
+                  className="text-left transition-colors group-hover:text-accent"
+                >
+                  {project.name}
+                </button>
+              ) : href ? (
+                <SmartLink
+                  href={href}
+                  className="transition-colors group-hover:text-accent"
+                >
+                  {project.name}
+                </SmartLink>
+              ) : (
+                project.name
+              )}
+            </h3>
+            <StatusBadge status={project.status} />
+          </div>
           <p
             className={`flex-1 body-copy text-text-muted ${
               compact ? "mt-1" : "mt-1.5"

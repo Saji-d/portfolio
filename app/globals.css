@@ -13,9 +13,43 @@
   --accent: #4fd1c5;
   --accent-dim: rgba(79, 209, 197, 0.14);
   --accent-2: #7c7dff;
+  --accent-ink: #0b0e14;
   --success: #3fb28a;
   --warning: #e8b44b;
   --danger: #e05b5b;
+  --text-fade: rgba(230, 234, 242, 0.62);
+  --text-neon-from: #f0fbf9;
+  --text-neon-via: #bdf3ea;
+  --text-neon-glow: rgba(79, 209, 197, 0.3);
+  --grid-dot: rgba(255, 255, 255, 0.035);
+  /* Bottom edge of the fixed navbar: top offset (top-3) + bar height
+     (h-14 + 2px border). All in-page chapters land with their content
+     starting just below this line. */
+  --nav-offset: calc(12px + 58px);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --surface-2: #eef1f5;
+  --border: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.16);
+  --text-primary: #10151f;
+  --text-secondary: #4b5565;
+  --text-muted: #6b7385;
+  --accent: #0f766e;
+  --accent-dim: rgba(15, 118, 110, 0.1);
+  --accent-2: #4f46e5;
+  --accent-ink: #ffffff;
+  --success: #157a4d;
+  --warning: #a3620a;
+  --danger: #d1382c;
+  --text-fade: rgba(16, 21, 31, 0.55);
+  --text-neon-from: #10151f;
+  --text-neon-via: #0f766e;
+  --text-neon-glow: rgba(15, 118, 110, 0.16);
+  --grid-dot: rgba(15, 23, 42, 0.05);
 }
 
 @theme inline {
@@ -30,6 +64,7 @@
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
   --color-accent-2: var(--accent-2);
+  --color-accent-ink: var(--accent-ink);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
@@ -68,7 +103,7 @@
   }
 
   :target {
-    scroll-margin-top: 6rem;
+    scroll-margin-top: 0;
   }
 }
 
@@ -80,7 +115,7 @@
   padding: 0.625rem 1rem;
   border-radius: 0.5rem;
   background-color: var(--accent);
-  color: #0b0e14;
+  color: var(--accent-ink);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
@@ -92,11 +127,31 @@
   transform: translateY(0);
 }
 
+@media (min-width: 40rem) {
+  :root {
+    --nav-offset: calc(16px + 58px); /* sm:top-4 */
+  }
+}
+
 @utility container-site {
   margin-inline: auto;
   width: 100%;
   max-width: 76rem;
   padding-inline: 1.5rem;
+}
+
+/* In-page navigation chapters (Projects, Research, Experience, Education,
+   Capabilities, Contact, Cortex). Each is a self-contained viewport-sized
+   frame: it scrolls into place with its top edge exactly at the top of the
+   viewport (so nothing of the previous section can remain visible above or
+   behind the navbar), fills the whole visible height (so the next section
+   cannot peek in from below), and starts its content at a consistent gap
+   below the fixed navbar via the padding-top. */
+@utility section-chapter {
+  scroll-margin-top: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: calc(var(--nav-offset) + 2.5rem);
 }
 
 @utility eyebrow {
@@ -109,7 +164,7 @@
 }
 
 @utility text-gradient {
-  background: linear-gradient(180deg, var(--text-primary) 0%, rgba(230, 234, 242, 0.62) 100%);
+  background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-fade) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -117,12 +172,17 @@
 }
 
 @utility text-neon {
-  background: linear-gradient(180deg, #f0fbf9 0%, #bdf3ea 40%, var(--accent) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--text-neon-from) 0%,
+    var(--text-neon-via) 40%,
+    var(--accent) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 0 16px rgba(79, 209, 197, 0.3));
+  filter: drop-shadow(0 0 16px var(--text-neon-glow));
 }
 
 @utility card-surface {
@@ -164,7 +224,7 @@
     line-height: 1.75rem;
     font-weight: 500;
     letter-spacing: -0.025em;
-    background: linear-gradient(180deg, var(--text-primary) 0%, rgba(230, 234, 242, 0.62) 100%);
+    background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-fade) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -230,9 +290,49 @@
   }
 }
 
+@keyframes marquee-scroll-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @utility marquee-track {
-  animation: marquee-scroll 45s linear infinite;
   will-change: transform;
+}
+
+@utility animate-marquee {
+  animation: marquee-scroll linear infinite;
+}
+
+@utility animate-marquee-reverse {
+  animation: marquee-scroll-reverse linear infinite;
+}
+
+@keyframes trace-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  60%,
+  100% {
+    transform: translateX(420%);
+  }
+}
+
+@utility animate-trace-sweep {
+  animation: trace-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes circuit-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@utility animate-circuit-flow {
+  animation: circuit-flow 8s linear infinite;
 }
 
 @keyframes page-enter {
@@ -308,6 +408,25 @@
   animation: cortex-float 6s ease-in-out infinite;
 }
 
+/* A very slow, low-amplitude drift for the Hero's atmospheric light
+   field — deliberately subtle (small translate + opacity breathing) so it
+   reads as a living environment rather than a moving graphic. */
+@keyframes ambient-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.06);
+    opacity: 1;
+  }
+}
+
+@utility animate-ambient-drift {
+  animation: ambient-drift 22s ease-in-out infinite;
+}
+
 @keyframes scan-sweep {
   0% {
     transform: translateY(-120%);
@@ -363,6 +482,34 @@
   background-color: rgba(79, 209, 197, 0.45);
 }
 
+[data-theme="light"] .network-canvas {
+  opacity: 0.32;
+}
+
+/* Monochrome tech logos (Express, Vercel, GitHub, …) are white in their
+   SVG artwork, so on the light theme they get a subtle dark halo to keep
+   them readable against the near-white background. Colored logos are
+   unaffected since the shadow follows each icon's silhouette. */
+[data-theme="light"] .tech-marquee-icon {
+  filter: drop-shadow(0 1px 2px rgba(16, 21, 31, 0.35));
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+.theme-icon-moon {
+  display: block;
+}
+
+[data-theme="light"] .theme-icon-sun {
+  display: block;
+}
+
+[data-theme="light"] .theme-icon-moon {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -384,12 +531,7 @@
     justify-content: center;
     width: 100%;
   }
-  .marquee-segment {
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-  }
-  .marquee-segment-duplicate {
+  .marquee-duplicate {
     display: none;
   }
 }
