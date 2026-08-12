@@ -1,32 +1,33 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, SquareTerminal, X } from "lucide-react";
+import { MotionConfig, motion } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import { ALL_SECTION_LINKS, CORTEX_LINK, NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
+import { ABOUT_LINK, ALL_SECTION_LINKS, CORTEX_LINK, NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
 import { useCommandPalette } from "@/components/command-palette-context";
 
-interface PillRect {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-}
+// One physical pill that slides between nav items when the active section
+// changes (shared layout animation, spring-eased at ~200-280ms).
+const PILL_TRANSITION = {
+  type: "spring" as const,
+  stiffness: 440,
+  damping: 34,
+  mass: 0.9,
+};
 
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
   const { setOpen: setPaletteOpen } = useCommandPalette();
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
-  const navRef = useRef<HTMLElement>(null);
-  const [pill, setPill] = useState<PillRect | null>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // On a hard load / refresh with a #section in the URL, Next's App Router
   // does not reliably perform the browser's native hash-scroll — the page
@@ -183,32 +184,6 @@ export default function Nav() {
     window.history.replaceState(null, "", "/");
   };
 
-  useLayoutEffect(() => {
-    const nav = navRef.current;
-    if (!nav) return;
-    const measure = () => {
-      const link = nav.querySelector<HTMLAnchorElement>(
-        'a[aria-current]:not([data-resume])'
-      );
-      if (!link) {
-        setPill(null);
-        return;
-      }
-      const navRect = nav.getBoundingClientRect();
-      const rect = link.getBoundingClientRect();
-      setPill({
-        left: rect.left - navRect.left,
-        top: rect.top - navRect.top,
-        width: rect.width,
-        height: rect.height,
-      });
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(nav);
-    return () => ro.disconnect();
-  }, [pathname, activeSection]);
-
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
@@ -247,6 +222,7 @@ export default function Nav() {
     };
   }, [open]);
 
+  const aboutActive = pathname === "/" && activeSection === ABOUT_LINK.section;
   const cortexActive = pathname === "/" && activeSection === CORTEX_LINK.section;
 
   return (
@@ -277,66 +253,76 @@ export default function Nav() {
           </Link>
 
           <nav
-            ref={navRef}
             className="relative hidden items-center gap-0.5 lg:flex"
             aria-label="Primary"
           >
-            {pill && (
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute rounded-full border border-accent/30 bg-accent-dim transition-[left,top,width,height] duration-500 ease-[cubic-bezier(0.34,1.2,0.4,1)]"
-                style={{
-                  left: pill.left,
-                  top: pill.top,
-                  width: pill.width,
-                  height: pill.height,
-                }}
-              />
-            )}
-            <Link
-              href={CORTEX_LINK.href}
-              data-cortex
-              onClick={(e) => handleSectionClick(e, CORTEX_LINK.section)}
-              aria-current={cortexActive ? "true" : undefined}
-              title="Enter Cortex — the console behind this site"
-              className={`relative flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-2 text-sm font-medium transition-colors ${
-                cortexActive
-                  ? "text-accent"
-                  : "text-text-secondary hover:text-accent"
-              }`}
-            >
-              <span
-                aria-hidden="true"
-                className={`h-1 w-1 shrink-0 rounded-full bg-accent transition-all duration-300 ${
-                  cortexActive ? "scale-100 opacity-100" : "scale-0 opacity-0"
+            <MotionConfig reducedMotion="user">
+              <Link
+                href={ABOUT_LINK.href}
+                onClick={(e) => handleSectionClick(e, ABOUT_LINK.section)}
+                aria-current={aboutActive ? "true" : undefined}
+                className={`relative flex shrink-0 items-center rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ${
+                  aboutActive
+                    ? "text-text-primary"
+                    : "text-text-secondary hover:-translate-y-px hover:text-text-primary"
                 }`}
-              />
-              <span className="relative z-10">{CORTEX_LINK.label}</span>
-            </Link>
-            {NAV_LINKS.map((link) => {
-              const active = pathname === "/" && activeSection === link.section;
-              return (
-                <Link
-                  key={link.section}
-                  href={link.href}
-                  onClick={(e) => handleSectionClick(e, link.section)}
-                  aria-current={active ? "true" : undefined}
-                  className={`relative flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-2 text-sm font-medium transition-colors ${
-                    active
-                      ? "text-text-primary"
-                      : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`h-1 w-1 shrink-0 rounded-full bg-accent transition-all duration-300 ${
-                      active ? "scale-100 opacity-100" : "scale-0 opacity-0"
-                    }`}
+              >
+                {aboutActive && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
+                    transition={PILL_TRANSITION}
                   />
-                  <span className="relative z-10">{link.label}</span>
-                </Link>
-              );
-            })}
+                )}
+                <span className="relative z-10">{ABOUT_LINK.label}</span>
+              </Link>
+              <Link
+                href={CORTEX_LINK.href}
+                data-cortex
+                onClick={(e) => handleSectionClick(e, CORTEX_LINK.section)}
+                aria-current={cortexActive ? "true" : undefined}
+                title="Enter Cortex, the console behind this site"
+                className={`relative flex shrink-0 items-center rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ${
+                  cortexActive
+                    ? "text-accent"
+                    : "text-text-secondary hover:-translate-y-px hover:text-accent"
+                }`}
+              >
+                {cortexActive && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
+                    transition={PILL_TRANSITION}
+                  />
+                )}
+                <span className="relative z-10">{CORTEX_LINK.label}</span>
+              </Link>
+              {NAV_LINKS.map((link) => {
+                const active = pathname === "/" && activeSection === link.section;
+                return (
+                  <Link
+                    key={link.section}
+                    href={link.href}
+                    onClick={(e) => handleSectionClick(e, link.section)}
+                    aria-current={active ? "true" : undefined}
+                    className={`relative flex shrink-0 items-center rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ${
+                      active
+                        ? "text-text-primary"
+                        : "text-text-secondary hover:-translate-y-px hover:text-text-primary"
+                    }`}
+                  >
+                    {active && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
+                        transition={PILL_TRANSITION}
+                      />
+                    )}
+                    <span className="relative z-10">{link.label}</span>
+                  </Link>
+                );
+              })}
+            </MotionConfig>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5">
@@ -345,7 +331,7 @@ export default function Nav() {
               <span aria-hidden="true" className="h-5 w-px shrink-0 bg-line" />
               <button
                 onClick={() => setPaletteOpen(true)}
-                aria-label="Open Cortex — command console"
+                aria-label="Open Cortex, command console"
                 title="Search · ⌘K"
                 className="grid h-9 w-9 shrink-0 place-items-center text-text-secondary transition-colors hover:text-accent"
               >
@@ -413,6 +399,24 @@ export default function Nav() {
         >
           <div className="min-h-0 overflow-hidden">
             <nav className="flex flex-col gap-1 px-3 pb-3 pt-1" aria-label="Mobile">
+              <Link
+                href={ABOUT_LINK.href}
+                onClick={(e) => handleSectionClick(e, ABOUT_LINK.section)}
+                aria-current={aboutActive ? "true" : undefined}
+                className={`flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
+                  aboutActive
+                    ? "bg-accent-dim text-accent"
+                    : "text-text-secondary hover:bg-surface hover:text-text-primary"
+                }`}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`h-1 w-1 shrink-0 rounded-full bg-accent transition-opacity duration-200 ${
+                    aboutActive ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+                {ABOUT_LINK.label}
+              </Link>
               <Link
                 href={CORTEX_LINK.href}
                 onClick={(e) => handleSectionClick(e, CORTEX_LINK.section)}

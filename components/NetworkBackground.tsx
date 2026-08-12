@@ -8,6 +8,11 @@ interface Node {
   vx: number;
   vy: number;
   pulse: number;
+  // Small, eased pointer-repel displacement layered on top of the node's
+  // natural drift position (see tick()). Stays at 0,0 whenever the pointer
+  // is far away or on touch devices.
+  ox: number;
+  oy: number;
 }
 
 interface FarNode {
@@ -32,6 +37,12 @@ const FRAME_MS = 33;
 const FOCUS_RADIUS = 170;
 const FOCUS_RADIUS_SQ = FOCUS_RADIUS * FOCUS_RADIUS;
 const MAX_SIGNALS = 4;
+// Reuses FOCUS_RADIUS so the same neighborhood that glows brighter near the
+// pointer also gets the gentle repel nudge, one coherent "focus" concept
+// instead of a second tunable radius. Displacement is capped tiny on
+// purpose, this should read as a quiet reaction, not a force field.
+const MAX_POINTER_OFFSET = 6;
+const POINTER_OFFSET_EASE = 0.04;
 
 // Sections lean the node glow color toward teal (0) or violet (1) — a
 // deliberately subtle "the system's telemetry shifts with context" cue,
@@ -104,6 +115,8 @@ export default function NetworkBackground() {
         vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.22,
         pulse: Math.random() * 100,
+        ox: 0,
+        oy: 0,
       }));
       signals = [];
 
@@ -231,10 +244,39 @@ export default function NetworkBackground() {
 
     function tick() {
       for (const n of nodes) {
+        if (finePointer) {
+          // Undo last frame's pointer nudge first so wall-bounce and drift
+          // below act on the node's natural wandering position, not the
+          // displaced one. The nudge itself is re-applied after.
+          n.x -= n.ox;
+          n.y -= n.oy;
+        }
+
         n.x += n.vx;
         n.y += n.vy;
         if (n.x < 0 || n.x > width) n.vx *= -1;
         if (n.y < 0 || n.y > height) n.vy *= -1;
+
+        if (finePointer) {
+          let targetOx = 0;
+          let targetOy = 0;
+          const dx = n.x - pointerX;
+          const dy = n.y - pointerY;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < FOCUS_RADIUS_SQ && distSq > 1) {
+            const dist = Math.sqrt(distSq);
+            const strength = (1 - dist / FOCUS_RADIUS) * MAX_POINTER_OFFSET;
+            targetOx = (dx / dist) * strength;
+            targetOy = (dy / dist) * strength;
+          }
+          // Ease toward the target displacement (or back to 0,0 once the
+          // pointer moves away) instead of snapping, so the reaction reads
+          // as a soft settle rather than a jump.
+          n.ox += (targetOx - n.ox) * POINTER_OFFSET_EASE;
+          n.oy += (targetOy - n.oy) * POINTER_OFFSET_EASE;
+          n.x += n.ox;
+          n.y += n.oy;
+        }
       }
       for (const n of farNodes) {
         n.x += n.vx;

@@ -120,7 +120,7 @@ export default function GalleryLightbox({
               />
             </div>
             <p className="mt-3 text-center font-mono text-xs text-text-muted">
-              {images[index].alt} — {index + 1} / {images.length}
+              {images[index].alt} · {index + 1} / {images.length}
             </p>
           </motion.div>
         </motion.div>

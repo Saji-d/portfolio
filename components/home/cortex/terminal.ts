@@ -6,11 +6,11 @@ import { projects } from "@/data/projects";
 const career = timeline.filter(
   (t) => t.type === "career" || t.type === "education",
 );
-const firstYear = /20\d\d/.exec(career[career.length - 1].period)?.[0] ?? "—";
-const lastYear = /20\d\d/.exec(career[0].period)?.[0] ?? "—";
+const firstYear = /20\d\d/.exec(career[career.length - 1].period)?.[0] ?? "?";
+const lastYear = /20\d\d/.exec(career[0].period)?.[0] ?? "?";
 const skillTotal = skillGroups.reduce((n, g) => n + g.skills.length, 0);
 
-const whoamiLine = "sajid · backend & AI";
+const whoamiLine = "sajid · full-stack & AI";
 const skillsLine = `${skillGroups.length} groups · ${skillTotal} tools`;
 const projectsLine = `${projects.length} shipped · ${projects.filter((p) => p.featured).length} featured`;
 const timelineLine = `${career.length} stops · ${firstYear} → ${lastYear}`;

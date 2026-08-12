@@ -84,7 +84,7 @@ export default function WhoamiView() {
           <Check className="h-3.5 w-3.5" />
           <span>identity verified</span>
           <span className="text-text-muted">·</span>
-          <span className="text-text-muted">occupation: software developer trainee — ledgercross</span>
+          <span className="text-text-muted">occupation: software developer trainee, ledgercross</span>
         </div>
       </div>
 
@@ -103,7 +103,7 @@ export default function WhoamiView() {
             <p className="font-display text-sm font-medium text-text-primary">
               Sajidur Rahman Sajid
             </p>
-            <p className="font-mono text-xs text-text-muted">sajid · backend &amp; AI</p>
+            <p className="font-mono text-xs text-text-muted">sajid · full-stack &amp; AI</p>
           </div>
         </div>
 

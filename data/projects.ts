@@ -57,8 +57,8 @@ export const projects: Project[] = [
     name: "InvoicePilot",
     tagline: "AI-powered invoice processing platform that extracts, validates, and analyzes invoices while detecting duplicates and anomalies to streamline financial document workflows.",
     summary:
-      "Audit-grade invoice processing: extraction, normalization, business and fraud rule checks, human approval, then a cryptographic on-chain seal of the exact uploaded bytes — hash-only, so no invoice data ever lands on-chain.",
-    role: "Backend / AI Engineer",
+      "Audit-grade invoice processing: extraction, normalization, business and fraud rule checks, human approval, then a cryptographic on-chain seal of the exact uploaded bytes (hash-only), so no invoice data ever lands on-chain.",
+    role: "Full-Stack / AI Engineer",
     status: "ACTIVE",
     category: "Professional",
     badges: ["Production"],
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     name: "LedgerTurf",
     tagline: "Real-time turf booking platform that lets players discover and reserve grounds on a map while owners publish and manage slots with overlapping-time protection.",
     summary:
-      "Real-time turf booking for Dhaka: players find grounds on a map, owners publish slots, and every reservation is protected by an overlap check — live in production on Vercel.",
+      "Real-time turf booking for Dhaka: players find grounds on a map, owners publish slots, and every reservation is protected by an overlap check, live in production on Vercel.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Professional",
@@ -89,8 +89,8 @@ export const projects: Project[] = [
     name: "CaseVault GraphRAG",
     tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations — built around 'verify, don't trust AI.'",
-    role: "Backend / AI Engineer",
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
+    role: "Full-Stack / AI Engineer",
     status: "ACTIVE",
     category: "Professional",
     badges: ["Production"],
@@ -104,7 +104,7 @@ export const projects: Project[] = [
     name: "FinBERT Financial Sentiment Analysis",
     tagline: "Comparative study proving domain-tuned transformers outperform generic models on financial sentiment, with a full fine-tuning-to-evaluation pipeline in a single notebook.",
     summary:
-      "A comparative study proving domain-tuned transformers beat generic models on financial jargon — fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
+      "A comparative study proving domain-tuned transformers beat generic models on financial jargon: fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
     role: "ML Researcher",
     status: "COMPLETE",
     category: "NLP",
@@ -119,7 +119,7 @@ export const projects: Project[] = [
     name: "CodingVibes Learning Platform",
     tagline: "Interactive Java learning platform featuring courses, quizzes, and progress tracking built around a clean event-driven architecture with persistent state.",
     summary:
-      "An interactive learning platform with courses, quizzes, and progress tracking — engineered around a clean event-driven architecture with persistent state behind every screen.",
+      "An interactive learning platform with courses, quizzes, and progress tracking, engineered around a clean event-driven architecture with persistent state behind every screen.",
     role: "Desktop Developer",
     status: "COMPLETE",
     category: "Desktop",
@@ -132,9 +132,9 @@ export const projects: Project[] = [
   {
     slug: "face-recognition-system",
     name: "Face Recognition System",
-    tagline: "Real-time face identification pipeline that detects faces in video, trains embeddings on a known set, and identifies people live — from dataset to inference in one reproducible notebook.",
+    tagline: "Real-time face identification pipeline that detects faces in video, trains embeddings on a known set, and identifies people live, from dataset to inference in one reproducible notebook.",
     summary:
-      "A complete face identification pipeline — detect faces in video, train embeddings on a known set, then identify people in real time — from dataset to inference in one reproducible notebook.",
+      "A complete face identification pipeline: detect faces in video, train embeddings on a known set, then identify people in real time, from dataset to inference in one reproducible notebook.",
     role: "CV Engineer",
     status: "COMPLETE",
     category: "CVPR",
@@ -149,7 +149,7 @@ export const projects: Project[] = [
     name: "SparkPowerhouse Gym Desktop",
     tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
     summary:
-      "A Windows gym-management app that separates member and admin workflows — memberships, payments, and daily records kept in one role-aware system.",
+      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
     role: "Desktop Developer",
     status: "COMPLETE",
     category: "Desktop",
@@ -164,7 +164,7 @@ export const projects: Project[] = [
     name: "3D Procedural City Generator",
     tagline: "Procedurally generated 3D city with dynamic day-night lighting, rain and snow effects, and functioning traffic-light logic in a pure graphics showcase.",
     summary:
-      "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic — a pure graphics engineering showcase.",
+      "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic, a pure graphics engineering showcase.",
     role: "Graphics Engineer",
     status: "COMPLETE",
     category: "Graphics",
@@ -179,7 +179,7 @@ export const projects: Project[] = [
     name: "SparkPowerhouse Gym Web",
     tagline: "Web-based gym management system with distinct member and admin areas for class bookings, memberships, and billing in one session-driven application.",
     summary:
-      "A web gym-management simulation with distinct member and admin areas — class booking, memberships, and billing kept in one session-driven application.",
+      "A web gym-management simulation with distinct member and admin areas: class booking, memberships, and billing kept in one session-driven application.",
     role: "Web Developer",
     status: "COMPLETE",
     category: "Web",
@@ -194,7 +194,7 @@ export const projects: Project[] = [
     name: "Employee & Family Registry",
     tagline: "Employee registry with family relationship trees, full-text search, and on-demand PDF CV and list exports in one polished API-driven workspace.",
     summary:
-      "An employee registry with family-relationship trees, full-text search, and on-demand PDF CV and list exports — one API serving a polished workspace.",
+      "An employee registry with family-relationship trees, full-text search, and on-demand PDF CV and list exports, one API serving a polished workspace.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Desktop",
@@ -207,9 +207,9 @@ export const projects: Project[] = [
   {
     slug: "my-wedding-invitation",
     name: "Interactive Wedding Invitation",
-    tagline: "Cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed and deployed as a live experience.",
+    tagline: "Cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps, designed and deployed as a live experience.",
     summary:
-      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed from scratch and deployed live.",
+      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps, designed from scratch and deployed live.",
     role: "Creative Developer",
     status: "COMPLETE",
     category: "Creative",
@@ -225,7 +225,7 @@ export const projects: Project[] = [
     name: "Online Bookstore Database",
     tagline: "Fully normalized relational design for an online bookstore mapping every entity and dependency, ready to run catalog, orders, and inventory queries.",
     summary:
-      "A fully normalized relational design for an online bookstore — every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
+      "A fully normalized relational design for an online bookstore: every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
     role: "Database Designer",
     status: "COMPLETE",
     category: "Database",

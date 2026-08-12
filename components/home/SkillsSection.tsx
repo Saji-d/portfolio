@@ -59,7 +59,7 @@ export default function SkillsSection() {
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="06">Capabilities</Eyebrow>
+            <Eyebrow index="07">Capabilities</Eyebrow>
             <h2 className="section-title">
               Tools I reach for under pressure.
             </h2>

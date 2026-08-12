@@ -7,7 +7,7 @@ export interface GlobeLocation {
   home?: boolean;
 }
 
-// Regional footprint only — no fabricated cities, offices, or employers.
+// Regional footprint only, no fabricated cities, offices, or employers.
 // Coordinates are geographic-centroid approximations for each region, not
 // literal addresses.
 export const GLOBE_LOCATIONS: GlobeLocation[] = [

@@ -7,7 +7,7 @@ import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Contact ${SITE.name} — email, phone, LinkedIn, and GitHub.`,
+  description: `Contact ${SITE.name}: email, phone, LinkedIn, and GitHub.`,
   alternates: { canonical: "/contact" },
 };
 
@@ -42,8 +42,8 @@ export default function ContactPage() {
   return (
     <>
       <PageHeader
-        eyebrow="[ 06 ] — Contact"
-        title="Say hello — I answer quickly."
+        eyebrow="[ 08 ] · Contact"
+        title="Say hello. I answer quickly."
         lede="Whether it's a role, a collaboration, or a hard technical problem, the fastest path is email."
       />
 

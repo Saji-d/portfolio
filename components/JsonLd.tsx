@@ -17,7 +17,7 @@ export default function JsonLd() {
     alumniOf: "American International University-Bangladesh",
     sameAs: [SITE.linkedin, SITE.github],
     knowsAbout: [
-      "Backend Engineering",
+      "Full-Stack Engineering",
       "FastAPI",
       "Machine Learning",
       "Distributed Systems",

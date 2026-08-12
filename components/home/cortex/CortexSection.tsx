@@ -50,7 +50,7 @@ export default function CortexSection() {
       className="relative scroll-mt-0 overflow-hidden"
     >
       {/* A full-bleed console zone, breaking out of the normal container
-          rhythm every other section follows — this is the one place on the
+          rhythm every other section follows. This is the one place on the
           page meant to feel like you've stepped into a different mode, not
           another card section. */}
       <div className="relative left-1/2 flex h-[100dvh] w-screen -translate-x-1/2 flex-col border-b border-line bg-surface/40 pb-10 pt-[calc(var(--nav-offset)_+_2.5rem)] sm:pb-12">
@@ -65,7 +65,7 @@ export default function CortexSection() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="max-w-2xl">
               <Reveal>
-                <Eyebrow index="01">cortex</Eyebrow>
+                <Eyebrow index="02">cortex</Eyebrow>
               </Reveal>
               <Reveal delay={0.08}>
                 <h2 className="section-title">

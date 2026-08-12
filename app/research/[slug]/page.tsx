@@ -22,7 +22,7 @@ export async function generateMetadata({
   const study = getResearch(slug);
   if (!study) return { title: "Research" };
   return {
-    title: `${study.shortTitle} — Research`,
+    title: `${study.shortTitle} | Research`,
     description: study.oneLiner,
     alternates: { canonical: `/research/${study.slug}` },
   };

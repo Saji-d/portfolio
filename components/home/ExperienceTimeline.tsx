@@ -7,19 +7,19 @@ import TimelineProgress from "@/components/ui/TimelineProgress";
 
 const experiences = [
   {
-    period: "May 2026 — Present",
+    period: "May 2026 - Present",
     company: "Ledgercross",
     position: "Software Developer Trainee",
     detail:
-      "Building production-grade AI software and backend systems for enterprise finance. Contributing to InvoicePilot's intelligent invoice processing platform, OCR pipeline integration, validation workflows, fraud detection features, and scalable backend services while collaborating in an agile development team.",
+      "Engineering production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure, and system reliability.",
     tag: "Present",
   },
   {
-    period: "Feb 2026 — Apr 2026",
-    company: "Bangladesh Software Solutions",
+    period: "Feb 2026 - Apr 2026",
+    company: "Bangladesh Software Solution",
     position: "Software Engineering Intern",
     detail:
-      "Developed and delivered responsive web applications for multiple client projects. Worked across frontend and backend development, implemented production-ready features, fixed bugs, collaborated with the development team, and successfully completed assigned client deliverables within deadlines.",
+      "Developed and delivered responsive web applications, working across frontend and backend development, implementing production-ready features, fixing issues, collaborating with the engineering team, and completing client deliverables.",
     tag: "Complete",
   },
 ];
@@ -50,14 +50,14 @@ export default function ExperienceTimeline() {
     <section
       id="experience"
       aria-label="Experience"
-      className="section-chapter section-chapter-tight relative pb-16 sm:pb-20"
+      className="section-chapter relative pt-[calc(var(--nav-offset)_+_3.5rem)] pb-16 sm:pb-20"
     >
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="04">Experience</Eyebrow>
+            <Eyebrow index="05">Experience</Eyebrow>
             <h2 className="section-title">
-              From client deliverables to fraud-detection pipelines in production.
+              Engineering scalable applications and enterprise production software.
             </h2>
           </div>
         </Reveal>
@@ -139,7 +139,7 @@ export default function ExperienceTimeline() {
                         <p className="mt-0.5 font-mono text-sm font-medium text-accent">
                           {experience.position}
                         </p>
-                        <p className="mt-2 body-copy text-text-secondary">
+                        <p className="mt-2 body-copy text-text-secondary line-clamp-3">
                           {experience.detail}
                         </p>
                       </div>

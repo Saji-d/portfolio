@@ -40,8 +40,8 @@ export const projects: Project[] = [
     name: "InvoicePilot",
     tagline: "AI-powered invoice processing platform that extracts, validates, and analyzes invoices while detecting duplicates and anomalies to streamline financial document workflows.",
     summary:
-      "Audit-grade invoice processing: extraction, normalization, business and fraud rule checks, human approval, then a cryptographic on-chain seal of the exact uploaded bytes — hash-only, so no invoice data ever lands on-chain.",
-    role: "Backend / AI Engineer",
+      "Audit-grade invoice processing: extraction, normalization, business and fraud rule checks, human approval, then a cryptographic on-chain seal of the exact uploaded bytes (hash-only), so no invoice data ever lands on-chain.",
+    role: "Full-Stack / AI Engineer",
     status: "ACTIVE",
     category: "Professional",
     badges: ["Production"],
@@ -50,20 +50,20 @@ export const projects: Project[] = [
     caseStudy: true,
     stack: ["FastAPI", "Fastify", "BullMQ", "PostgreSQL", "Solidity"],
     problem: [
-      "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates — an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
+      "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates, an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
       "Duplicate payments and fraud slip through because there is no structured audit trail, and any claim that an invoice was processed rests on someone's word.",
-      "Generic extraction tools pull fields but cannot vouch that the extracted data matches the file — so automation stops before approval, exactly where the hours get saved.",
+      "Generic extraction tools pull fields but cannot vouch that the extracted data matches the file, so automation stops before approval, exactly where the hours get saved.",
     ],
     solution: [
       "InvoicePilot runs one end-to-end pipeline per document: capture → extraction → normalization → duplicate, business, and fraud checks → human approval → on-chain cryptographic seal → accounting sync. A sha-256 of the exact uploaded bytes is the document's identity, re-verified by the AI service, so a seal can never cover a file that doesn't match its hash.",
-      "OCR and sealing are deliberately one pipeline — what the OCR extracts is what gets sealed on-chain. Two ingest routes (sync and async) fold onto the same invoices row through a single shared, frozen mapper, so the same document always produces the same on-chain hash.",
-      "Async work runs on BullMQ workers — extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync — while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
+      "OCR and sealing are deliberately one pipeline: what the OCR extracts is what gets sealed on-chain. Two ingest routes (sync and async) fold onto the same invoices row through a single shared, frozen mapper, so the same document always produces the same on-chain hash.",
+      "Async work runs on BullMQ workers (extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync) while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
     ],
     architecture: [
       "  Frontend (Vite + React) · Supabase auth · Cloudflare R2",
       "        │  multipart upload / presigned R2 URL",
       "        ▼",
-      "  Fastify API — JWT (Supabase JWKS) · RBAC · rate-limit · audit log",
+      "  Fastify API · JWT (Supabase JWKS) · RBAC · rate-limit · audit log",
       "        │                          │",
       "        │ sync /invoices/process   │ async /invoices → BullMQ",
       "        ▼                          ▼",
@@ -74,20 +74,20 @@ export const projects: Project[] = [
       "   classify · validate · persist",
       "        │                          │",
       "        ▼──────────────────────────▼",
-      "  PostgreSQL 17 — RLS FORCE · NOBYPASSRLS service role",
+      "  PostgreSQL 17 · RLS FORCE · NOBYPASSRLS service role",
       "        │",
       "        ▼",
       "  SealRegistry.sol (Base Sepolia)",
-      "   { recordHash, recordType, sealedAt, sealedBy } — append-only, no PII",
+      "   { recordHash, recordType, sealedAt, sealedBy } · append-only, no PII",
     ],
     decisions: [
       {
         title: "Hash-only on-chain (privacy by design)",
-        body: "The contract stores only {recordHash, recordType, sealedAt, sealedBy} — never amounts, PII, or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
+        body: "The contract stores only {recordHash, recordType, sealedAt, sealedBy}, never amounts, PII, or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
       },
       {
         title: "The frozen anti-fabrication mapper",
-        body: "The AI service emits {value: 0.0, present: false} for a field it never found. The one shared mapper omits any key the extractor did not produce instead of writing a zero — so a $0 invoice invented from a default can never reach an approver, let alone a seal. It is deliberately frozen in shared-types so both ingest routes seal identical bytes.",
+        body: "The AI service emits {value: 0.0, present: false} for a field it never found. The one shared mapper omits any key the extractor did not produce instead of writing a zero, so a $0 invoice invented from a default can never reach an approver, let alone a seal. It is deliberately frozen in shared-types so both ingest routes seal identical bytes.",
       },
       {
         title: "RLS FORCE + service-role split",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
       },
       {
         title: "AES-256-GCM for PII at rest",
-        body: "Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized, and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext — the rest of the system never sees it.",
+        body: "Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized, and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext. The rest of the system never sees it.",
       },
       {
         title: "Versioned, frozen approval hashes",
@@ -103,12 +103,12 @@ export const projects: Project[] = [
       },
       {
         title: "Verify never writes",
-        body: "The public verify path recomputes sha-256 in-process and calls a keyless view function on-chain: no DB write, no audit row, no signer. Every outcome — match, mismatch, not-yet-sealed, chain error, payload error — resolves explicitly and never throws.",
+        body: "The public verify path recomputes sha-256 in-process and calls a keyless view function on-chain: no DB write, no audit row, no signer. Every outcome (match, mismatch, not-yet-sealed, chain error, payload error) resolves explicitly and never throws.",
       },
     ],
     highlights: [
       {
-        title: "The hash kernel — one payload becomes a bytes32",
+        title: "The hash kernel: one payload becomes a bytes32",
         code: `// shared-types/src/canonical.ts — the backend-agnostic seal core.
 // recordHash = '0x' + sha256( domainTag + '\\n' + canonicalJSON(payload) )
 export function computeRecordHash(
@@ -117,7 +117,7 @@ export function computeRecordHash(
 ): \`0x\${string}\` {
   return \`0x\${sha256Hex(domainTag + '\\n' + canonicalJSON(payload))}\`;
 }`,
-        caption: "RFC 8785 (JCS) canonical JSON + a versioned domain tag make the hash deterministic across languages — the Python service extracts, TypeScript seals, Solidity verifies.",
+        caption: "RFC 8785 (JCS) canonical JSON + a versioned domain tag make the hash deterministic across languages: the Python service extracts, TypeScript seals, Solidity verifies.",
       },
       {
         title: "The anti-fabrication rule (frozen mapper)",
@@ -132,7 +132,7 @@ export interface ExtractedInvoiceFields {
   currency?: string;         // /^[A-Z]{3}$/
   lineItems?: NormalizedLineItem[]; // jsonb, sealed as-stored
 }`,
-        caption: "An invoice with no extracted total is never handed to an approver — the exact $0-invoice-sealed bug this branch exists to kill.",
+        caption: "An invoice with no extracted total is never handed to an approver: the exact $0-invoice-sealed bug this branch exists to kill.",
       },
       {
         title: "The single on-chain write, with a fee policy",
@@ -158,7 +158,7 @@ const txHash = await walletClient.writeContract({
   maxFeePerGas: fees.maxFeePerGas,
   maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
 });`,
-        caption: "The tip is our number, not the RPC's — a seal is never urgent, so over a hard fee cap the job waits for a cheaper block instead of overpaying.",
+        caption: "The tip is our number, not the RPC's. A seal is never urgent, so over a hard fee cap the job waits for a cheaper block instead of overpaying.",
       },
     ],
     metrics: [
@@ -175,7 +175,7 @@ const txHash = await walletClient.writeContract({
       { src: "/images/invoicepilot/invoice-2.webp", alt: "Sample invoice line data" },
     ],
     nextSteps: [
-      "Reconcile schema drift: base SQL defines 7 invoice_status values, the code enum has 12, the SOC 2 spec lists 15 — align before the base schema is ever re-imported.",
+      "Reconcile schema drift: base SQL defines 7 invoice_status values, the code enum has 12, the SOC 2 spec lists 15. Align before the base schema is ever re-imported.",
       "Add a per-currency minor-unit exponent table (JPY=0, BHD=3) before any non-2-decimal currency reaches production.",
       "Backfill pre-006 rows and replace the rule-based anomaly placeholder with the planned Isolation Forest path.",
       "Public demo environment with seeded sample invoices so the pipeline is explorable without credentials.",
@@ -186,7 +186,7 @@ const txHash = await walletClient.writeContract({
     name: "LedgerTurf",
     tagline: "Real-time turf booking platform that lets players discover and reserve grounds on a map while owners publish and manage slots with overlapping-time protection.",
     summary:
-      "Real-time turf booking for Dhaka: players find grounds on a map, owners publish slots, and every reservation is protected by an overlap check — live in production on Vercel.",
+      "Real-time turf booking for Dhaka: players find grounds on a map, owners publish slots, and every reservation is protected by an overlap check, live in production on Vercel.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Professional",
@@ -198,12 +198,12 @@ const txHash = await walletClient.writeContract({
     demo: "https://ledgerturf.vercel.app",
     stack: ["Next.js", "TypeScript", "Mapbox"],
     problem: [
-      "Turf owners in Dhaka booked slots over phone and WhatsApp — double-booking was routine, availability was never current, and players had no way to compare grounds.",
+      "Turf owners in Dhaka booked slots over phone and WhatsApp: double-booking was routine, availability was never current, and players had no way to compare grounds.",
       "Timezones and 24-hour clock confusion made 'is this slot free right now' a genuinely hard query to answer correctly.",
     ],
     solution: [
-      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on a geo-indexed map, owners publish and manage slots, and admins get full visibility — with JWT auth and role-based access at every layer.",
-      "Slots are protected with an overlap check inside a Mongoose transaction session, and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly — so 'available now' means the same thing to everyone.",
+      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on a geo-indexed map, owners publish and manage slots, and admins get full visibility, with JWT auth and role-based access at every layer.",
+      "Slots are protected with an overlap check inside a Mongoose transaction session, and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly, so 'available now' means the same thing to everyone.",
       "SPA deep links are handled with Vercel rewrite rules so refreshing /turf/:id never 404s.",
     ],
     architecture: [
@@ -219,7 +219,7 @@ const txHash = await walletClient.writeContract({
     decisions: [
       {
         title: "GeoJSON 2dsphere index",
-        body: "Turf locations are stored as GeoJSON and indexed with MongoDB's 2dsphere index for radius-based discovery — the spatial query is commented out in production for Vercel stability but the index and model are in place.",
+        body: "Turf locations are stored as GeoJSON and indexed with MongoDB's 2dsphere index for radius-based discovery: the spatial query is commented out in production for Vercel stability but the index and model are in place.",
       },
       {
         title: "Explicit UTC+6 handling",
@@ -264,8 +264,8 @@ try {
     name: "CaseVault GraphRAG",
     tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations — built around 'verify, don't trust AI.'",
-    role: "Backend / AI Engineer",
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
+    role: "Full-Stack / AI Engineer",
     status: "ACTIVE",
     category: "Professional",
     badges: ["Production"],
@@ -275,12 +275,12 @@ try {
     stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
     problem: [
       "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
-      "Generic AI chatbots hallucinate citations — and firms cannot upload confidential client files to public AI tools without risking privacy.",
+      "Generic AI chatbots hallucinate citations, and firms cannot upload confidential client files to public AI tools without risking privacy.",
     ],
     solution: [
       "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace — hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
-      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker — targeting ~790ms to first token.",
+      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
+      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker, targeting ~790ms to first token.",
     ],
     architecture: [
       "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
@@ -296,7 +296,7 @@ try {
     decisions: [
       {
         title: "XSS-safe markdown without a heavy renderer",
-        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine — small surface, safe by default for legal content.",
+        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine: small surface, safe by default for legal content.",
       },
       {
         title: "Relevance scoring at the repository layer",
@@ -337,7 +337,7 @@ try {
     name: "FinBERT Financial Sentiment Analysis",
     tagline: "Comparative study proving domain-tuned transformers outperform generic models on financial sentiment, with a full fine-tuning-to-evaluation pipeline in a single notebook.",
     summary:
-      "A comparative study proving domain-tuned transformers beat generic models on financial jargon — fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
+      "A comparative study proving domain-tuned transformers beat generic models on financial jargon: fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
     role: "ML Researcher",
     status: "COMPLETE",
     category: "NLP",
@@ -352,7 +352,7 @@ try {
     name: "CodingVibes Learning Platform",
     tagline: "Interactive Java learning platform featuring courses, quizzes, and progress tracking built around a clean event-driven architecture with persistent state.",
     summary:
-      "An interactive learning platform with courses, quizzes, and progress tracking — engineered around a clean event-driven architecture with persistent state behind every screen.",
+      "An interactive learning platform with courses, quizzes, and progress tracking, engineered around a clean event-driven architecture with persistent state behind every screen.",
     role: "Desktop Developer",
     status: "COMPLETE",
     category: "Desktop",
@@ -365,9 +365,9 @@ try {
   {
     slug: "face-recognition-system",
     name: "Face Recognition System",
-    tagline: "Real-time face identification pipeline that detects faces in video, trains embeddings on a known set, and identifies people live — from dataset to inference in one reproducible notebook.",
+    tagline: "Real-time face identification pipeline that detects faces in video, trains embeddings on a known set, and identifies people live, from dataset to inference in one reproducible notebook.",
     summary:
-      "A complete face identification pipeline — detect faces in video, train embeddings on a known set, then identify people in real time — from dataset to inference in one reproducible notebook.",
+      "A complete face identification pipeline: detect faces in video, train embeddings on a known set, then identify people in real time, from dataset to inference in one reproducible notebook.",
     role: "CV Engineer",
     status: "COMPLETE",
     category: "CVPR",
@@ -382,7 +382,7 @@ try {
     name: "SparkPowerhouse Gym Desktop",
     tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
     summary:
-      "A Windows gym-management app that separates member and admin workflows — memberships, payments, and daily records kept in one role-aware system.",
+      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
     role: "Desktop Developer",
     status: "COMPLETE",
     category: "Desktop",
@@ -397,7 +397,7 @@ try {
     name: "3D Procedural City Generator",
     tagline: "Procedurally generated 3D city with dynamic day-night lighting, rain and snow effects, and functioning traffic-light logic in a pure graphics showcase.",
     summary:
-      "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic — a pure graphics engineering showcase.",
+      "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic, a pure graphics engineering showcase.",
     role: "Graphics Engineer",
     status: "COMPLETE",
     category: "Graphics",
@@ -407,7 +407,7 @@ try {
     github: "https://github.com/Saji-d/3d-city-simulation-opengl",
     stack: ["C++", "OpenGL", "SFML"],
     problem: [
-      "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline — geometry, lighting, and interaction — rather than a single static scene.",
+      "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline (geometry, lighting, and interaction) rather than a single static scene.",
     ],
     solution: [
       "Simulation City builds an entire block grid with buildings, roads, and vehicles. A day/night cycle interpolates ambient and directional light; weather modes toggle particle rain and snow; and traffic lights cycle red → green with keyboard-controlled camera navigation.",
@@ -436,7 +436,7 @@ for (auto &p : particles) {
     p.life -= dt;
     if (p.life <= 0) respawn(p);               // recycle, no alloc
 }`,
-        caption: "Snow falls slowly and drifts; rain falls fast — one particle system, two parameter sets.",
+        caption: "Snow falls slowly and drifts; rain falls fast. One particle system, two parameter sets.",
       },
     ],
     metrics: [
@@ -461,7 +461,7 @@ for (auto &p : particles) {
     name: "SparkPowerhouse Gym Web",
     tagline: "Web-based gym management system with distinct member and admin areas for class bookings, memberships, and billing in one session-driven application.",
     summary:
-      "A web gym-management simulation with distinct member and admin areas — class booking, memberships, and billing kept in one session-driven application.",
+      "A web gym-management simulation with distinct member and admin areas: class booking, memberships, and billing kept in one session-driven application.",
     role: "Web Developer",
     status: "COMPLETE",
     category: "Web",
@@ -476,7 +476,7 @@ for (auto &p : particles) {
     name: "Employee & Family Registry",
     tagline: "Employee registry with family relationship trees, full-text search, and on-demand PDF CV and list exports in one polished API-driven workspace.",
     summary:
-      "An employee registry with family-relationship trees, full-text search, and on-demand PDF CV and list exports — one API serving a polished workspace.",
+      "An employee registry with family-relationship trees, full-text search, and on-demand PDF CV and list exports, one API serving a polished workspace.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Desktop",
@@ -489,9 +489,9 @@ for (auto &p : particles) {
   {
     slug: "my-wedding-invitation",
     name: "Interactive Wedding Invitation",
-    tagline: "Cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed and deployed as a live experience.",
+    tagline: "Cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps, designed and deployed as a live experience.",
     summary:
-      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps — designed from scratch and deployed live.",
+      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps, designed from scratch and deployed live.",
     role: "Creative Developer",
     status: "COMPLETE",
     category: "Creative",
@@ -507,7 +507,7 @@ for (auto &p : particles) {
     name: "Online Bookstore Database",
     tagline: "Fully normalized relational design for an online bookstore mapping every entity and dependency, ready to run catalog, orders, and inventory queries.",
     summary:
-      "A fully normalized relational design for an online bookstore — every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
+      "A fully normalized relational design for an online bookstore: every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
     role: "Database Designer",
     status: "COMPLETE",
     category: "Database",

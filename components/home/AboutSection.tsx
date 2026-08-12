@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import { GLOBE_LOCATIONS } from "@/data/globe";
+import { SITE } from "@/data/site";
 
 const AboutGlobe = dynamic(() => import("@/components/home/about/AboutGlobe"), {
   ssr: false,
@@ -26,7 +27,7 @@ function LocationList({
   onSelect: (id: string) => void;
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-wrap items-center gap-1.5">
       {GLOBE_LOCATIONS.map((loc) => {
         const active = loc.id === selectedId;
         return (
@@ -35,28 +36,20 @@ function LocationList({
             type="button"
             onClick={() => onSelect(loc.id)}
             aria-pressed={active}
-            aria-label={`${loc.label} — ${loc.sublabel}`}
-            className={`group flex items-center gap-3 rounded-lg border px-3.5 py-2.5 text-left transition-all duration-300 ${
+            aria-label={`${loc.label}, ${loc.sublabel}`}
+            title={loc.sublabel}
+            className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-wider transition-all duration-300 ${
               active
-                ? "border-accent/40 bg-accent-dim/50"
-                : "border-transparent hover:border-line hover:bg-surface-2/60"
+                ? "border-accent/50 bg-accent-dim text-accent"
+                : "border-line bg-surface text-text-secondary hover:border-accent/30 hover:text-text-primary"
             }`}
           >
             <span
-              className={`h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-300 ${
+              className={`h-1 w-1 shrink-0 rounded-full transition-colors duration-300 ${
                 active ? "bg-accent" : "bg-text-muted"
               }`}
             />
-            <span className="min-w-0">
-              <span
-                className={`block font-mono text-xs font-medium uppercase tracking-wider transition-colors duration-300 ${
-                  active ? "text-accent" : "text-text-secondary group-hover:text-text-primary"
-                }`}
-              >
-                [ {loc.label} ]
-              </span>
-              <span className="mt-0.5 block text-xs text-text-muted">{loc.sublabel}</span>
-            </span>
+            {loc.label}
           </button>
         );
       })}
@@ -97,31 +90,55 @@ export default function AboutSection() {
     <section
       id="about"
       aria-label="About"
-      className="relative scroll-mt-24 overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-24"
+      className="relative scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
     >
       <div className="container-site">
-        <Reveal>
-          <Eyebrow index="02">About</Eyebrow>
-        </Reveal>
-
-        <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-stretch lg:gap-14">
-          <Reveal className="flex flex-col justify-center">
-            <h2 className="font-display text-3xl font-medium leading-tight tracking-tight text-gradient sm:text-4xl">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-start lg:gap-8">
+          <Reveal delay={0.04}>
+            <Eyebrow index="01">About</Eyebrow>
+            <h2 className="section-title text-gradient mt-2 sm:mt-2.5">
               The world is part of the work.
             </h2>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-text-secondary">
-              Based in Bangladesh, with a growing professional footprint
-              across America and Europe. I enjoy building software that
-              travels beyond the environment it was created in.
-            </p>
+            <ul className="mt-3.5 space-y-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted sm:mt-4">
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span>CURRENTLY BUILDING</span>
+                <span className="text-accent">·</span>
+                <span className="text-text-secondary">SOFTWARE SYSTEMS</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span>WORKING ACROSS</span>
+                <span className="text-accent">·</span>
+                <span className="text-text-secondary">FULL-STACK + AI/ML</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span>BASED IN DHAKA</span>
+                <span className="text-accent">·</span>
+                <span className="text-text-secondary">{SITE.timezone}</span>
+              </li>
+            </ul>
 
-            <div className="mt-8">
+            <div className="mt-4 space-y-2.5 sm:mt-5">
+              <p className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
+                I&apos;m Sajid, a software engineer in Dhaka. I work across
+                full-stack systems and AI/ML, building software that turns
+                complicated problems into something practical and reliable.
+              </p>
+              <p className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
+                The work reaches past my desk. There&apos;s a growing footprint
+                across America and Europe, and I like software that travels well
+                beyond where it was built.
+              </p>
+            </div>
+            <div className="mt-4 sm:mt-4.5">
               <LocationList selectedId={selectedId} onSelect={setSelectedId} />
             </div>
           </Reveal>
 
-          <Reveal delay={0.1} className="min-w-0">
-            <div className="relative h-[380px] overflow-hidden rounded-2xl border border-line bg-surface/30 sm:h-[440px] lg:h-full lg:min-h-[520px]">
+          <Reveal delay={0.08} className="min-w-0 lg:mt-12">
+            <div className="relative h-[280px] overflow-hidden rounded-2xl border border-line bg-surface/30 sm:h-[320px] lg:h-[345px]">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,var(--accent-dim),transparent)] opacity-40"

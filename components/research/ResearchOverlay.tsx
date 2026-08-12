@@ -5,10 +5,12 @@ import { ArrowRight } from "lucide-react";
 import {
   getResearch,
   researchPapers,
+  type ResearchMetric,
   type ResearchStudy,
 } from "@/data/research.full";
 import { SITE } from "@/data/site";
 import OverlayShell from "@/components/ui/OverlayShell";
+import AnimatedMetric from "@/components/ui/AnimatedMetric";
 
 function Section({
   eyebrow,
@@ -164,6 +166,93 @@ function Chips({ items }: { items: string[] }) {
   );
 }
 
+// The top metrics grid rendered as a small instrument panel: each figure
+// counts up and, for anything naturally 0-100% or 0-1 (accuracy, ROC-AUC,
+// etc.), fills a bar underneath via AnimatedMetric's own showBar logic.
+// Non-numeric or unbounded values (a backbone name, a raw count) simply
+// count up (or render as-is) with no bar, exactly as AnimatedMetric already
+// handles elsewhere in the site.
+function MetricPanel({ metrics }: { metrics: ResearchMetric[] }) {
+  return (
+    <div className="card-surface p-6 sm:p-8">
+      <div className="flex items-center justify-between gap-3">
+        <p className="eyebrow">Measured results</p>
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+          <span
+            aria-hidden="true"
+            className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse"
+          />
+          live readout
+        </span>
+      </div>
+      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {metrics.map((m) => (
+          <div
+            key={m.label}
+            className="rounded-lg border border-line bg-surface-2 px-3.5 py-3"
+          >
+            <AnimatedMetric
+              value={m.value}
+              showBar
+              className="block font-display text-xl font-medium tracking-tight text-accent sm:text-2xl"
+            />
+            <div className="mt-1.5 font-mono text-[11px] uppercase tracking-wide text-text-muted">
+              {m.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Some studies describe their own methodology as an explicit chain of
+// stages joined with "→" (currently only the Twitter sentiment pipeline:
+// "lowercase → strip URLs... → TF-IDF → Naive Bayes"). When that pattern
+// exists in the study's own methodology text, render it as a stage flow.
+// Nothing here is invented: the stage names and order come verbatim from
+// data/research.full.ts; entries without such a chain simply get no flow.
+function findPipelineChain(
+  methodology: string[]
+): { label: string; stages: string[] } | null {
+  const item = methodology.find((m) => m.includes("→"));
+  if (!item) return null;
+  const colonIndex = item.indexOf(":");
+  const label = colonIndex !== -1 ? item.slice(0, colonIndex).trim() : "Pipeline";
+  const chainText = colonIndex !== -1 ? item.slice(colonIndex + 1) : item;
+  const stages = chainText
+    .split("→")
+    .map((s) => s.replace(/\.$/, "").trim())
+    .filter(Boolean);
+  return stages.length > 1 ? { label, stages } : null;
+}
+
+function Pipeline({ label, stages }: { label: string; stages: string[] }) {
+  return (
+    <div className="card-surface p-6 sm:p-8">
+      <p className="eyebrow">{label}</p>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {stages.map((stage, i) => (
+          <div key={stage} className="flex items-center gap-2">
+            <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs leading-snug text-text-secondary">
+              <span className="mr-1.5 text-accent">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {stage}
+            </span>
+            {i < stages.length - 1 && (
+              <ArrowRight
+                aria-hidden="true"
+                className="h-3.5 w-3.5 shrink-0 text-text-muted"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function StudyBody({
   study,
   onOpenStudy,
@@ -174,6 +263,7 @@ function StudyBody({
   const related = researchPapers.filter((p) =>
     study.relatedSlugs.includes(p.slug)
   );
+  const pipeline = findPipelineChain(study.methodology);
 
   const numbered: { title: string; body: React.ReactNode }[] = [];
   const add = (title: string, body: React.ReactNode) =>
@@ -209,17 +299,12 @@ function StudyBody({
   return (
     <>
       {study.metrics && study.metrics.length > 0 && (
-        <div className="card-surface grid grid-cols-2 gap-6 p-6 sm:grid-cols-3 sm:p-8">
-          {study.metrics.map((m) => (
-            <div key={m.label}>
-              <div className="font-display text-2xl font-medium tracking-tight text-accent sm:text-3xl">
-                {m.value}
-              </div>
-              <div className="mt-1 font-mono text-xs text-text-muted">
-                {m.label}
-              </div>
-            </div>
-          ))}
+        <MetricPanel metrics={study.metrics} />
+      )}
+
+      {pipeline && (
+        <div className="mt-6">
+          <Pipeline label={pipeline.label} stages={pipeline.stages} />
         </div>
       )}
 
@@ -310,7 +395,7 @@ export default function ResearchOverlay({
 
   return (
     <OverlayShell
-      ariaLabel={`${study.shortTitle} — Research`}
+      ariaLabel={`${study.shortTitle} · Research`}
       onClose={onClose}
     >
       <div className="mx-auto w-full max-w-4xl px-5 pb-8 pt-10 sm:px-8 sm:pt-12">

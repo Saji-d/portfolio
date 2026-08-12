@@ -13,16 +13,23 @@ export default function Hero() {
     <section
       id="home"
       aria-label="Home"
-      className="relative scroll-mt-24 overflow-hidden pt-32 sm:pt-40"
+      className="relative scroll-mt-24 overflow-hidden pt-32 pb-10 sm:pt-40 sm:pb-14"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(79,209,197,0.14),transparent)]"
       />
+      {/* Deliberate seam between the hero and the About chapter: the hero
+          content fades into the page background instead of running straight
+          into the next section's heading. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-bg sm:h-20"
+      />
       <div className="container-site relative">
         <div>
           <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-            <Eyebrow>Software Engineer — Dhaka</Eyebrow>
+            <Eyebrow>Software Engineer, Dhaka</Eyebrow>
           </div>
 
           <h1
@@ -37,8 +44,8 @@ export default function Hero() {
             style={{ animationDelay: delays[2] }}
           >
             I enjoy building software and figuring things out along the way.
-            Most of my work is around backend systems and AI/ML, with a few
-            trips across the stack when a project calls for it.
+            Most of my work spans full-stack systems and AI/ML, with trips
+            across the stack when a project calls for it.
           </p>
 
           <div

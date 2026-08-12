@@ -17,7 +17,7 @@ export default function ResearchSpotlight() {
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="03">Research</Eyebrow>
+            <Eyebrow index="04">Research</Eyebrow>
             <h2 className="section-title">
               Where the models meet the messy real world.
             </h2>

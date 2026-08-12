@@ -1,9 +1,9 @@
 export const SITE = {
   name: "Sajidur Rahman Sajid",
   firstName: "Sajid",
-  role: "Software Engineer | Backend & AI Systems.",
+  role: "Full-Stack Software Engineer | AI/ML.",
   tagline:
-    "I build high-throughput backend systems and production ML pipelines — engineered to be fast, reliable, and worth trusting.",
+    "I build full-stack software and production AI/ML pipelines that are fast, reliable, and worth trusting.",
   email: "sajidsajidurrahman99@gmail.com",
   phone: "+8801954832959",
   phoneHref: "+8801954832959",
@@ -14,7 +14,7 @@ export const SITE = {
   githubHandle: "Saji-d",
   url: "https://sajidur-rahman-sajid.vercel.app",
   availability:
-    "Open to software engineering roles in backend, platform, and applied ML — plus select freelance and product collaborations.",
+    "I'm open to software engineering roles across full-stack, platform, and applied ML, plus select freelance and product work if it's interesting.",
 } as const;
 
 export interface NavSectionLink {
@@ -32,6 +32,12 @@ export const NAV_LINKS: readonly NavSectionLink[] = [
   { label: "Contact", section: "contact", href: "/#contact" },
 ] as const;
 
+export const ABOUT_LINK: NavSectionLink = {
+  label: "About",
+  section: "about",
+  href: "/#about",
+} as const;
+
 export const CORTEX_LINK: NavSectionLink = {
   label: "Cortex",
   section: "cortex",
@@ -39,9 +45,10 @@ export const CORTEX_LINK: NavSectionLink = {
 } as const;
 
 // Every in-page scroll destination the nav needs to track for active-state
-// and hash-on-load handling, in document order (Cortex sits between the
-// hero and Projects on the page, ahead of the main link group).
+// and hash-on-load handling, in document order (About sits right after the
+// hero, then Cortex, both ahead of the main link group).
 export const ALL_SECTION_LINKS: readonly NavSectionLink[] = [
+  ABOUT_LINK,
   CORTEX_LINK,
   ...NAV_LINKS,
 ] as const;

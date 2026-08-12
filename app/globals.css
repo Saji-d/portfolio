@@ -12,6 +12,7 @@
   --text-muted: #6b7686;
   --accent: #4fd1c5;
   --accent-dim: rgba(79, 209, 197, 0.14);
+  --accent-soft: rgba(79, 209, 197, 0.55);
   --accent-2: #7c7dff;
   --accent-ink: #0b0e14;
   --success: #3fb28a;
@@ -40,6 +41,7 @@
   --text-muted: #6b7385;
   --accent: #0f766e;
   --accent-dim: rgba(15, 118, 110, 0.1);
+  --accent-soft: rgba(15, 118, 110, 0.4);
   --accent-2: #4f46e5;
   --accent-ink: #ffffff;
   --success: #157a4d;
@@ -488,6 +490,39 @@
   background-color: rgba(79, 209, 197, 0.45);
 }
 
+/* Location markers rendered as HTML elements on the globe. The glow color is
+   set inline per marker (home uses the secondary accent); hover/focus only
+   intensify the existing shadow so the marker reads as "alive", never as a
+   conventional map pin. */
+.about-globe-marker {
+  --marker-glow: var(--accent);
+}
+
+.about-globe-marker .marker-dot {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.about-globe-marker:hover .marker-dot,
+.about-globe-marker:focus-visible .marker-dot {
+  box-shadow: 0 0 16px 2px var(--marker-glow);
+}
+
+/* The frontmost node of the How I Build pipeline gives off a soft breathing
+   glow while the sequence is still coming online. */
+@keyframes pipeline-front-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent-soft);
+  }
+  50% {
+    box-shadow: 0 0 16px 3px var(--accent-soft);
+  }
+}
+
+.animate-pipeline-front {
+  animation: pipeline-front-pulse 1.6s ease-in-out infinite;
+}
+
 [data-theme="light"] .network-canvas {
   opacity: 0.32;
 }
@@ -540,4 +575,12 @@
   .marquee-duplicate {
     display: none;
   }
+}
+
+.about-globe-canvas canvas {
+  cursor: grab;
+}
+
+.about-globe-canvas canvas:active {
+  cursor: grabbing;
 }

@@ -7,7 +7,7 @@ interface EyebrowProps {
 export default function Eyebrow({ index, children, className }: EyebrowProps) {
   return (
     <p className={`eyebrow ${className ?? ""}`}>
-      {index && <span className="text-text-muted">[ {index} ] — </span>}
+      {index && <span className="text-text-muted">[ {index} ] · </span>}
       {children}
     </p>
   );

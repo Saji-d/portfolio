@@ -7,6 +7,7 @@ import { feature } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { FeatureCollection, Geometry } from "geojson";
 import worldTopology from "world-atlas/countries-110m.json";
+import GlobeTrail from "@/components/home/about/GlobeTrail";
 import { GLOBE_ARCS, GLOBE_LOCATIONS, type GlobeLocation } from "@/data/globe";
 
 const topology = worldTopology as unknown as Topology;
@@ -118,10 +119,11 @@ function buildMarkerElement(
 
   const wrap = document.createElement("div");
   wrap.className =
-    "group flex cursor-pointer select-none flex-col items-center gap-1.5 transition-transform duration-300 hover:scale-110";
+    "about-globe-marker group flex cursor-pointer select-none flex-col items-center gap-1.5 transition-transform duration-300 hover:scale-110";
   wrap.style.pointerEvents = "auto";
+  wrap.style.setProperty("--marker-glow", dotColor);
   wrap.setAttribute("role", "button");
-  wrap.setAttribute("aria-label", `${loc.label} — ${loc.sublabel}`);
+  wrap.setAttribute("aria-label", `${loc.label}, ${loc.sublabel}`);
   wrap.setAttribute("tabindex", "0");
 
   const dotWrap = document.createElement("span");
@@ -136,7 +138,7 @@ function buildMarkerElement(
   ping.style.backgroundColor = dotColor;
 
   const dot = document.createElement("span");
-  dot.className = "relative inline-flex h-full w-full rounded-full";
+  dot.className = "marker-dot relative inline-flex h-full w-full rounded-full";
   dot.style.backgroundColor = dotColor;
   dot.style.boxShadow = isSelected
     ? `0 0 0 3px ${palette.labelBg}, 0 0 14px ${dotColor}`
@@ -184,6 +186,27 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isReady = useRef(false);
+  const [booted, setBooted] = useState(false);
+
+  // The page renders instantly; WebGL only boots once this container is close
+  // to the viewport (a double-rAF beats the IntersectionObserver callback so
+  // surrounding content paints first, keeping the initial paint untouched).
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => setBooted(true));
+        });
+      },
+      { rootMargin: "40px 0px 120px 0px", threshold: 0.02 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reducedMotion, containerRef]);
 
   const globeMaterial = useMemo(
     () =>
@@ -236,14 +259,24 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   const handleGlobeReady = useCallback(() => {
     const api = globeRef.current;
     if (!api) return;
-    api.pointOfView({ lat: 18, lng: 55, altitude: 2.3 }, 0);
+    api.pointOfView({ lat: 18, lng: 55, altitude: 1.75 }, 0);
     const controls = api.controls();
     controls.autoRotate = !reducedMotion;
-    controls.autoRotateSpeed = 0.35;
-    controls.enableZoom = false;
+    controls.autoRotateSpeed = 0.3;
+    // Zoom is intentionally constrained rather than disabled: close enough to
+    // read the boundary lines, far enough that the globe never shrinks to a
+    // speck or fills the whole card.
+    controls.enableZoom = true;
+    controls.zoomSpeed = 0.6;
+    const radius = api.getGlobeRadius();
+    controls.minDistance = radius * 1.3;
+    controls.maxDistance = radius * 3.5;
     controls.enablePan = false;
+    // Damping handles both smooth drag and the subtle momentum on release —
+    // a low factor coasts gently, OrbitControls eases it to rest naturally.
     controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
+    controls.dampingFactor = 0.1;
+    controls.rotateSpeed = 0.9;
     isReady.current = true;
   }, [reducedMotion]);
 
@@ -256,7 +289,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     if (!api || !isReady.current) return;
     const loc = GLOBE_LOCATIONS.find((l) => l.id === selectedId);
     if (!loc) return;
-    api.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 2.1 }, reducedMotion ? 0 : 1200);
+    api.pointOfView({ lat: loc.lat, lng: loc.lng, altitude: 1.75 }, reducedMotion ? 0 : 1200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId]);
 
@@ -289,9 +322,9 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
       onPointerDown={() => setAutoRotate(false)}
       onPointerUp={resumeAutoRotateSoon}
       onPointerLeave={resumeAutoRotateSoon}
-      className="absolute inset-0 touch-none"
+      className="about-globe-canvas absolute inset-0 touch-none"
     >
-      {size.width > 0 && size.height > 0 && (
+      {(booted || reducedMotion) && size.width > 0 && size.height > 0 && (
         <Globe
           ref={globeRef}
           width={size.width}
@@ -337,6 +370,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
           onGlobeReady={handleGlobeReady}
         />
       )}
+      <GlobeTrail targetRef={containerRef} />
     </div>
   );
 }

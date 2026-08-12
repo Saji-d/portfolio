@@ -33,13 +33,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.role}`,
+    default: `${SITE.name} | ${SITE.role}`,
     template: `%s · ${SITE.name}`,
   },
   description: SITE.tagline,
   keywords: [
     "Software Engineer",
-    "Backend Engineer",
+    "Full-Stack Software Engineer",
     "AI Engineer",
     "FastAPI",
     "Machine Learning",
@@ -57,20 +57,20 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.role}`,
+    title: `${SITE.name} | ${SITE.role}`,
     description: SITE.tagline,
     images: [
       {
         url: "/og-image.webp",
         width: 1200,
         height: 630,
-        alt: `${SITE.name} — ${SITE.role}`,
+        alt: `${SITE.name} | ${SITE.role}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.role}`,
+    title: `${SITE.name} | ${SITE.role}`,
     description: SITE.tagline,
     images: ["/og-image.webp"],
   },

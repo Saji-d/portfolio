@@ -24,7 +24,7 @@ export const neuronscreen: ResearchStudy = {
   featured: true,
   tags: ["Machine Learning", "Deep Learning", "Healthcare AI", "CatBoost", "ANN"],
   oneLiner:
-    "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students — 95.20% accuracy, 0.982 ROC-AUC.",
+    "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students: 95.20% accuracy, 0.982 ROC-AUC.",
   summary:
     "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from students aged 20–35, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
   metrics: [
@@ -46,9 +46,9 @@ export const researchPapers: ResearchStudy[] = [
     field: "Natural Language Processing",
     tags: ["Natural Language Processing", "Machine Learning"],
     oneLiner:
-      "A classical NLP pipeline on 200k balanced tweets — TF-IDF (10k unigrams + bigrams) into Multinomial Naïve Bayes, 74.84% accuracy.",
+      "A classical NLP pipeline on 200k balanced tweets: TF-IDF (10k unigrams + bigrams) into Multinomial Naïve Bayes, 74.84% accuracy.",
     summary:
-      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain — lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming, and lemmatization — then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
+      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming, and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
     metrics: [
       { value: "74.84%", label: "accuracy" },
       { value: "200,000", label: "balanced tweets" },
@@ -81,7 +81,7 @@ export const researchPapers: ResearchStudy[] = [
     field: "Computer Vision & Pattern Recognition",
     tags: ["Computer Vision", "Deep Learning", "Transfer Learning"],
     oneLiner:
-      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images — an honest look at how hard field generalization is.",
+      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images, an honest look at how hard field generalization is.",
     summary:
       "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity, and the paper candidly reports the limits of doing so from photos alone.",
     metrics: [
@@ -100,7 +100,7 @@ export const researchPapers: ResearchStudy[] = [
     oneLiner:
       "A fine-tuned BanglaBERT detects toxic Bengali comments (86% accuracy, 87% F1, 0.91 ROC-AUC) and explains every prediction with SHAP and LIME.",
     summary:
-      "Data-mining research (IEEE-format paper) that fine-tunes BanglaBERT on Bengali toxicity data using 5-fold stratified cross-validation and adds an explainability layer — SHAP and LIME reveal which words drove each toxic / non-toxic decision, tackling the black-box problem in low-resource Bangla NLP.",
+      "Data-mining research (IEEE-format paper) that fine-tunes BanglaBERT on Bengali toxicity data using 5-fold stratified cross-validation and adds an explainability layer: SHAP and LIME reveal which words drove each toxic / non-toxic decision, tackling the black-box problem in low-resource Bangla NLP.",
     metrics: [
       { value: "86%", label: "accuracy" },
       { value: "87%", label: "F1-score" },

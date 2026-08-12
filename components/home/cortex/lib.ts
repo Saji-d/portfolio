@@ -7,7 +7,7 @@ import {
   type TerminalCommand,
 } from "@/data/terminal";
 
-export const CONSOLE_LABEL = "cortex — self-inspection console";
+export const CONSOLE_LABEL = "cortex // self-inspection console";
 export const CONSOLE_VERSION = "v2.4.1";
 export const PROMPT = "sajid@brain:~$";
 
@@ -20,7 +20,7 @@ export const COMMANDS: CommandDef[] = TERMINAL_COMMANDS.filter(
 );
 
 export const WHOAMI_ROLES: string[] = [
-  "software engineer",
+  "full-stack software engineer",
   "ai engineer",
   "machine learning",
   "natural language processing",

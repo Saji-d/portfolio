@@ -88,7 +88,7 @@ function CoverImage({
     <>
       <Image
         src={project.cover}
-        alt={`${project.name} — ${project.tagline}`}
+        alt={`${project.name}: ${project.tagline}`}
         fill
         sizes={sizes}
         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
@@ -96,7 +96,7 @@ function CoverImage({
       <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14]/85 via-[#0B0E14]/10 to-[#0B0E14]/20" />
       <div className="absolute inset-0 bg-[#0B0E14]/0 transition-colors duration-300 group-hover:bg-[#0B0E14]/20" />
 
-      {/* Inspection scan-line — a thin light band sweeping the cover on
+      {/* Inspection scan-line: a thin light band sweeping the cover on
           hover, reinforcing "running system being inspected" rather than a
           static screenshot. The animation always runs; only its opacity is
           hover-gated, so there's no start/stop jank. */}
@@ -107,7 +107,7 @@ function CoverImage({
         <span className="animate-scan-sweep absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-accent/25 to-transparent" />
       </div>
 
-      {/* Targeting-reticle corners — reveal on hover, framing the cover like a system under inspection. */}
+      {/* Targeting-reticle corners: reveal on hover, framing the cover like a system under inspection. */}
       <span
         aria-hidden="true"
         className="absolute left-2.5 top-2.5 h-3.5 w-3.5 -translate-x-1 -translate-y-1 border-l border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
@@ -274,7 +274,7 @@ export function ProjectCard({
   const opensCaseStudy = Boolean(onOpenCaseStudy && project.caseStudy);
 
   return (
-    <TiltCard className="h-full">
+    <TiltCard className="h-full" glare>
       <article
         className={`card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1.5 ${
           pro

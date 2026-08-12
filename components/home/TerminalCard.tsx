@@ -78,7 +78,7 @@ export default function TerminalCard() {
             <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
           </div>
-          <span className="text-xs text-text-muted">cortex — compact</span>
+          <span className="text-xs text-text-muted">cortex, compact</span>
         </div>
         <span className="text-xs text-text-muted">~/brain</span>
       </div>

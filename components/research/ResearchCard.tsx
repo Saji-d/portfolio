@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { ResearchStudy } from "@/data/research";
+import AnimatedMetric from "@/components/ui/AnimatedMetric";
 
 export default function ResearchCard({
   paper,
@@ -31,14 +32,30 @@ export default function ResearchCard({
       <p className="mt-2 line-clamp-3 body-copy text-text-secondary">{paper.summary}</p>
       {paper.metrics && (
         <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-          {paper.metrics.map((m) => (
-            <div key={m.label}>
-              <div className="font-display text-lg font-medium tracking-tight text-accent">
-                {m.value}
+          {paper.metrics.map((m, i) =>
+            i === 0 ? (
+              <div key={m.label}>
+                <div className="flex items-center gap-1.5">
+                  <span
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                  />
+                  <AnimatedMetric
+                    value={m.value}
+                    className="font-display text-lg font-medium tracking-tight text-accent"
+                  />
+                </div>
+                <div className="card-meta">{m.label}</div>
               </div>
-              <div className="card-meta">{m.label}</div>
-            </div>
-          ))}
+            ) : (
+              <div key={m.label}>
+                <div className="font-display text-lg font-medium tracking-tight text-accent">
+                  {m.value}
+                </div>
+                <div className="card-meta">{m.label}</div>
+              </div>
+            )
+          )}
         </div>
       )}
     </>

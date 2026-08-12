@@ -100,7 +100,7 @@ export default function CaseStudy({ project }: { project: Project }) {
 
       <div className="container-site pb-8">
         {project.problem && (
-          <Section eyebrow="[ 01 ] — Context" title="Problem">
+          <Section eyebrow="[ 01 ] · Context" title="Problem">
             <ul className="space-y-3">
               {project.problem.map((p) => (
                 <li key={p} className="flex gap-3 text-text-secondary">
@@ -113,7 +113,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         )}
 
         {project.solution && (
-          <Section eyebrow="[ 02 ] — Response" title="Solution">
+          <Section eyebrow="[ 02 ] · Response" title="Solution">
             <div className="space-y-3">
               {project.solution.map((p) => (
                 <p key={p} className="leading-relaxed text-text-secondary">
@@ -125,7 +125,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         )}
 
         {project.architecture && (
-          <Section eyebrow="[ 03 ] — Structure" title="Architecture">
+          <Section eyebrow="[ 03 ] · Structure" title="Architecture">
             <div className="card-surface overflow-x-auto">
               <pre className="min-w-max p-5 font-mono text-[13px] leading-relaxed text-text-secondary">
                 {project.architecture.join("\n")}
@@ -135,7 +135,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         )}
 
         {project.decisions && (
-          <Section eyebrow="[ 04 ] — Trade-offs" title="Key engineering decisions">
+          <Section eyebrow="[ 04 ] · Trade-offs" title="Key engineering decisions">
             <ol className="space-y-6">
               {project.decisions.map((d, i) => (
                 <li key={d.title} className="grid gap-2 sm:grid-cols-[64px_1fr]">
@@ -153,7 +153,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         )}
 
         {project.highlights && (
-          <Section eyebrow="[ 05 ] — Under the hood" title="Engineering highlights">
+          <Section eyebrow="[ 05 ] · Under the hood" title="Engineering highlights">
             <div className="space-y-6">
               {project.highlights.map((h) => (
                 <CodeBlock key={h.title} code={h.code} title={h.title} caption={h.caption} />
@@ -163,7 +163,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         )}
 
         {project.metrics && (
-          <Section eyebrow="[ 06 ] — Outcomes" title="Results">
+          <Section eyebrow="[ 06 ] · Outcomes" title="Results">
             <div className="card-surface grid grid-cols-2 gap-8 p-8 sm:grid-cols-3 sm:p-10">
               {project.metrics.map((m) => (
                 <div key={m.label}>
@@ -178,13 +178,13 @@ export default function CaseStudy({ project }: { project: Project }) {
         )}
 
         {project.screenshots && project.screenshots.length > 0 && (
-          <Section eyebrow="[ 07 ] — Visuals" title="Screenshots">
+          <Section eyebrow="[ 07 ] · Visuals" title="Screenshots">
             <Gallery images={project.screenshots} />
           </Section>
         )}
 
         {project.nextSteps && (
-          <Section eyebrow="[ 08 ] — Where it's going" title="Status & next steps">
+          <Section eyebrow="[ 08 ] · Where it's going" title="Status & next steps">
             <ul className="space-y-3">
               {project.nextSteps.map((s) => (
                 <li key={s} className="flex gap-3 text-text-secondary">
@@ -200,7 +200,7 @@ export default function CaseStudy({ project }: { project: Project }) {
       <div className="border-t border-line">
         <div className="container-site py-20">
           <Reveal>
-            <p className="eyebrow">[ 09 ] — Keep exploring</p>
+            <p className="eyebrow">[ 09 ] · Keep exploring</p>
             <h2 className="mt-3 font-display text-2xl font-medium tracking-tight text-gradient sm:text-3xl">
               More projects
             </h2>

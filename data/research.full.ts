@@ -56,7 +56,7 @@ export const neuronscreen: ResearchStudy = {
   featured: true,
   tags: ["Machine Learning", "Deep Learning", "Healthcare AI", "CatBoost", "ANN"],
   oneLiner:
-    "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students — 95.20% accuracy, 0.982 ROC-AUC.",
+    "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students: 95.20% accuracy, 0.982 ROC-AUC.",
   summary:
     "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from students aged 20–35, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
   metrics: [
@@ -68,12 +68,12 @@ export const neuronscreen: ResearchStudy = {
     { value: "2,237", label: "survey responses" },
   ],
   overview: [
-    "Cognitive impairment linked to insomnia is widespread among university students but rarely screened for. Existing computational work stops at diagnosing sleep disorders or general mental-health distress — it does not classify the cognitive decline that poor sleep produces.",
+    "Cognitive impairment linked to insomnia is widespread among university students but rarely screened for. Existing computational work stops at diagnosing sleep disorders or general mental-health distress. It does not classify the cognitive decline that poor sleep produces.",
     "Neuro-Screen fills that gap with a hybrid ensemble: a CatBoost gradient-boosting classifier, which is strong on categorical, structured survey data, combined with a three-layer ANN, which is strong on non-linear feature interactions. The two paths run in parallel and their probability outputs are averaged into a final Healthy / Impaired decision.",
-    "Evaluated on a stratified 80/20 holdout, the ensemble reaches 95.20% accuracy and a 0.982 ROC-AUC — higher than either component alone — and is packaged as a Streamlit screening dashboard with a conversational check-in.",
+    "Evaluated on a stratified 80/20 holdout, the ensemble reaches 95.20% accuracy and a 0.982 ROC-AUC, higher than either component alone, and is packaged as a Streamlit screening dashboard with a conversational check-in.",
   ],
   problem: [
-    "Most university students get insufficient sleep and a substantial share meet clinical insomnia criteria — both conditions measurably impair attention, memory, and academic performance.",
+    "Most university students get insufficient sleep and a substantial share meet clinical insomnia criteria. Both conditions measurably impair attention, memory, and academic performance.",
     "Existing ML studies target sleep disorders themselves (insomnia, apnea) or general mental health, not the cognitive decline insomnia causes, and they rely on standalone classifiers rather than hybrid ML-DL designs.",
     "As a result, no automated framework exists for early detection of cognitive impairment among insomniac university students.",
   ],
@@ -101,7 +101,7 @@ export const neuronscreen: ResearchStudy = {
     },
     {
       name: "Hybrid ensemble",
-      role: "Arithmetic-mean blending of both models' probabilities — combines complementary strengths and beats either alone.",
+      role: "Arithmetic-mean blending of both models' probabilities, combining complementary strengths and beating either alone.",
     },
   ],
   dataset: [
@@ -112,7 +112,7 @@ export const neuronscreen: ResearchStudy = {
   implementation: [
     "Built in Python on Google Colab with pandas (data manipulation), CatBoost (gradient boosting), and PyTorch (ANN).",
     "Both modules trained in parallel, then combined with probability-level ensemble blending for the final binary prediction.",
-    "Validated with a confusion matrix and ROC-AUC analysis — the held-out matrix shows 212 true negatives, 192 true positives, 43 false negatives, and 63 false positives across 447 test cases.",
+    "Validated with a confusion matrix and ROC-AUC analysis: the held-out matrix shows 212 true negatives, 192 true positives, 43 false negatives, and 63 false positives across 447 test cases.",
     "Deployed as a Streamlit screening prototype: a slider-based Quick Check-in and a conversational check-in assistant that both return a 0–100 risk score with model confidence and the driving factors.",
   ],
   keyFeatures: [
@@ -131,7 +131,7 @@ export const neuronscreen: ResearchStudy = {
   ],
   resultNotes: [
     "The hybrid beats both standalones on every metric: CatBoost reaches 94.12% accuracy and the ANN 91.25%, while the ensemble reaches 95.20%.",
-    "Hybrid ROC-AUC of 0.9820 vs. CatBoost 0.9780 and ANN 0.9450 — the sharp early trajectory shows high sensitivity with a low false-positive rate across thresholds, which suits screening use cases.",
+    "Hybrid ROC-AUC of 0.9820 vs. CatBoost 0.9780 and ANN 0.9450. The sharp early trajectory shows high sensitivity with a low false-positive rate across thresholds, which suits screening use cases.",
     "The insomnia–cognition link is confirmed in the data: roughly 55% of the insomniac group is classified Impaired versus 25% of the non-insomnia group.",
   ],
   outcome: [
@@ -143,7 +143,7 @@ export const neuronscreen: ResearchStudy = {
   challenges: [
     "Self-reported survey data carry response and recall bias.",
     "A single-institution cohort limits broader generalizability.",
-    "Binary classification only — no severity levels for cognitive impairment.",
+    "Binary classification only: no severity levels for cognitive impairment.",
     "Hyperparameter tuning was constrained by local CPU/RAM availability.",
   ],
   futureWork: [
@@ -180,9 +180,9 @@ export const researchPapers: ResearchStudy[] = [
     field: "Natural Language Processing",
     tags: ["Natural Language Processing", "Machine Learning"],
     oneLiner:
-      "A classical NLP pipeline on 200k balanced tweets — TF-IDF (10k unigrams + bigrams) into Multinomial Naïve Bayes, 74.84% accuracy.",
+      "A classical NLP pipeline on 200k balanced tweets: TF-IDF (10k unigrams + bigrams) into Multinomial Naïve Bayes, 74.84% accuracy.",
     summary:
-      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain — lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming, and lemmatization — then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
+      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming, and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
     metrics: [
       { value: "74.84%", label: "accuracy" },
       { value: "200,000", label: "balanced tweets" },
@@ -190,7 +190,7 @@ export const researchPapers: ResearchStudy[] = [
       { value: "40,000", label: "test tweets" },
     ],
     overview: [
-      "Sentiment classification on short, noisy social-media text is a classic NLP task — casual language, hashtags, mentions, and slang make it harder than formal text.",
+      "Sentiment classification on short, noisy social-media text is a classic NLP task: casual language, hashtags, mentions, and slang make it harder than formal text.",
       "This study builds an end-to-end classical pipeline: an aggressive text-cleaning stage, a rich TF-IDF representation with unigrams and bigrams, and a fast, interpretable Multinomial Naïve Bayes classifier.",
     ],
     problem: [
@@ -221,13 +221,13 @@ export const researchPapers: ResearchStudy[] = [
     ],
     dataset: [
       "Sentiment140 (Kaggle / kazanova): 1.6 million tweets labeled positive (4) and negative (0); neutral (2) excluded.",
-      "Balanced to 200,000 rows — 100k per class — with a 50/50 class distribution confirmed by a pie-chart check before training.",
+      "Balanced to 200,000 rows (100k per class) with a 50/50 class distribution confirmed by a pie-chart check before training.",
     ],
     implementation: [
       "Pipeline in Python with pandas, NLTK (stopwords, punkt, wordnet), and scikit-learn (TfidfVectorizer, MultinomialNB, train_test_split, metrics).",
       "Per-class sentiment distribution visualized, null values dropped, and the balanced 200k rows saved to a CSV.",
       "Evaluation outputs a confusion-matrix heatmap, a classification report, and accuracy.",
-      "Sanity-checked on unseen sentences — 'good' classifies positive and 'I hate this' classifies negative.",
+      "Sanity-checked on unseen sentences: 'good' classifies positive and 'I hate this' classifies negative.",
     ],
     keyFeatures: [
       "Balanced two-class dataset with reproducible sampling (random_state=42).",
@@ -245,7 +245,7 @@ export const researchPapers: ResearchStudy[] = [
       "Bigrams and synonym substitution help the model handle conversational phrasing, while aggressive cleaning keeps the feature space tractable.",
     ],
     outcome: [
-      "A compact, transparent sentiment classifier that is cheap to train and easy to inspect — a strong baseline for more expensive transformer approaches.",
+      "A compact, transparent sentiment classifier that is cheap to train and easy to inspect, a strong baseline for more expensive transformer approaches.",
       "Demonstrated that disciplined preprocessing materially improves classical NLP performance on noisy social text.",
     ],
     tools: ["Python", "pandas", "NLTK", "scikit-learn", "matplotlib", "seaborn"],
@@ -278,11 +278,11 @@ export const researchPapers: ResearchStudy[] = [
       { value: "0.788", label: "ROC-AUC" },
     ],
     overview: [
-      "Losing high-value customers is disproportionately costly — retaining them depends on spotting the decay before they leave.",
+      "Losing high-value customers is disproportionately costly. Retaining them depends on spotting the decay before they leave.",
       "This project converts raw transactional data into an RFM (Recency, Frequency, Monetary) view, segments customers into value tiers via clustering, and trains a supervised classifier that raises an early-warning flag when a high-value customer's engagement starts dropping.",
     ],
     problem: [
-      "Churn is only obvious after it happens — reactive retention campaigns arrive too late.",
+      "Churn is only obvious after it happens. Reactive retention campaigns arrive too late.",
       "High-value customers are a minority, so generic churn models either over-alert or ignore the segment that matters most.",
       "Raw transaction logs are too granular for modeling and must be aggregated into customer-level behaviour first.",
     ],
@@ -293,7 +293,7 @@ export const researchPapers: ResearchStudy[] = [
       "Train a classifier that predicts drop-off risk early enough to act.",
     ],
     methodology: [
-      "Data cleaning: cancelled invoices, invalid transactions, and rows without a customer ID are removed — 541,909 rows reduce to 397,884.",
+      "Data cleaning: cancelled invoices, invalid transactions, and rows without a customer ID are removed, reducing 541,909 rows to 397,884.",
       "RFM engineering: Recency, Frequency, and Monetary computed per customer, then log-scaled with log1p to tame heavy tails.",
       "Clustering comparison: KMeans++, BisectingKMeans, and GMM over k=2..7 scored with Silhouette and Davies-Bouldin; k=3 is fixed for stable, interpretable High / Mid / Low segments.",
       "Early-risk engineering: RFM rolled up per customer-month, month-over-month drop signals counted (1,917 total), and a high-value customer is labeled at risk when signals accumulate.",
@@ -322,7 +322,7 @@ export const researchPapers: ResearchStudy[] = [
     keyFeatures: [
       "log1p-scaled RFM features for robust distance-based clustering.",
       "Three-algorithm clustering comparison with two internal-validity metrics.",
-      "Interpretable value segments — High 17.89% / Mid 39.10% / Low 43.02% of customers.",
+      "Interpretable value segments: High 17.89% / Mid 39.10% / Low 43.02% of customers.",
       "Early-warning signal counting across customer-months that turns raw decay into a supervised label.",
     ],
     results: [
@@ -342,7 +342,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "pandas", "NumPy", "scikit-learn", "seaborn", "matplotlib"],
     challenges: [
-      "Raw retail data is noisy — cancelled invoices, missing customer IDs, and returns require careful cleaning.",
+      "Raw retail data is noisy: cancelled invoices, missing customer IDs, and returns require careful cleaning.",
       "RFM values are heavily skewed, so naive scaling distorts clustering.",
       "Early-risk labels are derived and imbalanced, which caps the classifier's ceiling.",
     ],
@@ -361,7 +361,7 @@ export const researchPapers: ResearchStudy[] = [
     field: "Computer Vision & Pattern Recognition",
     tags: ["Computer Vision", "Deep Learning", "Transfer Learning"],
     oneLiner:
-      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images — an honest look at how hard field generalization is.",
+      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images, an honest look at how hard field generalization is.",
     summary:
       "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity, and the paper candidly reports the limits of doing so from photos alone.",
     metrics: [
@@ -371,18 +371,18 @@ export const researchPapers: ResearchStudy[] = [
       { value: "224×224", label: "input size" },
     ],
     overview: [
-      "Turbidity — how cloudy water is — is a key water-quality signal, but conventional nephelometer measurement is expensive, slow, and lab-bound.",
+      "Turbidity (how cloudy water is) is a key water-quality signal, but conventional nephelometer measurement is expensive, slow, and lab-bound.",
       "This paper proposes a lightweight deep-learning alternative: classify turbidity directly from smartphone photos taken in the field. It collects a real-world dataset, fine-tunes an EfficientNet-B0 backbone, and reports what works and what does not.",
     ],
     problem: [
-      "Lab-collected turbidity datasets do not reflect real field conditions — reflections, shadows, container edges, and colour distortion.",
+      "Lab-collected turbidity datasets do not reflect real field conditions: reflections, shadows, container edges, and colour distortion.",
       "Collecting enough labeled real-world images for deep learning is hard, so the dataset is small and class-imbalanced.",
       "Prior image-based work evaluated only under controlled imaging environments.",
     ],
     objective: [
       "Assemble a real-world turbidity dataset captured with consumer smartphones in uncontrolled lighting.",
       "Fine-tune EfficientNet-B0 (transfer learning with partial unfreezing) for Low / Medium / High turbidity classification.",
-      "Analyze generalization honestly — where the model succeeds and where real-world noise defeats it.",
+      "Analyze generalization honestly: where the model succeeds and where real-world noise defeats it.",
     ],
     methodology: [
       "Dataset collection: 300+ photos taken with three smartphones (two iPhones, one Android) in natural light, manually sorted into Low, Medium, and High turbidity, and resized to 224×224.",
@@ -401,7 +401,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     dataset: [
       "Custom dataset of 300+ photos taken with three different smartphones (two iPhones, one Android) in uncontrolled outdoor lighting.",
-      "Three classes — Low, Medium, and High turbidity — resized to 224×224.",
+      "Three classes (Low, Medium, and High turbidity) resized to 224×224.",
     ],
     implementation: [
       "Images standardized to 224×224 and split by class; class-weighted training to mitigate imbalance.",
@@ -419,7 +419,7 @@ export const researchPapers: ResearchStudy[] = [
       { value: "High", label: "majority prediction" },
     ],
     resultNotes: [
-      "Validation accuracy fluctuated between roughly 18% and 47% across fine-tuning phases while training accuracy kept climbing — the signature of a small, noisy, imbalanced dataset.",
+      "Validation accuracy fluctuated between roughly 18% and 47% across fine-tuning phases while training accuracy kept climbing, the signature of a small, noisy, imbalanced dataset.",
       "Predictions skew heavily toward the high-turbidity class, and the model struggles to separate medium from low turbidity.",
       "Qualitatively, the model reliably recognizes visually cloudy water; most errors trace to reflections, container edges, and lighting artifacts rather than to the water itself.",
     ],
@@ -450,7 +450,7 @@ export const researchPapers: ResearchStudy[] = [
     oneLiner:
       "A fine-tuned BanglaBERT detects toxic Bengali comments (86% accuracy, 87% F1, 0.91 ROC-AUC) and explains every prediction with SHAP and LIME.",
     summary:
-      "Data-mining research (IEEE-format paper) that fine-tunes BanglaBERT on Bengali toxicity data using 5-fold stratified cross-validation and adds an explainability layer — SHAP and LIME reveal which words drove each toxic / non-toxic decision, tackling the black-box problem in low-resource Bangla NLP.",
+      "Data-mining research (IEEE-format paper) that fine-tunes BanglaBERT on Bengali toxicity data using 5-fold stratified cross-validation and adds an explainability layer: SHAP and LIME reveal which words drove each toxic / non-toxic decision, tackling the black-box problem in low-resource Bangla NLP.",
     metrics: [
       { value: "86%", label: "accuracy" },
       { value: "87%", label: "F1-score" },
@@ -459,7 +459,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     overview: [
       "Toxic and hateful comments are rampant on Bengali social media, and the mental-health toll on adolescents is real. Most existing detection systems optimize accuracy alone and offer no explanation for their verdicts.",
-      "This study fine-tunes BanglaBERT for toxic-comment classification and wraps it in an explainability mechanism — LIME and SHAP — so moderators can see exactly which tokens triggered a flag.",
+      "This study fine-tunes BanglaBERT for toxic-comment classification and wraps it in an explainability mechanism (LIME and SHAP) so moderators can see exactly which tokens triggered a flag.",
     ],
     problem: [
       "Bengali toxicity detection is underserved: the language is low-resource, and informal writing, acronyms, and context-dependent insults defeat keyword rules and classical ML.",
@@ -489,7 +489,7 @@ export const researchPapers: ResearchStudy[] = [
       },
     ],
     dataset: [
-      "Multiple Bengali toxicity datasets combined — a BanglaMedia corpus, a Bengali comments dataset, a contextual toxicity dataset, plus auxiliary and synthetic augmentation sets.",
+      "Multiple Bengali toxicity datasets combined: a BanglaMedia corpus, a Bengali comments dataset, a contextual toxicity dataset, plus auxiliary and synthetic augmentation sets.",
     ],
     implementation: [
       "Fine-tuning loop over five stratified folds with the BanglaBERT transformer, aggregating per-fold metrics.",
@@ -497,7 +497,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     keyFeatures: [
       "5-fold stratified cross-validation for reliable generalization estimates.",
-      "Dual explainability — both SHAP and LIME on the same framework.",
+      "Dual explainability: both SHAP and LIME on the same framework.",
       "Word-level attribution that names the toxic terms behind each flag.",
       "Focus on low-resource Bangla NLP rather than high-resource English.",
     ],
@@ -516,7 +516,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "Hugging Face Transformers", "BanglaBERT", "SHAP", "LIME", "PyTorch", "scikit-learn"],
     challenges: [
-      "Bengali linguistic nuance — context-dependent insults, slang, and transliterated forms.",
+      "Bengali linguistic nuance: context-dependent insults, slang, and transliterated forms.",
       "Limited high-quality labeled Bengali toxicity data; augmentation was needed.",
       "Explainability tools are compute-heavy over transformer embeddings.",
     ],

@@ -41,7 +41,7 @@ export default function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="relative scroll-mt-0 pb-10 pt-[calc(var(--nav-offset)_+_2.5rem)] sm:pb-12"
+      className="relative min-h-0 scroll-mt-[var(--nav-offset)] pt-8 sm:pt-12 pb-6 sm:pb-8"
     >
       <div className="container-site">
         <MotionConfig reducedMotion="user">
@@ -56,7 +56,7 @@ export default function ContactSection() {
               className="flex flex-wrap items-start justify-between gap-4"
             >
               <div className="max-w-2xl">
-                <Eyebrow index="07">Contact</Eyebrow>
+                <Eyebrow index="08">Contact</Eyebrow>
                 <h2 className="section-title">
                   Got a problem worth engineering?
                 </h2>

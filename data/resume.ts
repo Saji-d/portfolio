@@ -1,33 +1,33 @@
 export const resume = {
   about:
-    "Software Engineer and AI Developer engineering the bridge between high-throughput backend systems and intelligent machine learning models. Adept at turning complex architectural problems into elegant, production-ready code.",
+    "Full-stack Software Engineer and AI/ML Developer building production software across frontend, backend, and intelligent machine-learning systems. Adept at turning complex architectural problems into elegant, production-ready code.",
   experience: [
     {
-      org: "LedgerCross",
+      org: "Ledgercross",
       location: "Dhaka, Bangladesh",
       role: "Software Developer Trainee",
-      period: "May 2026 — Present",
+      period: "May 2026 - Present",
       points: [
-        "Engineered an AI invoice processing microservice using Python (FastAPI), PostgreSQL, and Cloudflare R2.",
-        "Implemented an asynchronous distributed processing engine utilizing Redis Streams and BullMQ.",
-        "Authored 218 automated pytest test cases covering API endpoints, queue workers, and multi-tenant RLS.",
+        "Developing production software systems using Python (FastAPI), PostgreSQL, Redis, and cloud infrastructure.",
+        "Designing and implementing REST APIs, asynchronous and distributed processing, multi-tenant data layers, and automated testing suites.",
+        "Collaborating with the engineering team to build scalable services, ensure system reliability, and maintain code quality.",
       ],
     },
     {
       org: "Bangladesh Software Solution (BSS)",
       location: "Dhaka, Bangladesh",
       role: "Software Engineer Intern",
-      period: "Feb 2026 — Apr 2026",
+      period: "Feb 2026 - Apr 2026",
       points: [
-        "Developed responsive frontend interfaces utilizing HTML5, CSS3, and modern JavaScript (ES6+).",
-        "Integrated frontend layout structures with backend RESTful APIs with robust error handling.",
-        "Collaborated in agile development workflows utilizing Git for version control and system deployment.",
+        "Developed and delivered responsive web applications using modern web technologies and frontend frameworks.",
+        "Integrated frontend interfaces with RESTful APIs, implemented production-ready UI components, and resolved technical issues.",
+        "Collaborated in agile team workflows, utilizing Git for version control and participating in code reviews.",
       ],
     },
   ],
   projects: [
     {
-      name: "InvoicePilot (LedgerCross product)",
+      name: "InvoicePilot (Ledgercross product)",
       stack: "Python, FastAPI, React 19, PostgreSQL, Redis",
       points: [
         "Designed an 11-stage processing pipeline for automated Mindee OCR extraction and fraud detection.",
@@ -65,19 +65,19 @@ export const resume = {
       org: "American International University-Bangladesh (AIUB)",
       degree: "BSc in Computer Science & Engineering",
       detail: "CGPA 3.92 / 4.00",
-      period: "Sep 2022 — Apr 2026",
+      period: "Sep 2022 - Apr 2026",
     },
     {
       org: "BAF Shaheen College Dhaka",
       degree: "Higher Secondary Certificate (HSC), Science",
       detail: "GPA 5.00 / 5.00",
-      period: "Jun 2019 — Dec 2021",
+      period: "Jun 2019 - Dec 2021",
     },
     {
       org: "Kurmitola High School & College",
       degree: "Secondary School Certificate (SSC), Science",
       detail: "GPA 5.00 / 5.00",
-      period: "Jan 2017 — Feb 2019",
+      period: "Jan 2017 - Feb 2019",
     },
   ],
   thesis: {
@@ -90,8 +90,8 @@ export const resume = {
     ],
   },
   certifications: [
-    "IBM Full-Stack JavaScript Developer Professional Certificate — Coursera",
-    "Blockchain, Ethereum & Solidity Development — Udemy",
+    "IBM Full-Stack JavaScript Developer Professional Certificate (Coursera)",
+    "Blockchain, Ethereum & Solidity Development (Udemy)",
   ],
   skills: [
     { group: "AI & Machine Learning", items: "PyTorch, Hugging Face, Scikit-learn, OpenCV, CatBoost" },
@@ -101,12 +101,12 @@ export const resume = {
     { group: "Tools & DevOps", items: "Git, Docker, Celery, BullMQ, Jupyter Notebook, Cloudflare R2" },
   ],
   honors: [
-    { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 — 2026" },
-    { name: "The Duke of Edinburgh's Bronze Award", detail: "Community service, skill development, and expedition tasks.", period: "2025 — 2026" },
+    { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 - 2026" },
+    { name: "The Duke of Edinburgh's Bronze Award", detail: "Community service, skill development, and expedition tasks.", period: "2025 - 2026" },
   ],
   leadership: [
-    { role: "Student Activity Coordinator", org: "Space Innovation Camp", period: "2022 — 2025", detail: "Led robotics and UAV engineering workshops mentoring over 500 students." },
-    { role: "Public Relations Representative", org: "WRO Bangladesh", period: "2023 — 2024", detail: "Coordinated media communications and logistics for national robotics competitions." },
+    { role: "Student Activity Coordinator", org: "Space Innovation Camp", period: "2022 - 2025", detail: "Led robotics and UAV engineering workshops mentoring over 500 students." },
+    { role: "Public Relations Representative", org: "WRO Bangladesh", period: "2023 - 2024", detail: "Coordinated media communications and logistics for national robotics competitions." },
   ],
   references: [
     {

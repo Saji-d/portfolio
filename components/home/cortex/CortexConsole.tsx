@@ -5,8 +5,6 @@ import {
   AnimatePresence,
   motion,
   MotionConfig,
-  useMotionValue,
-  useSpring,
 } from "motion/react";
 import { CornerDownLeft } from "lucide-react";
 import { getProject } from "@/data/projects";
@@ -20,7 +18,7 @@ import ContactView from "./views/ContactView";
 import ProjectDetailView from "./views/ProjectDetailView";
 import AboutView from "./views/AboutView";
 import SynapseOverlay from "./SynapseOverlay";
-import { ExitView, HelpView, NotFoundView } from "./views/MiscViews";
+import { CoffeeView, ExitView, HelpView, NotFoundView } from "./views/MiscViews";
 
 type ViewId =
   | "whoami"
@@ -32,6 +30,7 @@ type ViewId =
   | "contact"
   | "project-detail"
   | "synapse"
+  | "coffee"
   | "help"
   | "exit"
   | "not-found";
@@ -133,6 +132,12 @@ export default function CortexConsole() {
       setSynapseActive(true);
       return;
     }
+    if (name === "coffee") {
+      setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: "coffee" }]);
+      setLastCmd(text);
+      setView("coffee");
+      return;
+    }
     const target = VIEW_FOR[name];
     if (target) {
       setLog((l) => [...l.slice(-8), { id: ++logCounter, cmd: text, view: target }]);
@@ -198,19 +203,6 @@ export default function CortexConsole() {
     outputRef.current?.scrollTo({ top: 0 });
   }, [view]);
 
-  const glowX = useMotionValue(0);
-  const glowY = useMotionValue(0);
-  const springX = useSpring(glowX, { stiffness: 55, damping: 18 });
-  const springY = useSpring(glowY, { stiffness: 55, damping: 18 });
-
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (reducedMotion.matches) return;
-    const rect = rootRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    glowX.set(e.clientX - rect.left - rect.width / 2);
-    glowY.set(e.clientY - rect.top - rect.height / 2);
-  };
-
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -242,23 +234,12 @@ export default function CortexConsole() {
     <MotionConfig reducedMotion="user">
       <div
         ref={rootRef}
-        onPointerMove={onPointerMove}
         onClick={() => inputRef.current?.focus()}
         className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-line-strong bg-surface/60 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.85)] backdrop-blur-md"
       >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
-        />
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[160%] w-[160%]"
-          style={{
-            x: springX,
-            y: springY,
-            background:
-              "radial-gradient(520px at 50% 50%, rgba(79, 209, 197, 0.07), transparent 70%)",
-          }}
         />
         {PARTICLES.map((p, i) => (
           <span
@@ -360,6 +341,7 @@ export default function CortexConsole() {
               {view === "project-detail" && (
                 <ProjectDetailView slug={projectSlug ?? ""} key={projectSlug ?? "none"} />
               )}
+              {view === "coffee" && <CoffeeView />}
               {view === "help" && <HelpView />}
               {view === "exit" && <ExitView onReconnect={() => run("clear")} />}
               {view === "not-found" && <NotFoundView cmd={lastCmd ?? ""} />}
@@ -383,7 +365,7 @@ export default function CortexConsole() {
             history
           </span>
           {log.length === 0 && (
-            <span className="font-mono text-xs text-text-muted/50">—</span>
+            <span className="font-mono text-xs text-text-muted/50">no history yet</span>
           )}
           {log.map((entry) => (
             <button

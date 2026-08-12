@@ -5,7 +5,7 @@ import ResearchShowcase from "@/components/research/ResearchShowcase";
 export const metadata: Metadata = {
   title: "Research",
   description:
-    "Thesis and research — NeuroScreen hybrid ensemble, Twitter sentiment analysis, early-warning customer churn, image-based water turbidity, and explainable Bangla toxicity detection.",
+    "Thesis and research: NeuroScreen hybrid ensemble, Twitter sentiment analysis, early-warning customer churn, image-based water turbidity, and explainable Bangla toxicity detection.",
   alternates: { canonical: "/research" },
 };
 
@@ -13,7 +13,7 @@ export default function ResearchPage() {
   return (
     <>
       <PageHeader
-        eyebrow="[ 02 ] — Research"
+        eyebrow="[ 04 ] · Research"
         title="Work that pushes a claim until it holds."
         lede="Every study uses a real dataset, a rigorous method, and honest numbers. The flagship is the thesis below."
       />

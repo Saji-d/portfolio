@@ -21,7 +21,7 @@ export default function ProjectsSection() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
-              <Eyebrow index="02">Projects</Eyebrow>
+              <Eyebrow index="03">Projects</Eyebrow>
               <h2 className="section-title">
                 Built things. Broke things. Shipped things.
               </h2>

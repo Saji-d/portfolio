@@ -24,10 +24,10 @@ const education: EducationEntry[] = [
     degree: "Bachelor of Science in Computer Science and Engineering",
     gpa: "3.92",
     gpaLabel: "CGPA / 4.00",
-    period: "Sep 2022 — Apr 2026",
+    period: "Sep 2022 - Apr 2026",
     location: "Dhaka, Bangladesh",
     image: "/images/education/aiub-campus_v2.webp",
-    imageAlt: "AIUB campus — the iconic dome building",
+    imageAlt: "AIUB campus, the iconic dome building",
     imagePosition: "center center",
     badges: ["5× Dean's Award", "AIUB Merit Scholar", "Duke of Edinburgh Bronze"],
     featured: true,
@@ -37,7 +37,7 @@ const education: EducationEntry[] = [
     degree: "Secondary School Certificate (SSC) · Science",
     gpa: "5.00",
     gpaLabel: "GPA / 5.00",
-    period: "Jan 2017 — Feb 2019",
+    period: "Jan 2017 - Feb 2019",
     location: "Dhaka, Bangladesh",
     image: "/images/education/kurmitola.webp",
     imageAlt: "Kurmitola High School & College logo",
@@ -47,7 +47,7 @@ const education: EducationEntry[] = [
     degree: "Higher Secondary Certificate (HSC) · Science",
     gpa: "5.00",
     gpaLabel: "GPA / 5.00",
-    period: "Jun 2019 — Dec 2021",
+    period: "Jun 2019 - Dec 2021",
     location: "Dhaka, Bangladesh",
     image: "/images/education/baf-shaheen.webp",
     imageAlt: "BAF Shaheen College Dhaka logo",
@@ -187,7 +187,7 @@ export default function EducationSection() {
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="05">Education</Eyebrow>
+            <Eyebrow index="06">Education</Eyebrow>
             <h2 className="section-title">
               Built the fundamentals, then taught the code what to do with them.
             </h2>
