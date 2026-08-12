@@ -69,7 +69,7 @@ export default function Hero() {
           <TerminalCard />
         </div>
 
-        <div className="hero-enter mt-16 sm:mt-20" style={{ animationDelay: delays[4] }}>
+        <div className="hero-enter mt-10 sm:mt-12" style={{ animationDelay: delays[4] }}>
           <HeroMarquee />
         </div>
 

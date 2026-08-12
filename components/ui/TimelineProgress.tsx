@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 
-export default function TimelineProgress() {
+export default function TimelineProgress({
+  center = false,
+}: {
+  center?: boolean;
+}) {
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,12 +17,15 @@ export default function TimelineProgress() {
     let raf = 0;
     let lastP = -1;
 
+    const transform = (p: number) =>
+      `${center ? "translateX(-50%) " : ""}scaleY(${p.toFixed(4)})`;
+
     const update = () => {
       raf = 0;
       if (reduced) {
         if (lastP !== 1) {
           lastP = 1;
-          el.style.transform = "scaleY(1)";
+          el.style.transform = transform(1);
         }
         return;
       }
@@ -30,7 +37,7 @@ export default function TimelineProgress() {
       const p = Math.min(1, Math.max(0, (start - rect.top) / range));
       if (p === lastP) return;
       lastP = p;
-      el.style.transform = `scaleY(${p.toFixed(4)})`;
+      el.style.transform = transform(p);
     };
 
     const onScroll = () => {
@@ -45,14 +52,16 @@ export default function TimelineProgress() {
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [center]);
 
   return (
     <div
       ref={lineRef}
       aria-hidden="true"
-      className="absolute bottom-1 left-[15px] top-2 w-px origin-top bg-accent"
-      style={{ transform: "scaleY(0)" }}
+      className={`absolute w-px origin-top bg-accent ${
+        center ? "bottom-0 left-1/2 top-0" : "bottom-1 left-[15px] top-2"
+      }`}
+      style={{ transform: center ? "translateX(-50%) scaleY(0)" : "scaleY(0)" }}
     />
   );
 }

@@ -29,6 +29,7 @@ export const NAV_LINKS: readonly NavSectionLink[] = [
   { label: "Experience", section: "experience", href: "/#experience" },
   { label: "Education", section: "education", href: "/#education" },
   { label: "Capabilities", section: "capabilities", href: "/#capabilities" },
+  { label: "Contact", section: "contact", href: "/#contact" },
 ] as const;
 
 export const CORTEX_LINK: NavSectionLink = {

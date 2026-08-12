@@ -67,7 +67,9 @@ function FeaturedCardBody({
       </div>
       <div className="mt-3 lg:grid lg:grid-cols-[1fr_260px] lg:items-start lg:gap-8">
         <div className="min-w-0">
-          <h2 className="feature-title max-w-3xl">{featured.title}</h2>
+          <h2 className="max-w-3xl font-display text-xl font-medium leading-7 tracking-tight text-text-primary sm:text-2xl sm:leading-8">
+            {featured.title}
+          </h2>
           <p className="mt-2 max-w-2xl body-copy text-text-secondary">
             {featured.summary}
           </p>

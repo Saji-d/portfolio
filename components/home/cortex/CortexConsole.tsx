@@ -244,7 +244,7 @@ export default function CortexConsole() {
         ref={rootRef}
         onPointerMove={onPointerMove}
         onClick={() => inputRef.current?.focus()}
-        className="relative overflow-hidden rounded-2xl border border-line-strong bg-surface/60 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.85)] backdrop-blur-md"
+        className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-line-strong bg-surface/60 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.85)] backdrop-blur-md"
       >
         <div
           aria-hidden="true"
@@ -340,7 +340,7 @@ export default function CortexConsole() {
           </span>
         </div>
 
-        <div ref={outputRef} className="console-scroll relative h-[320px] overflow-y-auto sm:h-[400px]">
+        <div ref={outputRef} className="console-scroll relative min-h-0 flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={view ?? "idle"}

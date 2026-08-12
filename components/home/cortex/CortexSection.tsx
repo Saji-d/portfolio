@@ -47,13 +47,13 @@ export default function CortexSection() {
     <section
       id="cortex"
       aria-label="Interactive intro"
-      className="section-chapter relative overflow-hidden"
+      className="relative scroll-mt-0 overflow-hidden"
     >
       {/* A full-bleed console zone, breaking out of the normal container
           rhythm every other section follows — this is the one place on the
           page meant to feel like you've stepped into a different mode, not
           another card section. */}
-      <div className="relative left-1/2 w-screen -translate-x-1/2 border-y border-line bg-surface/40 py-10 sm:py-12">
+      <div className="relative left-1/2 flex h-[100dvh] w-screen -translate-x-1/2 flex-col border-b border-line bg-surface/40 pb-10 pt-[calc(var(--nav-offset)_+_2.5rem)] sm:pb-12">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(var(--grid-dot)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)]" />
           <NeuralBackdropSvg />
@@ -61,7 +61,7 @@ export default function CortexSection() {
           <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-accent-2/5 blur-3xl" />
         </div>
 
-        <div className="container-site relative">
+        <div className="container-site relative flex min-h-0 flex-1 flex-col">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="max-w-2xl">
               <Reveal>
@@ -84,7 +84,7 @@ export default function CortexSection() {
             </Reveal>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 flex min-h-0 flex-1 flex-col">
             <CortexLazyGate />
           </div>
 

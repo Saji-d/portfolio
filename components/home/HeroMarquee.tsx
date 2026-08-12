@@ -44,7 +44,7 @@ function IconItem({ Icon, color }: TechLogo) {
       className="tech-marquee-icon mx-4 flex shrink-0 items-center justify-center opacity-70 transition-all duration-300 group-hover:opacity-90 hover:!opacity-100 sm:mx-6"
       style={{ "--icon-color": color } as CSSProperties}
     >
-      <Icon className="h-6 w-6 drop-shadow-[0_0_0_rgba(0,0,0,0)] transition-[filter,transform] duration-300 hover:drop-shadow-[0_0_10px_var(--icon-color)] hover:scale-105 sm:h-7 sm:w-7" />
+      <Icon className="h-6 w-6 saturate-[0.8] drop-shadow-[0_0_0_rgba(0,0,0,0)] transition-[filter,transform] duration-300 hover:drop-shadow-[0_0_10px_var(--icon-color)] hover:saturate-100 hover:scale-105 sm:h-7 sm:w-7" />
     </span>
   );
 }
@@ -71,6 +71,11 @@ export default function HeroMarquee() {
         </div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-bg to-transparent sm:w-24" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-bg to-transparent sm:w-24" />
+      </div>
+      <div aria-hidden="true" className="relative mt-5 flex items-center gap-2.5">
+        <span className="h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_10px_rgba(79,209,197,0.6)]" />
+        <span className="h-[3px] flex-1 rounded-full bg-gradient-to-r from-accent/50 via-accent to-accent/50 shadow-[0_0_14px_rgba(79,209,197,0.3)]" />
+        <span className="h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_10px_rgba(79,209,197,0.6)]" />
       </div>
       <ul className="sr-only">
         {logos.map((logo) => (

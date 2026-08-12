@@ -50,7 +50,7 @@ export default function ExperienceTimeline() {
     <section
       id="experience"
       aria-label="Experience"
-      className="section-chapter relative pb-16 sm:pb-20"
+      className="section-chapter section-chapter-tight relative pb-16 sm:pb-20"
     >
       <div className="container-site">
         <Reveal>
@@ -76,6 +76,9 @@ export default function ExperienceTimeline() {
             aria-hidden="true"
             className="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-line lg:block"
           />
+          <div className="hidden lg:block">
+            <TimelineProgress center />
+          </div>
 
           <div className="space-y-5 lg:space-y-10">
             {experiences.map((experience, i) => {

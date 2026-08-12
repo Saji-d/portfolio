@@ -182,7 +182,7 @@ export default function EducationSection() {
     <section
       id="education"
       aria-label="Education"
-      className="section-chapter relative pb-10 sm:pb-12"
+      className="section-chapter section-chapter-tight relative pb-10 sm:pb-12"
     >
       <div className="container-site">
         <Reveal>
@@ -194,7 +194,7 @@ export default function EducationSection() {
           </div>
         </Reveal>
 
-        <div className="space-y-3">
+        <div className="mt-6 space-y-3">
           {featured && (
             <Reveal>
               <FeaturedCard entry={featured} />

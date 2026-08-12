@@ -307,8 +307,8 @@ export default function Nav() {
             >
               <span
                 aria-hidden="true"
-                className={`h-1.5 w-1.5 shrink-0 rounded-full transition-colors ${
-                  cortexActive ? "animate-pulse bg-accent" : "bg-text-muted"
+                className={`h-1 w-1 shrink-0 rounded-full bg-accent transition-all duration-300 ${
+                  cortexActive ? "scale-100 opacity-100" : "scale-0 opacity-0"
                 }`}
               />
               <span className="relative z-10">{CORTEX_LINK.label}</span>
@@ -337,15 +337,6 @@ export default function Nav() {
                 </Link>
               );
             })}
-            <Link
-              href={RESUME_LINK.href}
-              data-resume
-              aria-current={pathname === "/resume" ? "page" : undefined}
-              className="relative ml-1 inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent"
-            >
-              <span className="relative z-10">{RESUME_LINK.label}</span>
-              <ArrowUpRight className="h-3 w-3" />
-            </Link>
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5">
@@ -388,11 +379,13 @@ export default function Nav() {
               </a>
             </div>
             <Link
-              href="/#contact"
-              onClick={(e) => handleSectionClick(e, "contact")}
-              className="hidden shrink-0 whitespace-nowrap rounded-lg bg-accent px-3 py-2 text-sm font-medium text-accent-ink transition-all hover:bg-accent/90 hover:shadow-[0_0_24px_rgba(79,209,197,0.35)] md:block"
+              href={RESUME_LINK.href}
+              data-resume
+              aria-current={pathname === "/resume" ? "page" : undefined}
+              className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent md:inline-flex"
             >
-              Get in touch
+              <span className="relative z-10">{RESUME_LINK.label}</span>
+              <ArrowUpRight className="h-3 w-3" />
             </Link>
             <button
               ref={menuToggleRef}
@@ -432,8 +425,8 @@ export default function Nav() {
               >
                 <span
                   aria-hidden="true"
-                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition-colors ${
-                    cortexActive ? "animate-pulse bg-accent" : "bg-text-muted"
+                  className={`h-1 w-1 shrink-0 rounded-full bg-accent transition-opacity duration-200 ${
+                    cortexActive ? "opacity-100" : "opacity-0"
                   }`}
                 />
                 {CORTEX_LINK.label}
@@ -485,14 +478,7 @@ export default function Nav() {
                 GitHub
                 <GithubIcon className="h-3.5 w-3.5" />
               </a>
-              <Link
-                href="/#contact"
-                onClick={(e) => handleSectionClick(e, "contact")}
-                className="mt-1 flex items-center justify-center rounded-lg bg-accent px-3.5 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent/90 md:hidden"
-              >
-                Get in touch
-              </Link>
-            </nav>
+          </nav>
           </div>
         </div>
       </div>

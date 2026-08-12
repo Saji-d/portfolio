@@ -154,6 +154,12 @@
   padding-top: calc(var(--nav-offset) + 2.5rem);
 }
 
+/* Experience and Education start their content a little higher below the
+   fixed navbar than the other chapters. */
+.section-chapter-tight {
+  padding-top: calc(var(--nav-offset) + 1.25rem);
+}
+
 @utility eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;

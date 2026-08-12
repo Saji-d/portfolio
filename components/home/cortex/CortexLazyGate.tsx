@@ -18,7 +18,7 @@ function Skeleton() {
   // silently carry the scroll position away from wherever a visitor (or a
   // hash-on-load correction) just placed it.
   return (
-    <div className="flex h-[500px] items-center justify-center rounded-2xl border border-line bg-surface/60 font-mono text-xs text-text-muted sm:h-[580px]">
+    <div className="flex flex-1 items-center justify-center rounded-2xl border border-line bg-surface/60 font-mono text-xs text-text-muted">
       cortex loading<span className="animate-caret text-accent">_</span>
     </div>
   );
@@ -44,5 +44,9 @@ export default function CortexLazyGate() {
     return () => io.disconnect();
   }, []);
 
-  return <div ref={ref}>{inView ? <CortexConsole /> : <Skeleton />}</div>;
+  return (
+    <div ref={ref} className="flex min-h-0 flex-1 flex-col">
+      {inView ? <CortexConsole /> : <Skeleton />}
+    </div>
+  );
 }

@@ -22,13 +22,12 @@ function Section({
 }) {
   return (
     <Reveal>
-      <section className="mt-12 first:mt-0">
-        <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-          <h2 className="font-display text-lg font-medium tracking-tight text-text-primary">
-            <span className="mr-2 font-mono text-sm text-accent">{index}</span>
-            {title}
-          </h2>
-        </div>
+      <section className="mt-14 first:mt-0">
+        <div aria-hidden="true" className="border-t border-line" />
+        <h2 className="mt-6 flex items-baseline gap-2.5 font-display text-xl font-semibold tracking-tight text-text-primary">
+          <span className="font-mono text-xl text-accent">{index}</span>
+          <span className="uppercase tracking-[0.05em]">{title}</span>
+        </h2>
         <div className="mt-5">{children}</div>
       </section>
     </Reveal>
@@ -39,7 +38,7 @@ export default function ResumePage() {
   return (
     <>
       <PageHeader
-        eyebrow="[ 05 ] — Resume"
+        eyebrow="[ 08 ] — Resume"
         title="The source of truth."
         lede="Everything on this site traces back to this document. Download it, or read it inline below."
       />
