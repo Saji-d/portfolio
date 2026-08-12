@@ -116,7 +116,7 @@ function Endcap() {
 export default function TechMarquee() {
   const allLogos = [...row1, ...row2];
   return (
-    <div className="group relative">
+    <div className="group relative px-2">
       <div className="relative">
         <div className="flex flex-col gap-2.5">
           <div className="relative overflow-hidden py-2.5">
