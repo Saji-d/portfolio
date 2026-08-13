@@ -21,10 +21,6 @@
   --accent-3: #22d3ee;
   --accent-3-dim: rgba(34, 211, 238, 0.14);
   --accent-ink: #f8fafc;
-  /* The single global ambient wash behind the whole page — deliberately
-     distinct from --accent-dim (which sizes badge/pill fills) so it can be
-     tuned independently of small UI accents. */
-  --glow-primary: rgba(99, 102, 241, 0.16);
   --success: #3fb28a;
   --warning: #e8b44b;
   --danger: #e05b5b;
@@ -400,25 +396,6 @@
 
 @utility animate-cortex-float {
   animation: cortex-float 6s ease-in-out infinite;
-}
-
-/* A very slow, low-amplitude drift for the Hero's atmospheric light
-   field — deliberately subtle (small translate + opacity breathing) so it
-   reads as a living environment rather than a moving graphic. */
-@keyframes ambient-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translate3d(2%, -3%, 0) scale(1.06);
-    opacity: 1;
-  }
-}
-
-@utility animate-ambient-drift {
-  animation: ambient-drift 22s ease-in-out infinite;
 }
 
 @keyframes scan-sweep {

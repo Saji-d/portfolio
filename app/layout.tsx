@@ -3,7 +3,6 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import CursorGlow from "@/components/CursorGlow";
 import ParticleField from "@/components/ParticleField";
 import { CommandPaletteProvider } from "@/components/command-palette-context";
 import RouteProgress from "@/components/ui/RouteProgress";
@@ -104,7 +103,6 @@ export default function RootLayout({
         <ScrollProgress />
         <RouteProgress />
         <ParticleField />
-        <CursorGlow />
         <CommandPaletteProvider>
           <Nav />
           <main id="main" className="relative z-10 outline-none">
