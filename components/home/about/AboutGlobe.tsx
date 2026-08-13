@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { FeatureCollection, Geometry } from "geojson";
 import worldTopology from "world-atlas/countries-110m.json";
-import GlobeTrail from "@/components/home/about/GlobeTrail";
+import RocketExhaust from "@/components/home/about/RocketExhaust";
 import { GLOBE_ARCS, GLOBE_LOCATIONS, type GlobeLocation } from "@/data/globe";
 
 const topology = worldTopology as unknown as Topology;
@@ -175,8 +175,8 @@ function buildMarkerElement(
 }
 
 // The cursor hotspot sits near the nose; the engine/fins sit this many
-// pixels below it in the SVG. GlobeTrail uses the same distance to anchor
-// its exhaust glow at the engine rather than at the raw pointer position.
+// pixels below it in the SVG. RocketExhaust uses the same distance to anchor
+// the thruster at the nozzle rather than at the raw pointer position.
 const ROCKET_ENGINE_OFFSET_Y = 19;
 
 function buildRocketCursor(color: string) {
@@ -206,8 +206,8 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   const isReady = useRef(false);
   const isDraggingGlobe = useRef(false);
   const hoverRaf = useRef<number | null>(null);
-  // Mirrors the cursor's on-globe state for GlobeTrail, which needs it every
-  // rAF and shouldn't re-render this component to get it.
+  // Mirrors the cursor's on-globe state for RocketExhaust, which needs it on
+  // every pointermove and shouldn't re-render this component to get it.
   const overGlobeRef = useRef(false);
   const [booted, setBooted] = useState(false);
 
@@ -231,8 +231,8 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     return api.toGlobeCoords(x, y) !== null;
   }, []);
 
-  // On the globe: grab/grabbing, no exhaust trail. Off the globe (empty card
-  // space): a rocket cursor with GlobeTrail rendering its exhaust glow.
+  // On the globe: grab/grabbing, no exhaust. Off the globe (empty card
+  // space): a rocket cursor with RocketExhaust rendering its thruster.
   const updateCursor = useCallback(
     (clientX: number, clientY: number) => {
       const canvasEl = globeRef.current?.renderer().domElement;
@@ -503,7 +503,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
           onGlobeReady={handleGlobeReady}
         />
       )}
-      <GlobeTrail
+      <RocketExhaust
         targetRef={containerRef}
         overGlobeRef={overGlobeRef}
         anchorOffsetY={ROCKET_ENGINE_OFFSET_Y}

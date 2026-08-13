@@ -507,6 +507,128 @@
   box-shadow: 0 0 16px 2px var(--marker-glow);
 }
 
+/* Neon thruster glued to the rocket cursor's nozzle (RocketExhaust.tsx).
+   The wrapper is repositioned via `transform` on every pointermove — the
+   flicker/pulse below is pure CSS so it never depends on JS frame timing,
+   and every layer starts at top:0 (the nozzle) so there is no seam between
+   rocket and flame. */
+.rocket-exhaust {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  will-change: transform;
+}
+
+.rocket-exhaust-glow,
+.rocket-exhaust-flame,
+.rocket-exhaust-core,
+.rocket-exhaust-spark {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+}
+
+.rocket-exhaust-glow {
+  top: -5px;
+  width: 14px;
+  height: 14px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  filter: blur(2px);
+  animation: rocket-exhaust-breathe 1.5s ease-in-out infinite;
+}
+
+.rocket-exhaust-flame {
+  top: 0;
+  width: 4.5px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 60% 60% / 55% 55% 100% 100%;
+  background: linear-gradient(to bottom, #eafffb 0%, var(--accent) 45%, transparent 100%);
+  transform-origin: top center;
+  animation: rocket-exhaust-flicker 0.4s ease-in-out infinite;
+}
+
+.rocket-exhaust-core {
+  top: -1px;
+  width: 2.5px;
+  height: 2.5px;
+  transform: translateX(-50%);
+  background: #eafffb;
+  box-shadow: 0 0 4px 1px var(--accent);
+  animation: rocket-exhaust-flicker 0.4s ease-in-out infinite reverse;
+}
+
+.rocket-exhaust-spark {
+  top: 4px;
+  width: 1px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.45;
+}
+
+.rocket-exhaust-spark-a {
+  left: 42%;
+  animation: rocket-exhaust-spark-drift-left 0.85s ease-in infinite;
+}
+
+.rocket-exhaust-spark-b {
+  left: 58%;
+  animation: rocket-exhaust-spark-drift-right 1.05s ease-in infinite 0.35s;
+}
+
+@keyframes rocket-exhaust-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
+
+@keyframes rocket-exhaust-flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: translateX(-50%) scaleY(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1.1);
+  }
+}
+
+@keyframes rocket-exhaust-spark-drift-left {
+  0% {
+    opacity: 0.45;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-3px, 6px) scale(0.4);
+  }
+}
+
+@keyframes rocket-exhaust-spark-drift-right {
+  0% {
+    opacity: 0.45;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(3px, 6px) scale(0.4);
+  }
+}
+
 /* The frontmost node of the How I Build pipeline gives off a soft breathing
    glow while the sequence is still coming online. */
 @keyframes pipeline-front-pulse {
