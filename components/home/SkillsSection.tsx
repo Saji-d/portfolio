@@ -119,7 +119,7 @@ export default function SkillsSection() {
                       primary ? "border-accent/25 p-5 sm:p-6" : "p-4"
                     } ${
                       related
-                        ? "border-accent/60 shadow-[0_16px_40px_-24px_rgba(79,209,197,0.45)]"
+                        ? "border-accent/60 shadow-[0_16px_40px_-24px_rgba(99, 102, 241,0.4)]"
                         : "hover:border-accent/40"
                     } ${dimmed ? "opacity-60" : "opacity-100"}`}
                   >

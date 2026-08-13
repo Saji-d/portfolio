@@ -57,7 +57,7 @@ const education: EducationEntry[] = [
 function FeaturedCard({ entry }: { entry: EducationEntry }) {
   return (
     <TiltCard className="h-full">
-      <article className="card-surface group relative flex h-full flex-col overflow-hidden border-accent/30 shadow-[0_0_0_1px_rgba(79,209,197,0.12),0_20px_60px_-24px_rgba(79,209,197,0.18)] transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(79,209,197,0.25),0_32px_80px_-28px_rgba(79,209,197,0.38)]">
+      <article className="card-surface group relative flex h-full flex-col overflow-hidden border-accent/30 shadow-[0_0_0_1px_rgba(99, 102, 241,0.1),0_20px_60px_-24px_rgba(99, 102, 241,0.15)] transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(99, 102, 241,0.22),0_32px_80px_-28px_rgba(99, 102, 241,0.32)]">
         <div className="relative aspect-[16/4] overflow-hidden bg-surface-2 sm:aspect-[16/2.25]">
           <Image
             src={entry.image}
@@ -67,9 +67,9 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             style={{ objectPosition: entry.imagePosition ?? "center center" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-[#0B0E14]/30 to-[#0B0E14]/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-bg/10" />
 
-          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-[#0B0E14]/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider text-accent backdrop-blur-md">
+          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-bg/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider text-accent backdrop-blur-md">
             <Star className="h-3 w-3 fill-current" />
             Highest qualification
           </span>
@@ -126,7 +126,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
 function SchoolCard({ entry }: { entry: EducationEntry }) {
   return (
     <TiltCard className="h-full">
-      <article className="card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(79,209,197,0.22)]">
+      <article className="card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(99, 102, 241,0.18)]">
         <div className="relative h-20 w-full overflow-hidden bg-surface-2">
           <Image
             src={entry.image}

@@ -40,7 +40,7 @@ export default function ScrollProgress() {
     >
       <div
         ref={barRef}
-        className="h-full origin-left bg-gradient-to-r from-accent via-accent-2 to-accent-2 shadow-[0_0_12px_rgba(79,209,197,0.6)] transition-transform duration-150 ease-out will-change-transform"
+        className="h-full origin-left bg-gradient-to-r from-accent via-accent-2 to-accent-2 shadow-[0_0_12px_rgba(99, 102, 241,0.5)] transition-transform duration-150 ease-out will-change-transform"
       />
     </div>
   );

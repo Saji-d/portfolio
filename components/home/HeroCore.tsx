@@ -46,9 +46,11 @@ interface Mote {
 const MOTE_COUNT = 46;
 
 // Reused from NetworkBackground.tsx so the core's palette matches the rest
-// of the page exactly.
-const ACCENT = [79, 209, 197] as const;
-const ACCENT_2 = [124, 125, 255] as const;
+// of the page exactly. Cool indigo-gray reads as the neutral field; the
+// indigo accent is reserved for the middle ring, the core's outer fade, and
+// a scattering of motes — the one place the Hero leans into the signature.
+const ACCENT = [140, 143, 189] as const;
+const ACCENT_2 = [99, 102, 241] as const;
 
 const FRAME_MS = 33;
 const BREATHE_PERIOD = 7; // seconds, gentle ambient breathing
@@ -185,7 +187,7 @@ export default function HeroCore({ className }: HeroCoreProps) {
 
       const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
       // Dim inner core (leaves room for the portrait layered on top by CSS),
-      // rising to a bright ring around mid-radius, fading to violet at the edge.
+      // rising to a bright ring around mid-radius, fading to indigo at the edge.
       gradient.addColorStop(0, `rgba(${ACCENT.join(",")}, ${(0.05 * alphaMul).toFixed(3)})`);
       gradient.addColorStop(0.15, `rgba(${ACCENT.join(",")}, ${(0.07 * alphaMul).toFixed(3)})`);
       gradient.addColorStop(0.45, `rgba(${ACCENT.join(",")}, ${(0.3 * alphaMul).toFixed(3)})`);

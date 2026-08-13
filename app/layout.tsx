@@ -4,7 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CursorGlow from "@/components/CursorGlow";
-import NetworkBackground from "@/components/NetworkBackground";
+import EngineeringBackground from "@/components/EngineeringBackground";
 import { CommandPaletteProvider } from "@/components/command-palette-context";
 import RouteProgress from "@/components/ui/RouteProgress";
 import ScrollProgress from "@/components/ui/ScrollProgress";
@@ -80,14 +80,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F7F8FB" },
-    { media: "(prefers-color-scheme: dark)", color: "#0B0E14" },
-  ],
-  colorScheme: "dark light",
+  themeColor: "#080812",
+  colorScheme: "dark",
 };
-
-const THEME_INIT_SCRIPT = `(function(){try{var s=localStorage.getItem("theme");var t=s==="light"||s==="dark"?s:(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
 
 export default function RootLayout({
   children,
@@ -101,13 +96,6 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <head>
-        <script
-          type={typeof window === "undefined" ? "text/javascript" : "text/plain"}
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
-        />
-      </head>
       <body id="top" className="min-h-full" suppressHydrationWarning>
         <JsonLd />
         <a href="#main" className="skip-link">
@@ -115,7 +103,7 @@ export default function RootLayout({
         </a>
         <ScrollProgress />
         <RouteProgress />
-        <NetworkBackground />
+        <EngineeringBackground />
         <CursorGlow />
         <CommandPaletteProvider>
           <Nav />

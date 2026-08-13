@@ -4,6 +4,7 @@ import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import ResearchShowcase from "@/components/research/ResearchShowcase";
 import { useOverlay } from "@/components/overlay-context";
+import CircuitTraces from "@/components/ui/CircuitTraces";
 
 export default function ResearchSpotlight() {
   const { openResearch } = useOverlay();
@@ -12,8 +13,14 @@ export default function ResearchSpotlight() {
     <section
       id="research"
       aria-label="Research"
-      className="section-chapter relative pb-10 sm:pb-12"
+      className="section-chapter relative overflow-hidden pb-10 sm:pb-12"
     >
+      {/* A dimmer, mirrored lattice — the "analytical grid" register,
+          desktop only. */}
+      <CircuitTraces
+        variant="grid"
+        className="left-2 top-4 hidden h-36 w-36 opacity-60 lg:block"
+      />
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">

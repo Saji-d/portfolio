@@ -33,52 +33,21 @@ interface GlobePalette {
   arcTo: string;
 }
 
-const PALETTES: Record<"dark" | "light", GlobePalette> = {
-  dark: {
-    ocean: "#0d121c",
-    land: "rgba(79, 209, 197, 0.14)",
-    landSide: "rgba(79, 209, 197, 0.05)",
-    stroke: "rgba(79, 209, 197, 0.4)",
-    atmosphere: "#4fd1c5",
-    graticule: "rgba(255, 255, 255, 0.06)",
-    marker: "#4fd1c5",
-    markerHome: "#7c7dff",
-    label: "rgba(230, 234, 242, 0.85)",
-    labelBg: "rgba(11, 14, 20, 0.72)",
-    labelBorder: "rgba(79, 209, 197, 0.35)",
-    arcFrom: "rgba(79, 209, 197, 0.7)",
-    arcTo: "rgba(124, 125, 255, 0.55)",
-  },
-  light: {
-    ocean: "#e6ebf1",
-    land: "rgba(15, 118, 110, 0.16)",
-    landSide: "rgba(15, 118, 110, 0.06)",
-    stroke: "rgba(15, 118, 110, 0.5)",
-    atmosphere: "#0f766e",
-    graticule: "rgba(15, 23, 42, 0.08)",
-    marker: "#0f766e",
-    markerHome: "#4f46e5",
-    label: "rgba(16, 21, 31, 0.85)",
-    labelBg: "rgba(255, 255, 255, 0.85)",
-    labelBorder: "rgba(15, 118, 110, 0.4)",
-    arcFrom: "rgba(15, 118, 110, 0.6)",
-    arcTo: "rgba(79, 70, 229, 0.5)",
-  },
+const PALETTE: GlobePalette = {
+  ocean: "#0c0d17",
+  land: "rgba(99, 102, 241, 0.16)",
+  landSide: "rgba(99, 102, 241, 0.07)",
+  stroke: "rgba(129, 140, 248, 0.4)",
+  atmosphere: "#6366f1",
+  graticule: "rgba(148, 163, 255, 0.06)",
+  marker: "#6366f1",
+  markerHome: "#a855f7",
+  label: "rgba(248, 250, 252, 0.85)",
+  labelBg: "rgba(8, 8, 18, 0.72)",
+  labelBorder: "rgba(99, 102, 241, 0.35)",
+  arcFrom: "rgba(99, 102, 241, 0.7)",
+  arcTo: "rgba(168, 85, 247, 0.55)",
 };
-
-function useTheme(): "dark" | "light" {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-  useEffect(() => {
-    const root = document.documentElement;
-    const read = () =>
-      setTheme(root.getAttribute("data-theme") === "light" ? "light" : "dark");
-    read();
-    const observer = new MutationObserver(read);
-    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-  return theme;
-}
 
 function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(
@@ -186,7 +155,7 @@ function buildRocketCursor(color: string) {
     `<rect x="8.3" y="18" width="5.4" height="4.5" rx="1" fill="${color}"/>` +
     `<path d="M5.5 15L1 22L6.3 19.3Z" fill="${color}"/>` +
     `<path d="M16.5 15L21 22L15.7 19.3Z" fill="${color}"/>` +
-    `<circle cx="11" cy="9.5" r="2" fill="#0b0e14" fill-opacity="0.5"/>` +
+    `<circle cx="11" cy="9.5" r="2" fill="#080812" fill-opacity="0.5"/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 11 4, grab`;
 }
@@ -197,8 +166,7 @@ interface AboutGlobeProps {
 }
 
 export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
-  const theme = useTheme();
-  const palette = PALETTES[theme];
+  const palette = PALETTE;
   const reducedMotion = useReducedMotion();
   const { ref: containerRef, size } = useElementSize<HTMLDivElement>();
   const globeRef = useRef<GlobeMethods | undefined>(undefined);

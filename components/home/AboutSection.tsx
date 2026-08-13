@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
+import CircuitTraces from "@/components/ui/CircuitTraces";
 import { GLOBE_LOCATIONS } from "@/data/globe";
 import { SITE } from "@/data/site";
 
@@ -92,6 +93,17 @@ export default function AboutSection() {
       aria-label="About"
       className="relative scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-4 right-[-8%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(closest-side,var(--glow-primary),transparent)] opacity-70"
+      />
+      {/* A more structured lattice than Hero's single branch — About is
+          where the "systems" framing starts, desktop only. */}
+      <CircuitTraces
+        variant="grid"
+        mirror
+        className="bottom-2 left-[1%] hidden h-40 w-40 lg:block"
+      />
       <div className="container-site">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-start lg:gap-8">
           <Reveal delay={0.04}>
@@ -100,23 +112,29 @@ export default function AboutSection() {
               The world is part of the work.
             </h2>
             <ul className="mt-3.5 space-y-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted sm:mt-4">
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span>CURRENTLY BUILDING</span>
-                <span className="text-accent">·</span>
-                <span className="text-text-secondary">SOFTWARE SYSTEMS</span>
+              <li className="flex items-start gap-2">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span className="flex flex-wrap items-baseline gap-x-1.5">
+                  <span>CURRENTLY BUILDING</span>
+                  <span className="text-accent">·</span>
+                  <span className="text-text-secondary">SOFTWARE SYSTEMS</span>
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span>WORKING ACROSS</span>
-                <span className="text-accent">·</span>
-                <span className="text-text-secondary">FULL-STACK + AI/ML</span>
+              <li className="flex items-start gap-2">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span className="flex flex-wrap items-baseline gap-x-1.5">
+                  <span>WORKING ACROSS</span>
+                  <span className="text-accent">·</span>
+                  <span className="text-text-secondary">FULL-STACK + AI/ML</span>
+                </span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span>BASED IN DHAKA, BANGLADESH</span>
-                <span className="text-accent">·</span>
-                <span className="text-text-secondary">{SITE.timezone}</span>
+              <li className="flex items-start gap-2">
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span className="flex flex-wrap items-baseline gap-x-1.5">
+                  <span>BASED IN DHAKA, BANGLADESH</span>
+                  <span className="text-accent">·</span>
+                  <span className="text-text-secondary">{SITE.timezone}</span>
+                </span>
               </li>
             </ul>
 

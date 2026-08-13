@@ -1,23 +1,48 @@
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, ChevronDown, Download } from "lucide-react";
 import Image from "next/image";
 import MagneticButton from "@/components/ui/MagneticButton";
 import TerminalCard from "@/components/home/TerminalCard";
 import Eyebrow from "@/components/ui/Eyebrow";
 import HeroStats from "@/components/home/HeroStats";
 import HeroMarquee from "@/components/home/HeroMarquee";
+import CircuitTraces from "@/components/ui/CircuitTraces";
 
 const delays = ["0s", "0.07s", "0.14s", "0.21s", "0.45s"];
+const mobileDelays = [
+  "0s",
+  "0.06s",
+  "0.12s",
+  "0.18s",
+  "0.24s",
+  "0.3s",
+  "0.36s",
+  "0.42s",
+];
 
 export default function Hero() {
   return (
     <section
       id="home"
       aria-label="Home"
-      className="relative scroll-mt-24 overflow-hidden pt-32 pb-10 sm:pt-40 sm:pb-14"
+      className="relative scroll-mt-24 overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-10 lg:pt-40 lg:pb-14"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(79,209,197,0.14),transparent)]"
+        className="pointer-events-none absolute -top-48 left-1/2 h-[640px] w-[940px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--glow-primary),rgba(168,85,247,0.05)_72%,transparent)]"
+      />
+      {/* A second, smaller violet-leaning glow offset toward the portrait
+          side — gives the ambient light a sense of direction rather than a
+          single flat halo, without introducing a visible second "blob". */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 right-[8%] hidden h-[420px] w-[420px] rounded-full bg-[radial-gradient(closest-side,var(--glow-secondary),transparent)] lg:block"
+      />
+      {/* A quiet architectural trace in the empty upper-left corner, well
+          clear of the portrait and text column — the hero's "engineering
+          environment" cue, desktop only. */}
+      <CircuitTraces
+        variant="branch"
+        className="left-2 top-6 hidden h-44 w-44 lg:block"
       />
       {/* Deliberate seam between the hero and the About chapter: the hero
           content fades into the page background instead of running straight
@@ -27,70 +52,157 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-bg sm:h-20"
       />
       <div className="container-site relative">
-        <div>
-          <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-            <Eyebrow>Software Engineer, Dhaka</Eyebrow>
+        {/* Mobile / tablet: a compact, centered composition purpose-built for
+            narrow viewports — eyebrow, portrait, name, positioning line,
+            description, CTAs, credentials, scroll cue, in that order. This is
+            not the desktop layout squeezed down; it's a separate hierarchy. */}
+        <div className="lg:hidden">
+          <div className="hero-enter" style={{ animationDelay: mobileDelays[0] }}>
+            <Eyebrow className="text-center">Software Engineer, Dhaka</Eyebrow>
+          </div>
+
+          <div
+            className="hero-enter mx-auto mt-5 flex w-fit items-center justify-center"
+            style={{ animationDelay: mobileDelays[1] }}
+          >
+            <Image
+              src="/images/hero.webp"
+              alt="Portrait of Sajidur Rahman Sajid"
+              width={2916}
+              height={4376}
+              priority
+              quality={90}
+              sizes="180px"
+              className="block h-auto w-36 sm:w-40"
+            />
           </div>
 
           <h1
-            className="hero-enter mt-5 max-w-4xl font-display text-5xl font-medium leading-[1.05] tracking-tight text-neon sm:text-6xl lg:text-7xl"
-            style={{ animationDelay: delays[1] }}
+            className="hero-enter mt-5 text-center font-display text-[clamp(2.1rem,8.5vw,2.75rem)] font-medium leading-[1.08] tracking-tight text-neon"
+            style={{ animationDelay: mobileDelays[2] }}
           >
             Sajidur Rahman Sajid
           </h1>
 
           <p
-            className="hero-enter mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl"
-            style={{ animationDelay: delays[2] }}
+            className="hero-enter mt-2.5 text-center font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-text-secondary"
+            style={{ animationDelay: mobileDelays[3] }}
           >
-            I enjoy building software and figuring things out along the way.
-            Most of my work spans full-stack systems and AI/ML, with trips
-            across the stack when a project calls for it.
+            Full-Stack · AI/ML · Product Engineering
+          </p>
+
+          <p
+            className="hero-enter mx-auto mt-4 max-w-[32ch] text-center text-[15px] leading-relaxed text-text-secondary"
+            style={{ animationDelay: mobileDelays[4] }}
+          >
+            I build full-stack software and production AI/ML systems, end to
+            end.
           </p>
 
           <div
-            className="hero-enter mt-8 flex flex-wrap items-center gap-3"
-            style={{ animationDelay: delays[3] }}
+            className="hero-enter mx-auto mt-6 flex w-full max-w-[280px] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
+            style={{ animationDelay: mobileDelays[5] }}
           >
             <MagneticButton
               href="/projects"
-              className="bg-accent px-6 py-3 text-sm font-medium text-[#0B0E14] hover:bg-accent/90"
+              className="w-full justify-center bg-accent px-6 py-3.5 text-sm font-medium text-accent-ink hover:bg-accent/90 sm:w-auto"
             >
               View projects <ArrowRight className="h-4 w-4" />
             </MagneticButton>
             <MagneticButton
               href="/Sajidur_Rahman_Sajid.pdf"
               external
-              className="border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
+              className="w-full justify-center border border-line bg-surface px-6 py-3.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 sm:w-auto"
             >
               <Download className="h-4 w-4" /> Download CV
             </MagneticButton>
           </div>
+
+          <div
+            className="hero-enter mx-auto mt-9 max-w-[300px] sm:max-w-sm"
+            style={{ animationDelay: mobileDelays[6] }}
+          >
+            <HeroStats />
+          </div>
+
+          <div
+            className="hero-enter mt-8 flex flex-col items-center gap-1.5 text-text-muted"
+            style={{ animationDelay: mobileDelays[7] }}
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em]">
+              Scroll
+            </span>
+            <ChevronDown className="h-4 w-4 animate-bounce" />
+          </div>
         </div>
 
-        <div
-          className="hero-enter mt-6 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
-          style={{ animationDelay: delays[4] }}
-        >
-          <HeroStats />
-          <TerminalCard />
-        </div>
+        {/* Desktop (lg+): the approved baseline composition, unchanged. */}
+        <div className="hidden lg:block">
+          <div>
+            <div className="hero-enter" style={{ animationDelay: delays[0] }}>
+              <Eyebrow>Software Engineer, Dhaka</Eyebrow>
+            </div>
 
-        <div className="hero-enter mt-10 sm:mt-12" style={{ animationDelay: delays[4] }}>
-          <HeroMarquee />
-        </div>
+            <h1
+              className="hero-enter mt-5 max-w-4xl font-display text-5xl font-medium leading-[1.05] tracking-tight text-neon sm:text-6xl lg:text-7xl"
+              style={{ animationDelay: delays[1] }}
+            >
+              Sajidur Rahman Sajid
+            </h1>
 
-        <Image
-          src="/images/hero.webp"
-          alt="Portrait of Sajidur Rahman Sajid"
-          width={2916}
-          height={4376}
-          priority
-          quality={100}
-          sizes="240px"
-          className="hero-enter pointer-events-none absolute right-28 top-[-25px] block h-auto w-60 rounded-2xl"
-          style={{ animationDelay: delays[4] }}
-        />
+            <p
+              className="hero-enter mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl"
+              style={{ animationDelay: delays[2] }}
+            >
+              I enjoy building software and figuring things out along the way.
+              Most of my work spans full-stack systems and AI/ML, with trips
+              across the stack when a project calls for it.
+            </p>
+
+            <div
+              className="hero-enter mt-8 flex flex-wrap items-center gap-3"
+              style={{ animationDelay: delays[3] }}
+            >
+              <MagneticButton
+                href="/projects"
+                className="bg-accent px-6 py-3 text-sm font-medium text-accent-ink hover:bg-accent/90"
+              >
+                View projects <ArrowRight className="h-4 w-4" />
+              </MagneticButton>
+              <MagneticButton
+                href="/Sajidur_Rahman_Sajid.pdf"
+                external
+                className="border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
+              >
+                <Download className="h-4 w-4" /> Download CV
+              </MagneticButton>
+            </div>
+          </div>
+
+          <div
+            className="hero-enter mt-6 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
+            style={{ animationDelay: delays[4] }}
+          >
+            <HeroStats />
+            <TerminalCard />
+          </div>
+
+          <div className="hero-enter mt-10 sm:mt-12" style={{ animationDelay: delays[4] }}>
+            <HeroMarquee />
+          </div>
+
+          <Image
+            src="/images/hero.webp"
+            alt="Portrait of Sajidur Rahman Sajid"
+            width={2916}
+            height={4376}
+            priority
+            quality={100}
+            sizes="240px"
+            className="hero-enter pointer-events-none absolute right-28 top-[-25px] block h-auto w-60 rounded-2xl"
+            style={{ animationDelay: delays[4] }}
+          />
+        </div>
       </div>
     </section>
   );

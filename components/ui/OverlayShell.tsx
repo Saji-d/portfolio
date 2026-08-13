@@ -24,7 +24,7 @@ export default function OverlayShell({
       role="dialog"
       aria-modal="true"
       aria-label={ariaLabel}
-      className="fixed inset-0 z-[55] flex justify-center bg-[#0B0E14]/85 backdrop-blur-sm"
+      className="fixed inset-0 z-[55] flex justify-center bg-bg/85 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

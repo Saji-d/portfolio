@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, SquareTerminal, X } from "lucide-react";
 import { MotionConfig, motion } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import { ABOUT_LINK, ALL_SECTION_LINKS, CORTEX_LINK, NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
 import { useCommandPalette } from "@/components/command-palette-context";
 
@@ -327,13 +326,11 @@ export default function Nav() {
 
           <div className="flex shrink-0 items-center gap-1.5">
             <div className="flex shrink-0 items-center overflow-hidden rounded-lg border border-line bg-surface/60">
-              <ThemeToggle className="grid h-9 w-9 shrink-0 place-items-center rounded-l-lg text-text-secondary transition-colors hover:text-accent" />
-              <span aria-hidden="true" className="h-5 w-px shrink-0 bg-line" />
               <button
                 onClick={() => setPaletteOpen(true)}
                 aria-label="Open Cortex, command console"
                 title="Search · ⌘K"
-                className="grid h-9 w-9 shrink-0 place-items-center text-text-secondary transition-colors hover:text-accent"
+                className="grid h-9 w-9 shrink-0 place-items-center rounded-l-lg text-text-secondary transition-colors hover:text-accent"
               >
                 <SquareTerminal className="h-4 w-4" />
               </button>
@@ -481,6 +478,16 @@ export default function Nav() {
               >
                 GitHub
                 <GithubIcon className="h-3.5 w-3.5" />
+              </a>
+              <a
+                href={SITE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:bg-surface hover:text-text-primary md:hidden"
+              >
+                LinkedIn
+                <LinkedinIcon className="h-3.5 w-3.5" />
               </a>
           </nav>
           </div>

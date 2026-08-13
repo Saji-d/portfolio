@@ -6,6 +6,7 @@ import { MotionConfig, motion, type Variants } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import Eyebrow from "@/components/ui/Eyebrow";
 import { SITE } from "@/data/site";
+import CircuitTraces from "@/components/ui/CircuitTraces";
 
 interface Channel {
   icon: ComponentType<{ className?: string }>;
@@ -41,8 +42,15 @@ export default function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="relative min-h-0 scroll-mt-0 pt-[calc(var(--nav-offset)_+_2rem)] pb-6 sm:pb-8 sm:pt-[calc(var(--nav-offset)_+_3rem)]"
+      className="relative min-h-0 scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_2rem)] pb-6 sm:pb-8 sm:pt-[calc(var(--nav-offset)_+_3rem)]"
     >
+      {/* A very faint infrastructure trace — Contact closes the loop
+          quietly, desktop only. */}
+      <CircuitTraces
+        variant="pulse"
+        mirror
+        className="bottom-2 right-2 hidden h-32 w-32 opacity-50 lg:block"
+      />
       <div className="container-site">
         <MotionConfig reducedMotion="user">
           <motion.div
@@ -81,7 +89,7 @@ export default function ContactSection() {
                     href={c.href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
-                    className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(79,209,197,0.45)]"
+                    className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(99, 102, 241,0.35)]"
                   >
                     <span
                       aria-hidden="true"

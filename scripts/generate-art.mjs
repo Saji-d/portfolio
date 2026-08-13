@@ -14,18 +14,18 @@ const WEBP_DIR = join(ROOT, "public", "images", "art");
 const W = 1600;
 const H = 1000;
 
-const T = "#4FD1C5";
-const I = "#7C7DFF";
+const T = "#D97A4F";
+const I = "#A95C3D";
 const AMB = "#E8B44B";
 const GRN = "#3FB28A";
 const RED = "#E05B5B";
 const PINK = "#F2A0C0";
-const B = "#0B0E14";
-const S1 = "#151B28";
-const S2 = "#1C2334";
-const S3 = "#242D44";
-const TXT2 = "#9AA6B5";
-const MUT = "#5E6B7C";
+const B = "#090909";
+const S1 = "#141414";
+const S2 = "#191919";
+const S3 = "#202020";
+const TXT2 = "#A29C93";
+const MUT = "#706B64";
 const LINE = "rgba(255,255,255,0.10)";
 const LINE2 = "rgba(255,255,255,0.20)";
 
@@ -51,9 +51,9 @@ function bg(acc, sec, extra = "") {
   return `
   <defs>
     <linearGradient id="bgG" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0C111B"/>
+      <stop offset="0" stop-color="#0B0B0B"/>
       <stop offset="0.55" stop-color="${B}"/>
-      <stop offset="1" stop-color="#0E1832"/>
+      <stop offset="1" stop-color="#12100E"/>
     </linearGradient>
     <radialGradient id="gA" cx="0.5" cy="0.5" r="0.5">
       <stop offset="0" stop-color="${acc}" stop-opacity="0.30"/>
@@ -86,8 +86,8 @@ function chrome(x, y, w) {
     ${c(x + 30, y + 26, 7, RED)}
     ${c(x + 54, y + 26, 7, AMB)}
     ${c(x + 78, y + 26, 7, GRN)}
-    ${rr(x + 108, y + 14, w - 108 - 60, 24, 12, "#0D1320", `stroke="${LINE}"`)}
-    <circle cx="${x + w - 34}" cy="${y + 26}" r="7" fill="#39425A"/>
+    ${rr(x + 108, y + 14, w - 108 - 60, 24, 12, "#0E0E0E", `stroke="${LINE}"`)}
+    <circle cx="${x + w - 34}" cy="${y + 26}" r="7" fill="#2A2A2A"/>
   `;
 }
 
@@ -111,7 +111,7 @@ arts.ledgerturf = svg(
       ${rr(330, 200, 940, 580, 22, S1, `stroke="${LINE}" filter="url(#sh)"`)}
       ${chrome(330, 200, 940)}
       <g clip-path="url(#c1)">
-        ${rr(372, 286, 520, 458, 18, "#0E121B", `stroke="${LINE}"`)}
+        ${rr(372, 286, 520, 458, 18, "#0E0E0E", `stroke="${LINE}"`)}
         ${g(
           [0, 1, 2, 3, 4, 5].map((i) => ln(372 + i * 104, 286, 372 + i * 104, 744, LINE, 2)).join("")
         )}
@@ -124,18 +124,18 @@ arts.ledgerturf = svg(
         ${rr(428, 560, 404, 42, 14, "#11402F", `opacity="0.7"`)}
         ${rr(428, 644, 404, 4, 2, "#3FB28A", `opacity="0.5"`)}
         <path d="M630 468 c-3 -8 -4 -16 -4 -22 a34 34 0 1 1 68 0 c0 6 -1 14 -4 22 l-12 30 c-2 6 -6 10 -12 10 s-10 -4 -12 -10 z" fill="${T}"/>
-        ${c(630, 448, 9, "#0B0E14")}
+        ${c(630, 448, 9, "#090909")}
         ${c(654, 402, 7, T, "opacity='0.5'")}
         ${c(586, 402, 5, T, "opacity='0.4'")}
         ${ce(630, 448, 60, T, `stroke-opacity="0.35"`)}
         ${rr(930, 286, 300, 458, 18, S2, `stroke="${LINE}"`)}
         ${bar(952, 308, 180, 12, MUT)}
-        ${pill(952, 340, 256, 42, "rgba(79,209,197,0.10)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${pill(952, 340, 256, 42, "rgba(217,122,79,0.10)", `stroke="${T}" stroke-opacity="0.5"`)}
         ${pill(952, 398, 256, 42, T)}
         ${bar(966, 412, 120, 8, "#0B6B5F")}
         ${bar(966, 424, 160, 8, "#0B6B5F")}
-        ${pill(952, 456, 256, 42, "rgba(79,209,197,0.10)", `stroke="${T}" stroke-opacity="0.5"`)}
-        ${pill(952, 514, 256, 42, "rgba(79,209,197,0.10)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${pill(952, 456, 256, 42, "rgba(217,122,79,0.10)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${pill(952, 514, 256, 42, "rgba(217,122,79,0.10)", `stroke="${T}" stroke-opacity="0.5"`)}
         ${rr(952, 576, 256, 44, 22, T)}
         ${bar(1004, 592, 152, 10, "#0B6B5F")}
       </g>
@@ -155,7 +155,7 @@ arts["face-recognition-system"] = svg(
     clip("c2", 350, 220, 900, 560) +
     g(
       `
-      ${rr(350, 220, 900, 560, 26, "#0E1219", `stroke="${LINE2}" filter="url(#sh)"`)}
+      ${rr(350, 220, 900, 560, 26, "#0E0E0E", `stroke="${LINE2}" filter="url(#sh)"`)}
       <g clip-path="url(#c2)">
         ${g([0, 1, 2, 3, 4, 5, 6].map((i) => ln(350 + i * 130, 220, 350 + i * 130, 780, LINE, 2)).join(""))}
         ${g([0, 1, 2, 3, 4].map((i) => ln(350, 220 + i * 112, 1250, 220 + i * 112, LINE, 2)).join(""))}
@@ -165,10 +165,10 @@ arts["face-recognition-system"] = svg(
         <path d="M960 630 l36 0 0 -36" stroke="${GRN}" stroke-width="5" fill="none"/>
         ${rr(656, 292, 120, 26, 13, GRN)}
         ${bar(676, 303, 60, 7, "#0B2E21")}
-        ${rr(800, 420, 250, 42, 12, "#0B0E14", `stroke="${T}"`)}
+        ${rr(800, 420, 250, 42, 12, "#090909", `stroke="${T}"`)}
         ${bar(820, 437, 90, 8, T)}
-        ${c(800, 440, 92, "#182336", `stroke="${LINE2}"`)}
-        ${c(800, 438, 88, "#1A2436")}
+        ${c(800, 440, 92, "#1A1A1A", `stroke="${LINE2}"`)}
+        ${c(800, 438, 88, "#1C1C1C")}
         ${c(762, 404, 9, T)}
         ${c(838, 404, 9, T)}
         ${ln(748, 452, 788, 448, T, 4)}
@@ -195,14 +195,14 @@ arts.finbert = svg(
     clip("c3", 420, 250, 760, 500) +
     g(
       `
-      ${rr(420, 250, 760, 500, 26, "#0E1219", `stroke="${LINE2}" filter="url(#sh)"`)}
+      ${rr(420, 250, 760, 500, 26, "#0E0E0E", `stroke="${LINE2}" filter="url(#sh)"`)}
       <g clip-path="url(#c3)">
-        ${c(800, 470, 150, "rgba(124,125,255,0.12)")}
+        ${c(800, 470, 150, "rgba(169,92,61,0.12)")}
         ${ce(800, 470, 150, I, "stroke-opacity='0.5'")}
         ${ce(800, 470, 112, I, "stroke-opacity='0.35'")}
         ${ce(800, 470, 74, T, "stroke-opacity='0.5'")}
         ${c(800, 470, 34, T, "opacity='0.9'")}
-        ${c(800, 470, 12, "#0B0E14")}
+        ${c(800, 470, 12, "#090909")}
         ${ce(800, 470, 262, T, "stroke-opacity='0.25'")}
         ${g(
           [
@@ -259,7 +259,7 @@ arts["employee-family-registry"] = svg(
       ${c(540, 380, 52, I, "opacity='0.2'")}
       ${ce(540, 380, 52, I, "stroke-opacity='0.6'")}
       ${c(540, 380, 30, I)}
-      ${c(540, 380, 12, "#0B0E14")}
+      ${c(540, 380, 12, "#090909")}
       ${ln(540, 432, 452, 556, LINE2, 3)}
       ${ln(540, 432, 628, 556, LINE2, 3)}
       ${ln(452, 608, 368, 716, LINE2, 2)}
@@ -295,7 +295,7 @@ arts["employee-family-registry"] = svg(
         ${bar(926, 492, 180, 9, MUT)}
         ${rr(926, 640, 180, 44, 22, T)}
         ${bar(952, 658, 120, 9, "#0B6B5F")}
-        ${c(1146, 662, 24, "rgba(79,209,197,0.12)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${c(1146, 662, 24, "rgba(217,122,79,0.12)", `stroke="${T}" stroke-opacity="0.5"`)}
         <path d="M1136 662 l8 8 16 -18" stroke="${T}" stroke-width="4" fill="none"/>
       </g>
       ${c(240, 220, 12, T, "opacity='0.5'")}
@@ -318,7 +318,7 @@ arts["codingvibes-java-gui"] = svg(
       ${c(498, 266, 7, GRN)}
       ${bar(560, 258, 320, 12, MUT)}
       <g clip-path="url(#c5)">
-        ${rr(420, 290, 150, 470, 0, "#0F141F")}
+        ${rr(420, 290, 150, 470, 0, "#101010")}
         ${bar(444, 322, 90, 10, MUT)}
         ${bar(444, 350, 70, 10, MUT)}
         ${bar(444, 378, 100, 10, MUT)}
@@ -327,7 +327,7 @@ arts["codingvibes-java-gui"] = svg(
         ${bar(444, 468, 90, 10, MUT)}
         ${bar(444, 496, 76, 10, MUT)}
         ${bar(444, 524, 98, 10, MUT)}
-        ${rr(600, 320, 540, 380, 12, "#101522")}
+        ${rr(600, 320, 540, 380, 12, "#121212")}
         ${bar(628, 348, 180, 10, T)}
         ${bar(628, 372, 240, 10, I)}
         ${bar(628, 396, 120, 10, MUT)}
@@ -337,7 +337,7 @@ arts["codingvibes-java-gui"] = svg(
         ${bar(628, 500, 160, 10, MUT)}
         ${bar(628, 524, 230, 10, I)}
         ${bar(628, 556, 90, 10, AMB)}
-        <rect x="628" y="348" width="10" height="10" fill="#0B0E14"/>
+        <rect x="628" y="348" width="10" height="10" fill="#090909"/>
         ${rr(760, 470, 200, 140, 18, S2, `stroke="${LINE}" filter="url(#sh)"`)}
         <path d="M812 520 q-18 -6 -24 10 q-4 12 10 12 l40 0 q14 0 10 -12 q-6 -16 -24 -10 l4 -22 q4 -26 26 -22 q-10 12 6 16 q16 4 20 -10" stroke="${AMB}" stroke-width="6" fill="none"/>
         ${ce(940, 512, 18, AMB, "stroke-width='6'")}
@@ -363,7 +363,7 @@ arts["spark-powerhouse-gym-csharp"] = svg(
       ${c(478, 246, 7, GRN)}
       ${bar(540, 238, 260, 12, MUT)}
       <g clip-path="url(#c6)">
-        ${rr(400, 270, 150, 510, 0, "#0F141F")}
+        ${rr(400, 270, 150, 510, 0, "#101010")}
         ${bar(424, 300, 96, 10, MUT)}
         ${bar(424, 328, 72, 10, MUT)}
         ${bar(424, 356, 102, 10, MUT)}
@@ -375,12 +375,12 @@ arts["spark-powerhouse-gym-csharp"] = svg(
         ${bar(600, 312, 90, 12, TXT2)}
         ${bar(600, 338, 140, 10, MUT)}
         ${bar(600, 356, 120, 10, MUT)}
-        ${c(770, 346, 30, "rgba(79,209,197,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${c(770, 346, 30, "rgba(217,122,79,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
         ${rr(840, 292, 240, 108, 14, S2, `stroke="${LINE}"`)}
         ${bar(860, 312, 90, 12, TXT2)}
         ${bar(860, 338, 140, 10, MUT)}
         ${bar(860, 356, 120, 10, MUT)}
-        ${c(1030, 346, 30, "rgba(124,125,255,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
+        ${c(1030, 346, 30, "rgba(169,92,61,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
         ${rr(1100, 292, 70, 108, 14, S2, `stroke="${LINE}"`)}
         ${bar(1116, 312, 38, 12, TXT2)}
         ${bar(1116, 338, 38, 10, MUT)}
@@ -418,7 +418,7 @@ arts["spark-powerhouse-gym-web"] = svg(
       ${rr(340, 230, 920, 540, 22, S1, `stroke="${LINE}" filter="url(#sh)"`)}
       ${chrome(340, 230, 920)}
       <g clip-path="url(#c7)">
-        ${rr(372, 262, 856, 24, 12, "#0E1219", `stroke="${LINE}"`)}
+        ${rr(372, 262, 856, 24, 12, "#0E0E0E", `stroke="${LINE}"`)}
         ${c(392, 274, 5, T)}
         ${bar(404, 270, 420, 8, MUT)}
         ${c(1180, 274, 5, GRN)}
@@ -429,8 +429,8 @@ arts["spark-powerhouse-gym-web"] = svg(
         ${bar(404, 436, 90, 10, "#0B6B5F")}
         ${rr(548, 420, 150, 46, 23, S2, `stroke="${T}"`)}
         ${bar(570, 436, 90, 10, T)}
-        ${rr(760, 300, 500, 300, 18, "#0E1219", `stroke="${LINE}"`)}
-        ${rr(760, 300, 500, 42, 18, "#0F2430", `fill-opacity="0.8"`)}
+        ${rr(760, 300, 500, 300, 18, "#0E0E0E", `stroke="${LINE}"`)}
+        ${rr(760, 300, 500, 42, 18, "#171310", `fill-opacity="0.8"`)}
         ${rr(760, 300, 500, 42, 18, T, `fill-opacity="0.14"`)}
         <rect x="860" y="390" width="300" height="16" rx="8" fill="${T}"/>
         ${c(940, 460, 34, I, "opacity='0.9'")}
@@ -486,9 +486,9 @@ arts["online-bookstore-database-design"] = svg(
       ${bar(886, 686, 180, 9, MUT)}
       ${bar(886, 708, 220, 9, MUT)}
       ${rr(330, 300, 220, 60, 8, "#1C2334", `transform="rotate(-6 440 330)"`)}
-      ${rr(330, 340, 220, 60, 8, "#222A3E", `transform="rotate(2 440 370)"`)}
+      ${rr(330, 340, 220, 60, 8, "#222222", `transform="rotate(2 440 370)"`)}
       ${rr(330, 380, 220, 60, 8, I, `fill-opacity="0.9" transform="rotate(-2 440 410)"`)}
-      ${bar(360, 406, 90, 8, "#0B0E14", `opacity="0.6" transform="rotate(-2 440 410)"`)}
+      ${bar(360, 406, 90, 8, "#090909", `opacity="0.6" transform="rotate(-2 440 410)"`)}
       ${rr(1190, 340, 170, 260, 16, S2, `stroke="${LINE}" filter="url(#sh)"`)}
       <path d="M1275 396 q-22 0 -34 14 q-12 -14 -34 -14 q-18 0 -28 12 q16 0 26 10 q10 10 0 26 q-12 20 -30 34 l0 44 l0 0 l66 0 l0 0 l0 -44 q-18 -14 -30 -34 q-10 -16 0 -26 q10 -10 26 -10 z" fill="${T}" opacity="0.9"/>
       <path d="M1275 396 q-22 0 -34 14 q-12 -14 -34 -14 q-18 0 -28 12 q16 0 26 10 q10 10 0 26 q-12 20 -30 34 l0 44 l0 0 l66 0 l0 0 l0 -44 q-18 -14 -30 -34 q-10 -16 0 -26 q10 -10 26 -10 z" fill="none" stroke="${T}" stroke-width="2"/>
@@ -512,7 +512,7 @@ arts["my-wedding-invitation"] = svg(
       <path d="M800 540 q-10 -20 -34 -34 q-14 -26 4 -44 q-8 -12 4 -14 q-10 -12 -8 -30 q-20 6 -22 28 q-20 10 -10 34 q4 26 30 44 q8 14 24 26 q10 18 26 14 q-6 -20 -14 -24 z" fill="none" stroke="${T}" stroke-width="2"/>
       ${ce(1010, 250, 40, PINK, "stroke-width='6'")}
       ${ce(1056, 286, 40, AMB, "stroke-width='6'")}
-      ${c(1033, 268, 8, "#0B0E14")}
+      ${c(1033, 268, 8, "#090909")}
       ${c(1033, 268, 3, PINK)}
       <path d="M280 300 q-6 -12 -20 -20 q-8 -15 2 -26 q-5 -7 2 -8 q-6 -7 -5 -18 q-12 4 -13 17 q-12 6 -6 20 q2 15 18 26 q5 8 14 15 q6 11 15 8 q-4 -12 -8 -14 z" fill="${PINK}" opacity="0.7"/>
       <path d="M1330 650 q-6 -12 -20 -20 q-8 -15 2 -26 q-5 -7 2 -8 q-6 -7 -5 -18 q-12 4 -13 17 q-12 6 -6 20 q2 15 18 26 q5 8 14 15 q6 11 15 8 q-4 -12 -8 -14 z" fill="${AMB}" opacity="0.7"/>
@@ -559,16 +559,16 @@ arts.invoicepilot = svg(
       </g>
       ${ln(720, 500, 810, 500, T, 4)}
       <path d="M810 494 l16 6 -16 6 z" fill="${T}"/>
-      ${c(846, 500, 30, "rgba(124,125,255,0.14)")}
+      ${c(846, 500, 30, "rgba(169,92,61,0.14)")}
       ${ce(846, 500, 30, I, "stroke-opacity='0.6'")}
       ${c(846, 500, 16, I)}
-      <path d="M836 500 l8 8 14 -16" stroke="#0B0E14" stroke-width="4" fill="none"/>
+      <path d="M836 500 l8 8 14 -16" stroke="#090909" stroke-width="4" fill="none"/>
       ${ln(876, 500, 966, 500, T, 4)}
       <path d="M966 494 l16 6 -16 6 z" fill="${T}"/>
-      ${c(1002, 500, 30, "rgba(124,125,255,0.14)")}
+      ${c(1002, 500, 30, "rgba(169,92,61,0.14)")}
       ${ce(1002, 500, 30, I, "stroke-opacity='0.6'")}
       ${c(1002, 500, 16, I)}
-      <path d="M1002 494 l-8 0 8 12 8 -12 z" fill="#0B0E14" transform="rotate(0 1002 500)"/>
+      <path d="M1002 494 l-8 0 8 12 8 -12 z" fill="#090909" transform="rotate(0 1002 500)"/>
       ${rr(1052, 430, 240, 150, 20, S1, `stroke="${T}" stroke-opacity="0.5" filter="url(#sh)"`)}
       <path d="M1092 472 l0 -34 24 -24 90 0 0 96 0 0 -114 0 z" fill="none" stroke="${T}" stroke-width="4"/>
       <path d="M1116 438 l0 34 24 0" fill="none" stroke="${T}" stroke-width="4"/>
@@ -596,7 +596,7 @@ arts.casevault = svg(
     g(
       `
       ${rr(300, 300, 460, 440, 24, S1, `stroke="${LINE}" filter="url(#sh)"`)}
-      ${c(530, 420, 150, "rgba(124,125,255,0.08)")}
+      ${c(530, 420, 150, "rgba(169,92,61,0.08)")}
       ${ce(530, 420, 150, I, "stroke-opacity='0.5'")}
       ${ce(530, 420, 108, I, "stroke-opacity='0.4'")}
       ${ce(530, 420, 66, I, "stroke-opacity='0.5'")}
@@ -604,7 +604,7 @@ arts.casevault = svg(
       ${c(530, 420, 10, I)}
       ${bar(334, 676, 80, 10, MUT)}
       ${bar(470, 676, 80, 10, MUT)}
-      ${rr(800, 280, 200, 30, 10, "#0E1219")}
+      ${rr(800, 280, 200, 30, 10, "#0E0E0E")}
       ${rr(820, 270, 380, 480, 18, S2, `stroke="${LINE}" filter="url(#sh)"`)}
       <g clip-path="url(#ca)">
         ${bar(850, 306, 130, 12, TXT2)}
@@ -627,7 +627,7 @@ arts.casevault = svg(
       ${ce(1200, 320, 62, T, "stroke-width='5'")}
       ${ce(1200, 320, 30, T, "stroke-width='4'")}
       ${ln(1200, 382, 1212, 400, T, 6)}
-      ${ce(1350, 660, 52, "rgba(124,125,255,0.12)")}
+      ${ce(1350, 660, 52, "rgba(169,92,61,0.12)")}
       ${rr(1310, 620, 34, 28, 8, S3, `stroke="${T}"`)}
       <path d="M1318 620 q0 -18 9 -18 q9 0 9 18" stroke="${T}" stroke-width="4" fill="none"/>
       ${c(1327, 636, 5, T)}
@@ -645,8 +645,8 @@ arts.neuronscreen = svg(
     g(
       `
       ${rr(320, 260, 700, 500, 26, S1, `stroke="${LINE}" filter="url(#sh)"`)}
-      ${c(670, 510, 130, "rgba(79,209,197,0.08)")}
-      <path d="M670 390 q-40 -16 -80 4 q-60 26 -60 116 q0 90 60 116 q40 20 80 4 q40 16 80 -4 q60 -26 60 -116 q0 -90 -60 -116 q-40 -20 -80 -4 z" fill="#18253A" stroke="${I}" stroke-width="3"/>
+      ${c(670, 510, 130, "rgba(217,122,79,0.08)")}
+      <path d="M670 390 q-40 -16 -80 4 q-60 26 -60 116 q0 90 60 116 q40 20 80 4 q40 16 80 -4 q60 -26 60 -116 q0 -90 -60 -116 q-40 -20 -80 -4 z" fill="#1A1A1A" stroke="${I}" stroke-width="3"/>
       <path d="M670 390 q40 34 40 120 q0 86 -40 120" fill="none" stroke="${I}" stroke-width="3"/>
       <path d="M670 394 q-30 40 -30 116 q0 76 30 116" fill="none" stroke="${I}" stroke-width="3"/>
       ${c(638, 470, 6, T)}
@@ -697,8 +697,8 @@ arts["cvpr-collection"] = svg(
       ${rr(800, 280, 500, 250, 18, S2, `stroke="${LINE}"`)}
       ${rr(800, 550, 500, 250, 18, S2, `stroke="${LINE}"`)}
       <g clip-path="url(#cv)">
-        ${c(540, 405, 62, "#182336", `stroke="${LINE}"`)}
-        ${c(540, 403, 58, "#1A2436")}
+        ${c(540, 405, 62, "#1A1A1A", `stroke="${LINE}"`)}
+        ${c(540, 403, 58, "#1C1C1C")}
         ${c(514, 376, 7, T)}
         ${c(566, 376, 7, T)}
         ${ln(506, 410, 534, 406, T, 3)}
@@ -708,13 +708,13 @@ arts["cvpr-collection"] = svg(
         <path d="M660 340 l24 0 0 24" stroke="${I}" stroke-width="4" fill="none"/>
         <path d="M420 460 l-24 0 0 -24" stroke="${I}" stroke-width="4" fill="none"/>
         <path d="M660 460 l24 0 0 -24" stroke="${I}" stroke-width="4" fill="none"/>
-        ${c(540, 675, 40, "rgba(124,125,255,0.14)")}
+        ${c(540, 675, 40, "rgba(169,92,61,0.14)")}
         ${ce(540, 675, 40, I, "stroke-opacity='0.6'")}
         ${c(540, 675, 24, I, "opacity='0.9'")}
-        ${c(540, 675, 9, "#0B0E14")}
+        ${c(540, 675, 9, "#090909")}
         ${c(522, 666, 3, T)}
         ${c(558, 666, 3, T)}
-        <path d="M528 680 q12 10 24 0" stroke="#0B0E14" stroke-width="2" fill="none"/>
+        <path d="M528 680 q12 10 24 0" stroke="#090909" stroke-width="2" fill="none"/>
         ${ce(540, 675, 74, I, "stroke-opacity='0.3'")}
         ${rr(1050, 330, 160, 60, 14, I, "opacity='0.9'")}
         ${rr(1050, 410, 160, 60, 14, T, "opacity='0.9'")}
@@ -754,15 +754,15 @@ arts["natural-language-processing"] = svg(
       ${rr(320, 260, 500, 480, 20, S2, `stroke="${LINE}" filter="url(#sh)"`)}
       <g clip-path="url(#nl)">
         ${bar(352, 296, 130, 12, TXT2)}
-        ${pill(352, 332, 70, 34, "rgba(79,209,197,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
-        ${pill(434, 332, 84, 34, "rgba(124,125,255,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
+        ${pill(352, 332, 70, 34, "rgba(217,122,79,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${pill(434, 332, 84, 34, "rgba(169,92,61,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
         ${pill(530, 332, 66, 34, S3, `stroke="${LINE}"`)}
-        ${pill(352, 380, 92, 34, "rgba(124,125,255,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
+        ${pill(352, 380, 92, 34, "rgba(169,92,61,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
         ${pill(456, 380, 76, 34, S3, `stroke="${LINE}"`)}
-        ${pill(544, 380, 100, 34, "rgba(79,209,197,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${pill(544, 380, 100, 34, "rgba(217,122,79,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
         ${pill(352, 428, 84, 34, S3, `stroke="${LINE}"`)}
-        ${pill(448, 428, 72, 34, "rgba(79,209,197,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
-        ${pill(532, 428, 94, 34, "rgba(124,125,255,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
+        ${pill(448, 428, 72, 34, "rgba(217,122,79,0.14)", `stroke="${T}" stroke-opacity="0.5"`)}
+        ${pill(532, 428, 94, 34, "rgba(169,92,61,0.14)", `stroke="${I}" stroke-opacity="0.5"`)}
         ${rr(352, 500, 436, 3, 1, LINE2)}
         ${bar(352, 560, 240, 9, MUT)}
         ${bar(352, 582, 300, 9, MUT)}
@@ -777,13 +777,13 @@ arts["natural-language-processing"] = svg(
           const y = 320 + i * 40;
           return g(
             [0, 1, 2, 3, 4, 5, 6].map((j) => {
-              const f = (i + j) % 3 === 0 ? T : i % 2 ? I : "#2A3448";
+              const f = (i + j) % 3 === 0 ? T : i % 2 ? I : "#2B2B2B";
               return `<rect x="${952 + j * 46}" y="${y}" width="34" height="26" rx="6" fill="${f}" opacity="${(i + j) % 3 === 0 ? 0.95 : 0.55}"/>`;
             }).join("")
           );
         }).join("")
       )}
-      ${rr(930, 560, 380, 120, 16, "#101522", `stroke="${LINE}"`)}
+      ${rr(930, 560, 380, 120, 16, "#121212", `stroke="${LINE}"`)}
       <path d="M956 640 L1016 612 L1076 634 L1136 590 L1196 616 L1256 578" stroke="${T}" stroke-width="5" fill="none"/>
       ${c(1256, 578, 7, T)}
       <path d="M1266 562 l12 22 -26 -3 z" fill="${T}"/>
@@ -825,12 +825,12 @@ arts.portfolio = svg(
         ${bar(432, 506, 240, 10, MUT)}
         ${bar(432, 540, 120, 10, AMB)}
         ${bar(432, 566, 270, 10, T)}
-        <rect x="432" y="316" width="12" height="12" fill="#0B0E14"/>
-        ${rr(432, 620, 460, 96, 12, "#0C111C", `stroke="${LINE}"`)}
+        <rect x="432" y="316" width="12" height="12" fill="#090909"/>
+        ${rr(432, 620, 460, 96, 12, "#0C0C0C", `stroke="${LINE}"`)}
         ${c(458, 668, 6, GRN)}
         <path d="M472 652 l16 16 -16 16" stroke="${TXT2}" stroke-width="4" fill="none"/>
         <rect x="500" y="654" width="11" height="22" fill="${T}"/>
-        ${rr(936, 620, 260, 96, 12, "#0C111C", `stroke="${LINE}"`)}
+        ${rr(936, 620, 260, 96, 12, "#0C0C0C", `stroke="${LINE}"`)}
         ${g(
           [0, 1, 2, 3].map((i) => `${bar(958, 638 + i * 22, 200 - i * 18, 9, i % 2 ? GRN : T)}`).join("")
         )}

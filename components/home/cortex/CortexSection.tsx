@@ -16,17 +16,17 @@ function NeuralBackdropSvg() {
     >
       <path
         d="M30 120 L140 210 L230 130 L320 260 L390 180"
-        stroke="#4fd1c5"
+        stroke="#8b8fae"
         strokeWidth="1"
       />
       <path
         d="M110 300 L200 240 L310 310 L390 250"
-        stroke="#4fd1c5"
+        stroke="#8b8fae"
         strokeWidth="1"
       />
       <path
         d="M260 60 L330 130 L380 90"
-        stroke="#7c7dff"
+        stroke="#a855f7"
         strokeWidth="1"
       />
       {nodes.map((n, i) => (
@@ -35,7 +35,7 @@ function NeuralBackdropSvg() {
           cx={n.cx}
           cy={n.cy}
           r={i % 3 === 0 ? 3 : 2}
-          fill={i % 4 === 0 ? "#7c7dff" : "#4fd1c5"}
+          fill={i % 4 === 0 ? "#a855f7" : "#8b8fae"}
         />
       ))}
     </svg>
@@ -57,8 +57,8 @@ export default function CortexSection() {
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(var(--grid-dot)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)]" />
           <NeuralBackdropSvg />
-          <div className="absolute -left-24 top-1/3 h-72 w-72 rounded-full bg-accent/5 blur-3xl" />
-          <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-accent-2/5 blur-3xl" />
+          <div className="absolute -left-24 top-1/3 h-80 w-80 rounded-full bg-accent/10 blur-3xl" />
+          <div className="absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-accent-2/10 blur-3xl" />
         </div>
 
         <div className="container-site relative flex min-h-0 flex-1 flex-col">

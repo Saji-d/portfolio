@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TimelineProgress from "@/components/ui/TimelineProgress";
+import CircuitTraces from "@/components/ui/CircuitTraces";
 
 const experiences = [
   {
@@ -50,8 +51,15 @@ export default function ExperienceTimeline() {
     <section
       id="experience"
       aria-label="Experience"
-      className="section-chapter relative pt-[calc(var(--nav-offset)_+_3.5rem)] pb-16 sm:pb-20"
+      className="section-chapter relative overflow-hidden pt-[calc(var(--nav-offset)_+_3.5rem)] pb-16 sm:pb-20"
     >
+      {/* A flipped branch trace, echoing the timeline's own connective
+          geometry — desktop only. */}
+      <CircuitTraces
+        variant="branch"
+        mirror
+        className="right-2 top-6 hidden h-40 w-40 lg:block"
+      />
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
@@ -101,7 +109,7 @@ export default function ExperienceTimeline() {
                       <span
                         className={`rounded-full transition-all duration-500 ${
                           active
-                            ? "h-2.5 w-2.5 bg-accent shadow-[0_0_16px_rgba(79,209,197,0.8)]"
+                            ? "h-2.5 w-2.5 bg-accent shadow-[0_0_16px_rgba(99, 102, 241,0.6)]"
                             : "h-2 w-2 bg-text-muted"
                         }`}
                       />
@@ -110,7 +118,7 @@ export default function ExperienceTimeline() {
                     <article
                       className={`card-surface ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-0.5 ${
                         isCurrent
-                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(79,209,197,0.5)] lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
+                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99, 102, 241,0.4)] lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
                           : "hover:border-accent/40 lg:ml-[calc(50%_+_2rem)] lg:mr-0"
                       }`}
                     >

@@ -148,7 +148,7 @@ export default function ProjectsView() {
                   d={`M ${e.x1} ${e.y1} C ${(e.x1 + e.x2) / 2} ${e.y1}, ${(e.x1 + e.x2) / 2} ${e.y2}, ${e.x2} ${e.y2}`}
                   fill="none"
                   stroke={
-                    lit || on ? "rgba(79, 209, 197, 0.9)" : "rgba(124, 125, 255, 0.22)"
+                    lit || on ? "rgba(99, 102, 241, 0.9)" : "rgba(168, 85, 247, 0.22)"
                   }
                   strokeWidth={lit || on ? 1.5 : 1}
                   pathLength={1}

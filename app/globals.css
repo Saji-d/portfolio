@@ -2,56 +2,43 @@
 
 :root {
   color-scheme: dark;
-  --bg: #0b0e14;
-  --surface: #11151d;
-  --surface-2: #171c26;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text-primary: #e6eaf2;
-  --text-secondary: #9aa6b5;
-  --text-muted: #6b7686;
-  --accent: #4fd1c5;
-  --accent-dim: rgba(79, 209, 197, 0.14);
-  --accent-soft: rgba(79, 209, 197, 0.55);
-  --accent-2: #7c7dff;
-  --accent-ink: #0b0e14;
+  --bg: #080812;
+  --surface: #11111f;
+  --surface-2: #171728;
+  --border: rgba(148, 163, 255, 0.09);
+  --border-strong: rgba(148, 163, 255, 0.18);
+  --text-primary: #f8fafc;
+  --text-secondary: #b4b8c8;
+  --text-muted: #9ca3af;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-dark: #4338ca;
+  --accent-subtle: #312e81;
+  --accent-dim: rgba(99, 102, 241, 0.14);
+  --accent-soft: rgba(99, 102, 241, 0.5);
+  --accent-2: #a855f7;
+  --accent-2-soft: rgba(168, 85, 247, 0.5);
+  --accent-3: #22d3ee;
+  --accent-3-dim: rgba(34, 211, 238, 0.14);
+  --accent-ink: #f8fafc;
+  /* Ambient/atmospheric glow tones — deliberately distinct from --accent-dim
+     (which sizes badge/pill fills) so large soft radial washes behind hero
+     and chapter openings can be tuned independently without touching every
+     small UI accent that also reads off --accent-dim. */
+  --glow-primary: rgba(99, 102, 241, 0.16);
+  --glow-secondary: rgba(168, 85, 247, 0.12);
+  --glow-tertiary: rgba(34, 211, 238, 0.08);
   --success: #3fb28a;
   --warning: #e8b44b;
   --danger: #e05b5b;
-  --text-fade: rgba(230, 234, 242, 0.62);
-  --text-neon-from: #f0fbf9;
-  --text-neon-via: #bdf3ea;
-  --text-neon-glow: rgba(79, 209, 197, 0.3);
-  --grid-dot: rgba(255, 255, 255, 0.035);
+  --text-fade: rgba(248, 250, 252, 0.6);
+  --text-neon-from: #f8fafc;
+  --text-neon-via: #c7d2fe;
+  --grid-dot: rgba(99, 102, 241, 0.045);
   /* Bottom edge of the fixed navbar: top offset (top-3) + bar height
      (h-14 + 2px border). All in-page chapters land with their content
      starting just below this line. */
   --nav-offset: calc(12px + 58px);
-}
-
-[data-theme="light"] {
-  color-scheme: light;
-  --bg: #f7f8fb;
-  --surface: #ffffff;
-  --surface-2: #eef1f5;
-  --border: rgba(15, 23, 42, 0.09);
-  --border-strong: rgba(15, 23, 42, 0.16);
-  --text-primary: #10151f;
-  --text-secondary: #4b5565;
-  --text-muted: #6b7385;
-  --accent: #0f766e;
-  --accent-dim: rgba(15, 118, 110, 0.1);
-  --accent-soft: rgba(15, 118, 110, 0.4);
-  --accent-2: #4f46e5;
-  --accent-ink: #ffffff;
-  --success: #157a4d;
-  --warning: #a3620a;
-  --danger: #d1382c;
-  --text-fade: rgba(16, 21, 31, 0.55);
-  --text-neon-from: #10151f;
-  --text-neon-via: #0f766e;
-  --text-neon-glow: rgba(15, 118, 110, 0.16);
-  --grid-dot: rgba(15, 23, 42, 0.05);
 }
 
 @theme inline {
@@ -64,8 +51,12 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
   --color-accent-dim: var(--accent-dim);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
   --color-accent-ink: var(--accent-ink);
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -142,6 +133,18 @@
   padding-inline: 1.5rem;
 }
 
+/* The site-wide "blueprint" texture behind every section — a barely-visible
+   engineering grid, not a decoration in its own right. Reuses --grid-dot
+   (already tuned for Cortex's dot-grid) so the whole page shares one
+   consistent, extremely low-contrast line weight rather than introducing a
+   second grid tone. */
+@utility engineering-grid {
+  background-image:
+    linear-gradient(var(--grid-dot) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-dot) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
 /* In-page navigation chapters (Projects, Research, Experience, Education,
    Capabilities, Contact, Cortex). Each is a self-contained viewport-sized
    frame: it scrolls into place with its top edge exactly at the top of the
@@ -183,18 +186,17 @@
   background: linear-gradient(
     180deg,
     var(--text-neon-from) 0%,
-    var(--text-neon-via) 40%,
-    var(--accent) 100%
+    var(--text-neon-via) 45%,
+    var(--text-muted) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 0 16px var(--text-neon-glow));
 }
 
 @utility card-surface {
-  background-color: var(--surface);
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
   border: 1px solid var(--border);
   border-radius: 1rem;
 }
@@ -468,7 +470,7 @@
 
 .console-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(124, 125, 255, 0.35) transparent;
+  scrollbar-color: rgba(99, 102, 241, 0.35) transparent;
 }
 
 .console-scroll::-webkit-scrollbar {
@@ -480,14 +482,14 @@
 }
 
 .console-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(124, 125, 255, 0.3);
+  background-color: rgba(99, 102, 241, 0.3);
   border-radius: 9999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 .console-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(79, 209, 197, 0.45);
+  background-color: rgba(99, 102, 241, 0.5);
 }
 
 /* Location markers rendered as HTML elements on the globe. The glow color is
@@ -539,7 +541,7 @@
   width: 14px;
   height: 14px;
   transform: translateX(-50%);
-  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-2-soft) 0%, transparent 70%);
   filter: blur(2px);
   animation: rocket-exhaust-breathe 1.5s ease-in-out infinite;
 }
@@ -550,7 +552,7 @@
   height: 8px;
   transform: translateX(-50%);
   border-radius: 50% 50% 60% 60% / 55% 55% 100% 100%;
-  background: linear-gradient(to bottom, #eafffb 0%, var(--accent) 45%, transparent 100%);
+  background: linear-gradient(to bottom, #eef2ff 0%, var(--accent) 45%, transparent 100%);
   transform-origin: top center;
   animation: rocket-exhaust-flicker 0.4s ease-in-out infinite;
 }
@@ -560,7 +562,7 @@
   width: 2.5px;
   height: 2.5px;
   transform: translateX(-50%);
-  background: #eafffb;
+  background: #eef2ff;
   box-shadow: 0 0 4px 1px var(--accent);
   animation: rocket-exhaust-flicker 0.4s ease-in-out infinite reverse;
 }
@@ -569,7 +571,7 @@
   top: 4px;
   width: 1px;
   height: 1px;
-  background: var(--accent);
+  background: var(--accent-3);
   opacity: 0.45;
 }
 
@@ -643,34 +645,6 @@
 
 .animate-pipeline-front {
   animation: pipeline-front-pulse 1.6s ease-in-out infinite;
-}
-
-[data-theme="light"] .network-canvas {
-  opacity: 0.32;
-}
-
-/* Monochrome tech logos (Express, Vercel, GitHub, …) are white in their
-   SVG artwork, so on the light theme they get a subtle dark halo to keep
-   them readable against the near-white background. Colored logos are
-   unaffected since the shadow follows each icon's silhouette. */
-[data-theme="light"] .tech-marquee-icon {
-  filter: drop-shadow(0 1px 2px rgba(16, 21, 31, 0.35));
-}
-
-.theme-icon-sun {
-  display: none;
-}
-
-.theme-icon-moon {
-  display: block;
-}
-
-[data-theme="light"] .theme-icon-sun {
-  display: block;
-}
-
-[data-theme="light"] .theme-icon-moon {
-  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

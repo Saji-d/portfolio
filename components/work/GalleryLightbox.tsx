@@ -67,7 +67,7 @@ export default function GalleryLightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B0E14]/94 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-bg/94 p-4 backdrop-blur-sm"
           onClick={onClose}
           onKeyDown={trapTab}
           role="dialog"

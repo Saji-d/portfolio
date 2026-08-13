@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-const ACCENT = "79, 209, 197";
-const ACCENT_2 = "124, 125, 255";
-const PALE = "208, 246, 240";
+const ACCENT = "99, 102, 241";
+const ACCENT_2 = "168, 85, 247";
+const PALE = "248, 250, 252";
 const FRAME_MS = 33;
 const TOTAL = 5.05;
 const BG_MAX = 0.85;
@@ -506,7 +506,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
       <div
         ref={bgRef}
         aria-hidden="true"
-        className="absolute inset-0 bg-[#0B0E14]"
+        className="absolute inset-0 bg-bg"
         style={{
           opacity: 0,
           backgroundImage:
@@ -518,7 +518,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(62% 52% at 50% 46%, rgba(79,209,197,0.08), transparent 70%)",
+              "radial-gradient(62% 52% at 50% 46%, rgba(99,102,241,0.06), transparent 70%)",
           }}
         />
       </div>

@@ -228,7 +228,7 @@ export default function CommandPalette() {
       role="dialog"
       aria-modal="true"
       aria-label="Command palette"
-      className="fixed inset-0 z-[60] flex items-start justify-center bg-[#0B0E14]/90 p-4 pt-[14vh] backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-start justify-center bg-bg/90 p-4 pt-[14vh] backdrop-blur-sm"
       onKeyDown={trapTab}
       onClick={(e) => {
         if (e.target === e.currentTarget) setOpen(false);

@@ -61,7 +61,7 @@ function GlassChip({
       className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider backdrop-blur-md ${
         accent
           ? "border-accent/50 bg-accent text-accent-ink"
-          : "border-white/10 bg-[#0B0E14]/60 text-text-secondary"
+          : "border-white/10 bg-bg/60 text-text-secondary"
       }`}
     >
       {children}
@@ -93,8 +93,8 @@ function CoverImage({
         sizes={sizes}
         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14]/85 via-[#0B0E14]/10 to-[#0B0E14]/20" />
-      <div className="absolute inset-0 bg-[#0B0E14]/0 transition-colors duration-300 group-hover:bg-[#0B0E14]/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-bg/85 via-bg/10 to-bg/20" />
+      <div className="absolute inset-0 bg-bg/0 transition-colors duration-300 group-hover:bg-bg/20" />
 
       {/* Inspection scan-line: a thin light band sweeping the cover on
           hover, reinforcing "running system being inspected" rather than a
@@ -129,13 +129,13 @@ function CoverImage({
       </div>
 
       {pro && (
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-accent-ink shadow-[0_4px_20px_rgba(79,209,197,0.45)]">
+        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-accent-ink shadow-[0_4px_20px_rgba(99, 102, 241,0.35)]">
           <Star className="h-3 w-3 fill-current" />
           Featured
         </span>
       )}
 
-      <span className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-accent text-accent-ink opacity-0 shadow-[0_8px_24px_rgba(79,209,197,0.45)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      <span className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-accent text-accent-ink opacity-0 shadow-[0_8px_24px_rgba(99, 102, 241,0.35)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <ArrowUpRight className="h-4 w-4" />
       </span>
     </>
@@ -278,8 +278,8 @@ export function ProjectCard({
       <article
         className={`card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1.5 ${
           pro
-            ? "border-accent/30 shadow-[0_0_0_1px_rgba(79,209,197,0.12),0_20px_60px_-24px_rgba(79,209,197,0.18)] hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(79,209,197,0.25),0_32px_80px_-28px_rgba(79,209,197,0.38)]"
-            : "hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(79,209,197,0.22)]"
+            ? "border-accent/30 shadow-[0_0_0_1px_rgba(99, 102, 241,0.1),0_20px_60px_-24px_rgba(99, 102, 241,0.15)] hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(99, 102, 241,0.22),0_32px_80px_-28px_rgba(99, 102, 241,0.32)]"
+            : "hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(99, 102, 241,0.18)]"
         }`}
       >
         {pro && (

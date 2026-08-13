@@ -35,9 +35,7 @@ export default function TiltCard({ children, className, max = 3, glare = false }
     if (glare && glareRef.current) {
       const gx = ((px + 0.5) * 100).toFixed(1);
       const gy = ((py + 0.5) * 100).toFixed(1);
-      const isLight = document.documentElement.getAttribute("data-theme") === "light";
-      const color = isLight ? "rgba(15, 118, 110, 0.06)" : "rgba(255, 255, 255, 0.08)";
-      glareRef.current.style.background = `radial-gradient(circle at ${gx}% ${gy}%, ${color}, transparent 55%)`;
+      glareRef.current.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(226, 232, 255, 0.08), transparent 55%)`;
       glareRef.current.style.opacity = "1";
     }
   }
