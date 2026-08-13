@@ -4,76 +4,121 @@ import { useEffect, useRef } from "react";
 
 /**
  * The single background system for the whole site: a barely-perceptible
- * two-tone color wash, a static technical grid, and a sparse "neural
- * field" of tiny data points at three depth tiers, which gently repel
- * from the cursor and ease back once it moves on, plus an almost
- * imperceptible organic idle drift (no autonomous "look at this"
- * animation). No connecting lines, no glow blobs — the atmosphere comes
- * entirely from these three restrained layers. Fixed to the viewport
- * (not the document), so it renders once behind all page content and
- * never varies by scroll position or section — one continuous field for
- * the whole portfolio, reused rather than duplicated per-section.
+ * two-tone color wash beneath a dense field of round dot particles at
+ * three depth tiers — no star glyphs or sparkle shapes, only dots. Every
+ * particle's rendered position is always the sum of two independent
+ * layers — its own continuous ambient drift (unique speed/phase/amplitude
+ * per particle, never synchronized, never paused) and a spring-eased
+ * displacement pushed by the cursor. Ambient drift is itself a sum of a
+ * slow organic sweep plus a faster small-amplitude wobble. A single sine
+ * (or even independent sines per axis) has a near-zero derivative near its
+ * peak, so a particle can sit within a hair of its extremum for a couple of
+ * seconds and *look* frozen even though it's technically moving — that's
+ * not hypothetical, it's the exact failure mode measured in the corners of
+ * an earlier version. The wobble is deliberately a true circular orbit
+ * (the same angle driving both cos and sin), which has *mathematically
+ * constant* speed at every instant — there is no phase where it can stall,
+ * so combined with the sweep every particle has a guaranteed floor on how
+ * fast it's moving at all times, which is what the human eye actually
+ * judges "alive" by, not the underlying math. Cursor influence uses smooth
+ * distance falloff rather than a hard radius cutoff, so every particle is
+ * technically reachable — tiny ones just barely, near ones strongly — and
+ * only the cursor displacement (never the ambient drift)
+ * relaxes back to zero once the cursor moves away. No grid, no connecting
+ * lines, no glow around the cursor itself — the atmosphere comes entirely
+ * from the particles. Fixed to the viewport (not the document), so it
+ * renders once behind all page content and never varies by scroll
+ * position or section — one continuous field for the whole portfolio,
+ * reused rather than duplicated per-section.
  */
 
-type Depth = "far" | "mid" | "near";
+type Depth = "tiny" | "medium" | "near";
 
 interface Particle {
   /** Home position as a fraction of the canvas, so it re-lands correctly after a resize. */
   fx: number;
   fy: number;
-  /** Current rendered position — eases toward home + any repulsion offset each frame. */
+  /** Final rendered position: home + ambient drift + cursor spring displacement. */
   x: number;
   y: number;
   size: number;
   baseAlpha: number;
   color: readonly [number, number, number];
-  /** Only mid/near violet or cyan particles get a soft halo — never the indigo majority, and
-   *  never the distant tier (a halo on a tiny "far" point would fight the depth cue). */
+  depth: Depth;
+  /** Only colored medium/near particles get a soft halo — never the indigo majority, and never
+   *  the tiny tier (a halo on a 1px point would fight the depth cue). */
   glow: boolean;
-  phase: number;
+  twinklePhase: number;
   twinkleSpeed: number;
-  driftPhaseX: number;
-  driftPhaseY: number;
-  driftSpeed: number;
+  twinkleAmount: number;
+  /** Ambient drift, independent per particle: a slow two-harmonic sweep (the organic loop) plus a
+   *  fast constant-speed circular wobble (one angle drives both axes, so its speed can never dip
+   *  near zero the way any sine-based term can — see the header comment). */
+  ambAmpX: number;
+  ambAmpY: number;
+  ambSpeedX: number;
+  ambSpeedY: number;
+  ambPhaseX: number;
+  ambPhaseY: number;
+  wobbleAmp: number;
+  wobbleSpeed: number;
+  wobblePhase: number;
+  /** Cursor-driven displacement, carried frame to frame and eased toward its target — the only
+   *  part of the position that reacts to the cursor, and the only part that ever returns to zero. */
+  dispX: number;
+  dispY: number;
+  /** Depth governs how far the cursor's field reaches and how strongly/briskly it pushes — tiny
+   *  barely notices it, near responds most readily, giving the field a subtle 3D parallax. */
+  decayRadius: number;
+  maxPush: number;
+  springEase: number;
 }
 
 const INDIGO = [129, 140, 248] as const;
-const VIOLET = [168, 85, 247] as const;
+const ELECTRIC_BLUE = [96, 165, 250] as const;
 const CYAN = [34, 211, 238] as const;
+const VIOLET = [168, 85, 247] as const;
 
-const FRAME_MS = 33;
-const REPEL_RADIUS = 90;
-const REPEL_RADIUS_SQ = REPEL_RADIUS * REPEL_RADIUS;
-const REPEL_STRENGTH = 24;
-const EASE = 0.06;
-/** Idle motion amplitude in px — deliberately tiny: "is something moving?", not an animation. */
-const DRIFT_AMPLITUDE = 1.4;
-/** A single slow shared cycle nudges every particle together by a fraction of a pixel, giving
- *  the field a faint sense of coherence without any particle visibly "drifting". */
-const GLOBAL_DRIFT_PERIOD = 240;
-const GLOBAL_DRIFT_AMPLITUDE = 0.6;
+/** Floors applied after per-particle jitter so nothing can roll a near-zero amplitude or speed —
+ *  every particle keeps a guaranteed minimum of both the slow sweep and the fast wobble. */
+const MIN_SWEEP_AMP = 1.6;
+const MIN_SWEEP_SPEED = 0.22;
+/** The wobble's speed is an angular rate (rad/s) around a circle of radius wobbleAmp, so its floor
+ *  linear speed is MIN_WOBBLE_AMP * MIN_WOBBLE_SPEED px/s — never zero, unlike a sine's peak. */
+const MIN_WOBBLE_AMP = 0.65;
+const MIN_WOBBLE_SPEED = 4.2;
 
-/** Two overlapping grids at different cell sizes and opacities — the beat between them, and the
- *  fact that only half the lines are at full strength, reads as an atmospheric technical texture
- *  rather than a flat, mechanically uniform blueprint. */
-const GRID_STYLE = {
-  backgroundImage: [
-    "linear-gradient(to right, rgba(99,102,241,0.06) 1px, transparent 1px)",
-    "linear-gradient(to bottom, rgba(99,102,241,0.06) 1px, transparent 1px)",
-    "linear-gradient(to right, rgba(99,102,241,0.032) 1px, transparent 1px)",
-    "linear-gradient(to bottom, rgba(99,102,241,0.032) 1px, transparent 1px)",
-  ].join(","),
-  backgroundSize: "64px 64px, 64px 64px, 88px 88px, 88px 88px",
+/** Per-depth ambient drift (always-on, independent of the cursor) and cursor spring physics
+ *  (distance falloff is continuous — every particle is reachable, this just scales how far the
+ *  field reaches and how hard it pushes). Ranges get jittered per-particle in makeParticles(). */
+const DEPTH_CONFIG: Record<
+  Depth,
+  {
+    sweepAmp: number;
+    sweepSpeed: number;
+    wobbleAmp: number;
+    wobbleSpeed: number;
+    decayRadius: number;
+    maxPush: number;
+    springEase: number;
+  }
+> = {
+  tiny: { sweepAmp: 2.6, sweepSpeed: 0.34, wobbleAmp: 0.8, wobbleSpeed: 5.0, decayRadius: 90, maxPush: 9, springEase: 0.055 },
+  medium: { sweepAmp: 4.6, sweepSpeed: 0.48, wobbleAmp: 1.1, wobbleSpeed: 5.6, decayRadius: 150, maxPush: 26, springEase: 0.1 },
+  near: { sweepAmp: 7.2, sweepSpeed: 0.66, wobbleAmp: 1.4, wobbleSpeed: 6.2, decayRadius: 220, maxPush: 55, springEase: 0.15 },
 };
 
-/** A barely-perceptible two-tone color field — indigo toward one corner, cyan toward the
- *  opposite one — so the canvas reads as "there is color in this environment" rather than flat
- *  black, without ever resolving into a visible circle or a glow blob. Huge radius, very low
+const FRAME_MS = 16;
+
+/** A barely-perceptible multi-tone color field — indigo and electric blue pooling toward a
+ *  couple of corners — so the canvas reads as "there is color in this environment" rather than
+ *  flat black, without ever resolving into a visible circle or a glow blob. Huge radius, very low
  *  alpha, no blur filter, no animation. */
 const ATMOSPHERE_STYLE = {
   backgroundImage: [
-    "radial-gradient(60% 60% at 18% 15%, rgba(99,102,241,0.05), transparent 70%)",
-    "radial-gradient(65% 65% at 85% 85%, rgba(34,211,238,0.03), transparent 70%)",
+    "radial-gradient(60% 60% at 18% 15%, rgba(99,102,241,0.055), transparent 70%)",
+    "radial-gradient(55% 55% at 78% 30%, rgba(59,130,246,0.035), transparent 72%)",
+    "radial-gradient(65% 65% at 85% 88%, rgba(34,211,238,0.03), transparent 70%)",
   ].join(","),
 };
 
@@ -83,23 +128,27 @@ function clamp01(v: number): number {
 
 function pickColor(): readonly [number, number, number] {
   const r = Math.random();
-  if (r < 0.09) return CYAN;
-  if (r < 0.22) return VIOLET;
+  if (r < 0.02) return VIOLET;
+  if (r < 0.08) return CYAN;
+  if (r < 0.28) return ELECTRIC_BLUE;
   return INDIGO;
 }
 
+/** ~75% tiny dots, ~18% medium dots, ~7% brighter dots — all plain round particles. */
 function pickDepth(): Depth {
   const r = Math.random();
-  if (r < 0.55) return "far";
-  if (r < 0.85) return "mid";
+  if (r < 0.75) return "tiny";
+  if (r < 0.93) return "medium";
   return "near";
 }
 
 function makeParticles(count: number): Particle[] {
   // Mostly uniform placement, with a minority of particles pulled softly
   // toward a few loose cluster centers so density reads as faintly organic
-  // rather than perfectly even — never an obvious network shape.
-  const clusters = Array.from({ length: 4 }, () => ({
+  // rather than perfectly even — never an obvious network shape. The
+  // clusters are jittered across the whole unit square (including corners),
+  // so no region of the viewport is systematically emptier than another.
+  const clusters = Array.from({ length: 6 }, () => ({
     x: Math.random(),
     y: Math.random(),
   }));
@@ -108,28 +157,40 @@ function makeParticles(count: number): Particle[] {
     const color = pickColor();
     const depth = pickDepth();
     const isColored = color !== INDIGO;
-    const glow = isColored && depth !== "far";
+    const glow = isColored && depth !== "tiny";
 
     let size: number;
     let baseAlpha: number;
+    let twinkleAmount: number;
     if (depth === "near") {
-      size = 1.5 + Math.random() * 0.4;
-      baseAlpha = 0.5 + Math.random() * 0.3;
-    } else if (depth === "mid") {
-      size = 1.1 + Math.random() * 0.35;
-      baseAlpha = 0.35 + Math.random() * 0.2;
+      size = 1.4 + Math.random() * 0.5;
+      baseAlpha = 0.5 + Math.random() * 0.28;
+      twinkleAmount = 0.32;
+    } else if (depth === "medium") {
+      size = 1.0 + Math.random() * 0.3;
+      baseAlpha = 0.3 + Math.random() * 0.18;
+      twinkleAmount = 0.3;
     } else {
-      size = 0.8 + Math.random() * 0.3;
-      baseAlpha = 0.25 + Math.random() * 0.16;
+      size = 0.6 + Math.random() * 0.3;
+      baseAlpha = 0.16 + Math.random() * 0.16;
+      twinkleAmount = 0.3;
     }
 
     let fx = Math.random();
     let fy = Math.random();
-    if (Math.random() < 0.35) {
+    if (Math.random() < 0.3) {
       const c = clusters[Math.floor(Math.random() * clusters.length)];
-      fx = clamp01(fx * 0.4 + c.x * 0.6 + (Math.random() - 0.5) * 0.12);
-      fy = clamp01(fy * 0.4 + c.y * 0.6 + (Math.random() - 0.5) * 0.12);
+      fx = clamp01(fx * 0.45 + c.x * 0.55 + (Math.random() - 0.5) * 0.14);
+      fy = clamp01(fy * 0.45 + c.y * 0.55 + (Math.random() - 0.5) * 0.14);
     }
+
+    const cfg = DEPTH_CONFIG[depth];
+    const jitterSweepAmp = () => Math.max(MIN_SWEEP_AMP, cfg.sweepAmp * (0.75 + Math.random() * 0.55));
+    const jitterSweepSpeed = () => Math.max(MIN_SWEEP_SPEED, cfg.sweepSpeed * (0.75 + Math.random() * 0.55));
+    const jitterWobbleAmp = () => Math.max(MIN_WOBBLE_AMP, cfg.wobbleAmp * (0.7 + Math.random() * 0.7));
+    // Randomize spin direction too, so neighboring particles don't all orbit the same way.
+    const jitterWobbleSpeed = () =>
+      (Math.random() < 0.5 ? 1 : -1) * Math.max(MIN_WOBBLE_SPEED, cfg.wobbleSpeed * (0.75 + Math.random() * 0.6));
 
     return {
       fx,
@@ -139,12 +200,25 @@ function makeParticles(count: number): Particle[] {
       size,
       baseAlpha,
       color,
+      depth,
       glow,
-      phase: Math.random() * Math.PI * 2,
-      twinkleSpeed: 0.15 + Math.random() * 0.2,
-      driftPhaseX: Math.random() * Math.PI * 2,
-      driftPhaseY: Math.random() * Math.PI * 2,
-      driftSpeed: 0.02 + Math.random() * 0.015,
+      twinklePhase: Math.random() * Math.PI * 2,
+      twinkleSpeed: 0.12 + Math.random() * 0.18,
+      twinkleAmount,
+      ambAmpX: jitterSweepAmp(),
+      ambAmpY: jitterSweepAmp(),
+      ambSpeedX: jitterSweepSpeed(),
+      ambSpeedY: jitterSweepSpeed(),
+      ambPhaseX: Math.random() * Math.PI * 2,
+      ambPhaseY: Math.random() * Math.PI * 2,
+      wobbleAmp: jitterWobbleAmp(),
+      wobbleSpeed: jitterWobbleSpeed(),
+      wobblePhase: Math.random() * Math.PI * 2,
+      dispX: 0,
+      dispY: 0,
+      decayRadius: cfg.decayRadius,
+      maxPush: cfg.maxPush,
+      springEase: cfg.springEase,
     };
   });
 }
@@ -189,10 +263,10 @@ export default function ParticleField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // Density scales gently with viewport area but stays capped — this is
-      // atmosphere, not a simulation, and mobile gets a much sparser field.
+      // atmosphere, not a simulation, and mobile gets a sparser field.
       const target = mobile
-        ? Math.min(40, Math.max(20, Math.floor((width * height) / 20000)))
-        : Math.min(150, Math.max(90, Math.floor((width * height) / 13000)));
+        ? Math.min(260, Math.max(160, Math.floor((width * height) / 1250)))
+        : Math.min(1150, Math.max(750, Math.floor((width * height) / 1950)));
 
       particles = makeParticles(target);
       for (const p of particles) {
@@ -209,7 +283,7 @@ export default function ParticleField() {
         if (p.glow) continue;
         const twinkle = prefersReduced
           ? 1
-          : 0.7 + 0.3 * Math.sin(elapsed * p.twinkleSpeed + p.phase);
+          : 1 - p.twinkleAmount + p.twinkleAmount * (0.5 + 0.5 * Math.sin(elapsed * p.twinkleSpeed + p.twinklePhase));
         ctx.fillStyle = `rgba(${p.color.join(",")}, ${(p.baseAlpha * twinkle).toFixed(3)})`;
         ctx.fillRect(p.x, p.y, p.size, p.size);
       }
@@ -219,7 +293,7 @@ export default function ParticleField() {
         if (!p.glow) continue;
         const twinkle = prefersReduced
           ? 1
-          : 0.7 + 0.3 * Math.sin(elapsed * p.twinkleSpeed + p.phase);
+          : 1 - p.twinkleAmount + p.twinkleAmount * (0.5 + 0.5 * Math.sin(elapsed * p.twinkleSpeed + p.twinklePhase));
         const alpha = (p.baseAlpha * twinkle).toFixed(3);
         ctx.shadowColor = `rgba(${p.color.join(",")}, ${alpha})`;
         ctx.fillStyle = `rgba(${p.color.join(",")}, ${alpha})`;
@@ -231,35 +305,56 @@ export default function ParticleField() {
     function tick() {
       elapsed += FRAME_MS / 1000;
 
-      const globalAngle = (elapsed / GLOBAL_DRIFT_PERIOD) * Math.PI * 2;
-      const globalDX = Math.cos(globalAngle) * GLOBAL_DRIFT_AMPLITUDE;
-      const globalDY = Math.sin(globalAngle) * GLOBAL_DRIFT_AMPLITUDE;
-
       for (const p of particles) {
-        const homeX =
-          p.fx * width + globalDX + Math.sin(elapsed * p.driftSpeed + p.driftPhaseX) * DRIFT_AMPLITUDE;
-        const homeY =
-          p.fy * height +
-          globalDY +
-          Math.cos(elapsed * p.driftSpeed * 0.85 + p.driftPhaseY) * DRIFT_AMPLITUDE;
-        let targetX = homeX;
-        let targetY = homeY;
+        // 1. Base position (fixed home fraction of the canvas).
+        const baseX = p.fx * width;
+        const baseY = p.fy * height;
 
+        // 2. Ambient offset: a slow two-harmonic sweep (the organic loop) plus a
+        //    fast constant-speed circular wobble layered on top. The wobble is a
+        //    true orbit — one angle driving both cos and sin — so its speed is
+        //    mathematically constant at every instant and can never dip near zero
+        //    the way a sine-based term can at its peak. Every particle keeps
+        //    visibly moving on every glance, unconditionally, regardless of the
+        //    cursor or page state.
+        const sweepX =
+          (p.ambAmpX *
+            (Math.sin(elapsed * p.ambSpeedX + p.ambPhaseX) +
+              0.4 * Math.sin(elapsed * p.ambSpeedX * 2.1 + p.ambPhaseX * 1.3))) /
+          1.4;
+        const sweepY =
+          (p.ambAmpY *
+            (Math.cos(elapsed * p.ambSpeedY + p.ambPhaseY) +
+              0.4 * Math.cos(elapsed * p.ambSpeedY * 2.1 + p.ambPhaseY * 1.3))) /
+          1.4;
+        const wobbleAngle = elapsed * p.wobbleSpeed + p.wobblePhase;
+        const wobbleX = p.wobbleAmp * Math.cos(wobbleAngle);
+        const wobbleY = p.wobbleAmp * Math.sin(wobbleAngle);
+
+        const posX = baseX + sweepX + wobbleX;
+        const posY = baseY + sweepY + wobbleY;
+
+        // 3. Cursor displacement: continuous exponential falloff (no hard radius
+        //    cutoff, so every particle is technically reachable), eased toward its
+        //    target with its own spring — this is the only layer the cursor ever
+        //    touches, and the only one that relaxes back to zero once it leaves.
+        let targetDispX = 0;
+        let targetDispY = 0;
         if (finePointer) {
-          const dx = homeX - pointerX;
-          const dy = homeY - pointerY;
-          const distSq = dx * dx + dy * dy;
-          if (distSq < REPEL_RADIUS_SQ && distSq > 0.01) {
-            const dist = Math.sqrt(distSq);
-            const falloff = 1 - dist / REPEL_RADIUS;
-            const push = falloff * falloff * REPEL_STRENGTH;
-            targetX = homeX + (dx / dist) * push;
-            targetY = homeY + (dy / dist) * push;
+          const dx = posX - pointerX;
+          const dy = posY - pointerY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 0.5) {
+            const push = Math.exp(-dist / p.decayRadius) * p.maxPush;
+            targetDispX = (dx / dist) * push;
+            targetDispY = (dy / dist) * push;
           }
         }
+        p.dispX += (targetDispX - p.dispX) * p.springEase;
+        p.dispY += (targetDispY - p.dispY) * p.springEase;
 
-        p.x += (targetX - p.x) * EASE;
-        p.y += (targetY - p.y) * EASE;
+        p.x = posX + p.dispX;
+        p.y = posY + p.dispY;
       }
     }
 
@@ -312,6 +407,8 @@ export default function ParticleField() {
         stop();
         // Snap particles home and render one calm static frame.
         for (const p of particles) {
+          p.dispX = 0;
+          p.dispY = 0;
           p.x = p.fx * width;
           p.y = p.fy * height;
         }
@@ -356,7 +453,6 @@ export default function ParticleField() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div className="absolute inset-0" style={ATMOSPHERE_STYLE} />
-      <div className="absolute inset-0" style={GRID_STYLE} />
       <canvas ref={canvasRef} className="absolute inset-0" />
     </div>
   );
