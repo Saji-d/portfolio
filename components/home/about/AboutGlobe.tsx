@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import Globe, { type GlobeMethods } from "react-globe.gl";
 import { MeshPhongMaterial } from "three";
 import { feature } from "topojson-client";
@@ -173,6 +174,23 @@ function buildMarkerElement(
   return wrap;
 }
 
+// The cursor hotspot sits near the nose; the engine/fins sit this many
+// pixels below it in the SVG. GlobeTrail uses the same distance to anchor
+// its exhaust glow at the engine rather than at the raw pointer position.
+const ROCKET_ENGINE_OFFSET_Y = 19;
+
+function buildRocketCursor(color: string) {
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">` +
+    `<path d="M11 1C15.5 5.5 17 12 16.5 18H5.5C5 12 6.5 5.5 11 1Z" fill="${color}"/>` +
+    `<rect x="8.3" y="18" width="5.4" height="4.5" rx="1" fill="${color}"/>` +
+    `<path d="M5.5 15L1 22L6.3 19.3Z" fill="${color}"/>` +
+    `<path d="M16.5 15L21 22L15.7 19.3Z" fill="${color}"/>` +
+    `<circle cx="11" cy="9.5" r="2" fill="#0b0e14" fill-opacity="0.5"/>` +
+    `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 11 4, grab`;
+}
+
 interface AboutGlobeProps {
   selectedId: string;
   onSelect: (id: string) => void;
@@ -186,7 +204,50 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isReady = useRef(false);
+  const isDraggingGlobe = useRef(false);
+  const hoverRaf = useRef<number | null>(null);
+  // Mirrors the cursor's on-globe state for GlobeTrail, which needs it every
+  // rAF and shouldn't re-render this component to get it.
+  const overGlobeRef = useRef(false);
   const [booted, setBooted] = useState(false);
+
+  const rocketCursor = useMemo(
+    () => buildRocketCursor(palette.marker),
+    [palette.marker]
+  );
+
+  // Proper hit-testing: raycasts against the actual rendered globe sphere
+  // (via react-globe.gl's own toGlobeCoords) rather than trusting CSS box
+  // geometry, so the empty card space around the sphere never reads as "on
+  // the globe" no matter how much slack the rectangular canvas has.
+  const isPointerOnGlobe = useCallback((clientX: number, clientY: number) => {
+    const api = globeRef.current;
+    const canvasEl = api?.renderer().domElement;
+    if (!api || !canvasEl) return false;
+    const rect = canvasEl.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) return false;
+    return api.toGlobeCoords(x, y) !== null;
+  }, []);
+
+  // On the globe: grab/grabbing, no exhaust trail. Off the globe (empty card
+  // space): a rocket cursor with GlobeTrail rendering its exhaust glow.
+  const updateCursor = useCallback(
+    (clientX: number, clientY: number) => {
+      const canvasEl = globeRef.current?.renderer().domElement;
+      if (!canvasEl) return;
+      if (isDraggingGlobe.current) {
+        overGlobeRef.current = true;
+        canvasEl.style.cursor = "grabbing";
+        return;
+      }
+      const onGlobe = isPointerOnGlobe(clientX, clientY);
+      overGlobeRef.current = onGlobe;
+      canvasEl.style.cursor = onGlobe ? "grab" : rocketCursor;
+    },
+    [isPointerOnGlobe, rocketCursor]
+  );
 
   // The page renders instantly; WebGL only boots once this container is close
   // to the viewport (a double-rAF beats the IntersectionObserver callback so
@@ -256,6 +317,70 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     if (idleTimer.current) clearTimeout(idleTimer.current);
   }, []);
 
+  useEffect(
+    () => () => {
+      if (hoverRaf.current) cancelAnimationFrame(hoverRaf.current);
+    },
+    []
+  );
+
+  // Hover cursor only, throttled to one hit-test per frame — cheap enough
+  // that it doesn't need its own render loop, it just rides pointermove.
+  const handlePointerMove = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      if (isDraggingGlobe.current) return;
+      const { clientX, clientY } = e;
+      if (hoverRaf.current) cancelAnimationFrame(hoverRaf.current);
+      hoverRaf.current = requestAnimationFrame(() => {
+        hoverRaf.current = null;
+        updateCursor(clientX, clientY);
+      });
+    },
+    [updateCursor]
+  );
+
+  // Gate OrbitControls on the actual hit-test result: a press that starts
+  // off the sphere disables the controls before any pointermove reaches
+  // them (three.js checks `enabled` on every move/up), so empty card space
+  // never rotates the globe. A press that starts on the sphere is left
+  // alone — three.js already handles drags that wander off-globe mid-drag.
+  const handlePointerDown = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      setAutoRotate(false);
+      const api = globeRef.current;
+      const controls = api?.controls?.();
+      const canvasEl = api?.renderer().domElement;
+      if (!controls || !canvasEl) return;
+      // Presses on overlaid HTML (markers, the location panel) never reach
+      // OrbitControls natively — only gate/track drags the canvas itself got.
+      if (e.target !== canvasEl) return;
+      const onGlobe = isPointerOnGlobe(e.clientX, e.clientY);
+      isDraggingGlobe.current = onGlobe;
+      controls.enabled = onGlobe;
+      updateCursor(e.clientX, e.clientY);
+    },
+    [setAutoRotate, isPointerOnGlobe, updateCursor]
+  );
+
+  const handlePointerEnd = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      resumeAutoRotateSoon();
+      const controls = globeRef.current?.controls?.();
+      if (controls) controls.enabled = true;
+      isDraggingGlobe.current = false;
+      updateCursor(e.clientX, e.clientY);
+    },
+    [resumeAutoRotateSoon, updateCursor]
+  );
+
+  const handlePointerLeaveContainer = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      resumeAutoRotateSoon();
+      if (!isDraggingGlobe.current) updateCursor(e.clientX, e.clientY);
+    },
+    [resumeAutoRotateSoon, updateCursor]
+  );
+
   const handleGlobeReady = useCallback(() => {
     const api = globeRef.current;
     if (!api) return;
@@ -278,6 +403,12 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     controls.dampingFactor = 0.1;
     controls.rotateSpeed = 0.9;
     isReady.current = true;
+    // The render loop free-runs from mount, but the pause/resume observer
+    // below can fire its first check before this ref exists (e.g. when the
+    // section is already in view on load, such as a direct #about visit) —
+    // that check no-ops, and since visibility never changes again there's no
+    // later transition to resume on. Explicitly sync once the globe is ready.
+    api.resumeAnimation();
   }, [reducedMotion]);
 
   // Fly the camera to whichever location is selected, so picking a region
@@ -319,9 +450,11 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   return (
     <div
       ref={containerRef}
-      onPointerDown={() => setAutoRotate(false)}
-      onPointerUp={resumeAutoRotateSoon}
-      onPointerLeave={resumeAutoRotateSoon}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerEnd}
+      onPointerCancel={handlePointerEnd}
+      onPointerLeave={handlePointerLeaveContainer}
       className="about-globe-canvas absolute inset-0 touch-none"
     >
       {(booted || reducedMotion) && size.width > 0 && size.height > 0 && (
@@ -370,7 +503,11 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
           onGlobeReady={handleGlobeReady}
         />
       )}
-      <GlobeTrail targetRef={containerRef} />
+      <GlobeTrail
+        targetRef={containerRef}
+        overGlobeRef={overGlobeRef}
+        anchorOffsetY={ROCKET_ENGINE_OFFSET_Y}
+      />
     </div>
   );
 }

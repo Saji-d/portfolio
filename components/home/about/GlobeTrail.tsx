@@ -56,8 +56,14 @@ function hexToRgb(hex: string): Rgb | null {
  */
 export default function GlobeTrail({
   targetRef,
+  overGlobeRef,
+  anchorOffsetY = 0,
 }: {
   targetRef: RefObject<HTMLDivElement | null>;
+  /** True while the pointer is over the interactive globe — trail is suppressed there. */
+  overGlobeRef: RefObject<boolean>;
+  /** Shifts the tracked point down so the glow anchors at the rocket cursor's engine, not its nose. */
+  anchorOffsetY?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -125,10 +131,14 @@ export default function GlobeTrail({
     function onMove(e: PointerEvent) {
       const rect = target.getBoundingClientRect();
       const x = Math.min(Math.max(e.clientX - rect.left, 0), target.clientWidth);
-      const y = Math.min(Math.max(e.clientY - rect.top, 0), target.clientHeight);
-      const now = performance.now();
-      points.push({ x, y, t: now });
-      if (points.length > MAX_POINTS) points.splice(0, points.length - MAX_POINTS);
+      const y =
+        Math.min(Math.max(e.clientY - rect.top, 0), target.clientHeight) +
+        anchorOffsetY;
+      if (!overGlobeRef.current) {
+        const now = performance.now();
+        points.push({ x, y, t: now });
+        if (points.length > MAX_POINTS) points.splice(0, points.length - MAX_POINTS);
+      }
       start();
     }
 
@@ -142,10 +152,13 @@ export default function GlobeTrail({
     function frame() {
       raf = 0;
       const now = performance.now();
-      const targetAlpha = pointerIn ? (lightTheme ? 0.42 : 0.55) : 0;
+      // "Active" excludes hovering the globe itself, even while still
+      // physically inside the card — no exhaust glow lingers there.
+      const active = pointerIn && !overGlobeRef.current;
+      const targetAlpha = active ? (lightTheme ? 0.42 : 0.55) : 0;
       alpha += (targetAlpha - alpha) * 0.12;
 
-      if (pointerIn) {
+      if (active) {
         points = points.filter((p) => now - p.t < POINT_AGE_MS);
       } else if (points.length) {
         points.shift();
@@ -154,7 +167,21 @@ export default function GlobeTrail({
       ctx.clearRect(0, 0, target.clientWidth, target.clientHeight);
 
       if (points.length >= 2 && alpha > 0.02) {
-        const head = points[points.length - 1];
+        // The rocket cursor itself is painted natively (zero latency); this
+        // canvas only knows where the pointer was as of the last recorded
+        // sample, which by the time this frame paints is already stale by
+        // roughly one frame. Extrapolate the flame's tip along its recent
+        // velocity to close that gap instead of visibly trailing behind it.
+        const rawHead = points[points.length - 1];
+        const prev = points[points.length - 2];
+        const dt = Math.max(1, rawHead.t - prev.t);
+        const vx = (rawHead.x - prev.x) / dt;
+        const vy = (rawHead.y - prev.y) / dt;
+        const lookahead = Math.min(now - rawHead.t, 48);
+        const head = {
+          x: rawHead.x + vx * lookahead,
+          y: rawHead.y + vy * lookahead,
+        };
         const tail = points[0];
         const a = alpha;
 
@@ -217,8 +244,8 @@ export default function GlobeTrail({
         ctx.fill();
       }
 
-      const drained = !pointerIn && points.length === 0 && sparks.length === 0;
-      if ((drained || alpha < 0.01) && !pointerIn) {
+      const drained = !active && points.length === 0 && sparks.length === 0;
+      if ((drained || alpha < 0.01) && !active) {
         ctx.clearRect(0, 0, target.clientWidth, target.clientHeight);
         return;
       }
@@ -241,7 +268,7 @@ export default function GlobeTrail({
       themeObserver.disconnect();
       stop();
     };
-  }, [targetRef]);
+  }, [targetRef, overGlobeRef, anchorOffsetY]);
 
   return (
     <canvas

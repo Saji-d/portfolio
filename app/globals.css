@@ -577,10 +577,5 @@
   }
 }
 
-.about-globe-canvas canvas {
-  cursor: grab;
-}
-
-.about-globe-canvas canvas:active {
-  cursor: grabbing;
-}
+/* Cursor (grab/grabbing) is applied imperatively in AboutGlobe.tsx, scoped
+   to the actual rendered sphere via raycasting, not the whole card. */

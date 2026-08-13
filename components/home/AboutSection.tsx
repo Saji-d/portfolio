@@ -114,7 +114,7 @@ export default function AboutSection() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span>BASED IN DHAKA</span>
+                <span>BASED IN DHAKA, BANGLADESH</span>
                 <span className="text-accent">·</span>
                 <span className="text-text-secondary">{SITE.timezone}</span>
               </li>

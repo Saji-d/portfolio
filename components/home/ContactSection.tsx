@@ -41,7 +41,7 @@ export default function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="relative min-h-0 scroll-mt-[var(--nav-offset)] pt-8 sm:pt-12 pb-6 sm:pb-8"
+      className="relative min-h-0 scroll-mt-0 pt-[calc(var(--nav-offset)_+_2rem)] pb-6 sm:pb-8 sm:pt-[calc(var(--nav-offset)_+_3rem)]"
     >
       <div className="container-site">
         <MotionConfig reducedMotion="user">
@@ -58,7 +58,7 @@ export default function ContactSection() {
               <div className="max-w-2xl">
                 <Eyebrow index="08">Contact</Eyebrow>
                 <h2 className="section-title">
-                  Got a problem worth engineering?
+                  Let's turn the idea into something real.
                 </h2>
               </div>
               <span className="mt-1 inline-flex shrink-0 items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 font-mono text-xs font-medium text-success">

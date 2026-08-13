@@ -69,7 +69,7 @@ export default function CortexSection() {
               </Reveal>
               <Reveal delay={0.08}>
                 <h2 className="section-title">
-                  Run a command. Follow the rabbit hole.
+                  Peek inside the machine.
                 </h2>
               </Reveal>
             </div>

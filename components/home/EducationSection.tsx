@@ -58,11 +58,6 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
   return (
     <TiltCard className="h-full">
       <article className="card-surface group relative flex h-full flex-col overflow-hidden border-accent/30 shadow-[0_0_0_1px_rgba(79,209,197,0.12),0_20px_60px_-24px_rgba(79,209,197,0.18)] transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(79,209,197,0.25),0_32px_80px_-28px_rgba(79,209,197,0.38)]">
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-accent via-accent-2 to-transparent"
-        />
-
         <div className="relative aspect-[16/4] overflow-hidden bg-surface-2 sm:aspect-[16/2.25]">
           <Image
             src={entry.image}
@@ -189,7 +184,7 @@ export default function EducationSection() {
           <div className="max-w-2xl">
             <Eyebrow index="06">Education</Eyebrow>
             <h2 className="section-title">
-              Built the fundamentals, then taught the code what to do with them.
+              The foundations underneath the stack.
             </h2>
           </div>
         </Reveal>

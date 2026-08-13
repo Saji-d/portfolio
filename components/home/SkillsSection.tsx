@@ -61,7 +61,7 @@ export default function SkillsSection() {
           <div className="max-w-2xl">
             <Eyebrow index="07">Capabilities</Eyebrow>
             <h2 className="section-title">
-              Tools I reach for under pressure.
+              My current engineering toolkit.
             </h2>
           </div>
         </Reveal>
