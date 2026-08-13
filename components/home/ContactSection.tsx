@@ -6,7 +6,6 @@ import { MotionConfig, motion, type Variants } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import Eyebrow from "@/components/ui/Eyebrow";
 import { SITE } from "@/data/site";
-import CircuitTraces from "@/components/ui/CircuitTraces";
 
 interface Channel {
   icon: ComponentType<{ className?: string }>;
@@ -44,13 +43,6 @@ export default function ContactSection() {
       aria-label="Contact"
       className="relative min-h-0 scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_2rem)] pb-6 sm:pb-8 sm:pt-[calc(var(--nav-offset)_+_3rem)]"
     >
-      {/* A very faint infrastructure trace — Contact closes the loop
-          quietly, desktop only. */}
-      <CircuitTraces
-        variant="pulse"
-        mirror
-        className="bottom-2 right-2 hidden h-32 w-32 opacity-50 lg:block"
-      />
       <div className="container-site">
         <MotionConfig reducedMotion="user">
           <motion.div

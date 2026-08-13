@@ -4,7 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CursorGlow from "@/components/CursorGlow";
-import EngineeringBackground from "@/components/EngineeringBackground";
+import ParticleField from "@/components/ParticleField";
 import { CommandPaletteProvider } from "@/components/command-palette-context";
 import RouteProgress from "@/components/ui/RouteProgress";
 import ScrollProgress from "@/components/ui/ScrollProgress";
@@ -103,7 +103,7 @@ export default function RootLayout({
         </a>
         <ScrollProgress />
         <RouteProgress />
-        <EngineeringBackground />
+        <ParticleField />
         <CursorGlow />
         <CommandPaletteProvider>
           <Nav />

@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { techLogos, type TechLogo } from "@/components/ui/TechIcons";
 
 const ICON_NAMES = [
@@ -38,13 +37,10 @@ function byNames(names: string[]): TechLogo[] {
 
 const logos = byNames(ICON_NAMES);
 
-function IconItem({ Icon, color }: TechLogo) {
+function IconItem({ Icon }: TechLogo) {
   return (
-    <span
-      className="tech-marquee-icon mx-4 flex shrink-0 items-center justify-center opacity-70 transition-all duration-300 group-hover:opacity-90 hover:!opacity-100 sm:mx-6"
-      style={{ "--icon-color": color } as CSSProperties}
-    >
-      <Icon className="h-6 w-6 saturate-[0.8] drop-shadow-[0_0_0_rgba(0,0,0,0)] transition-[filter,transform] duration-300 hover:drop-shadow-[0_0_10px_var(--icon-color)] hover:saturate-100 hover:scale-105 sm:h-7 sm:w-7" />
+    <span className="tech-marquee-icon mx-4 flex shrink-0 items-center justify-center opacity-90 transition-opacity duration-300 hover:opacity-100 sm:mx-6">
+      <Icon className="h-6 w-6 transition-[filter,transform] duration-300 hover:brightness-110 hover:scale-105 sm:h-7 sm:w-7" />
     </span>
   );
 }
@@ -52,10 +48,10 @@ function IconItem({ Icon, color }: TechLogo) {
 export default function HeroMarquee() {
   return (
     <div className="relative" aria-label="Technologies I work with">
-      <div className="group relative overflow-hidden">
+      <div className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="marquee-track animate-marquee flex w-max items-center group-hover:[animation-play-state:paused]"
+          className="marquee-track animate-marquee flex w-max items-center"
           style={{ animationDuration: "46s" }}
         >
           <div className="flex w-max shrink-0 items-center">

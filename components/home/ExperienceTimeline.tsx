@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TimelineProgress from "@/components/ui/TimelineProgress";
-import CircuitTraces from "@/components/ui/CircuitTraces";
 
 const experiences = [
   {
@@ -53,13 +52,6 @@ export default function ExperienceTimeline() {
       aria-label="Experience"
       className="section-chapter relative overflow-hidden pt-[calc(var(--nav-offset)_+_3.5rem)] pb-16 sm:pb-20"
     >
-      {/* A flipped branch trace, echoing the timeline's own connective
-          geometry — desktop only. */}
-      <CircuitTraces
-        variant="branch"
-        mirror
-        className="right-2 top-6 hidden h-40 w-40 lg:block"
-      />
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">

@@ -7,7 +7,6 @@ import Eyebrow from "@/components/ui/Eyebrow";
 import { ProjectCard } from "@/components/work/ProjectCard";
 import { projects } from "@/data/projects";
 import { useOverlay } from "@/components/overlay-context";
-import CircuitTraces from "@/components/ui/CircuitTraces";
 
 export default function ProjectsSection() {
   const { openProject } = useOverlay();
@@ -18,12 +17,6 @@ export default function ProjectsSection() {
       aria-label="Projects"
       className="section-chapter relative overflow-hidden pb-10 sm:pb-12"
     >
-      {/* A data-flow trace in the top-right margin, well clear of the card
-          grid — desktop only. */}
-      <CircuitTraces
-        variant="pulse"
-        className="right-2 top-4 hidden h-40 w-40 lg:block"
-      />
       <div className="container-site">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">

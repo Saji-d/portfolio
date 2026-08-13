@@ -5,7 +5,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
-import CircuitTraces from "@/components/ui/CircuitTraces";
 import { GLOBE_LOCATIONS } from "@/data/globe";
 import { SITE } from "@/data/site";
 
@@ -93,17 +92,6 @@ export default function AboutSection() {
       aria-label="About"
       className="relative scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-4 right-[-8%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(closest-side,var(--glow-primary),transparent)] opacity-70"
-      />
-      {/* A more structured lattice than Hero's single branch — About is
-          where the "systems" framing starts, desktop only. */}
-      <CircuitTraces
-        variant="grid"
-        mirror
-        className="bottom-2 left-[1%] hidden h-40 w-40 lg:block"
-      />
       <div className="container-site">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-start lg:gap-8">
           <Reveal delay={0.04}>
