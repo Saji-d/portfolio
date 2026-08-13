@@ -3,16 +3,19 @@
 import { useEffect, useRef } from "react";
 
 /**
- * The single background system for the whole site: a sparse "neural
- * field" of tiny data points that gently repel from the cursor and
- * ease back once it moves on, plus a barely-perceptible organic idle
- * drift (no autonomous "look at this" animation). No connecting
- * lines, no glow blobs — the atmosphere comes entirely from the
- * particles themselves. Fixed to the viewport (not the document), so
- * it renders once behind all page content and never varies by
- * scroll position or section — one continuous field for the whole
- * portfolio, reused rather than duplicated per-section.
+ * The single background system for the whole site: a barely-perceptible
+ * two-tone color wash, a static technical grid, and a sparse "neural
+ * field" of tiny data points at three depth tiers, which gently repel
+ * from the cursor and ease back once it moves on, plus an almost
+ * imperceptible organic idle drift (no autonomous "look at this"
+ * animation). No connecting lines, no glow blobs — the atmosphere comes
+ * entirely from these three restrained layers. Fixed to the viewport
+ * (not the document), so it renders once behind all page content and
+ * never varies by scroll position or section — one continuous field for
+ * the whole portfolio, reused rather than duplicated per-section.
  */
+
+type Depth = "far" | "mid" | "near";
 
 interface Particle {
   /** Home position as a fraction of the canvas, so it re-lands correctly after a resize. */
@@ -24,7 +27,8 @@ interface Particle {
   size: number;
   baseAlpha: number;
   color: readonly [number, number, number];
-  /** Only the occasional violet/cyan particle gets a soft halo — never the indigo majority. */
+  /** Only mid/near violet or cyan particles get a soft halo — never the indigo majority, and
+   *  never the distant tier (a halo on a tiny "far" point would fight the depth cue). */
   glow: boolean;
   phase: number;
   twinkleSpeed: number;
@@ -49,15 +53,46 @@ const DRIFT_AMPLITUDE = 1.4;
 const GLOBAL_DRIFT_PERIOD = 240;
 const GLOBAL_DRIFT_AMPLITUDE = 0.6;
 
+/** Two overlapping grids at different cell sizes and opacities — the beat between them, and the
+ *  fact that only half the lines are at full strength, reads as an atmospheric technical texture
+ *  rather than a flat, mechanically uniform blueprint. */
+const GRID_STYLE = {
+  backgroundImage: [
+    "linear-gradient(to right, rgba(99,102,241,0.06) 1px, transparent 1px)",
+    "linear-gradient(to bottom, rgba(99,102,241,0.06) 1px, transparent 1px)",
+    "linear-gradient(to right, rgba(99,102,241,0.032) 1px, transparent 1px)",
+    "linear-gradient(to bottom, rgba(99,102,241,0.032) 1px, transparent 1px)",
+  ].join(","),
+  backgroundSize: "64px 64px, 64px 64px, 88px 88px, 88px 88px",
+};
+
+/** A barely-perceptible two-tone color field — indigo toward one corner, cyan toward the
+ *  opposite one — so the canvas reads as "there is color in this environment" rather than flat
+ *  black, without ever resolving into a visible circle or a glow blob. Huge radius, very low
+ *  alpha, no blur filter, no animation. */
+const ATMOSPHERE_STYLE = {
+  backgroundImage: [
+    "radial-gradient(60% 60% at 18% 15%, rgba(99,102,241,0.05), transparent 70%)",
+    "radial-gradient(65% 65% at 85% 85%, rgba(34,211,238,0.03), transparent 70%)",
+  ].join(","),
+};
+
 function clamp01(v: number): number {
   return Math.min(1, Math.max(0, v));
 }
 
-function pickColor(): { color: readonly [number, number, number]; glow: boolean } {
+function pickColor(): readonly [number, number, number] {
   const r = Math.random();
-  if (r < 0.05) return { color: CYAN, glow: true };
-  if (r < 0.15) return { color: VIOLET, glow: true };
-  return { color: INDIGO, glow: false };
+  if (r < 0.09) return CYAN;
+  if (r < 0.22) return VIOLET;
+  return INDIGO;
+}
+
+function pickDepth(): Depth {
+  const r = Math.random();
+  if (r < 0.55) return "far";
+  if (r < 0.85) return "mid";
+  return "near";
 }
 
 function makeParticles(count: number): Particle[] {
@@ -70,8 +105,23 @@ function makeParticles(count: number): Particle[] {
   }));
 
   return Array.from({ length: count }, () => {
-    const { color, glow } = pickColor();
-    const big = Math.random() < 0.18;
+    const color = pickColor();
+    const depth = pickDepth();
+    const isColored = color !== INDIGO;
+    const glow = isColored && depth !== "far";
+
+    let size: number;
+    let baseAlpha: number;
+    if (depth === "near") {
+      size = 1.5 + Math.random() * 0.4;
+      baseAlpha = 0.5 + Math.random() * 0.3;
+    } else if (depth === "mid") {
+      size = 1.1 + Math.random() * 0.35;
+      baseAlpha = 0.35 + Math.random() * 0.2;
+    } else {
+      size = 0.8 + Math.random() * 0.3;
+      baseAlpha = 0.25 + Math.random() * 0.16;
+    }
 
     let fx = Math.random();
     let fy = Math.random();
@@ -86,8 +136,8 @@ function makeParticles(count: number): Particle[] {
       fy,
       x: 0,
       y: 0,
-      size: big ? 1.6 : 1,
-      baseAlpha: big ? 0.35 + Math.random() * 0.25 : 0.15 + Math.random() * 0.2,
+      size,
+      baseAlpha,
       color,
       glow,
       phase: Math.random() * Math.PI * 2,
@@ -164,7 +214,7 @@ export default function ParticleField() {
         ctx.fillRect(p.x, p.y, p.size, p.size);
       }
 
-      ctx.shadowBlur = 3;
+      ctx.shadowBlur = 4;
       for (const p of particles) {
         if (!p.glow) continue;
         const twinkle = prefersReduced
@@ -305,6 +355,8 @@ export default function ParticleField() {
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0" style={ATMOSPHERE_STYLE} />
+      <div className="absolute inset-0" style={GRID_STYLE} />
       <canvas ref={canvasRef} className="absolute inset-0" />
     </div>
   );
