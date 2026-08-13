@@ -265,8 +265,8 @@ export default function ParticleField() {
       // Density scales gently with viewport area but stays capped — this is
       // atmosphere, not a simulation, and mobile gets a sparser field.
       const target = mobile
-        ? Math.min(260, Math.max(160, Math.floor((width * height) / 1250)))
-        : Math.min(1150, Math.max(750, Math.floor((width * height) / 1950)));
+        ? Math.min(260, Math.max(360, Math.floor((width * height) / 1250)))
+        : Math.min(1150, Math.max(950, Math.floor((width * height) / 1950)));
 
       particles = makeParticles(target);
       for (const p of particles) {
