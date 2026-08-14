@@ -39,7 +39,7 @@ export default function Hero() {
             not the desktop layout squeezed down; it's a separate hierarchy. */}
         <div className="lg:hidden">
           <div className="hero-enter" style={{ animationDelay: mobileDelays[0] }}>
-            <Eyebrow className="text-center">Software Engineer, Dhaka</Eyebrow>
+            <Eyebrow className="text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
           </div>
 
           <div
@@ -120,7 +120,7 @@ export default function Hero() {
         <div className="hidden lg:block">
           <div>
             <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-              <Eyebrow>Software Engineer, Dhaka</Eyebrow>
+              <Eyebrow>AI Engineer &amp; Full-Stack Developer</Eyebrow>
             </div>
 
             <h1

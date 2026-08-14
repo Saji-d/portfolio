@@ -27,6 +27,8 @@ export interface ResearchStudy {
   oneLiner: string;
   summary: string;
   metrics?: ResearchMetric[];
+  github?: string;
+  live?: string;
   overview: string[];
   problem: string[];
   objective: string[];
@@ -55,6 +57,8 @@ export const neuronscreen: ResearchStudy = {
   field: "Undergraduate Thesis · Healthcare ML / DL",
   featured: true,
   tags: ["Machine Learning", "Deep Learning", "Healthcare AI", "CatBoost", "ANN"],
+  github: "https://github.com/Saji-d/neuro-screen",
+  live: "https://neuro-screen.streamlit.app/",
   oneLiner:
     "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students: 95.20% accuracy, 0.982 ROC-AUC.",
   summary:

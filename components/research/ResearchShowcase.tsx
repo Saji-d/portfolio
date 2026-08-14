@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import ResearchCard from "@/components/research/ResearchCard";
 import AnimatedMetric from "@/components/ui/AnimatedMetric";
@@ -14,25 +14,18 @@ export default function ResearchShowcase({
   const rest = researchPapers.filter((p) => p.slug !== "neuronscreen");
 
   const featuredClasses =
-    "card-surface group relative block overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-6";
+    "card-surface group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-6";
 
   return (
     <>
       {featured && (
         <Reveal>
-          {onOpenResearch ? (
-            <button
-              type="button"
-              onClick={() => onOpenResearch(featured.slug)}
-              className={`${featuredClasses} w-full text-left`}
-            >
-              <FeaturedCardBody featured={featured} />
-            </button>
-          ) : (
-            <Link href={`/research/${featured.slug}`} className={featuredClasses}>
-              <FeaturedCardBody featured={featured} />
-            </Link>
-          )}
+          <div className={featuredClasses}>
+            <FeaturedCardBody
+              featured={featured}
+              onOpenResearch={onOpenResearch}
+            />
+          </div>
         </Reveal>
       )}
 
@@ -49,9 +42,21 @@ export default function ResearchShowcase({
 
 function FeaturedCardBody({
   featured,
+  onOpenResearch,
 }: {
   featured: (typeof researchPapers)[number];
+  onOpenResearch?: (slug: string) => void;
 }) {
+  const readHref = `/research/${featured.slug}`;
+  const readLabel = (
+    <>
+      Read the research{" "}
+      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </>
+  );
+  const linkClasses =
+    "inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-opacity hover:opacity-80";
+
   return (
     <>
       <span
@@ -60,10 +65,31 @@ function FeaturedCardBody({
       />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="eyebrow">Featured thesis</p>
-        <span className="inline-flex items-center gap-2 text-sm font-medium text-accent">
-          Read it{" "}
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </span>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {featured.live && (
+            <a
+              href={featured.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-ink shadow-[0_4px_16px_-4px_rgba(99,102,241,0.5)] transition-colors hover:bg-accent/90"
+            >
+              Live App <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+          {onOpenResearch ? (
+            <button
+              type="button"
+              onClick={() => onOpenResearch(featured.slug)}
+              className={linkClasses}
+            >
+              {readLabel}
+            </button>
+          ) : (
+            <Link href={readHref} className={linkClasses}>
+              {readLabel}
+            </Link>
+          )}
+        </div>
       </div>
       <div className="mt-3 lg:grid lg:grid-cols-[1fr_260px] lg:items-start lg:gap-8">
         <div className="min-w-0">

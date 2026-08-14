@@ -77,7 +77,7 @@ export default function Footer() {
       <div className="border-t border-line">
         <div className="container-site flex flex-col items-center justify-between gap-2 py-4 sm:flex-row sm:gap-3">
           <p className="card-meta">
-            {`© ${new Date().getFullYear()} ${SITE.name} · built with Next.js, Tailwind CSS & Motion`}
+            {`© ${new Date().getFullYear()} ${SITE.name} · All rights reserved.`}
           </p>
           <BackToTop />
         </div>

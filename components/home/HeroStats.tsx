@@ -12,7 +12,7 @@ interface Stat {
 const STATS: Stat[] = [
   { value: 3.92, decimals: 2, suffix: "", label: "CGPA / 4.00" },
   { value: 5, decimals: 0, suffix: "x", label: "Dean's Award" },
-  { value: 12, decimals: 0, suffix: "+", label: "Projects Built" },
+  { value: 15, decimals: 0, suffix: "+", label: "Projects Built" },
   { value: 2, decimals: 0, suffix: "+", label: "Years Building" },
 ];
 

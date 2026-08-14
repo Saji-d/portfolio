@@ -9,9 +9,9 @@ import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { ABOUT_LINK, ALL_SECTION_LINKS, CORTEX_LINK, NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
 import { useCommandPalette } from "@/components/command-palette-context";
 
-// One physical pill that slides between nav items when the active section
-// changes (shared layout animation, spring-eased at ~200-280ms).
-const PILL_TRANSITION = {
+// One shared active-indicator bar that slides beneath nav items when the
+// active section changes (shared layout animation, spring-eased at ~200-280ms).
+const NAV_INDICATOR_TRANSITION = {
   type: "spring" as const,
   stiffness: 440,
   damping: 34,
@@ -225,32 +225,30 @@ export default function Nav() {
   const cortexActive = pathname === "/" && activeSection === CORTEX_LINK.section;
 
   return (
-    <header
-      ref={headerRef}
-      className="pointer-events-none fixed inset-x-0 top-3 z-40 flex justify-center px-4 sm:top-4"
-    >
-      <div
-        className={`pointer-events-auto w-full max-w-7xl rounded-2xl border backdrop-blur-xl transition-all duration-300 ${
-          scrolled || open
-            ? "border-line-strong bg-bg/85 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)]"
-            : "border-line bg-bg/55 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]"
-        }`}
+    <>
+      <Link
+        href="/"
+        onClick={handleLogoClick}
+        aria-label="Scroll to top"
+        className="group fixed top-6 z-50 s-button-left sm:top-7"
       >
-        <div className="flex h-14 items-center justify-between gap-1.5 pl-3.5 pr-2">
-          <Link
-            href="/"
-            onClick={handleLogoClick}
-            className="group flex shrink-0 items-center gap-2.5"
-          >
-            <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface font-mono text-sm font-bold text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-colors group-hover:border-accent/50">
-              S
-              <span className="absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_6px_rgba(63,178,138,0.8)]" />
-            </span>
-            <span className="hidden whitespace-nowrap font-display text-sm font-medium tracking-tight text-text-primary xl:block">
-              Sajidur Rahman Sajid
-            </span>
-          </Link>
-
+        <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface font-mono text-sm font-bold text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-colors group-hover:border-accent/50">
+          S
+          <span className="absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_6px_rgba(63,178,138,0.8)]" />
+        </span>
+      </Link>
+      <header
+        ref={headerRef}
+        className="pointer-events-none fixed inset-x-0 top-3 z-40 flex justify-center px-4 sm:top-4"
+      >
+        <div
+          className={`pointer-events-auto w-full max-w-4xl rounded-2xl border backdrop-blur-xl transition-all duration-300 ${
+            scrolled || open
+              ? "border-line-strong bg-bg/85 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)]"
+              : "border-line bg-bg/55 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]"
+          }`}
+        >
+        <div className="flex h-14 items-center gap-1.5 pl-4 pr-2">
           <nav
             className="relative hidden items-center gap-0.5 lg:flex"
             aria-label="Primary"
@@ -260,20 +258,20 @@ export default function Nav() {
                 href={ABOUT_LINK.href}
                 onClick={(e) => handleSectionClick(e, ABOUT_LINK.section)}
                 aria-current={aboutActive ? "true" : undefined}
-                className={`relative flex shrink-0 items-center rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ${
+                className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
                   aboutActive
-                    ? "text-text-primary"
-                    : "text-text-secondary hover:-translate-y-px hover:text-text-primary"
+                    ? "font-semibold text-accent"
+                    : "font-medium text-text-secondary hover:-translate-y-px hover:text-text-primary"
                 }`}
               >
+                <span className="relative z-10">{ABOUT_LINK.label}</span>
                 {aboutActive && (
                   <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
-                    transition={PILL_TRANSITION}
+                    layoutId="nav-underline"
+                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent"
+                    transition={NAV_INDICATOR_TRANSITION}
                   />
                 )}
-                <span className="relative z-10">{ABOUT_LINK.label}</span>
               </Link>
               <Link
                 href={CORTEX_LINK.href}
@@ -281,20 +279,20 @@ export default function Nav() {
                 onClick={(e) => handleSectionClick(e, CORTEX_LINK.section)}
                 aria-current={cortexActive ? "true" : undefined}
                 title="Enter Cortex, the console behind this site"
-                className={`relative flex shrink-0 items-center rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ${
+                className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
                   cortexActive
-                    ? "text-accent"
-                    : "text-text-secondary hover:-translate-y-px hover:text-accent"
+                    ? "font-semibold text-accent"
+                    : "font-medium text-text-secondary hover:-translate-y-px hover:text-text-primary"
                 }`}
               >
+                <span className="relative z-10">{CORTEX_LINK.label}</span>
                 {cortexActive && (
                   <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
-                    transition={PILL_TRANSITION}
+                    layoutId="nav-underline"
+                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent"
+                    transition={NAV_INDICATOR_TRANSITION}
                   />
                 )}
-                <span className="relative z-10">{CORTEX_LINK.label}</span>
               </Link>
               {NAV_LINKS.map((link) => {
                 const active = pathname === "/" && activeSection === link.section;
@@ -304,27 +302,27 @@ export default function Nav() {
                     href={link.href}
                     onClick={(e) => handleSectionClick(e, link.section)}
                     aria-current={active ? "true" : undefined}
-                    className={`relative flex shrink-0 items-center rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ${
+                    className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
                       active
-                        ? "text-text-primary"
-                        : "text-text-secondary hover:-translate-y-px hover:text-text-primary"
+                        ? "font-semibold text-accent"
+                        : "font-medium text-text-secondary hover:-translate-y-px hover:text-text-primary"
                     }`}
                   >
+                    <span className="relative z-10">{link.label}</span>
                     {active && (
                       <motion.span
-                        layoutId="nav-pill"
-                        className="absolute inset-0 rounded-full border border-accent/30 bg-accent-dim"
-                        transition={PILL_TRANSITION}
+                        layoutId="nav-underline"
+                        className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent"
+                        transition={NAV_INDICATOR_TRANSITION}
                       />
                     )}
-                    <span className="relative z-10">{link.label}</span>
                   </Link>
                 );
               })}
             </MotionConfig>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-1.5">
+          <div className="ml-auto flex shrink-0 items-center gap-1.5">
             <div className="flex shrink-0 items-center overflow-hidden rounded-lg border border-line bg-surface/60">
               <button
                 onClick={() => setPaletteOpen(true)}
@@ -492,7 +490,8 @@ export default function Nav() {
           </nav>
           </div>
         </div>
-      </div>
-    </header>
+        </div>
+      </header>
+    </>
   );
 }

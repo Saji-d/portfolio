@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Coffee, Power, RefreshCw } from "lucide-react";
+import { ArrowRight, Power, RefreshCw } from "lucide-react";
 import { TERMINAL_COMMANDS } from "../lib";
 
 export function HelpView() {
@@ -60,20 +60,6 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
         <Power className="mr-1 inline h-3 w-3" />
         cortex v2.4.1
       </span>
-    </div>
-  );
-}
-
-export function CoffeeView() {
-  return (
-    <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 text-center">
-      <div className="grid h-10 w-10 place-items-center rounded-xl border border-accent/30 bg-accent-dim text-accent">
-        <Coffee className="h-4 w-4" />
-      </div>
-      <p className="max-w-sm text-sm leading-relaxed text-text-muted">
-        Caffeine is a build dependency here, not a dev dependency. Skip it and the
-        whole pipeline stalls.
-      </p>
     </div>
   );
 }

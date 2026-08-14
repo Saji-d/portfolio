@@ -25,7 +25,7 @@ function Section({
       <section className="mt-8 first:mt-0">
         <div aria-hidden="true" className="border-t border-line/60" />
         <h2 className="mt-4 flex items-baseline gap-2 font-display text-base font-semibold tracking-tight text-text-primary">
-          <span className="font-mono text-xs text-accent">{index}</span>
+          <span className="font-mono text-base text-accent">{index}</span>
           <span className="uppercase tracking-[0.06em]">{title}</span>
         </h2>
         <div className="mt-3">{children}</div>

@@ -44,7 +44,8 @@ const LINK_ICONS: Record<string, typeof Mail> = {
 };
 
 export default function WhoamiView() {
-  const { count, char, typing } = useTypewriter(WHOAMI_ROLES, true);
+  const roles = WHOAMI_ROLES.filter((r) => r.trim().length > 0);
+  const { count, char, typing } = useTypewriter(roles, true);
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_minmax(300px,340px)]">
@@ -56,10 +57,10 @@ export default function WhoamiView() {
         </div>
 
         <ul className="mt-5 space-y-2.5 font-mono text-sm">
-          {WHOAMI_ROLES.map((role, i) => {
+          {roles.map((role, i) => {
             const done =
-              count === WHOAMI_ROLES.length &&
-              char === WHOAMI_ROLES[WHOAMI_ROLES.length - 1].length;
+              count === roles.length &&
+              char === roles[roles.length - 1].length;
             const active = typing && !done && i === count - 1;
             const text = active ? role.slice(0, char) : role;
             return (
@@ -142,7 +143,7 @@ export default function WhoamiView() {
 
         <div className="mt-5 flex items-center justify-between border-t border-line pt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
           <span>scan</span>
-          <span className="text-accent">██████░░ 94%</span>
+          <span className="text-accent">████████ 99%</span>
           <span className="text-success">id ok</span>
         </div>
       </div>

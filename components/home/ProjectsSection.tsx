@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import { ProjectCard } from "@/components/work/ProjectCard";
-import { projects } from "@/data/projects";
+import { primaryProjects } from "@/data/projects";
 import { useOverlay } from "@/components/overlay-context";
 
 export default function ProjectsSection() {
@@ -37,7 +37,7 @@ export default function ProjectsSection() {
         </Reveal>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
+          {primaryProjects.map((p, i) => (
             <Reveal key={p.slug} delay={(i % 3) * 0.06}>
               <ProjectCard
                 project={p}

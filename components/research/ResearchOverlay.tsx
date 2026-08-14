@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import {
   getResearch,
   researchPapers,
@@ -11,6 +11,7 @@ import {
 import { SITE } from "@/data/site";
 import OverlayShell from "@/components/ui/OverlayShell";
 import AnimatedMetric from "@/components/ui/AnimatedMetric";
+import { GithubIcon } from "@/components/ui/BrandIcons";
 
 function Section({
   eyebrow,
@@ -419,6 +420,31 @@ export default function ResearchOverlay({
           <p className="mt-3 max-w-2xl leading-relaxed text-text-secondary">
             {study.summary}
           </p>
+
+          {(study.github || study.live) && (
+            <div className="mt-5 flex flex-wrap gap-3">
+              {study.live && (
+                <a
+                  href={study.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent/90"
+                >
+                  Live App <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              )}
+              {study.github && (
+                <a
+                  href={study.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                >
+                  <GithubIcon className="h-4 w-4" /> Source code
+                </a>
+              )}
+            </div>
+          )}
         </header>
 
         <div className="mt-2">

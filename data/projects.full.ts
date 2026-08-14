@@ -182,6 +182,191 @@ const txHash = await walletClient.writeContract({
     ],
   },
   {
+    slug: "fumak-inventory",
+    name: "Fumak Inventory Management System",
+    tagline: "Production inventory management system for a retail shop: camera-based barcode scanning, stock tracking, sales recording, and revenue analytics in one offline-first workflow.",
+    summary:
+      "A production inventory management system for FUMAK retail: CameraX + Google ML Kit turn the phone's camera into a barcode scanner for product lookup, stock add/remove/adjust, single-item sales with automatic stock deduction, and revenue analytics — fully offline, with all data local to the device.",
+    role: "Android Engineer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/fumak-thumbnail.webp",
+    caseStudy: true,
+    github: "https://github.com/Saji-d/fumak-inventory",
+    stack: ["Kotlin", "Jetpack Compose", "Room", "CameraX", "ML Kit"],
+    problem: [
+      "A small, single-shop retail business (clothing, shoes, bags, accessories) kept inventory on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
+      "The products already carry manufacturer barcodes, so printing new labels was never the answer — the shop just had no way to read those barcodes and tie a scan to a stock count or a sale.",
+      "A general-purpose POS or accounting suite was the wrong size of solution: FUMAK needed a narrow inventory + point-of-sale companion that works offline, on a shop-floor phone, without adopting a full accounting system.",
+    ],
+    solution: [
+      "Fumak Inventory is a single-shop Android app in Kotlin + Jetpack Compose. CameraX and Google ML Kit turn the phone's camera into an on-device barcode scanner for EAN/UPC/CODE/QR symbologies, so decoding never needs a network call.",
+      "A scanned barcode looks the product up in a local Room (SQLite) catalog; unrecognized codes open a Register New Product flow on the spot. Every stock-affecting event — add, remove, adjust-to-counted-value, and automatic deductions from a sale — is written to a per-product inventory transaction history with the resulting stock level snapshotted on each entry.",
+      "Record Sale computes total, amount due, and change live as figures are entered, then completes in one atomic database transaction: sale header + item line inserted, stock decremented, and a SALE inventory transaction logged. Revenue analytics aggregate totals (revenue, items sold, buying cost, gross profit, discounts, paid, due) over Today / Month / 3M / 6M / Year / custom periods, with a hand-drawn Compose Canvas bar chart.",
+    ],
+    architecture: [
+      "  Phone Camera",
+      "       │",
+      "       ▼",
+      "  CameraX (image analysis stream)",
+      "       │",
+      "       ▼",
+      "  Google ML Kit Barcode Scanning (on-device)",
+      "       │",
+      "       ▼",
+      "  Decoded Barcode Value + Format",
+      "       │",
+      "       ▼",
+      "  Product Lookup ──── not found ────▶ Register New Product",
+      "       │ found",
+      "       ▼",
+      "  Product Detail ──▶ Inventory Actions (Add / Remove / Adjust)",
+      "       │",
+      "       ▼",
+      "  Record Sale ──▶ Stock Deduction + Inventory Transaction",
+      "       │",
+      "       ▼",
+      "  Revenue Analytics (summaries + chart)",
+      "  All data: single on-device Room database (fumak.db) · no server layer",
+    ],
+    decisions: [
+      {
+        title: "Fully offline, local-only storage",
+        body: "Everything lives in one on-device Room database. No cloud backend, no multi-device sync, no remote backup — which matches the scanner's own offline design: the entire app works with no network connection. The trade-off is explicit: data entered on one phone is not visible on another.",
+      },
+      {
+        title: "Money as integer poisha, never floats",
+        body: "Monetary fields are stored as integer poisha (1/100 BDT) rather than floating point, so summing sales can never drift into rounding error.",
+      },
+      {
+        title: "Scanner isolated behind an interface",
+        body: "Scanning lives in its own package behind a small BarcodeScannerEngine interface; the rest of the app depends only on that interface and its own BarcodeFormat enum, never on ML Kit types directly. A different scanning engine can swap in without touching app code.",
+      },
+      {
+        title: "One atomic sale transaction",
+        body: "Completing a sale inserts the header and item line, decrements stock, and logs the SALE inventory transaction in a single Room transaction. A request that would take stock below zero is rejected rather than allowing negative stock.",
+      },
+      {
+        title: "Prices snapshotted at sale time",
+        body: "Each sale item stores the selling price, buying cost, and discount as they were when the sale happened, so historical gross-profit figures stay correct even after a product's prices later change.",
+      },
+    ],
+    highlights: [
+      {
+        title: "Sale math computed live",
+        code: `Total      = (selling price × quantity) − discount
+Amount due = max(total − amount paid, 0)
+Change     = max(amount paid − total, 0)
+
+// completing the sale, in one atomic Room transaction:
+insert sale_header + sale_item (prices snapshotted at sale time)
+decrement product.stock by quantity sold
+log inventory_transaction (SALE, signed delta, resulting stock)`,
+        caption: "Due and change update as figures are entered; the commit that writes the sale also deducts stock, so a sale and its inventory effect can never diverge.",
+      },
+      {
+        title: "Stock is a ledger, not a number",
+        code: `inventory_transactions table (schema v1):
+  product_id, type, signed_delta, resulting_stock,
+  timestamp, linked_sale_id?
+  type ∈ { ADD, REMOVE, ADJUST, SALE }
+
+analytics = read-only projections over products /
+            inventory_transactions / sales / sale_items`,
+        caption: "Every stock change is a row, and the resulting stock level is snapshotted on each entry — so the current count is provable from history.",
+      },
+    ],
+    metrics: [
+      { value: "8", label: "barcode formats (EAN/UPC/CODE/QR)" },
+      { value: "4", label: "stock event types" },
+      { value: "1", label: "Room database · schema v1" },
+      { value: "0", label: "network dependencies" },
+      { value: "24", label: "minSdk / offline-first" },
+    ],
+    screenshots: [],
+    nextSteps: [
+      "Backend / cloud database with multi-device synchronization.",
+      "Admin dashboard and user roles.",
+      "Multi-item (cart-style) sales — the header/item schema already supports it without a data migration.",
+      "Automated tests; verification is currently manual and on-device.",
+    ],
+  },
+  {
+    slug: "casevault",
+    name: "CaseVault",
+    tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
+    summary:
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
+    role: "Full-Stack / AI Engineer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/casevault-thumbnail.webp",
+    caseStudy: true,
+    stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
+    problem: [
+      "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
+      "Generic AI chatbots hallucinate citations, and firms cannot upload confidential client files to public AI tools without risking privacy.",
+    ],
+    solution: [
+      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
+      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
+      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker, targeting ~790ms to first token.",
+    ],
+    architecture: [
+      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
+      "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
+      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
+      "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
+      "  └──────────────────────────────────────────────────────────────────────┘",
+      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
+      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
+      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
+      "  └──────────────────────────────────────────────────────────────────────┘",
+    ],
+    decisions: [
+      {
+        title: "XSS-safe markdown without a heavy renderer",
+        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine: small surface, safe by default for legal content.",
+      },
+      {
+        title: "Relevance scoring at the repository layer",
+        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
+      },
+      {
+        title: "Phase-2 placeholders designed up front",
+        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
+      },
+    ],
+    highlights: [
+      {
+        title: "Relevance-scored search",
+        code: `def search(self, q: str, limit: int = 20) -> list[Document]:
+    like = f"%{escape_like(q)}%"
+    rows = self.session.query(Document).filter(
+        or_(Document.title.ilike(like),
+            Document.content.ilike(like))
+    ).order_by(relevance_rank(q)).limit(limit).all()
+    return rows`,
+        caption: "Keyword relevance rank prioritizes title matches over body matches.",
+      },
+    ],
+    metrics: [
+      { value: "46", label: "legal docs ingested" },
+      { value: "6", label: "product surfaces designed" },
+      { value: "790ms", label: "Phase-2 TTFT budget" },
+      { value: "0", label: "hallucinated citations (target)" },
+    ],
+    screenshots: [],
+    nextSteps: [
+      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
+      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
+    ],
+  },
+  {
     slug: "ledgerturf",
     name: "LedgerTurf",
     tagline: "Real-time turf booking platform that lets players discover and reserve grounds on a map while owners publish and manage slots with overlapping-time protection.",
@@ -260,77 +445,20 @@ try {
     ],
   },
   {
-    slug: "casevault",
-    name: "CaseVault GraphRAG",
-    tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
+    slug: "neuro-screen",
+    name: "Neuro-Screen",
+    tagline: "Hybrid CatBoost + ANN framework that screens cognitive-impairment risk in insomniac university students from a self-reported lifestyle questionnaire, with explainable predictions.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
-    role: "Full-Stack / AI Engineer",
-    status: "ACTIVE",
-    category: "Professional",
-    badges: ["Production"],
+      "Undergraduate thesis (AIUB) fusing a CatBoost gradient-boosting classifier with a three-layer PyTorch MLP, blended by averaging their probabilities. Trained on 2,237 survey responses, the hybrid reaches 95.20% accuracy / 0.982 ROC-AUC and explains every prediction through its contributing factors. Ships as an interactive Streamlit research prototype.",
+    role: "ML / DL Researcher",
+    status: "COMPLETE",
+    category: "Research",
+    badges: [],
     featured: true,
-    cover: "/images/thumbnails/casevault-thumbnail.webp",
-    caseStudy: true,
-    stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
-    problem: [
-      "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
-      "Generic AI chatbots hallucinate citations, and firms cannot upload confidential client files to public AI tools without risking privacy.",
-    ],
-    solution: [
-      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
-      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker, targeting ~790ms to first token.",
-    ],
-    architecture: [
-      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
-      "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
-      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
-      "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
-      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
-      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-    ],
-    decisions: [
-      {
-        title: "XSS-safe markdown without a heavy renderer",
-        body: "The reader renderer is hand-rolled and output-sanitized rather than pulling in a full markdown engine: small surface, safe by default for legal content.",
-      },
-      {
-        title: "Relevance scoring at the repository layer",
-        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
-      },
-      {
-        title: "Phase-2 placeholders designed up front",
-        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
-      },
-    ],
-    highlights: [
-      {
-        title: "Relevance-scored search",
-        code: `def search(self, q: str, limit: int = 20) -> list[Document]:
-    like = f"%{escape_like(q)}%"
-    rows = self.session.query(Document).filter(
-        or_(Document.title.ilike(like),
-            Document.content.ilike(like))
-    ).order_by(relevance_rank(q)).limit(limit).all()
-    return rows`,
-        caption: "Keyword relevance rank prioritizes title matches over body matches.",
-      },
-    ],
-    metrics: [
-      { value: "46", label: "legal docs ingested" },
-      { value: "6", label: "product surfaces designed" },
-      { value: "790ms", label: "Phase-2 TTFT budget" },
-      { value: "0", label: "hallucinated citations (target)" },
-    ],
-    screenshots: [],
-    nextSteps: [
-      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
-      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
-    ],
+    cover: "/images/thumbnails/neuro-screen-thumbnail.webp",
+    github: "https://github.com/Saji-d/neuro-screen",
+    demo: "https://neuro-screen.streamlit.app/",
+    stack: ["Python", "CatBoost", "PyTorch", "Streamlit"],
   },
   {
     slug: "finbert",
@@ -376,21 +504,6 @@ try {
     cover: "/images/thumbnails/face-recognition-thumbnail.webp",
     github: "https://github.com/Saji-d/face-recognition-system",
     stack: ["Python", "OpenCV", "FaceNet"],
-  },
-  {
-    slug: "spark-powerhouse-gym-csharp",
-    name: "SparkPowerhouse Gym Desktop",
-    tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
-    summary:
-      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
-    role: "Desktop Developer",
-    status: "COMPLETE",
-    category: "Desktop",
-    badges: [],
-    featured: false,
-    cover: "/images/thumbnails/sparkpowerhouse-gym-desktop-thumbnail.webp",
-    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
-    stack: ["C#", "WinForms", "SQL Server"],
   },
   {
     slug: "3d-city-simulation",
@@ -455,6 +568,21 @@ for (auto &p : particles) {
     nextSteps: [
       "Add textured buildings and reflections for a stronger visual pass.",
     ],
+  },
+  {
+    slug: "spark-powerhouse-gym-csharp",
+    name: "SparkPowerhouse Gym Desktop",
+    tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
+    summary:
+      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
+    role: "Desktop Developer",
+    status: "COMPLETE",
+    category: "Desktop",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/sparkpowerhouse-gym-desktop-thumbnail.webp",
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
+    stack: ["C#", "WinForms", "SQL Server"],
   },
   {
     slug: "spark-powerhouse-gym-web",

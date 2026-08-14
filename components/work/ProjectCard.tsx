@@ -274,7 +274,7 @@ export function ProjectCard({
   const opensCaseStudy = Boolean(onOpenCaseStudy && project.caseStudy);
 
   return (
-    <TiltCard className="h-full" glare>
+    <TiltCard className="h-full">
       <article
         className={`card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1.5 ${
           pro

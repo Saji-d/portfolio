@@ -18,7 +18,8 @@ import ContactView from "./views/ContactView";
 import ProjectDetailView from "./views/ProjectDetailView";
 import AboutView from "./views/AboutView";
 import SynapseOverlay from "./SynapseOverlay";
-import { CoffeeView, ExitView, HelpView, NotFoundView } from "./views/MiscViews";
+import { ExitView, HelpView, NotFoundView } from "./views/MiscViews";
+import CoffeeView from "./views/CoffeeView";
 
 type ViewId =
   | "whoami"

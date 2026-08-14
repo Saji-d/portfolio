@@ -22,11 +22,9 @@ export const COMMANDS: CommandDef[] = TERMINAL_COMMANDS.filter(
 export const WHOAMI_ROLES: string[] = [
   "full-stack software engineer",
   "ai engineer",
-  "machine learning",
-  "natural language processing",
-  "computer vision",
-  "research",
-  "production software",
+  "builds production-ready systems",
+  "works across ml, cv & nlp",
+  "research-driven problem solver",
 ];
 
 export const WHOAMI_LINKS = [
@@ -87,7 +85,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
       },
       {
         id: "casevault",
-        title: "CaseVault GraphRAG",
+        title: "CaseVault",
         tag: "production",
         card: "Privacy-first legal research with GraphRAG retrieval and cited AI summaries.",
         tagline: pj("casevault").summary,

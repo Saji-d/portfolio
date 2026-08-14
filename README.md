@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sajidur Rahman Sajid — Portfolio
 
-## Getting Started
+Full-stack software engineer and AI/ML developer, portfolio built with Next.js.
 
-First, run the development server:
+> **Heads up:** this project runs Next.js **16.2.12** (App Router, React 19). The API and file conventions in this version differ from older Next.js releases — if you're changing the framework code, read the relevant guide in `node_modules/next/dist/docs/` first and heed deprecation notices.
+
+## Stack
+
+- **Framework** — Next.js 16 (App Router), React 19, TypeScript
+- **Styling** — Tailwind CSS v4 (utility-based, no config file)
+- **Motion** — Motion (formerly Framer Motion)
+- **Icons** — lucide-react
+- **3D globe** — react-globe.gl with three.js + world-atlas (topojson)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | Purpose |
+| ------ | ------- |
+| `npm run dev` | Development server with hot reload |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure
 
-## Learn More
+```
+app/                 Routes (App Router): /, /projects, /projects/[slug], /research, /research/[slug], /resume
+components/
+  home/              One-page sections (hero, about, projects, research, cortex, etc.)
+  work/              Project cards, grid, case study renderer
+  research/          Research cards, featured showcase, research overlay
+  case-study/        ProjectOverlay used by the home page's project modal
+  cortex/            "Cortex" console: the boot synapse overlay, terminal shell, and command views
+  ui/                Shared primitives (Reveal, Eyebrow, MagneticButton, AnimatedMetric, …)
+data/                Content: projects, research, resume, site metadata (slim + `.full` variants)
+public/              Static assets: CV PDF, images (thumbnails, artwork, case-study screenshots)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Content model
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Projects** — `data/projects.ts` is the source of truth used by cards and the `/projects` grid. The home chapter renders `primaryProjects` (a 12-item subset) while `/projects` shows the full collection. `data/projects.full.ts` extends entries with case-study sections (`problem`, `solution`, `architecture`, `decisions`, `highlights`, `metrics`, …) rendered at `/projects/[slug]`.
+- **Research** — `data/research.ts` for cards, `data/research.full.ts` for the full study pages/overlays.
+- **Resume** — `data/resume.ts` feeds `/resume`; the downloadable CV lives at `public/Sajidur_Rahman_Sajid.pdf`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The site is a single-page experience at `/` with additional archive pages (`/projects`, `/research`, `/resume`). Section navigation is hash-based with a tracked active state in the navbar.
+- Covers live under `public/images/thumbnails/`. A project's `cover` must point to a file that exists — add the asset before marking the entry visible.

@@ -28,7 +28,7 @@ export const NAV_LINKS: readonly NavSectionLink[] = [
   { label: "Research", section: "research", href: "/#research" },
   { label: "Experience", section: "experience", href: "/#experience" },
   { label: "Education", section: "education", href: "/#education" },
-  { label: "Capabilities", section: "capabilities", href: "/#capabilities" },
+  { label: "Skills", section: "capabilities", href: "/#capabilities" },
   { label: "Contact", section: "contact", href: "/#contact" },
 ] as const;
 

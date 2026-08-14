@@ -53,13 +53,13 @@ export default function SkillsSection() {
   return (
     <section
       id="capabilities"
-      aria-label="Capabilities"
+      aria-label="Skills"
       className="section-chapter relative pb-10 sm:pb-12"
     >
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="07">Capabilities</Eyebrow>
+            <Eyebrow index="07">Skills</Eyebrow>
             <h2 className="section-title">
               My current engineering toolkit.
             </h2>

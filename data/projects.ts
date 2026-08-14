@@ -6,10 +6,12 @@ export type ProjectCategory =
   | "Professional"
   | "NLP"
   | "CVPR"
+  | "Mobile"
   | "Desktop"
   | "Web"
   | "Graphics"
   | "Database"
+  | "Research"
   | "Creative";
 
 export interface ProjectMetric {
@@ -68,6 +70,37 @@ export const projects: Project[] = [
     stack: ["FastAPI", "Fastify", "BullMQ", "PostgreSQL", "Solidity"],
   },
   {
+    slug: "fumak-inventory",
+    name: "Fumak Inventory Management System",
+    tagline: "Production inventory management system for a retail shop: camera-based barcode scanning, stock tracking, sales recording, and revenue analytics in one offline-first workflow.",
+    summary:
+      "A production inventory management system for FUMAK retail: CameraX + Google ML Kit turn the phone's camera into a barcode scanner for product lookup, stock add/remove/adjust, single-item sales with automatic stock deduction, and revenue analytics — fully offline, with all data local to the device.",
+    role: "Android Engineer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/fumak-thumbnail.webp",
+    caseStudy: true,
+    github: "https://github.com/Saji-d/fumak-inventory",
+    stack: ["Kotlin", "Jetpack Compose", "Room", "CameraX", "ML Kit"],
+  },
+  {
+    slug: "casevault",
+    name: "CaseVault",
+    tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
+    summary:
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
+    role: "Full-Stack / AI Engineer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/casevault-thumbnail.webp",
+    caseStudy: true,
+    stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
+  },
+  {
     slug: "ledgerturf",
     name: "LedgerTurf",
     tagline: "Real-time turf booking platform that lets players discover and reserve grounds on a map while owners publish and manage slots with overlapping-time protection.",
@@ -85,19 +118,20 @@ export const projects: Project[] = [
     stack: ["Next.js", "TypeScript", "Mapbox"],
   },
   {
-    slug: "casevault",
-    name: "CaseVault GraphRAG",
-    tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
+    slug: "neuro-screen",
+    name: "Neuro-Screen",
+    tagline: "Hybrid CatBoost + ANN framework that screens cognitive-impairment risk in insomniac university students from a self-reported lifestyle questionnaire, with explainable predictions.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
-    role: "Full-Stack / AI Engineer",
-    status: "ACTIVE",
-    category: "Professional",
-    badges: ["Production"],
+      "Undergraduate thesis (AIUB) fusing a CatBoost gradient-boosting classifier with a three-layer PyTorch MLP, blended by averaging their probabilities. Trained on 2,237 survey responses, the hybrid reaches 95.20% accuracy / 0.982 ROC-AUC and explains every prediction through its contributing factors. Ships as an interactive Streamlit research prototype.",
+    role: "ML / DL Researcher",
+    status: "COMPLETE",
+    category: "Research",
+    badges: [],
     featured: true,
-    cover: "/images/thumbnails/casevault-thumbnail.webp",
-    caseStudy: true,
-    stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
+    cover: "/images/thumbnails/neuro-screen-thumbnail.webp",
+    github: "https://github.com/Saji-d/neuro-screen",
+    demo: "https://neuro-screen.streamlit.app/",
+    stack: ["Python", "CatBoost", "PyTorch", "Streamlit"],
   },
   {
     slug: "finbert",
@@ -145,21 +179,6 @@ export const projects: Project[] = [
     stack: ["Python", "OpenCV", "FaceNet"],
   },
   {
-    slug: "spark-powerhouse-gym-csharp",
-    name: "SparkPowerhouse Gym Desktop",
-    tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
-    summary:
-      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
-    role: "Desktop Developer",
-    status: "COMPLETE",
-    category: "Desktop",
-    badges: [],
-    featured: false,
-    cover: "/images/thumbnails/sparkpowerhouse-gym-desktop-thumbnail.webp",
-    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
-    stack: ["C#", "WinForms", "SQL Server"],
-  },
-  {
     slug: "3d-city-simulation",
     name: "3D Procedural City Generator",
     tagline: "Procedurally generated 3D city with dynamic day-night lighting, rain and snow effects, and functioning traffic-light logic in a pure graphics showcase.",
@@ -173,6 +192,21 @@ export const projects: Project[] = [
     cover: "/images/thumbnails/three-d-city-thumbnail.webp",
     github: "https://github.com/Saji-d/3d-city-simulation-opengl",
     stack: ["C++", "OpenGL", "SFML"],
+  },
+  {
+    slug: "spark-powerhouse-gym-csharp",
+    name: "SparkPowerhouse Gym Desktop",
+    tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
+    summary:
+      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
+    role: "Desktop Developer",
+    status: "COMPLETE",
+    category: "Desktop",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/sparkpowerhouse-gym-desktop-thumbnail.webp",
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
+    stack: ["C#", "WinForms", "SQL Server"],
   },
   {
     slug: "spark-powerhouse-gym-web",
@@ -237,6 +271,16 @@ export const projects: Project[] = [
   },
 ];
 
+// The home "Projects" chapter is deliberately capped at 12 cards while the
+// full collection (14) lives on /projects. The two entries below stay in the
+// archive but are left out of the primary grid: the database-design study
+// (spec-only, weakest visual payoff) and the wedding invitation (personal).
+export const primaryProjects: Project[] = projects.filter(
+  (p) =>
+    p.slug !== "online-bookstore-database-design" &&
+    p.slug !== "my-wedding-invitation",
+);
+
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
@@ -250,9 +294,11 @@ export const projectCategories: ("All" | ProjectCategory)[] = [
   "Professional",
   "NLP",
   "CVPR",
+  "Mobile",
   "Desktop",
   "Web",
   "Graphics",
   "Database",
+  "Research",
   "Creative",
 ];
