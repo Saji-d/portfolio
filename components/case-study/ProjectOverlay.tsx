@@ -59,6 +59,18 @@ function Paragraphs({ items }: { items: string[] }) {
   );
 }
 
+function buildEyebrows(sections: { label: string; present: boolean }[]) {
+  let n = 0;
+  const out: Record<string, string> = {};
+  for (const { label, present } of sections) {
+    if (present) {
+      n += 1;
+      out[label] = `[ ${String(n).padStart(2, "0")} ] · ${label}`;
+    }
+  }
+  return out;
+}
+
 export default function ProjectOverlay({
   slug,
   onClose,
@@ -69,6 +81,18 @@ export default function ProjectOverlay({
   const project = getProject(slug);
 
   if (!project) return null;
+
+  const eyebrows = buildEyebrows([
+    { label: "Context", present: !!project.problem },
+    { label: "Response", present: !!project.solution },
+    { label: "My work", present: !!project.contribution },
+    { label: "Structure", present: !!project.architecture },
+    { label: "Trade-offs", present: !!project.decisions },
+    { label: "Under the hood", present: !!project.highlights },
+    { label: "Outcomes", present: !!project.metrics },
+    { label: "Visuals", present: !!project.screenshots?.length },
+    { label: "Where it's going", present: !!project.nextSteps },
+  ]);
 
   const actionLinks = [
     ...(project.github ? [{ label: "View Code", href: project.github }] : []),
@@ -141,19 +165,25 @@ export default function ProjectOverlay({
 
         <div className="mt-4">
           {project.problem && (
-            <Section eyebrow="[ 01 ] · Context" title="Problem">
+            <Section eyebrow={eyebrows.Context} title="Problem">
               <Bullets items={project.problem} />
             </Section>
           )}
 
           {project.solution && (
-            <Section eyebrow="[ 02 ] · Response" title="Solution">
+            <Section eyebrow={eyebrows.Response} title="Solution">
               <Paragraphs items={project.solution} />
             </Section>
           )}
 
+          {project.contribution && (
+            <Section eyebrow={eyebrows["My work"]} title="My contribution">
+              <Bullets items={project.contribution} accent="bg-accent-2" />
+            </Section>
+          )}
+
           {project.architecture && (
-            <Section eyebrow="[ 03 ] · Structure" title="Architecture">
+            <Section eyebrow={eyebrows.Structure} title="Architecture">
               <div className="card-surface overflow-x-auto">
                 <pre className="min-w-max p-5 font-mono text-[13px] leading-relaxed text-text-secondary">
                   {project.architecture.join("\n")}
@@ -163,7 +193,7 @@ export default function ProjectOverlay({
           )}
 
           {project.decisions && (
-            <Section eyebrow="[ 04 ] · Trade-offs" title="Key engineering decisions">
+            <Section eyebrow={eyebrows["Trade-offs"]} title="Key engineering decisions">
               <ol className="space-y-6">
                 {project.decisions.map((d, i) => (
                   <li key={d.title} className="grid gap-2 sm:grid-cols-[64px_1fr]">
@@ -183,7 +213,7 @@ export default function ProjectOverlay({
           )}
 
           {project.highlights && (
-            <Section eyebrow="[ 05 ] · Under the hood" title="Engineering highlights">
+            <Section eyebrow={eyebrows["Under the hood"]} title="Engineering highlights">
               <div className="space-y-6">
                 {project.highlights.map((h) => (
                   <CodeBlock
@@ -198,7 +228,7 @@ export default function ProjectOverlay({
           )}
 
           {project.metrics && (
-            <Section eyebrow="[ 06 ] · Outcomes" title="Results">
+            <Section eyebrow={eyebrows.Outcomes} title="Results">
               <div className="card-surface grid grid-cols-2 gap-6 p-6 sm:grid-cols-3 sm:p-8">
                 {project.metrics.map((m) => (
                   <div key={m.label}>
@@ -215,13 +245,13 @@ export default function ProjectOverlay({
           )}
 
           {project.screenshots && project.screenshots.length > 0 && (
-            <Section eyebrow="[ 07 ] · Visuals" title="Screenshots">
+            <Section eyebrow={eyebrows.Visuals} title="Screenshots">
               <Gallery images={project.screenshots} />
             </Section>
           )}
 
           {project.nextSteps && (
-            <Section eyebrow="[ 08 ] · Where it's going" title="Status & next steps">
+            <Section eyebrow={eyebrows["Where it's going"]} title="Status & next steps">
               <Bullets items={project.nextSteps} accent="bg-accent-2" />
             </Section>
           )}

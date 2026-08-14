@@ -71,7 +71,7 @@ function FeaturedCardBody({
               href={featured.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-ink shadow-[0_4px_16px_-4px_rgba(99,102,241,0.5)] transition-colors hover:bg-accent/90"
+              className="inline-flex items-center gap-1.5 rounded-md bg-accent-3 px-3 py-1.5 text-sm font-medium text-accent-3-ink shadow-[0_4px_16px_-4px_rgba(34,211,238,0.45)] transition-colors hover:bg-accent-3/90"
             >
               Live App <ExternalLink className="h-3.5 w-3.5" />
             </a>

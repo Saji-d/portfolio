@@ -26,6 +26,7 @@ export interface Project {
   stack: string[];
   problem?: string[];
   solution?: string[];
+  contribution?: string[];
   architecture?: string[];
   decisions?: ProjectDecision[];
   highlights?: ProjectHighlight[];
@@ -40,24 +41,33 @@ export const projects: Project[] = [
     name: "InvoicePilot",
     tagline: "AI-powered invoice processing platform that extracts, validates, and analyzes invoices while detecting duplicates and anomalies to streamline financial document workflows.",
     summary:
-      "Audit-grade invoice processing: extraction, normalization, business and fraud rule checks, human approval, then a cryptographic on-chain seal of the exact uploaded bytes (hash-only), so no invoice data ever lands on-chain.",
-    role: "Full-Stack / AI Engineer",
+      "A team-built, audit-ready invoice operations platform: capture → OCR extraction → normalization → validation → duplicate and fraud checks → human approval → a cryptographic on-chain seal of the exact uploaded bytes → billing sync, end to end for finance teams.",
+    role: "AI/ML Engineer · AI extraction service",
     status: "ACTIVE",
     category: "Professional",
     badges: ["Production"],
     featured: true,
     cover: "/images/thumbnails/invoicepilot-thumbnail.webp",
     caseStudy: true,
-    stack: ["FastAPI", "Fastify", "BullMQ", "PostgreSQL", "Solidity"],
+    stack: ["React", "Fastify", "FastAPI", "PostgreSQL", "BullMQ", "Solidity", "Supabase"],
     problem: [
       "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates, an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
       "Duplicate payments and fraud slip through because there is no structured audit trail, and any claim that an invoice was processed rests on someone's word.",
       "Generic extraction tools pull fields but cannot vouch that the extracted data matches the file, so automation stops before approval, exactly where the hours get saved.",
     ],
     solution: [
-      "InvoicePilot runs one end-to-end pipeline per document: capture → extraction → normalization → duplicate, business, and fraud checks → human approval → on-chain cryptographic seal → accounting sync. A sha-256 of the exact uploaded bytes is the document's identity, re-verified by the AI service, so a seal can never cover a file that doesn't match its hash.",
+      "InvoicePilot is a team-built platform for audit-ready invoice operations. A React frontend handles upload, extraction review, and approval; a Fastify API coordinates the workflow; the FastAPI invoice-ai-service performs OCR extraction, normalization, and validation; BullMQ workers run duplicate checks, fraud checks, and the on-chain seal; and a SolidInvoice sync worker hands approved invoices to billing. Auth is Supabase; the database is PostgreSQL with row-level security.",
+      "One end-to-end pipeline runs per document: capture → extraction → normalization → duplicate, business, and fraud checks → human approval → on-chain cryptographic seal → accounting sync. A sha-256 of the exact uploaded bytes is the document's identity, re-verified by the AI service, so a seal can never cover a file that doesn't match its hash.",
       "OCR and sealing are deliberately one pipeline: what the OCR extracts is what gets sealed on-chain. Two ingest routes (sync and async) fold onto the same invoices row through a single shared, frozen mapper, so the same document always produces the same on-chain hash.",
-      "Async work runs on BullMQ workers (extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync) while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
+      "Async work runs on BullMQ queues (extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync) while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
+    ],
+    contribution: [
+      "I built the invoice-ai-service, the platform's extraction backbone: a FastAPI pipeline that turns an uploaded invoice into a structured, validated record — R2 ingest → OCR → transform → normalize → validate → persist.",
+      "Designed the provider-agnostic OCR layer (base provider plus a Mindee V2 adapter and a local Tesseract provider) so the extraction engine can swap OCR vendors without touching app code, and integrated the OCR path with Cloudflare R2 storage.",
+      "Authored the structured invoice schema and the normalization/transformer services (money normalization, field coercion), including the {value, confidence, present} field contract the frontend's extraction review consumes.",
+      "Implemented the validation layer and the 12-rule business scoring (empty invoice, non-positive totals, date/currency mismatches, OCR-confidence floors, duplicate line items, and more).",
+      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date per tenant) and the fraud rule set — 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches, and repeated-volume patterns once enough history exists.",
+      "My invoice-ai-service history was merged into the team monorepo and continues as the extraction backbone; the rest of the stack (frontend, API, worker, contracts, billing sync) was built by teammates.",
     ],
     architecture: [
       "  Frontend (Vite + React) · Supabase auth · Cloudflare R2",
@@ -162,12 +172,12 @@ const txHash = await walletClient.writeContract({
       },
     ],
     metrics: [
-      { value: "146", label: "AI-service pytest cases" },
-      { value: "366", label: "API tests · 43 files" },
+      { value: "700", label: "API tests (Fastify suite)" },
+      { value: "160", label: "AI-service tests" },
       { value: "12+9", label: "business + fraud rules" },
-      { value: "4", label: "BullMQ seal & check workers" },
+      { value: "4", label: "BullMQ queues" },
       { value: "78.6k", label: "gas per on-chain seal" },
-      { value: "1", label: "frozen shared mapper" },
+      { value: "2", label: "OCR providers (Mindee + local)" },
     ],
     screenshots: [
       { src: "/images/invoicepilot/invoice-gpt.webp", alt: "Structured extraction sample from an invoice" },
@@ -184,10 +194,10 @@ const txHash = await walletClient.writeContract({
   {
     slug: "fumak-inventory",
     name: "Fumak Inventory Management System",
-    tagline: "Production inventory management system for a retail shop: camera-based barcode scanning, stock tracking, sales recording, and revenue analytics in one offline-first workflow.",
+    tagline: "Production inventory and point-of-sale system for a retail operation: a phone barcode scanner feeds a web app that manages products, stock, sales, and revenue analytics over the shop's local network.",
     summary:
-      "A production inventory management system for FUMAK retail: CameraX + Google ML Kit turn the phone's camera into a barcode scanner for product lookup, stock add/remove/adjust, single-item sales with automatic stock deduction, and revenue analytics — fully offline, with all data local to the device.",
-    role: "Android Engineer",
+      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database — covering the full sell flow from scan to checkout to revenue reporting.",
+    role: "Full-stack Engineer",
     status: "ACTIVE",
     category: "Professional",
     badges: ["Production"],
@@ -195,102 +205,118 @@ const txHash = await walletClient.writeContract({
     cover: "/images/thumbnails/fumak-thumbnail.webp",
     caseStudy: true,
     github: "https://github.com/Saji-d/fumak-inventory",
-    stack: ["Kotlin", "Jetpack Compose", "Room", "CameraX", "ML Kit"],
+    stack: ["Kotlin", "Jetpack Compose", "Next.js", "Neon PostgreSQL", "Prisma", "Cloudflare R2"],
     problem: [
-      "A small, single-shop retail business (clothing, shoes, bags, accessories) kept inventory on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
-      "The products already carry manufacturer barcodes, so printing new labels was never the answer — the shop just had no way to read those barcodes and tie a scan to a stock count or a sale.",
-      "A general-purpose POS or accounting suite was the wrong size of solution: FUMAK needed a narrow inventory + point-of-sale companion that works offline, on a shop-floor phone, without adopting a full accounting system.",
+      "A single-shop retail business (clothing, shoes, bags, and accessories) kept inventory and revenue on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
+      "The products already carry manufacturer barcodes, so generating new labels was never the answer — the shop just had no way to read those barcodes at the counter and tie a scan to a stock count or a sale.",
+      "A general-purpose POS or accounting suite was the wrong size of solution: the shop needed a narrow inventory + point-of-sale companion where a phone scans while a desktop or tablet runs the shop, without adopting a full accounting system.",
     ],
     solution: [
-      "Fumak Inventory is a single-shop Android app in Kotlin + Jetpack Compose. CameraX and Google ML Kit turn the phone's camera into an on-device barcode scanner for EAN/UPC/CODE/QR symbologies, so decoding never needs a network call.",
-      "A scanned barcode looks the product up in a local Room (SQLite) catalog; unrecognized codes open a Register New Product flow on the spot. Every stock-affecting event — add, remove, adjust-to-counted-value, and automatic deductions from a sale — is written to a per-product inventory transaction history with the resulting stock level snapshotted on each entry.",
-      "Record Sale computes total, amount due, and change live as figures are entered, then completes in one atomic database transaction: sale header + item line inserted, stock decremented, and a SALE inventory transaction logged. Revenue analytics aggregate totals (revenue, items sold, buying cost, gross profit, discounts, paid, due) over Today / Month / 3M / 6M / Year / custom periods, with a hand-drawn Compose Canvas bar chart.",
+      "Fumak Inventory is a two-part system talking over the shop's local network. The Android app is a thin barcode-scanner remote: CameraX + Google ML Kit decode barcodes on-device, and the app POSTs each value to the desktop web app — it holds no database of its own.",
+      "The Next.js web app is the actual inventory, POS, and analytics application. It owns all data in a Neon PostgreSQL database (via Prisma), stores product photos in Cloudflare R2, and is where a staff member runs the shop from a browser while a phone on the counter feeds it scanned barcodes in real time.",
+      "The product catalog covers name, category, color, size/variant, buying and selling prices, stock, barcode, and photo. Every stock change — add, remove, adjust-to-counted-value, and automatic deductions from a sale — is written to a full inventory-transaction audit log with the resulting stock level snapshotted on each entry.",
+      "The POS checkout builds a multi-item cart (with per-line discounts), computes total / amount due / change live, then completes in one atomic database transaction: sale header + line items inserted, stock decremented, and a SALE inventory transaction logged per item. Dashboard KPIs and period-filtered revenue analytics (Today / Month / 3M / 6M / Year / custom) aggregate over the same ledger.",
+    ],
+    contribution: [
+      "I designed and built the system end-to-end as the sole developer: the Android scanner remote (CameraX + ML Kit on-device decoding, saved desktop connection profiles, LAN heartbeat) and the Next.js web app (Prisma schema, inventory audit log, atomic POS checkout, dashboard and revenue analytics).",
+      "I owned the LAN integration contract between the two apps — the /api/scanner/events short-polling feed that turns a phone scan into a live product lookup at the counter, including the connected/disconnected heartbeat state shown in the POS.",
+      "I defined the data model (products, inventory transactions, sales, sale items, settings) with money stored as integer poisha, and the checkout/analytics logic over it.",
     ],
     architecture: [
-      "  Phone Camera",
-      "       │",
-      "       ▼",
-      "  CameraX (image analysis stream)",
-      "       │",
-      "       ▼",
-      "  Google ML Kit Barcode Scanning (on-device)",
-      "       │",
-      "       ▼",
-      "  Decoded Barcode Value + Format",
-      "       │",
-      "       ▼",
-      "  Product Lookup ──── not found ────▶ Register New Product",
-      "       │ found",
-      "       ▼",
-      "  Product Detail ──▶ Inventory Actions (Add / Remove / Adjust)",
-      "       │",
-      "       ▼",
-      "  Record Sale ──▶ Stock Deduction + Inventory Transaction",
-      "       │",
-      "       ▼",
-      "  Revenue Analytics (summaries + chart)",
-      "  All data: single on-device Room database (fumak.db) · no server layer",
+      "┌──────────────────────────┐      LAN Wi-Fi (HTTP POST)      ┌─────────────────────────────────┐",
+      "│  FUMAK Scanner (Android) │  /api/scanner/events             │  FUMAK Web (Next.js 16)          │",
+      "│  CameraX + ML Kit        │ ────────────────────▶  { type:   │  In-memory scan queue            │",
+      "│  on-device barcode decode│     \"scan\", barcode, format }   │  /sales live scan feed → cart →  │",
+      "│  connection profiles     │    + periodic heartbeat          │  checkout                        │",
+      "│  (name, IP, port)        │                                   │  Prisma ORM                      │",
+      "└──────────────────────────┘                                   │       │                          │",
+      "                                                               │       ▼                          │",
+      "                                                               │  Neon PostgreSQL                 │",
+      "                                                               │  (products, inventory txns,      │",
+      "                                                               │   sales, sale items, settings)   │",
+      "                                                               │  Cloudflare R2 (product photos)  │",
+      "                                                               └─────────────────────────────────┘",
     ],
     decisions: [
       {
-        title: "Fully offline, local-only storage",
-        body: "Everything lives in one on-device Room database. No cloud backend, no multi-device sync, no remote backup — which matches the scanner's own offline design: the entire app works with no network connection. The trade-off is explicit: data entered on one phone is not visible on another.",
+        title: "Data lives in the web app, not the phone",
+        body: "The scanner is deliberately stateless: it only decodes a barcode and POSTs it to the desktop's LAN IP and port. All business logic, validation, and persistence live in the Next.js API routes, so the phone never touches the database or object storage directly.",
       },
       {
-        title: "Money as integer poisha, never floats",
+        title: "Stock is an audit ledger, not a number",
+        body: "Every stock-affecting event — ADD, REMOVE, ADJUST, or the automatic SALE deduction — is an InventoryTransaction row with the resulting stock level snapshotted on each entry, so the current count is provable from history rather than a mutable field.",
+      },
+      {
+        title: "Atomic checkout",
+        body: "Completing a sale inserts the header and line items, decrements stock, and logs the SALE inventory transactions in a single database transaction. Prices are snapshotted at sale time, so historical gross-profit figures stay correct even after a product's prices later change.",
+      },
+      {
+        title: "Integer poisha, never floats",
         body: "Monetary fields are stored as integer poisha (1/100 BDT) rather than floating point, so summing sales can never drift into rounding error.",
       },
       {
-        title: "Scanner isolated behind an interface",
-        body: "Scanning lives in its own package behind a small BarcodeScannerEngine interface; the rest of the app depends only on that interface and its own BarcodeFormat enum, never on ML Kit types directly. A different scanning engine can swap in without touching app code.",
-      },
-      {
-        title: "One atomic sale transaction",
-        body: "Completing a sale inserts the header and item line, decrements stock, and logs the SALE inventory transaction in a single Room transaction. A request that would take stock below zero is rejected rather than allowing negative stock.",
-      },
-      {
-        title: "Prices snapshotted at sale time",
-        body: "Each sale item stores the selling price, buying cost, and discount as they were when the sale happened, so historical gross-profit figures stay correct even after a product's prices later change.",
+        title: "Soft-delete products only",
+        body: "Products are archived, never hard-deleted, so historical sales stay intact and the ledger remains fully reconcilable.",
       },
     ],
     highlights: [
       {
-        title: "Sale math computed live",
-        code: `Total      = (selling price × quantity) − discount
-Amount due = max(total − amount paid, 0)
-Change     = max(amount paid − total, 0)
+        title: "The LAN scan contract",
+        code: `// Android scanner → desktop web app, one fire-and-forget POST:
+POST http://<desktop-ip>:<port>/api/scanner/events
+  { type: "scan", barcode: "1234567890123", format: "EAN_13" }
+  { type: "heartbeat" }   // keeps the POS "Connected" badge alive
 
-// completing the sale, in one atomic Room transaction:
-insert sale_header + sale_item (prices snapshotted at sale time)
-decrement product.stock by quantity sold
-log inventory_transaction (SALE, signed delta, resulting stock)`,
-        caption: "Due and change update as figures are entered; the commit that writes the sale also deducts stock, so a sale and its inventory effect can never diverge.",
+// /sales page short-polls GET /api/scanner/events?since=<id>
+// and resolves each arriving barcode against the product catalog.`,
+        caption: "Decoding is on-device (ML Kit) and needs no network; only the decoded value is sent onward, so the scan feed works entirely over the shop's LAN.",
       },
       {
-        title: "Stock is a ledger, not a number",
-        code: `inventory_transactions table (schema v1):
-  product_id, type, signed_delta, resulting_stock,
-  timestamp, linked_sale_id?
-  type ∈ { ADD, REMOVE, ADJUST, SALE }
+        title: "One transaction per sale",
+        code: `Checkout, in a single DB transaction:
+  insert Sale        (header: total, paid, due, change, payment type)
+  insert SaleItem ×N (selling price / buying cost / discount snapshotted)
+  decrement Product.stock ×N
+  insert InventoryTransaction(SALE, signed delta, resulting stock) ×N
 
-analytics = read-only projections over products /
-            inventory_transactions / sales / sale_items`,
-        caption: "Every stock change is a row, and the resulting stock level is snapshotted on each entry — so the current count is provable from history.",
+receipt.invoiceNumber = \`FUMAK-\${year}-\${saleId}\``,
+        caption: "A sale and its inventory effect can never diverge: the commit that writes the sale also deducts stock and logs the ledger entries.",
+      },
+      {
+        title: "Scan-to-sale pipeline",
+        code: `Phone Camera
+   │
+   ▼
+CameraX (image analysis stream)
+   │
+   ▼
+Google ML Kit Barcode Scanning (on-device decode)
+   │
+   ▼
+BarcodeSender ── POST /api/scanner/events ──▶ /sales live scan panel
+   │
+   ▼
+Product Lookup ── not found ──▶ Register New Product
+   │ found
+   ▼
+Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + Analytics`,
+        caption: "One continuous path from a physical barcode to a recorded sale and its revenue figures.",
       },
     ],
     metrics: [
+      { value: "2", label: "apps — Android scanner + web" },
       { value: "8", label: "barcode formats (EAN/UPC/CODE/QR)" },
+      { value: "5", label: "Prisma data models" },
       { value: "4", label: "stock event types" },
-      { value: "1", label: "Room database · schema v1" },
-      { value: "0", label: "network dependencies" },
-      { value: "24", label: "minSdk / offline-first" },
+      { value: "5", label: "areas — dashboard, products, inventory, POS, analytics" },
+      { value: "LAN", label: "phone ↔ desktop pairing" },
     ],
     screenshots: [],
     nextSteps: [
-      "Backend / cloud database with multi-device synchronization.",
-      "Admin dashboard and user roles.",
-      "Multi-item (cart-style) sales — the header/item schema already supports it without a data migration.",
-      "Automated tests; verification is currently manual and on-device.",
+      "Authentication and user roles (currently any device on the LAN can operate the app).",
+      "An automated test suite — verification is currently manual and on-device.",
+      "Supplier management and partial-payment / credit (debtor) tracking.",
+      "Remote (non-LAN) scanner pairing and multi-shop / multi-location support.",
     ],
   },
   {

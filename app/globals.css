@@ -20,6 +20,7 @@
   --accent-2-soft: rgba(168, 85, 247, 0.5);
   --accent-3: #22d3ee;
   --accent-3-dim: rgba(34, 211, 238, 0.14);
+  --accent-3-ink: #062a38;
   --accent-ink: #f8fafc;
   --success: #3fb28a;
   --warning: #e8b44b;
@@ -49,6 +50,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-2: var(--accent-2);
   --color-accent-3: var(--accent-3);
+  --color-accent-3-ink: var(--accent-3-ink);
   --color-accent-ink: var(--accent-ink);
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -493,6 +495,77 @@
 .coffee-shimmer {
   opacity: 0.25;
   animation: coffee-shimmer 3.4s ease-in-out infinite;
+}
+
+/* WhoamiView right panel: a small system diagram. The hub breathes with a
+   subtle glow and one signal dot circulates the node graph along the exact
+   line geometry via native SVG offset-path — no JS/rAF, just two lightweight
+   CSS animations, so the cost is effectively free. */
+@keyframes whoami-hub-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.15);
+  }
+}
+
+.whoami-hub-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: whoami-hub-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes whoami-node-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.whoami-node-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: whoami-node-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes whoami-signal-travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.whoami-signal-travel {
+  animation: whoami-signal-travel 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whoami-hub-pulse,
+  .whoami-node-twinkle {
+    animation: none;
+    opacity: 0.7;
+  }
+  .whoami-signal-travel {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 [data-cortex-anim-paused="true"] [data-cortex-anim] {
