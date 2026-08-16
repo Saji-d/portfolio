@@ -236,9 +236,7 @@ export default function ParticleField() {
     const ctx: CanvasRenderingContext2D = ctxEl;
 
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointerQuery = window.matchMedia("(pointer: fine)");
     let prefersReduced = reducedMotionQuery.matches;
-    let finePointer = finePointerQuery.matches;
 
     let width = 0;
     let height = 0;
@@ -340,15 +338,13 @@ export default function ParticleField() {
         //    touches, and the only one that relaxes back to zero once it leaves.
         let targetDispX = 0;
         let targetDispY = 0;
-        if (finePointer) {
-          const dx = posX - pointerX;
-          const dy = posY - pointerY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > 0.5) {
-            const push = Math.exp(-dist / p.decayRadius) * p.maxPush;
-            targetDispX = (dx / dist) * push;
-            targetDispY = (dy / dist) * push;
-          }
+        const dx = posX - pointerX;
+        const dy = posY - pointerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > 0.5) {
+          const push = Math.exp(-dist / p.decayRadius) * p.maxPush;
+          targetDispX = (dx / dist) * push;
+          targetDispY = (dy / dist) * push;
         }
         p.dispX += (targetDispX - p.dispX) * p.springEase;
         p.dispY += (targetDispY - p.dispY) * p.springEase;
@@ -385,14 +381,27 @@ export default function ParticleField() {
       if (prefersReduced) draw();
     }
 
+    // Pointer Events unify mouse, touch and pen on one path. Mouse keeps its
+    // continuous hover: position updates on every move, and only resets when
+    // the cursor actually leaves the viewport (pointerleave). Touch/pen have
+    // no hover - the position is only meaningful while the finger is down,
+    // so it also resets on pointerup/pointercancel (finger lifted, or the
+    // gesture got claimed by native scrolling). Every listener here is
+    // passive and none of them touch touch-action, so page scrolling is
+    // never intercepted - the browser cancels the pointer stream on its own
+    // as soon as it recognises a scroll, which is exactly the reset we want.
     function onPointerMove(e: PointerEvent) {
       pointerX = e.clientX;
       pointerY = e.clientY;
     }
 
-    function onPointerLeave() {
+    function onPointerAway() {
       pointerX = -9999;
       pointerY = -9999;
+    }
+
+    function onPointerUp(e: PointerEvent) {
+      if (e.pointerType !== "mouse") onPointerAway();
     }
 
     function onVisibility() {
@@ -418,11 +427,6 @@ export default function ParticleField() {
       }
     }
 
-    function onPointerTypeChange(e: MediaQueryListEvent) {
-      finePointer = e.matches;
-      if (!finePointer) onPointerLeave();
-    }
-
     resize();
     if (prefersReduced) {
       draw();
@@ -433,20 +437,22 @@ export default function ParticleField() {
     window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
     reducedMotionQuery.addEventListener("change", onReducedMotionChange);
-    finePointerQuery.addEventListener("change", onPointerTypeChange);
-    if (finePointer) {
-      window.addEventListener("pointermove", onPointerMove, { passive: true });
-      window.addEventListener("pointerleave", onPointerLeave, { passive: true });
-    }
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerdown", onPointerMove, { passive: true });
+    window.addEventListener("pointerup", onPointerUp, { passive: true });
+    window.addEventListener("pointercancel", onPointerAway, { passive: true });
+    window.addEventListener("pointerleave", onPointerAway, { passive: true });
 
     return () => {
       stop();
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
       reducedMotionQuery.removeEventListener("change", onReducedMotionChange);
-      finePointerQuery.removeEventListener("change", onPointerTypeChange);
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerleave", onPointerLeave);
+      window.removeEventListener("pointerdown", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerAway);
+      window.removeEventListener("pointerleave", onPointerAway);
     };
   }, []);
 
