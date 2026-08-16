@@ -209,6 +209,21 @@ export const projects: Project[] = [
     stack: ["C#", "WinForms", "SQL Server"],
   },
   {
+    slug: "spark-powerhouse-gym-web",
+    name: "Spark Powerhouse Web",
+    tagline: "Academic web simulation of a gym management system with session-based auth, profile management, and a PHP/MySQL MVC backend.",
+    summary:
+      "A PHP and MySQL gym-management simulation built to demonstrate clean MVC structure: registration, session-based login, profile management with image uploads, and personal dashboards, no real payments or external APIs.",
+    role: "Web Developer",
+    status: "COMPLETE",
+    category: "Web",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/sparkpowerhouse-gym-web-thumbnail.webp",
+    github: "https://github.com/Saji-d/spark-powerhouse-gym-web",
+    stack: ["PHP", "MySQL", "JavaScript"],
+  },
+  {
     slug: "employee-family-registry",
     name: "Employee & Family Registry",
     tagline: "Employee registry with family relationship trees, full-text search, and on-demand PDF CV and list exports in one polished API-driven workspace.",
@@ -257,9 +272,14 @@ export const projects: Project[] = [
 ];
 
 // The home "Projects" chapter shows every project except the wedding
-// invitation (personal), which stays archived under the full /projects list.
+// invitation (personal) and the Spark Powerhouse web variant, which stay
+// archived under the full /projects list.
+const HOME_EXCLUDED_SLUGS = new Set([
+  "my-wedding-invitation",
+  "spark-powerhouse-gym-web",
+]);
 export const primaryProjects: Project[] = projects.filter(
-  (p) => p.slug !== "my-wedding-invitation",
+  (p) => !HOME_EXCLUDED_SLUGS.has(p.slug),
 );
 
 export function getProject(slug: string): Project | undefined {
