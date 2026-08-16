@@ -235,7 +235,6 @@ export default function CortexConsole() {
     <MotionConfig reducedMotion="user">
       <div
         ref={rootRef}
-        onClick={() => inputRef.current?.focus()}
         className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-line-strong bg-surface/60 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.85)] backdrop-blur-md"
       >
         <div
@@ -278,6 +277,7 @@ export default function CortexConsole() {
         <form
           className="relative flex items-center gap-3 border-b border-line px-4 py-2 sm:px-5"
           onSubmit={(e) => e.preventDefault()}
+          onClick={() => inputRef.current?.focus()}
         >
           <label htmlFor="cortex-input" className="sr-only">
             Enter a command

@@ -263,8 +263,8 @@ export default function ParticleField() {
       // Density scales gently with viewport area but stays capped - this is
       // atmosphere, not a simulation, and mobile gets a sparser field.
       const target = mobile
-        ? Math.min(260, Math.max(360, Math.floor((width * height) / 1250)))
-        : Math.min(1150, Math.max(950, Math.floor((width * height) / 1950)));
+        ? Math.min(700, Math.max(420, Math.floor((width * height) / 900)))
+        : Math.min(1300, Math.max(1050, Math.floor((width * height) / 1800)));
 
       particles = makeParticles(target);
       for (const p of particles) {
@@ -381,16 +381,17 @@ export default function ParticleField() {
       if (prefersReduced) draw();
     }
 
-    // Pointer Events unify mouse, touch and pen on one path. Mouse keeps its
+    // Pointer Events unify mouse, touch and pen on one path, but the magnetic
+    // cursor-follow only makes sense for a real hovering pointer (mouse).
+    // Touch has no meaningful "cursor" - a finger tap isn't hovering, it's a
+    // press-and-release - so touch/pen input is ignored entirely here and the
+    // field falls back to its always-on ambient drift alone. Mouse keeps its
     // continuous hover: position updates on every move, and only resets when
-    // the cursor actually leaves the viewport (pointerleave). Touch/pen have
-    // no hover - the position is only meaningful while the finger is down,
-    // so it also resets on pointerup/pointercancel (finger lifted, or the
-    // gesture got claimed by native scrolling). Every listener here is
-    // passive and none of them touch touch-action, so page scrolling is
-    // never intercepted - the browser cancels the pointer stream on its own
-    // as soon as it recognises a scroll, which is exactly the reset we want.
+    // the cursor actually leaves the viewport (pointerleave). Every listener
+    // here is passive and none of them touch touch-action, so page scrolling
+    // is never intercepted.
     function onPointerMove(e: PointerEvent) {
+      if (e.pointerType !== "mouse") return;
       pointerX = e.clientX;
       pointerY = e.clientY;
     }
