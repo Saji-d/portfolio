@@ -1,4 +1,4 @@
-# 01 — Personal Profile
+# 01: Personal Profile
 
 ## Identity
 
@@ -21,14 +21,14 @@ Software Engineer | Backend Engineer | Python Developer | AI Engineer | Machine 
 ## Personality Signals (from artifacts)
 
 - **Curious & learning-obsessed:** GitHub bio "Learning > knowing"; massive self-study trail (Udemy Blockchain course, IBM Full-Stack JS Coursera, learning journeys for HTML/CSS/Bootstrap/JS).
-- **Aspiring academic:** Keeps review papers, literature reviews (XLSX), citation maps, "thesis report writing by SAJID" pipeline docs with WRITING_RULES, STYLE_GUIDE, CONSISTENCY_CHECK — reflects a rigorous, process-driven academic mindset.
-- **Product-minded:** Has written full pitch decks (CustomerPulse, Warranty Wallet, CaseVault, Project SynthGraph) with unit economics, competitor teardowns, GTM sequencing — thinking beyond "just code" toward business/venture.
+- **Aspiring academic:** Keeps review papers, literature reviews (XLSX), citation maps, "thesis report writing by SAJID" pipeline docs with WRITING_RULES, STYLE_GUIDE, CONSISTENCY_CHECK - reflects a rigorous, process-driven academic mindset.
+- **Product-minded:** Has written full pitch decks (CustomerPulse, Warranty Wallet, CaseVault, Project SynthGraph) with unit economics, competitor teardowns, GTM sequencing - thinking beyond "just code" toward business/venture.
 - **Entrepreneurial / venture-curious:** IDEAS folder contains product concepts (Warranty Wallet, Argas AI voice-agent SaaS) with serious go-to-market analysis, competitor financial teardowns, pricing strategy.
 - **Detail-oriented documenter:** Every project has README, PLAN.md, DESIGN.md, reports, engineering handbooks, decision logs. He documents *heavily*.
 - **Social/community-oriented:** Leadership roles in Space Innovation Camp, WRO Bangladesh, Space Exploration Olympiad, Kids Astronaut Camp; mentoring 500+ students. Also builds resumes for friends/family (Dilruba_cv.tex, Souhardo_CV.pdf, Sumiya_Akter_CV.pdf).
 - **High academic discipline:** 5.00/5.00 in both SSC and HSC; 3.92/4.00 CGPA at AIUB; 5x Dean's Award; 70% merit scholarship.
 - **Married / family-oriented:** Extensive wedding photo collections on E:\ (Sajid weds Dilruba, Reception, holud). Partner appears to be "Dilruba". Birthday album "My Birthday" also present.
-- **Personal media interests:** Horror movies, Bollywood romantic movies (large movie library) — hobby, not career-relevant.
+- **Personal media interests:** Horror movies, Bollywood romantic movies (large movie library) - hobby, not career-relevant.
 
 ## Professional Persona vs Personal Content (split)
 - **Professional:** X:\ (projects, master profile, repos), E:\CV, E:\AIUB\Thesis, E:\AIUB\My PROJECTS, E:\AIUB\Internship-BSS.

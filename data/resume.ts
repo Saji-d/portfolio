@@ -44,7 +44,7 @@ export const resume = {
       ],
     },
     {
-      name: "FinBERT Financial Sentiment Analysis",
+      name: "FinBERT",
       stack: "PyTorch, Hugging Face, NLP",
       points: [
         "Fine-tuned domain-specific transformer models (FinBERT) to classify sentiment in financial text datasets.",

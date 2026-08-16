@@ -5,59 +5,92 @@ import { useReducedMotion } from "motion/react";
 import { Check } from "lucide-react";
 import { WHOAMI_ROLES } from "../lib";
 
-// Small system-diagram graph for the right panel: one hub plus four
-// satellite nodes, laid out once as plain numbers so both the static line
-// geometry and the signal's motion path stay in sync.
-const HUB = { x: 100, y: 45 };
-const SYS_NODES = [
-  { x: 55, y: 20 },
-  { x: 145, y: 20 },
-  { x: 145, y: 70 },
-  { x: 55, y: 70 },
-];
-const SIGNAL_PATH = `M${SYS_NODES[0].x},${SYS_NODES[0].y} L${HUB.x},${HUB.y} L${SYS_NODES[1].x},${SYS_NODES[1].y} L${HUB.x},${HUB.y} L${SYS_NODES[2].x},${SYS_NODES[2].y} L${HUB.x},${HUB.y} L${SYS_NODES[3].x},${SYS_NODES[3].y} L${HUB.x},${HUB.y} Z`;
+// Small "system status" radar for the right panel: a sweep rotates once
+// every RADAR_PERIOD seconds and four blips flash exactly as the sweep
+// passes their angle (each blip's animation-delay is its own fraction of
+// that same period) - reads as an active monitor rather than an ambiguous
+// hub-and-spoke diagram.
+const RADAR_PERIOD = 4;
+const RADAR_BLIPS = [18, 100, 195, 288].map((angle) => ({
+  angle,
+  x: 50 + 34 * Math.cos((angle * Math.PI) / 180),
+  y: 50 + 34 * Math.sin((angle * Math.PI) / 180),
+  delay: (angle / 360) * RADAR_PERIOD,
+}));
 
-const SYSTEM_ROWS: { label: string; value: string }[] = [
-  { label: "mode", value: "building & shipping" },
-  { label: "focus", value: "ai/ml + full-stack" },
-  { label: "research", value: "ml · cv · nlp" },
+// A small piece of personality rather than another résumé row - cycles in
+// place with a pure-CSS crossfade (negative animation-delay stagger, no
+// timers, no React state) so it costs nothing per frame.
+const STATUS_PHRASES = [
+  "turning ideas into systems",
+  "coffee → code → ship → repeat",
+  "iterating in production",
 ];
 
-function useTypewriter(items: string[], start: boolean) {
+// Persists across remounts within the same page session - switching to
+// another Cortex command and back to whoami re-enters this component, but
+// shouldn't replay the reveal every single time. Resets naturally on a full
+// page reload since the module is re-evaluated fresh.
+let hasPlayedWhoamiIntro = false;
+
+const REVEAL_START_MS = 160;
+const REVEAL_CHAR_MS = 9;
+const REVEAL_LINE_PAUSE_MS = 240;
+
+interface RevealState {
+  /** Lines that have fully finished typing - rendered in full, permanently. */
+  completedLines: string[];
+  /** The one line currently being typed, if any. Never a stand-in for a
+   *  line that hasn't started yet - when there's nothing left to type this
+   *  is null, so there is no ambiguous "empty line + cursor" state. */
+  currentLine: { text: string; char: number } | null;
+}
+
+// Explicit accumulating-reveal model: `completedLines` only ever grows by
+// appending a fully-typed line, and `currentLine` describes progress on
+// exactly one line (or nothing). Rendering is `completedLines + currentLine`
+// - never a slice/index into the source array - so a not-yet-reached line
+// can never accidentally render as blank text with a cursor.
+function useAccumulatingReveal(lines: string[], start: boolean): RevealState {
   const reduced = useReducedMotion();
-  const [count, setCount] = useState(0);
+  const skip = !!reduced || hasPlayedWhoamiIntro;
+
+  const [completedLines, setCompletedLines] = useState<string[]>(() =>
+    skip ? lines : [],
+  );
   const [char, setChar] = useState(0);
 
   useEffect(() => {
-    if (!start || reduced) return;
-    if (count >= items.length) return;
-    if (count === 0) {
-      const t = setTimeout(() => setCount(1), 180);
-      return () => clearTimeout(t);
+    if (!start || skip) return;
+    if (completedLines.length >= lines.length) {
+      hasPlayedWhoamiIntro = true;
+      return;
     }
-    const line = items[count - 1];
+    const line = lines[completedLines.length];
     if (char < line.length) {
-      const t = setTimeout(() => setChar(char + 1), 14);
+      const delay =
+        completedLines.length === 0 && char === 0 ? REVEAL_START_MS : REVEAL_CHAR_MS;
+      const t = setTimeout(() => setChar((c) => c + 1), delay);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => {
-      setCount((c) => c + 1);
+      setCompletedLines((prev) => [...prev, line]);
       setChar(0);
-    }, 170);
+    }, REVEAL_LINE_PAUSE_MS);
     return () => clearTimeout(t);
-  }, [start, count, char, items, reduced]);
+  }, [start, completedLines, char, lines, skip]);
 
-  const isReduced = !!reduced;
-  return {
-    count: isReduced ? items.length : count,
-    char: isReduced ? 0 : char,
-    typing: !isReduced,
-  };
+  const currentLine =
+    !skip && completedLines.length < lines.length
+      ? { text: lines[completedLines.length], char }
+      : null;
+
+  return { completedLines, currentLine };
 }
 
 export default function WhoamiView() {
   const roles = WHOAMI_ROLES.filter((r) => r.trim().length > 0);
-  const { count, char, typing } = useTypewriter(roles, true);
+  const { completedLines, currentLine } = useAccumulatingReveal(roles, true);
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_minmax(300px,340px)]">
@@ -69,31 +102,32 @@ export default function WhoamiView() {
         </div>
 
         <ul className="mt-5 space-y-2.5 font-mono text-sm">
-          {roles.map((role, i) => {
-            const done =
-              count === roles.length &&
-              char === roles[roles.length - 1].length;
-            const active = typing && !done && i === count - 1;
-            const text = active ? role.slice(0, char) : role;
-            return (
-              <li key={role} className="flex items-center gap-3">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70" />
-                <span className={active ? "text-text-primary" : "text-text-secondary"}>
-                  {text}
-                  {active && (
-                    <span
-                      aria-hidden="true"
-                      data-cortex-anim
-                      className="animate-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-accent"
-                    />
-                  )}
-                </span>
-              </li>
-            );
-          })}
+          {completedLines.map((line) => (
+            <li key={line} className="flex items-center gap-3">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70" />
+              <span className="text-text-secondary">{line}</span>
+            </li>
+          ))}
+          {currentLine && (
+            <li className="flex items-center gap-3">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70" />
+              <span className="text-text-primary">
+                {currentLine.text.slice(0, currentLine.char)}
+                <span
+                  aria-hidden="true"
+                  data-cortex-anim
+                  className="animate-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-accent"
+                />
+              </span>
+            </li>
+          )}
         </ul>
 
-        <div className="mt-5 flex items-center gap-2 font-mono text-xs text-success">
+        <div
+          className={`mt-5 flex items-center gap-2 font-mono text-xs text-success transition-opacity duration-300 ${
+            completedLines.length === roles.length ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <Check className="h-3.5 w-3.5" />
           <span>identity verified</span>
           <span className="text-text-muted">·</span>
@@ -114,56 +148,55 @@ export default function WhoamiView() {
         </div>
 
         <div className="mt-4 flex justify-center">
-          <svg
-            viewBox="0 0 200 90"
+          <div
             role="img"
-            aria-label="System diagram: a signal circulating through four connected nodes around a central hub"
-            className="h-[100px] w-full max-w-[230px]"
+            aria-label="System status radar: a sweep scanning four active signal points"
+            className="relative h-[92px] w-[92px]"
           >
-            <defs>
-              <radialGradient id="whoami-hub-glow" cx="0.5" cy="0.5" r="0.5">
-                <stop offset="0" stopColor="rgba(99, 102, 241, 0.45)" />
-                <stop offset="1" stopColor="rgba(99, 102, 241, 0)" />
-              </radialGradient>
-            </defs>
+            <div
+              aria-hidden="true"
+              data-cortex-anim
+              className="whoami-radar-sweep absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, rgba(99, 102, 241, 0.4), rgba(99, 102, 241, 0) 30%, rgba(99, 102, 241, 0) 100%)",
+              }}
+            />
+            <svg viewBox="0 0 100 100" aria-hidden="true" className="absolute inset-0 h-full w-full">
+              <defs>
+                <radialGradient id="whoami-hub-glow" cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0" stopColor="rgba(99, 102, 241, 0.45)" />
+                  <stop offset="1" stopColor="rgba(99, 102, 241, 0)" />
+                </radialGradient>
+              </defs>
 
-            <g stroke="rgba(129, 140, 248, 0.32)" strokeWidth="1" fill="none">
-              {SYS_NODES.map((n, i) => (
-                <line key={i} x1={HUB.x} y1={HUB.y} x2={n.x} y2={n.y} />
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(129, 140, 248, 0.28)" strokeWidth="1" />
+              <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(129, 140, 248, 0.16)" strokeWidth="1" />
+
+              {RADAR_BLIPS.map((b, i) => (
+                <circle
+                  key={i}
+                  cx={b.x}
+                  cy={b.y}
+                  r={2.4}
+                  fill="#a5b4fc"
+                  data-cortex-anim
+                  className="whoami-radar-blip"
+                  style={{ animationDelay: `${b.delay}s` }}
+                />
               ))}
-            </g>
 
-            {SYS_NODES.map((n, i) => (
+              <circle cx="50" cy="50" r="13" fill="url(#whoami-hub-glow)" />
               <circle
-                key={i}
-                cx={n.x}
-                cy={n.y}
-                r={2.4}
+                cx="50"
+                cy="50"
+                r="3"
+                fill="#f8fafc"
                 data-cortex-anim
-                className="whoami-node-twinkle"
-                style={{ animationDelay: `${i * 0.6}s` }}
-                fill="#a5b4fc"
+                className="whoami-hub-pulse"
               />
-            ))}
-
-            <circle
-              cx={HUB.x}
-              cy={HUB.y}
-              r={13}
-              fill="url(#whoami-hub-glow)"
-              data-cortex-anim
-              className="whoami-hub-pulse"
-            />
-            <circle cx={HUB.x} cy={HUB.y} r={3} fill="#f8fafc" />
-
-            <circle
-              r={2.6}
-              fill="#f8fafc"
-              data-cortex-anim
-              className="whoami-signal-travel"
-              style={{ offsetPath: `path("${SIGNAL_PATH}")` }}
-            />
-          </svg>
+            </svg>
+          </div>
         </div>
 
         <div className="mt-1 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-success">
@@ -171,14 +204,21 @@ export default function WhoamiView() {
           system online
         </div>
 
-        <dl className="mt-5 space-y-2.5 border-t border-line pt-4 font-mono text-xs">
-          {SYSTEM_ROWS.map((row) => (
-            <div key={row.label} className="flex items-center justify-between gap-3">
-              <dt className="uppercase tracking-[0.14em] text-text-muted">{row.label}</dt>
-              <dd className="text-text-secondary">{row.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="mt-5 border-t border-line pt-4 font-mono text-xs">
+          <span className="text-accent">$ status</span>
+          <div aria-hidden="true" className="relative mt-2 h-4 overflow-hidden">
+            {STATUS_PHRASES.map((phrase, i) => (
+              <span
+                key={phrase}
+                data-cortex-anim
+                className="whoami-status-rotate absolute inset-0 whitespace-nowrap text-text-secondary"
+                style={{ animationDelay: `${-i * 3.6}s` }}
+              >
+                <span className="text-accent">›</span> {phrase}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

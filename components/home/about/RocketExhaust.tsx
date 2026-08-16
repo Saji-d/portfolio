@@ -16,7 +16,7 @@ export default function RocketExhaust({
   anchorOffsetY,
 }: {
   targetRef: RefObject<HTMLDivElement | null>;
-  /** True while the pointer is over the interactive globe — exhaust hides there. */
+  /** True while the pointer is over the interactive globe - exhaust hides there. */
   overGlobeRef: RefObject<boolean>;
   /** Distance from the cursor hotspot down to the rocket's nozzle. */
   anchorOffsetY: number;

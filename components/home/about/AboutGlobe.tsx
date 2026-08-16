@@ -292,7 +292,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     []
   );
 
-  // Hover cursor only, throttled to one hit-test per frame — cheap enough
+  // Hover cursor only, throttled to one hit-test per frame - cheap enough
   // that it doesn't need its own render loop, it just rides pointermove.
   const handlePointerMove = useCallback(
     (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -311,7 +311,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   // off the sphere disables the controls before any pointermove reaches
   // them (three.js checks `enabled` on every move/up), so empty card space
   // never rotates the globe. A press that starts on the sphere is left
-  // alone — three.js already handles drags that wander off-globe mid-drag.
+  // alone - three.js already handles drags that wander off-globe mid-drag.
   const handlePointerDown = useCallback(
     (e: ReactPointerEvent<HTMLDivElement>) => {
       setAutoRotate(false);
@@ -320,7 +320,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
       const canvasEl = api?.renderer().domElement;
       if (!controls || !canvasEl) return;
       // Presses on overlaid HTML (markers, the location panel) never reach
-      // OrbitControls natively — only gate/track drags the canvas itself got.
+      // OrbitControls natively - only gate/track drags the canvas itself got.
       if (e.target !== canvasEl) return;
       const onGlobe = isPointerOnGlobe(e.clientX, e.clientY);
       isDraggingGlobe.current = onGlobe;
@@ -365,7 +365,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     controls.minDistance = radius * 1.3;
     controls.maxDistance = radius * 3.5;
     controls.enablePan = false;
-    // Damping handles both smooth drag and the subtle momentum on release —
+    // Damping handles both smooth drag and the subtle momentum on release -
     // a low factor coasts gently, OrbitControls eases it to rest naturally.
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
@@ -373,7 +373,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
     isReady.current = true;
     // The render loop free-runs from mount, but the pause/resume observer
     // below can fire its first check before this ref exists (e.g. when the
-    // section is already in view on load, such as a direct #about visit) —
+    // section is already in view on load, such as a direct #about visit) -
     // that check no-ops, and since visibility never changes again there's no
     // later transition to resume on. Explicitly sync once the globe is ready.
     api.resumeAnimation();
@@ -382,7 +382,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
   // Fly the camera to whichever location is selected, so picking a region
   // on the far side of the globe (e.g. America from the default Bangladesh
   // + Europe framing) actually brings it into view. Skipped on the initial
-  // mount — handleGlobeReady already sets the establishing shot.
+  // mount - handleGlobeReady already sets the establishing shot.
   useEffect(() => {
     const api = globeRef.current;
     if (!api || !isReady.current) return;

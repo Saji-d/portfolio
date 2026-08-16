@@ -49,7 +49,7 @@ export const projects: Project[] = [
     featured: true,
     cover: "/images/thumbnails/invoicepilot-thumbnail.webp",
     caseStudy: true,
-    stack: ["React", "Fastify", "FastAPI", "PostgreSQL", "BullMQ", "Solidity", "Supabase"],
+    stack: ["React", "Fastify", "FastAPI", "PostgreSQL", "BullMQ", "Solidity"],
     problem: [
       "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates, an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
       "Duplicate payments and fraud slip through because there is no structured audit trail, and any claim that an invoice was processed rests on someone's word.",
@@ -62,11 +62,11 @@ export const projects: Project[] = [
       "Async work runs on BullMQ queues (extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync) while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
     ],
     contribution: [
-      "I built the invoice-ai-service, the platform's extraction backbone: a FastAPI pipeline that turns an uploaded invoice into a structured, validated record — R2 ingest → OCR → transform → normalize → validate → persist.",
+      "I built the invoice-ai-service, the platform's extraction backbone: a FastAPI pipeline that turns an uploaded invoice into a structured, validated record: R2 ingest → OCR → transform → normalize → validate → persist.",
       "Designed the provider-agnostic OCR layer (base provider plus a Mindee V2 adapter and a local Tesseract provider) so the extraction engine can swap OCR vendors without touching app code, and integrated the OCR path with Cloudflare R2 storage.",
       "Authored the structured invoice schema and the normalization/transformer services (money normalization, field coercion), including the {value, confidence, present} field contract the frontend's extraction review consumes.",
       "Implemented the validation layer and the 12-rule business scoring (empty invoice, non-positive totals, date/currency mismatches, OCR-confidence floors, duplicate line items, and more).",
-      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date per tenant) and the fraud rule set — 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches, and repeated-volume patterns once enough history exists.",
+      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date per tenant) and the fraud rule set: 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches, and repeated-volume patterns once enough history exists.",
       "My invoice-ai-service history was merged into the team monorepo and continues as the extraction backbone; the rest of the stack (frontend, API, worker, contracts, billing sync) was built by teammates.",
     ],
     architecture: [
@@ -119,7 +119,7 @@ export const projects: Project[] = [
     highlights: [
       {
         title: "The hash kernel: one payload becomes a bytes32",
-        code: `// shared-types/src/canonical.ts — the backend-agnostic seal core.
+        code: `// shared-types/src/canonical.ts: the backend-agnostic seal core.
 // recordHash = '0x' + sha256( domainTag + '\\n' + canonicalJSON(payload) )
 export function computeRecordHash(
   payload: unknown,
@@ -133,7 +133,7 @@ export function computeRecordHash(
         title: "The anti-fabrication rule (frozen mapper)",
         code: `// AI emits { value: 0.0, present: false } for fields it never found.
 // A mapper checking only typeof value === 'number' writes amount 0,
-// marks the invoice approvable — then it gets SEALED ON-CHAIN.
+// marks the invoice approvable; then it gets SEALED ON-CHAIN.
 // So every key is OMITTED unless the extractor produced it:
 export interface ExtractedInvoiceFields {
   vendorName?: string;       // nfc'd, varchar(255)
@@ -146,7 +146,7 @@ export interface ExtractedInvoiceFields {
       },
       {
         title: "The single on-chain write, with a fee policy",
-        code: `// seal.ts — the only tx this worker ever pays for.
+        code: `// seal.ts: the only tx this worker ever pays for.
 const [block, suggestedTip] = await Promise.all([
   publicClient.getBlock(),
   publicClient.estimateMaxPriorityFeePerGas(),
@@ -159,7 +159,7 @@ const fees = computeSealFees({
   maxFeeCapWei: config.maxFeeCapWei,
 });
 if (fees.maxFeePerGas > config.maxFeeCapWei) {
-  throw new Error('seal: chain is expensive — not submitting, retry later');
+  throw new Error('seal: chain is expensive; not submitting, retry later');
 }
 const txHash = await walletClient.writeContract({
   address: SEAL_CONTRACT_ADDRESS, abi: sealRegistryAbi,
@@ -193,10 +193,10 @@ const txHash = await walletClient.writeContract({
   },
   {
     slug: "fumak-inventory",
-    name: "Fumak Inventory Management System",
+    name: "Inventory Management System",
     tagline: "Production inventory and point-of-sale system for a retail operation: a phone barcode scanner feeds a web app that manages products, stock, sales, and revenue analytics over the shop's local network.",
     summary:
-      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database — covering the full sell flow from scan to checkout to revenue reporting.",
+      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",
     role: "Full-stack Engineer",
     status: "ACTIVE",
     category: "Professional",
@@ -207,24 +207,24 @@ const txHash = await walletClient.writeContract({
     github: "https://github.com/Saji-d/fumak-inventory",
     stack: ["Kotlin", "Jetpack Compose", "Next.js", "Neon PostgreSQL", "Prisma", "Cloudflare R2"],
     problem: [
-      "A single-shop retail business (clothing, shoes, bags, and accessories) kept inventory and revenue on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
-      "The products already carry manufacturer barcodes, so generating new labels was never the answer — the shop just had no way to read those barcodes at the counter and tie a scan to a stock count or a sale.",
+      "A single-shop retail business kept inventory and revenue on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
+      "The products already carry manufacturer barcodes, so generating new labels was never the answer: the shop just had no way to read those barcodes at the counter and tie a scan to a stock count or a sale.",
       "A general-purpose POS or accounting suite was the wrong size of solution: the shop needed a narrow inventory + point-of-sale companion where a phone scans while a desktop or tablet runs the shop, without adopting a full accounting system.",
     ],
     solution: [
-      "Fumak Inventory is a two-part system talking over the shop's local network. The Android app is a thin barcode-scanner remote: CameraX + Google ML Kit decode barcodes on-device, and the app POSTs each value to the desktop web app — it holds no database of its own.",
+      "The system is two-part, talking over the shop's local network. The Android app is a thin barcode-scanner remote: CameraX + Google ML Kit decode barcodes on-device, and the app POSTs each value to the desktop web app, which holds no database of its own.",
       "The Next.js web app is the actual inventory, POS, and analytics application. It owns all data in a Neon PostgreSQL database (via Prisma), stores product photos in Cloudflare R2, and is where a staff member runs the shop from a browser while a phone on the counter feeds it scanned barcodes in real time.",
-      "The product catalog covers name, category, color, size/variant, buying and selling prices, stock, barcode, and photo. Every stock change — add, remove, adjust-to-counted-value, and automatic deductions from a sale — is written to a full inventory-transaction audit log with the resulting stock level snapshotted on each entry.",
+      "The product catalog covers name, category, color, size/variant, buying and selling prices, stock, barcode, and photo. Every stock change (add, remove, adjust-to-counted-value, and automatic deductions from a sale) is written to a full inventory-transaction audit log with the resulting stock level snapshotted on each entry.",
       "The POS checkout builds a multi-item cart (with per-line discounts), computes total / amount due / change live, then completes in one atomic database transaction: sale header + line items inserted, stock decremented, and a SALE inventory transaction logged per item. Dashboard KPIs and period-filtered revenue analytics (Today / Month / 3M / 6M / Year / custom) aggregate over the same ledger.",
     ],
     contribution: [
       "I designed and built the system end-to-end as the sole developer: the Android scanner remote (CameraX + ML Kit on-device decoding, saved desktop connection profiles, LAN heartbeat) and the Next.js web app (Prisma schema, inventory audit log, atomic POS checkout, dashboard and revenue analytics).",
-      "I owned the LAN integration contract between the two apps — the /api/scanner/events short-polling feed that turns a phone scan into a live product lookup at the counter, including the connected/disconnected heartbeat state shown in the POS.",
+      "I owned the LAN integration contract between the two apps: the /api/scanner/events short-polling feed that turns a phone scan into a live product lookup at the counter, including the connected/disconnected heartbeat state shown in the POS.",
       "I defined the data model (products, inventory transactions, sales, sale items, settings) with money stored as integer poisha, and the checkout/analytics logic over it.",
     ],
     architecture: [
       "┌──────────────────────────┐      LAN Wi-Fi (HTTP POST)      ┌─────────────────────────────────┐",
-      "│  FUMAK Scanner (Android) │  /api/scanner/events             │  FUMAK Web (Next.js 16)          │",
+      "│ Scanner Remote (Android) │  /api/scanner/events              │  Web App (Next.js 16)            │",
       "│  CameraX + ML Kit        │ ────────────────────▶  { type:   │  In-memory scan queue            │",
       "│  on-device barcode decode│     \"scan\", barcode, format }   │  /sales live scan feed → cart →  │",
       "│  connection profiles     │    + periodic heartbeat          │  checkout                        │",
@@ -244,7 +244,7 @@ const txHash = await walletClient.writeContract({
       },
       {
         title: "Stock is an audit ledger, not a number",
-        body: "Every stock-affecting event — ADD, REMOVE, ADJUST, or the automatic SALE deduction — is an InventoryTransaction row with the resulting stock level snapshotted on each entry, so the current count is provable from history rather than a mutable field.",
+        body: "Every stock-affecting event (ADD, REMOVE, ADJUST, or the automatic SALE deduction) is an InventoryTransaction row with the resulting stock level snapshotted on each entry, so the current count is provable from history rather than a mutable field.",
       },
       {
         title: "Atomic checkout",
@@ -279,7 +279,7 @@ POST http://<desktop-ip>:<port>/api/scanner/events
   decrement Product.stock ×N
   insert InventoryTransaction(SALE, signed delta, resulting stock) ×N
 
-receipt.invoiceNumber = \`FUMAK-\${year}-\${saleId}\``,
+receipt.invoiceNumber = \`INV-\${year}-\${saleId}\``,
         caption: "A sale and its inventory effect can never diverge: the commit that writes the sale also deducts stock and logs the ledger entries.",
       },
       {
@@ -304,17 +304,17 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       },
     ],
     metrics: [
-      { value: "2", label: "apps — Android scanner + web" },
+      { value: "2", label: "apps: Android scanner + web" },
       { value: "8", label: "barcode formats (EAN/UPC/CODE/QR)" },
       { value: "5", label: "Prisma data models" },
       { value: "4", label: "stock event types" },
-      { value: "5", label: "areas — dashboard, products, inventory, POS, analytics" },
+      { value: "5", label: "areas: dashboard, products, inventory, POS, analytics" },
       { value: "LAN", label: "phone ↔ desktop pairing" },
     ],
     screenshots: [],
     nextSteps: [
       "Authentication and user roles (currently any device on the LAN can operate the app).",
-      "An automated test suite — verification is currently manual and on-device.",
+      "An automated test suite; verification is currently manual and on-device.",
       "Supplier management and partial-payment / credit (debtor) tracking.",
       "Remote (non-LAN) scanner pairing and multi-shop / multi-location support.",
     ],
@@ -402,7 +402,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     status: "COMPLETE",
     category: "Professional",
     badges: [],
-    featured: true,
+    featured: false,
     cover: "/images/thumbnails/ledgerturf-thumbnail.webp",
     caseStudy: true,
     github: "https://github.com/Saji-d/ledgerturf",
@@ -488,7 +488,7 @@ try {
   },
   {
     slug: "finbert",
-    name: "FinBERT Financial Sentiment Analysis",
+    name: "FinBERT",
     tagline: "Comparative study proving domain-tuned transformers outperform generic models on financial sentiment, with a full fine-tuning-to-evaluation pipeline in a single notebook.",
     summary:
       "A comparative study proving domain-tuned transformers beat generic models on financial jargon: fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
@@ -503,7 +503,7 @@ try {
   },
   {
     slug: "codingvibes-java-gui",
-    name: "CodingVibes Learning Platform",
+    name: "CodingVibes",
     tagline: "Interactive Java learning platform featuring courses, quizzes, and progress tracking built around a clean event-driven architecture with persistent state.",
     summary:
       "An interactive learning platform with courses, quizzes, and progress tracking, engineered around a clean event-driven architecture with persistent state behind every screen.",
@@ -533,7 +533,7 @@ try {
   },
   {
     slug: "3d-city-simulation",
-    name: "3D Procedural City Generator",
+    name: "3D City Simulator",
     tagline: "Procedurally generated 3D city with dynamic day-night lighting, rain and snow effects, and functioning traffic-light logic in a pure graphics showcase.",
     summary:
       "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic, a pure graphics engineering showcase.",
@@ -549,7 +549,7 @@ try {
       "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline (geometry, lighting, and interaction) rather than a single static scene.",
     ],
     solution: [
-      "Simulation City builds an entire block grid with buildings, roads, and vehicles. A day/night cycle interpolates ambient and directional light; weather modes toggle particle rain and snow; and traffic lights cycle red → green with keyboard-controlled camera navigation.",
+      "The simulator builds an entire block grid with buildings, roads, and vehicles. A day/night cycle interpolates ambient and directional light; weather modes toggle particle rain and snow; and traffic lights cycle red → green with keyboard-controlled camera navigation.",
       "Everything is generated from a single scene graph, so light state, weather state, and traffic state compose cleanly.",
     ],
     architecture: [
@@ -584,10 +584,10 @@ for (auto &p : particles) {
       { value: "WASD", label: "free camera controls" },
     ],
     screenshots: [
-      { src: "/images/3d-city/day-mode.webp", alt: "Simulation City in daylight" },
-      { src: "/images/3d-city/night-mode.webp", alt: "Simulation City at night" },
-      { src: "/images/3d-city/rain-mode.webp", alt: "Simulation City under rain" },
-      { src: "/images/3d-city/snow-mode.webp", alt: "Simulation City in snow" },
+      { src: "/images/3d-city/day-mode.webp", alt: "3D City Simulator in daylight" },
+      { src: "/images/3d-city/night-mode.webp", alt: "3D City Simulator at night" },
+      { src: "/images/3d-city/rain-mode.webp", alt: "3D City Simulator under rain" },
+      { src: "/images/3d-city/snow-mode.webp", alt: "3D City Simulator in snow" },
       { src: "/images/3d-city/traffic-light-red.webp", alt: "Traffic light state: red" },
       { src: "/images/3d-city/traffic-light-green.webp", alt: "Traffic light state: green" },
     ],
@@ -597,7 +597,7 @@ for (auto &p : particles) {
   },
   {
     slug: "spark-powerhouse-gym-csharp",
-    name: "SparkPowerhouse Gym Desktop",
+    name: "Spark Powerhouse",
     tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
     summary:
       "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
@@ -609,21 +609,6 @@ for (auto &p : particles) {
     cover: "/images/thumbnails/sparkpowerhouse-gym-desktop-thumbnail.webp",
     github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
     stack: ["C#", "WinForms", "SQL Server"],
-  },
-  {
-    slug: "spark-powerhouse-gym-web",
-    name: "SparkPowerhouse Gym Web",
-    tagline: "Web-based gym management system with distinct member and admin areas for class bookings, memberships, and billing in one session-driven application.",
-    summary:
-      "A web gym-management simulation with distinct member and admin areas: class booking, memberships, and billing kept in one session-driven application.",
-    role: "Web Developer",
-    status: "COMPLETE",
-    category: "Web",
-    badges: [],
-    featured: false,
-    cover: "/images/thumbnails/sparkpowerhouse-gym-web-thumbnail.webp",
-    github: "https://github.com/Saji-d/spark-powerhouse-gym-web",
-    stack: ["PHP", "JavaScript", "CSS", "MySQL"],
   },
   {
     slug: "employee-family-registry",
@@ -658,7 +643,7 @@ for (auto &p : particles) {
   },
   {
     slug: "online-bookstore-database-design",
-    name: "Online Bookstore Database",
+    name: "Bookstore Database",
     tagline: "Fully normalized relational design for an online bookstore mapping every entity and dependency, ready to run catalog, orders, and inventory queries.",
     summary:
       "A fully normalized relational design for an online bookstore: every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",

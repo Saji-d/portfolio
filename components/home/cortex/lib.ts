@@ -153,7 +153,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
       },
       {
         id: "3d-city",
-        title: "3D City Generator",
+        title: "3D City Simulator",
         tag: "project",
         card: "Procedural city with day-night lighting, rain, snow and traffic logic.",
         tagline: pj("3d-city-simulation").tagline,

@@ -7,7 +7,7 @@ import HeroStats from "@/components/home/HeroStats";
 import HeroMarquee from "@/components/home/HeroMarquee";
 // Imported (rather than referenced as a "/images/hero.webp" string) so
 // Next.js fingerprints it by content hash at build time. Both the image
-// optimizer cache and the browser's HTTP cache key off the URL — with a
+// optimizer cache and the browser's HTTP cache key off the URL - with a
 // plain string path, replacing the file while keeping the same filename
 // is invisible to either cache. A content-hashed import sidesteps that
 // permanently: any future replacement gets a new URL automatically.
@@ -34,7 +34,7 @@ export default function Hero() {
     >
       <div className="container-site relative">
         {/* Mobile / tablet: a compact, centered composition purpose-built for
-            narrow viewports — eyebrow, portrait, name, positioning line,
+            narrow viewports - eyebrow, portrait, name, positioning line,
             description, CTAs, credentials, scroll cue, in that order. This is
             not the desktop layout squeezed down; it's a separate hierarchy. */}
         <div className="lg:hidden">

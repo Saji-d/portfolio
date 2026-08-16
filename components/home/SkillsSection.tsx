@@ -101,7 +101,7 @@ export default function SkillsSection() {
             {skillGroups.map((group, i) => {
               const Icon = GROUP_ICON[group.label] ?? Server;
               // Backend and AI/ML carry the actual role narrative (Backend &
-              // AI Systems) — give them the primary row and let the rest sit
+              // AI Systems) - give them the primary row and let the rest sit
               // as the supporting layer, instead of six uniform boxes.
               const primary = i < 2;
               const related = isRelated(i);

@@ -101,7 +101,7 @@ function svg(body) {
 const arts = {};
 
 // ---------------------------------------------------------------------------
-// LedgerTurf — turf booking platform: map + live slots browser mockup
+// LedgerTurf - turf booking platform: map + live slots browser mockup
 // ---------------------------------------------------------------------------
 arts.ledgerturf = svg(
   bg(T, I) +
@@ -148,7 +148,7 @@ arts.ledgerturf = svg(
 );
 
 // ---------------------------------------------------------------------------
-// Face Recognition System — viewfinder with detection frame + scan line
+// Face Recognition System - viewfinder with detection frame + scan line
 // ---------------------------------------------------------------------------
 arts["face-recognition-system"] = svg(
   bg(T, I) +
@@ -188,7 +188,7 @@ arts["face-recognition-system"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// FinBERT / NLP — transformer attention graph + sentiment bars
+// FinBERT / NLP - transformer attention graph + sentiment bars
 // ---------------------------------------------------------------------------
 arts.finbert = svg(
   bg(I, T) +
@@ -249,7 +249,7 @@ arts.finbert = svg(
 );
 
 // ---------------------------------------------------------------------------
-// Employee & Family Registry — org tree + document export
+// Employee & Family Registry - org tree + document export
 // ---------------------------------------------------------------------------
 arts["employee-family-registry"] = svg(
   bg(T, I) +
@@ -305,7 +305,7 @@ arts["employee-family-registry"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// CodingVibes — Java GUI with coffee cup + code editor
+// CodingVibes - Java GUI with coffee cup + code editor
 // ---------------------------------------------------------------------------
 arts["codingvibes-java-gui"] = svg(
   bg(AMB, T) +
@@ -350,7 +350,7 @@ arts["codingvibes-java-gui"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// Spark Powerhouse Gym (C#) — desktop dashboard with barbell
+// Spark Powerhouse Gym (C#) - desktop dashboard with barbell
 // ---------------------------------------------------------------------------
 arts["spark-powerhouse-gym-csharp"] = svg(
   bg(T, I) +
@@ -408,52 +408,7 @@ arts["spark-powerhouse-gym-csharp"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// Spark Powerhouse Gym (Web) — browser hero + feature cards
-// ---------------------------------------------------------------------------
-arts["spark-powerhouse-gym-web"] = svg(
-  bg(T, I) +
-    clip("c7", 340, 230, 920, 540) +
-    g(
-      `
-      ${rr(340, 230, 920, 540, 22, S1, `stroke="${LINE}" filter="url(#sh)"`)}
-      ${chrome(340, 230, 920)}
-      <g clip-path="url(#c7)">
-        ${rr(372, 262, 856, 24, 12, "#0E0E0E", `stroke="${LINE}"`)}
-        ${c(392, 274, 5, T)}
-        ${bar(404, 270, 420, 8, MUT)}
-        ${c(1180, 274, 5, GRN)}
-        ${bar(384, 312, 320, 22, TXT2)}
-        ${bar(384, 348, 260, 16, MUT)}
-        ${bar(384, 372, 300, 16, MUT)}
-        ${rr(384, 420, 150, 46, 23, T)}
-        ${bar(404, 436, 90, 10, "#0B6B5F")}
-        ${rr(548, 420, 150, 46, 23, S2, `stroke="${T}"`)}
-        ${bar(570, 436, 90, 10, T)}
-        ${rr(760, 300, 500, 300, 18, "#0E0E0E", `stroke="${LINE}"`)}
-        ${rr(760, 300, 500, 42, 18, "#171310", `fill-opacity="0.8"`)}
-        ${rr(760, 300, 500, 42, 18, T, `fill-opacity="0.14"`)}
-        <rect x="860" y="390" width="300" height="16" rx="8" fill="${T}"/>
-        ${c(940, 460, 34, I, "opacity='0.9'")}
-        ${c(1010, 430, 26, I, "opacity='0.7'")}
-        ${c(980, 500, 20, I, "opacity='0.6'")}
-        ${rr(384, 660, 262, 84, 14, S2, `stroke="${LINE}"`)}
-        ${bar(404, 684, 100, 10, TXT2)}
-        ${bar(404, 706, 200, 9, MUT)}
-        ${rr(660, 660, 262, 84, 14, S2, `stroke="${LINE}"`)}
-        ${bar(680, 684, 100, 10, TXT2)}
-        ${bar(680, 706, 200, 9, MUT)}
-        ${rr(936, 660, 262, 84, 14, S2, `stroke="${LINE}"`)}
-        ${bar(956, 684, 100, 10, TXT2)}
-        ${bar(956, 706, 200, 9, MUT)}
-      </g>
-      ${c(220, 200, 12, T, "opacity='0.5'")}
-      ${c(1460, 250, 10, I, "opacity='0.5'")}
-      `
-    )
-);
-
-// ---------------------------------------------------------------------------
-// Online Bookstore Database — ER diagram with tables + book stack
+// Bookstore Database: ER diagram with tables + book stack
 // ---------------------------------------------------------------------------
 arts["online-bookstore-database-design"] = svg(
   bg(I, T) +
@@ -499,7 +454,7 @@ arts["online-bookstore-database-design"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// My Wedding Invitation — envelope, rings, hearts, sparkles
+// My Wedding Invitation - envelope, rings, hearts, sparkles
 // ---------------------------------------------------------------------------
 arts["my-wedding-invitation"] = svg(
   bg(PINK, AMB) +
@@ -535,7 +490,7 @@ arts["my-wedding-invitation"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// InvoicePilot — pipeline: invoice → AI nodes → seal
+// InvoicePilot - pipeline: invoice → AI nodes → seal
 // ---------------------------------------------------------------------------
 arts.invoicepilot = svg(
   bg(T, I) +
@@ -588,7 +543,7 @@ arts.invoicepilot = svg(
 );
 
 // ---------------------------------------------------------------------------
-// CaseVault — vault dial + search over legal documents
+// CaseVault - vault dial + search over legal documents
 // ---------------------------------------------------------------------------
 arts.casevault = svg(
   bg(I, T) +
@@ -638,7 +593,7 @@ arts.casevault = svg(
 );
 
 // ---------------------------------------------------------------------------
-// NeuroScreen — brain + EEG waves + accuracy ring
+// NeuroScreen - brain + EEG waves + accuracy ring
 // ---------------------------------------------------------------------------
 arts.neuronscreen = svg(
   bg(T, I) +
@@ -685,7 +640,7 @@ arts.neuronscreen = svg(
 );
 
 // ---------------------------------------------------------------------------
-// CV & Pattern Recognition — tiles + detection overlay + kernels
+// CV & Pattern Recognition - tiles + detection overlay + kernels
 // ---------------------------------------------------------------------------
 arts["cvpr-collection"] = svg(
   bg(T, I) +
@@ -744,7 +699,7 @@ arts["cvpr-collection"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// Natural Language Processing — tokens → vectors
+// Natural Language Processing - tokens → vectors
 // ---------------------------------------------------------------------------
 arts["natural-language-processing"] = svg(
   bg(T, I) +
@@ -795,7 +750,7 @@ arts["natural-language-processing"] = svg(
 );
 
 // ---------------------------------------------------------------------------
-// Portfolio — code editor + terminal
+// Portfolio - code editor + terminal
 // ---------------------------------------------------------------------------
 arts.portfolio = svg(
   bg(T, I) +
@@ -852,7 +807,6 @@ const order = [
   "employee-family-registry",
   "codingvibes-java-gui",
   "spark-powerhouse-gym-csharp",
-  "spark-powerhouse-gym-web",
   "online-bookstore-database-design",
   "my-wedding-invitation",
   "invoicepilot",

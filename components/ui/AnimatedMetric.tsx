@@ -29,9 +29,9 @@ const DURATION_MS = 1200;
 // Renders the final value server-side (so there's no layout shift and no
 // content if JS never runs), then counts up from 0 once it enters the
 // viewport. Values that don't parse as numeric (e.g. "EfficientNet-B0")
-// are left exactly as given — this only ever animates real metrics.
+// are left exactly as given - this only ever animates real metrics.
 // A fill fraction only makes sense for bounded metrics (percentages, or a
-// ratio already on a 0–1 scale like ROC-AUC) — a raw count such as "2,237"
+// ratio already on a 0–1 scale like ROC-AUC) - a raw count such as "2,237"
 // has no natural ceiling, so it gets no bar rather than a meaningless one.
 function fillFraction(parsed: ParsedMetric): number | null {
   if (parsed.suffix === "%") return Math.min(1, parsed.value / 100);

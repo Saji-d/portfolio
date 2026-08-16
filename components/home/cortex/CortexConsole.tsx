@@ -172,9 +172,9 @@ export default function CortexConsole() {
           if (i >= word.length) {
             window.clearInterval(bootInterval.current!);
             bootInterval.current = null;
-            bootTimeout.current = window.setTimeout(() => run("whoami"), 280);
+            bootTimeout.current = window.setTimeout(() => run("whoami"), 140);
           }
-        }, 48);
+        }, 30);
       },
       { threshold: 0.3 },
     );

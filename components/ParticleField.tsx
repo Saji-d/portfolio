@@ -5,30 +5,30 @@ import { useEffect, useRef } from "react";
 /**
  * The single background system for the whole site: a barely-perceptible
  * two-tone color wash beneath a dense field of round dot particles at
- * three depth tiers — no star glyphs or sparkle shapes, only dots. Every
+ * three depth tiers - no star glyphs or sparkle shapes, only dots. Every
  * particle's rendered position is always the sum of two independent
- * layers — its own continuous ambient drift (unique speed/phase/amplitude
+ * layers - its own continuous ambient drift (unique speed/phase/amplitude
  * per particle, never synchronized, never paused) and a spring-eased
  * displacement pushed by the cursor. Ambient drift is itself a sum of a
  * slow organic sweep plus a faster small-amplitude wobble. A single sine
  * (or even independent sines per axis) has a near-zero derivative near its
  * peak, so a particle can sit within a hair of its extremum for a couple of
- * seconds and *look* frozen even though it's technically moving — that's
+ * seconds and *look* frozen even though it's technically moving - that's
  * not hypothetical, it's the exact failure mode measured in the corners of
  * an earlier version. The wobble is deliberately a true circular orbit
  * (the same angle driving both cos and sin), which has *mathematically
- * constant* speed at every instant — there is no phase where it can stall,
+ * constant* speed at every instant - there is no phase where it can stall,
  * so combined with the sweep every particle has a guaranteed floor on how
  * fast it's moving at all times, which is what the human eye actually
  * judges "alive" by, not the underlying math. Cursor influence uses smooth
  * distance falloff rather than a hard radius cutoff, so every particle is
- * technically reachable — tiny ones just barely, near ones strongly — and
+ * technically reachable - tiny ones just barely, near ones strongly - and
  * only the cursor displacement (never the ambient drift)
  * relaxes back to zero once the cursor moves away. No grid, no connecting
- * lines, no glow around the cursor itself — the atmosphere comes entirely
+ * lines, no glow around the cursor itself - the atmosphere comes entirely
  * from the particles. Fixed to the viewport (not the document), so it
  * renders once behind all page content and never varies by scroll
- * position or section — one continuous field for the whole portfolio,
+ * position or section - one continuous field for the whole portfolio,
  * reused rather than duplicated per-section.
  */
 
@@ -45,7 +45,7 @@ interface Particle {
   baseAlpha: number;
   color: readonly [number, number, number];
   depth: Depth;
-  /** Only colored medium/near particles get a soft halo — never the indigo majority, and never
+  /** Only colored medium/near particles get a soft halo - never the indigo majority, and never
    *  the tiny tier (a halo on a 1px point would fight the depth cue). */
   glow: boolean;
   twinklePhase: number;
@@ -53,7 +53,7 @@ interface Particle {
   twinkleAmount: number;
   /** Ambient drift, independent per particle: a slow two-harmonic sweep (the organic loop) plus a
    *  fast constant-speed circular wobble (one angle drives both axes, so its speed can never dip
-   *  near zero the way any sine-based term can — see the header comment). */
+   *  near zero the way any sine-based term can - see the header comment). */
   ambAmpX: number;
   ambAmpY: number;
   ambSpeedX: number;
@@ -63,11 +63,11 @@ interface Particle {
   wobbleAmp: number;
   wobbleSpeed: number;
   wobblePhase: number;
-  /** Cursor-driven displacement, carried frame to frame and eased toward its target — the only
+  /** Cursor-driven displacement, carried frame to frame and eased toward its target - the only
    *  part of the position that reacts to the cursor, and the only part that ever returns to zero. */
   dispX: number;
   dispY: number;
-  /** Depth governs how far the cursor's field reaches and how strongly/briskly it pushes — tiny
+  /** Depth governs how far the cursor's field reaches and how strongly/briskly it pushes - tiny
    *  barely notices it, near responds most readily, giving the field a subtle 3D parallax. */
   decayRadius: number;
   maxPush: number;
@@ -79,17 +79,17 @@ const ELECTRIC_BLUE = [96, 165, 250] as const;
 const CYAN = [34, 211, 238] as const;
 const VIOLET = [168, 85, 247] as const;
 
-/** Floors applied after per-particle jitter so nothing can roll a near-zero amplitude or speed —
+/** Floors applied after per-particle jitter so nothing can roll a near-zero amplitude or speed -
  *  every particle keeps a guaranteed minimum of both the slow sweep and the fast wobble. */
 const MIN_SWEEP_AMP = 1.6;
 const MIN_SWEEP_SPEED = 0.22;
 /** The wobble's speed is an angular rate (rad/s) around a circle of radius wobbleAmp, so its floor
- *  linear speed is MIN_WOBBLE_AMP * MIN_WOBBLE_SPEED px/s — never zero, unlike a sine's peak. */
+ *  linear speed is MIN_WOBBLE_AMP * MIN_WOBBLE_SPEED px/s - never zero, unlike a sine's peak. */
 const MIN_WOBBLE_AMP = 0.65;
 const MIN_WOBBLE_SPEED = 4.2;
 
 /** Per-depth ambient drift (always-on, independent of the cursor) and cursor spring physics
- *  (distance falloff is continuous — every particle is reachable, this just scales how far the
+ *  (distance falloff is continuous - every particle is reachable, this just scales how far the
  *  field reaches and how hard it pushes). Ranges get jittered per-particle in makeParticles(). */
 const DEPTH_CONFIG: Record<
   Depth,
@@ -110,8 +110,8 @@ const DEPTH_CONFIG: Record<
 
 const FRAME_MS = 16;
 
-/** A barely-perceptible multi-tone color field — indigo and electric blue pooling toward a
- *  couple of corners — so the canvas reads as "there is color in this environment" rather than
+/** A barely-perceptible multi-tone color field - indigo and electric blue pooling toward a
+ *  couple of corners - so the canvas reads as "there is color in this environment" rather than
  *  flat black, without ever resolving into a visible circle or a glow blob. Huge radius, very low
  *  alpha, no blur filter, no animation. */
 const ATMOSPHERE_STYLE = {
@@ -134,7 +134,7 @@ function pickColor(): readonly [number, number, number] {
   return INDIGO;
 }
 
-/** ~75% tiny dots, ~18% medium dots, ~7% brighter dots — all plain round particles. */
+/** ~75% tiny dots, ~18% medium dots, ~7% brighter dots - all plain round particles. */
 function pickDepth(): Depth {
   const r = Math.random();
   if (r < 0.75) return "tiny";
@@ -145,7 +145,7 @@ function pickDepth(): Depth {
 function makeParticles(count: number): Particle[] {
   // Mostly uniform placement, with a minority of particles pulled softly
   // toward a few loose cluster centers so density reads as faintly organic
-  // rather than perfectly even — never an obvious network shape. The
+  // rather than perfectly even - never an obvious network shape. The
   // clusters are jittered across the whole unit square (including corners),
   // so no region of the viewport is systematically emptier than another.
   const clusters = Array.from({ length: 6 }, () => ({
@@ -262,7 +262,7 @@ export default function ParticleField() {
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // Density scales gently with viewport area but stays capped — this is
+      // Density scales gently with viewport area but stays capped - this is
       // atmosphere, not a simulation, and mobile gets a sparser field.
       const target = mobile
         ? Math.min(260, Math.max(360, Math.floor((width * height) / 1250)))
@@ -312,7 +312,7 @@ export default function ParticleField() {
 
         // 2. Ambient offset: a slow two-harmonic sweep (the organic loop) plus a
         //    fast constant-speed circular wobble layered on top. The wobble is a
-        //    true orbit — one angle driving both cos and sin — so its speed is
+        //    true orbit - one angle driving both cos and sin - so its speed is
         //    mathematically constant at every instant and can never dip near zero
         //    the way a sine-based term can at its peak. Every particle keeps
         //    visibly moving on every glance, unconditionally, regardless of the
@@ -336,7 +336,7 @@ export default function ParticleField() {
 
         // 3. Cursor displacement: continuous exponential falloff (no hard radius
         //    cutoff, so every particle is technically reachable), eased toward its
-        //    target with its own spring — this is the only layer the cursor ever
+        //    target with its own spring - this is the only layer the cursor ever
         //    touches, and the only one that relaxes back to zero once it leaves.
         let targetDispX = 0;
         let targetDispY = 0;

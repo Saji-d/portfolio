@@ -82,6 +82,7 @@ function CoverImage({
 }) {
   const href = primaryHref(project);
   const pro = isProfessional(project);
+  const showFeatured = pro && project.featured;
   const opensCaseStudy = Boolean(onOpenCaseStudy && project.caseStudy);
 
   const art = (
@@ -128,7 +129,7 @@ function CoverImage({
         ))}
       </div>
 
-      {pro && (
+      {showFeatured && (
         <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-accent-ink shadow-[0_4px_20px_rgba(99, 102, 241,0.35)]">
           <Star className="h-3 w-3 fill-current" />
           Featured
@@ -271,6 +272,7 @@ export function ProjectCard({
 }) {
   const href = primaryHref(project);
   const pro = isProfessional(project);
+  const showFeatured = pro && project.featured;
   const opensCaseStudy = Boolean(onOpenCaseStudy && project.caseStudy);
 
   return (
@@ -282,7 +284,7 @@ export function ProjectCard({
             : "hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(99, 102, 241,0.18)]"
         }`}
       >
-        {pro && (
+        {showFeatured && (
           <span
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-accent via-accent-2 to-transparent"
@@ -330,14 +332,9 @@ export function ProjectCard({
               compact ? "mt-3" : "mt-4"
             }`}
           >
-            {project.stack.slice(0, 5).map((tech) => (
+            {project.stack.map((tech) => (
               <Pill key={tech}>{tech}</Pill>
             ))}
-            {project.stack.length > 5 && (
-              <span className="self-center font-mono text-xs text-text-muted">
-                +{project.stack.length - 5}
-              </span>
-            )}
           </div>
           <ProjectActions
             project={project}

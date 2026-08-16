@@ -34,7 +34,7 @@ export default function OverlayShell({
       }}
     >
       <motion.div
-        className="relative flex h-full w-full max-w-5xl flex-col overflow-hidden border-line bg-surface shadow-2xl shadow-black/60 sm:h-[92vh] sm:self-center sm:rounded-2xl sm:border"
+        className="relative flex h-full w-full max-w-5xl flex-col overflow-hidden border-line bg-surface shadow-2xl shadow-black/60 sm:mt-[clamp(4.5rem,9vh,7rem)] sm:h-[calc(100vh-clamp(4.5rem,9vh,7rem)-1.5rem)] sm:self-start sm:rounded-2xl sm:border"
         initial={{ opacity: 0, y: 24, scale: 0.99 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 16, scale: 0.99 }}

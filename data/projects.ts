@@ -67,14 +67,14 @@ export const projects: Project[] = [
     featured: true,
     cover: "/images/thumbnails/invoicepilot-thumbnail.webp",
     caseStudy: true,
-    stack: ["React", "Fastify", "FastAPI", "PostgreSQL", "BullMQ", "Solidity", "Supabase"],
+    stack: ["React", "Fastify", "FastAPI", "PostgreSQL", "BullMQ", "Solidity"],
   },
   {
     slug: "fumak-inventory",
-    name: "Fumak Inventory Management System",
+    name: "Inventory Management System",
     tagline: "Production inventory and point-of-sale system for a retail operation: a phone barcode scanner feeds a web app that manages products, stock, sales, and revenue analytics over the shop's local network.",
     summary:
-      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database — covering the full sell flow from scan to checkout to revenue reporting.",
+      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",
     role: "Full-stack Engineer",
     status: "ACTIVE",
     category: "Professional",
@@ -110,7 +110,7 @@ export const projects: Project[] = [
     status: "COMPLETE",
     category: "Professional",
     badges: [],
-    featured: true,
+    featured: false,
     cover: "/images/thumbnails/ledgerturf-thumbnail.webp",
     caseStudy: true,
     github: "https://github.com/Saji-d/ledgerturf",
@@ -135,7 +135,7 @@ export const projects: Project[] = [
   },
   {
     slug: "finbert",
-    name: "FinBERT Financial Sentiment Analysis",
+    name: "FinBERT",
     tagline: "Comparative study proving domain-tuned transformers outperform generic models on financial sentiment, with a full fine-tuning-to-evaluation pipeline in a single notebook.",
     summary:
       "A comparative study proving domain-tuned transformers beat generic models on financial jargon: fine-tuned FinBERT and BERT on earnings and market text, with the full training-to-evaluation pipeline in one notebook.",
@@ -150,7 +150,7 @@ export const projects: Project[] = [
   },
   {
     slug: "codingvibes-java-gui",
-    name: "CodingVibes Learning Platform",
+    name: "CodingVibes",
     tagline: "Interactive Java learning platform featuring courses, quizzes, and progress tracking built around a clean event-driven architecture with persistent state.",
     summary:
       "An interactive learning platform with courses, quizzes, and progress tracking, engineered around a clean event-driven architecture with persistent state behind every screen.",
@@ -180,7 +180,7 @@ export const projects: Project[] = [
   },
   {
     slug: "3d-city-simulation",
-    name: "3D Procedural City Generator",
+    name: "3D City Simulator",
     tagline: "Procedurally generated 3D city with dynamic day-night lighting, rain and snow effects, and functioning traffic-light logic in a pure graphics showcase.",
     summary:
       "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic, a pure graphics engineering showcase.",
@@ -195,7 +195,7 @@ export const projects: Project[] = [
   },
   {
     slug: "spark-powerhouse-gym-csharp",
-    name: "SparkPowerhouse Gym Desktop",
+    name: "Spark Powerhouse",
     tagline: "Windows gym management application separating member and admin workflows for memberships, payments, and daily records in a role-aware system.",
     summary:
       "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
@@ -207,21 +207,6 @@ export const projects: Project[] = [
     cover: "/images/thumbnails/sparkpowerhouse-gym-desktop-thumbnail.webp",
     github: "https://github.com/Saji-d/spark-powerhouse-gym-csharp",
     stack: ["C#", "WinForms", "SQL Server"],
-  },
-  {
-    slug: "spark-powerhouse-gym-web",
-    name: "SparkPowerhouse Gym Web",
-    tagline: "Web-based gym management system with distinct member and admin areas for class bookings, memberships, and billing in one session-driven application.",
-    summary:
-      "A web gym-management simulation with distinct member and admin areas: class booking, memberships, and billing kept in one session-driven application.",
-    role: "Web Developer",
-    status: "COMPLETE",
-    category: "Web",
-    badges: [],
-    featured: false,
-    cover: "/images/thumbnails/sparkpowerhouse-gym-web-thumbnail.webp",
-    github: "https://github.com/Saji-d/spark-powerhouse-gym-web",
-    stack: ["PHP", "JavaScript", "CSS", "MySQL"],
   },
   {
     slug: "employee-family-registry",
@@ -256,7 +241,7 @@ export const projects: Project[] = [
   },
   {
     slug: "online-bookstore-database-design",
-    name: "Online Bookstore Database",
+    name: "Bookstore Database",
     tagline: "Fully normalized relational design for an online bookstore mapping every entity and dependency, ready to run catalog, orders, and inventory queries.",
     summary:
       "A fully normalized relational design for an online bookstore: every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
@@ -271,14 +256,10 @@ export const projects: Project[] = [
   },
 ];
 
-// The home "Projects" chapter is deliberately capped at 12 cards while the
-// full collection (14) lives on /projects. The two entries below stay in the
-// archive but are left out of the primary grid: the database-design study
-// (spec-only, weakest visual payoff) and the wedding invitation (personal).
+// The home "Projects" chapter shows every project except the wedding
+// invitation (personal), which stays archived under the full /projects list.
 export const primaryProjects: Project[] = projects.filter(
-  (p) =>
-    p.slug !== "online-bookstore-database-design" &&
-    p.slug !== "my-wedding-invitation",
+  (p) => p.slug !== "my-wedding-invitation",
 );
 
 export function getProject(slug: string): Project | undefined {

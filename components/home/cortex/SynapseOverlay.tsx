@@ -15,8 +15,10 @@ const BG_MAX = 0.9;
 const BG_IN = 0.7;
 const BG_OUT_START = 4.8;
 const BG_OUT_END = 5.25;
-const TEXT_IN_START = 0.9;
-const TEXT_IN_END = 1.2;
+// The centre block now fades up *before* the etch begins (the CSS reveal
+// starts at 0.42s) so the scan line never sweeps a half-visible word.
+const TEXT_IN_START = 0.05;
+const TEXT_IN_END = 0.35;
 const TEXT_OUT_START = 4.7;
 const TEXT_OUT_END = 5.0;
 const REDUCED_FADE_START = 0.9;
@@ -28,7 +30,7 @@ interface SynNode {
   depth: number;
   size: number;
   sub: number;
-  /** Ambient drift per node — deeper (higher depth value) nodes sway less,
+  /** Ambient drift per node: deeper (higher depth value) nodes sway less,
    *  giving the network a subtle parallax across the full viewport. */
   driftAmp: number;
   driftSpeed: number;
@@ -69,6 +71,51 @@ interface Drifter {
   vy: number;
   r: number;
   phase: number;
+}
+
+// "SAJID" stays REAL typography (font-display + the site's text-neon gradient)
+// so it is always crisply legible; the circuit metaphor is layered *around* it
+// instead of being used to build the letterforms. A single indigo scan line
+// sweeps the word once and each glyph etches in behind it (left-to-right
+// clip-path wipe + a brief indigo flash), framed by four circuit corner
+// brackets that resolve and pulse once as the name lands. Everything is pure
+// CSS: no second rAF loop competes with the canvas.
+const SYNAPSE_NAME = "SAJID";
+const LETTER_ETCH_START = 0.5;
+const LETTER_ETCH_STEP = 0.19;
+const SYNAPSE_CORNERS = ["tl", "tr", "bl", "br"] as const;
+
+function SynapseIdentity() {
+  return (
+    <div className="synapse-name" role="img" aria-label="SAJID">
+      <span aria-hidden="true" className="synapse-glow" />
+      {SYNAPSE_CORNERS.map((c) => (
+        <span
+          key={c}
+          aria-hidden="true"
+          data-cortex-anim
+          className={`synapse-corner synapse-corner--${c}`}
+        />
+      ))}
+      <span aria-hidden="true" data-cortex-anim className="synapse-scan">
+        <span className="synapse-scan-line" />
+      </span>
+      <span aria-hidden="true" className="synapse-word">
+        {SYNAPSE_NAME.split("").map((ch, i) => (
+          <span
+            key={ch + i}
+            data-cortex-anim
+            className="synapse-letter text-neon"
+            style={{
+              animationDelay: `${LETTER_ETCH_START + i * LETTER_ETCH_STEP}s`,
+            }}
+          >
+            {ch}
+          </span>
+        ))}
+      </span>
+    </div>
+  );
 }
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -335,7 +382,7 @@ function draw(
     }
   }
 
-  // Starry atmosphere — the same round-dot visual language as the site's
+  // Starry atmosphere: the same round-dot visual language as the site's
   // background field, so the overlay feels like the environment expanded.
   for (const s of stars) {
     const sx = s.fx * width;
@@ -626,7 +673,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Synapse — full-screen neural visual"
+      aria-label="Synapse: full-screen neural visual"
       className="fixed inset-0 z-[80] touch-none overflow-hidden"
     >
       <div
@@ -659,17 +706,25 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
       </button>
       <div
         ref={textRef}
-        className="absolute left-1/2 top-1/2 text-center"
+        className="absolute left-1/2 top-1/2 w-[min(88vw,1040px)] min-w-[260px] text-center"
         style={{ opacity: 0, transform: "translate(-50%, -50%)" }}
       >
-        <h3 className="font-display text-4xl font-semibold tracking-tight text-neon sm:text-5xl">
-          SAJID
-        </h3>
-        <div aria-hidden="true" className="mx-auto mt-4 h-px w-16 bg-accent/40" />
-        <p className="mt-4 font-mono text-xs uppercase tracking-[0.3em] text-text-muted">
-          signal propagated
+        <SynapseIdentity />
+        <div
+          aria-hidden="true"
+          data-cortex-anim
+          className="synapse-trace mx-auto mt-6 sm:mt-8"
+        />
+        <p
+          data-cortex-anim
+          className="synapse-subtitle-in mt-4 font-mono text-xs tracking-[0.12em] text-text-secondary sm:text-sm"
+        >
+          AI Engineer &amp; Full-Stack Software Developer
         </p>
-        <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted/50">
+        <p
+          data-cortex-anim
+          className="synapse-esc-in mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted/50"
+        >
           esc to exit
         </p>
       </div>

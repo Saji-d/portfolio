@@ -29,16 +29,16 @@ export default function Nav() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // On a hard load / refresh with a #section in the URL, Next's App Router
-  // does not reliably perform the browser's native hash-scroll — the page
+  // does not reliably perform the browser's native hash-scroll - the page
   // silently lands at the top with the hash still in the address bar. Worse,
   // a single early correction isn't enough either: web-font swap, the hero
   // image, and the lazily-loaded Cortex console (which boots with its own
   // typing animation) can all still be changing the height of content above
   // the target well after mount, silently carrying the scroll position away
   // from where it was correctly placed. Re-assert the position at several
-  // checkpoints — immediately, once fonts finish loading, once the window
+  // checkpoints - immediately, once fonts finish loading, once the window
   // "load" event fires, and a few trailing timers to cover the dynamic
-  // import + boot-animation window — rather than trust one timing.
+  // import + boot-animation window - rather than trust one timing.
   //
   // This also has to run for hash changes that are NOT a fresh document
   // load: browser back/forward across hash history entries (and manual
@@ -78,7 +78,7 @@ export default function Nav() {
       const timers = [300, 700, 1400, 2200].map((ms) => window.setTimeout(scrollToHash, ms));
 
       // Stop re-asserting the position the moment the visitor takes control
-      // — this is a landing correction, not a scroll lock.
+      // - this is a landing correction, not a scroll lock.
       const onUserScroll = () => {
         cancelled = true;
       };
@@ -105,7 +105,7 @@ export default function Nav() {
     };
   }, [pathname]);
 
-  // Scroll-position-driven active section — deterministic, not dependent on
+  // Scroll-position-driven active section - deterministic, not dependent on
   // IntersectionObserver callback timing (which browsers throttle heavily on
   // hidden/background tabs). A section becomes active once its top edge has
   // scrolled up past the fixed navbar's actual measured height.
@@ -120,14 +120,14 @@ export default function Nav() {
     // fully suspended (not just throttled) on hidden/background tabs, which
     // would leave the active section stale after an alt-tab-and-back. A
     // timer still fires there, just at a capped rate, which is all this
-    // needs — it isn't a per-frame visual update.
+    // needs - it isn't a per-frame visual update.
     let pending = 0;
     const update = () => {
       pending = 0;
       const navBottom = headerRef.current?.getBoundingClientRect().bottom ?? 88;
       // Chapters land with their top edge at the viewport top (scroll-margin
-      // is 0), so any section whose top has risen to the navbar line — or
-      // above — counts as reached; the last one in document order wins.
+      // is 0), so any section whose top has risen to the navbar line - or
+      // above - counts as reached; the last one in document order wins.
       const offset = navBottom + 56;
       let current: string | null = null;
       for (const el of sections) {
@@ -150,7 +150,7 @@ export default function Nav() {
     };
   }, [pathname]);
 
-  // Cheap one-way signal for the background system to read — no
+  // Cheap one-way signal for the background system to read - no
   // subscription/context needed for a purely decorative tone shift. Kept in
   // its own effect (rather than written inline from the scroll handler or
   // click handlers) so the DOM mutation always happens through React's

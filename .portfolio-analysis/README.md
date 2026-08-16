@@ -1,6 +1,6 @@
-# .portfolio-analysis — Single Source of Truth
+# .portfolio-analysis: Single Source of Truth
 
-> **Subject:** Sajidur Rahman Sajid — Software Engineer | Backend Engineer | AI/ML Engineer
+> **Subject:** Sajidur Rahman Sajid - Software Engineer | Backend Engineer | AI/ML Engineer
 > **Compiled:** August 2, 2026
 > **Source drives:** E:\ (education, CVs, personal media, university projects) and X:\ (professional projects, work repos, ideas, master profile)
 > **Purpose:** Canonical analysis store used as the single source of truth for all portfolio development work. Do NOT rescan the drives unless explicitly asked.
@@ -31,4 +31,4 @@
 - Recursively explored `E:\` and `X:\` (top-level to ~3 levels deep, plus full git repos).
 - **Included:** source code, git repos, READMEs, docs, architecture notes, PDFs, DOCX, PPTX, XLSX, LaTeX, markdown, diagrams (drawio/HTML), screenshots, pitch decks, certificates, research papers, CVs.
 - **Excluded:** `node_modules`, `.git` internals, `dist`, `build`, `.next`, package caches, media binaries (movies, RAW photos), `$RECYCLE.BIN`, `System Volume Information`.
-- **Sensitivity note:** Several files contain real credentials (`.env`, R2 keys, NID/passport documents, personal photos). These were **never exposed in this analysis** — see `11-final-report.md` §8 (what must never appear publicly).
+- **Sensitivity note:** Several files contain real credentials (`.env`, R2 keys, NID/passport documents, personal photos). These were **never exposed in this analysis** - see `11-final-report.md` §8 (what must never appear publicly).

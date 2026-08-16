@@ -1,6 +1,6 @@
-# 12 — Portfolio Design Specification (v1, PENDING APPROVAL)
+# 12: Portfolio Design Specification (v1, PENDING APPROVAL)
 
-> This is the design gate document. **No code is written until approved.** Approved 2026-08-02. Canonical contact/experience data locked from `E:\CV\cv.tex` (2026-07-30) — the latest CV on disk.
+> This is the design gate document. **No code is written until approved.** Approved 2026-08-02. Canonical contact/experience data locked from `E:\CV\cv.tex` (2026-07-30) - the latest CV on disk.
 
 ---
 
@@ -19,7 +19,7 @@
 | 9 | Premium engineer portfolio (not student) | ✅ Design system + copy tone below |
 | 10 | Design gate before code | ✅ This document |
 
-## 0.1 Canonical Contact & Experience (LOCKED — do not deviate)
+## 0.1 Canonical Contact & Experience (LOCKED: do not deviate)
 
 - **Name:** Sajidur Rahman Sajid
 - **Role line:** `Software Engineer | Backend & AI Systems.`
@@ -29,8 +29,8 @@
 - **GitHub:** https://github.com/Saji-d
 - **Location:** Dhaka, Bangladesh
 - **Experience:**
-  - LedgerCross — Software Developer Trainee, May 2026 – Present
-  - Bangladesh Software Solution (BSS) — Software Engineer Intern, Feb 2026 – Apr 2026
+  - LedgerCross - Software Developer Trainee, May 2026 – Present
+  - Bangladesh Software Solution (BSS) - Software Engineer Intern, Feb 2026 – Apr 2026
 - **Education:** AIUB BSc CSE, CGPA 3.92/4.00, Sep 2022 – Apr 2026; HSC 5.00 (BAF Shaheen, 2019–2021); SSC 5.00 (Kurmitola, 2017–2019)
 - **Honors:** 5x Dean's Award & AIUB Merit Scholar (70% waiver); Duke of Edinburgh's **Bronze** Award (per CV)
 - **Leadership:** Student Activity Coordinator, Space Innovation Camp (2022–2025); PR Rep, WRO Bangladesh (2023–2024)
@@ -66,12 +66,12 @@
 ### Page → Section Mapping
 
 **Home:**
-1. Hero — name, role, tagline ("Learning > knowing." + engineering line), CTA buttons (View Work / Download CV), terminal card w/ rotating typed lines, quick stats (3.92 CGPA · 218 tests written · 2,237-dataset thesis · 4 production systems touched)
-2. Selected Work — 3 featured cards (InvoicePilot, LedgerTurf, CaseVault) → `/work`
-3. Research Spotlight — NeuroScreen metrics card → `/research/neuronscreen`
-4. Experience — compact timeline (LedgerCross, BSS)
-5. Skills — grouped pills (Backend, AI/ML, Frontend, Data, Web3, Tooling)
-6. CTA — "Let's build something trustworthy." → `/contact`
+1. Hero - name, role, tagline ("Learning > knowing." + engineering line), CTA buttons (View Work / Download CV), terminal card w/ rotating typed lines, quick stats (3.92 CGPA · 218 tests written · 2,237-dataset thesis · 4 production systems touched)
+2. Selected Work - 3 featured cards (InvoicePilot, LedgerTurf, CaseVault) → `/work`
+3. Research Spotlight - NeuroScreen metrics card → `/research/neuronscreen`
+4. Experience - compact timeline (LedgerCross, BSS)
+5. Skills - grouped pills (Backend, AI/ML, Frontend, Data, Web3, Tooling)
+6. CTA - "Let's build something trustworthy." → `/contact`
 
 **Work:** grid of all projects. Featured (4) large; secondary (FinBERT, Employee Registry, RFM, 3D City, CVPR, Water Turbidity) compact. Filters by category (Backend/AI/Full-stack/CV/Graphics).
 
@@ -90,14 +90,14 @@
 
 ## 3. Design System
 
-**Theme:** Dark-first (default), premium engineering aesthetic. Light theme optional (deferred to v2 — keeps scope tight).
-**Feel:** "Trust-engineered" — precise, calm, high contrast, editorial whitespace, mono accents, one signature accent. Inspired by Linear / Vercel / Stripe-grade dark UIs.
+**Theme:** Dark-first (default), premium engineering aesthetic. Light theme optional (deferred to v2 - keeps scope tight).
+**Feel:** "Trust-engineered" - precise, calm, high contrast, editorial whitespace, mono accents, one signature accent. Inspired by Linear / Vercel / Stripe-grade dark UIs.
 
 ### Principles
-1. **Restraint** — one accent color, generous whitespace, no decorative clutter.
-2. **Clarity over cleverness** — content legibility first; animation never obscures.
-3. **Engineering honesty** — mono labels, terminal motifs, metrics shown as plain numbers.
-4. **Accessibility** — WCAG AA contrast, reduced-motion support, keyboard nav, semantic HTML.
+1. **Restraint** - one accent color, generous whitespace, no decorative clutter.
+2. **Clarity over cleverness** - content legibility first; animation never obscures.
+3. **Engineering honesty** - mono labels, terminal motifs, metrics shown as plain numbers.
+4. **Accessibility** - WCAG AA contrast, reduced-motion support, keyboard nav, semantic HTML.
 
 ## 4. Color Palette
 
@@ -110,9 +110,9 @@
 | `--text-primary` | `#E6EAF2` | Headings, body emphasis |
 | `--text-secondary` | `#9AA6B5` | Body copy |
 | `--text-muted` | `#6B7686` | Meta, captions, eyebrows |
-| `--accent` | `#4FD1C5` | **Signature teal** — links, CTAs, active states, data highlights |
+| `--accent` | `#4FD1C5` | **Signature teal** - links, CTAs, active states, data highlights |
 | `--accent-dim` | `rgba(79,209,197,0.14)` | Glows, backgrounds, code highlights |
-| `--accent-2` | `#7C7DFF` | Secondary (sparingly) — gradients, chart contrast |
+| `--accent-2` | `#7C7DFF` | Secondary (sparingly) - gradients, chart contrast |
 | `--success/--warning/--danger` | `#3FB28A` / `#E8B44B` / `#E05B5B` | Only in metrics/labels where semantic |
 
 **Contrast check:** `--text-primary` on `--bg` ≈ 15:1; `--text-secondary` ≈ 7.5:1; `--accent` ≈ 6.5:1 (AA for large text/UI). Dark mode default → no separate light palette yet.
@@ -121,7 +121,7 @@
 
 | Role | Font | Weights | Notes |
 | :-- | :-- | :-- | :-- |
-| Display | **Space Grotesk** | 500 / 700 | Hero, section titles, card titles — distinctive geometric-tech character |
+| Display | **Space Grotesk** | 500 / 700 | Hero, section titles, card titles - distinctive geometric-tech character |
 | Body | **Inter** | 400 / 500 / 600 | Paragraphs, UI, buttons |
 | Mono | **JetBrains Mono** | 400 / 500 / 700 | Eyebrows, labels, code, stats, terminal, metadata |
 
@@ -137,15 +137,15 @@
 | `caption` | 0.75rem | 1.5 | Meta, eyebrows (mono, uppercase, letter-spacing 0.12em) |
 
 ### Copy Tone (premium, not student)
-- **Hero:** "Sajidur Rahman Sajid — Software Engineer & AI Engineer building high-throughput backends and production ML."
+- **Hero:** "Sajidur Rahman Sajid - Software Engineer & AI Engineer building high-throughput backends and production ML."
 - **No** "Welcome to my portfolio 🎉". **No** "passionate about code". Instead: concrete, confident, metric-backed.
-- Example eyebrow pattern: `[ 01 ] — SELECTED WORK`
+- Example eyebrow pattern: `[ 01 ] - SELECTED WORK`
 
 ## 6. Animation Plan (Framer Motion)
 
 - **Motion-safe default:** everything uses `transform` + `opacity` only; global `prefers-reduced-motion` guard disables scroll/parallax animations.
 - **Hero:** staggered fade+rise on load (70ms stagger); terminal card types rotating role lines; subtle radial glow behind H1.
-- **Scroll reveals:** `whileInView` with `viewport={{ once: true, margin: '-15%' }}` — fade+rise 24px, 24ms ease, staggered for grids.
+- **Scroll reveals:** `whileInView` with `viewport={{ once: true, margin: '-15%' }}` - fade+rise 24px, 24ms ease, staggered for grids.
 - **Hover:** cards lift 2px + border accent glow; project media scales 1.03; magnetic CTA button; animated underline links (scaleX).
 - **Stats:** count-up on view (e.g., "218 tests", "0.982 AUC").
 - **Page transitions:** light fade/slide between routes via `AnimatePresence` (keep <300ms).
@@ -212,7 +212,7 @@ Pages (Templates)
 | Animation | **Framer Motion (motion)** | Declarative, reduced-motion aware |
 | Content | **MDX** (case studies) + typed TS data files (projects.ts, research.ts) | Content-rich case studies, type-safe data |
 | Icons | **lucide-react** | Consistent, lightweight |
-| Fonts | **next/font** — Space Grotesk, Inter, JetBrains Mono | Self-hosted, zero CLS |
+| Fonts | **next/font** - Space Grotesk, Inter, JetBrains Mono | Self-hosted, zero CLS |
 | Deploy | **Vercel** (+ `sajidur.dev` domain recommended) | CI/CD, previews, analytics |
 | SEO | Metadata API + OpenGraph + JSON-LD (`Person` schema) | Discoverability |
 | Perf targets | Lighthouse ≥ 95 (Perf/A11y/Best-Practices/SEO), LCP < 1.8s | Premium requirement |
@@ -225,7 +225,7 @@ Pages (Templates)
 ```
 Nav
 Hero
-  eyebrow [ SOFTWARE ENGINEER — DHAKA ]
+  eyebrow [ SOFTWARE ENGINEER - DHAKA ]
   H1  Sajidur Rahman Sajid
   lede "Building high-throughput backends and production machine learning. Learning > knowing."
   CTA [View Work] [Download CV]
@@ -239,7 +239,7 @@ Contact CTA
 Footer
 ```
 
-### Case Study (e.g. InvoicePilot) — template
+### Case Study (e.g. InvoicePilot): template
 ```
 Nav
 Hero: title, role badge, stack pills, links (GitHub·live if any), status badge
@@ -279,14 +279,14 @@ CTA: thesis PDF / GitHub
 | # | Refinement | Applied |
 | :-- | :-- | :-- |
 | 1 | Role line = `Software Engineer \| Backend & AI Systems.` | ✅ |
-| 2 | Replace "Learning > knowing." with natural engineering tagline | ✅ Tagline: "I build high-throughput backend systems and production ML pipelines — engineered to be fast, reliable, and worth trusting." |
+| 2 | Replace "Learning > knowing." with natural engineering tagline | ✅ Tagline: "I build high-throughput backend systems and production ML pipelines - engineered to be fast, reliable, and worth trusting." |
 | 3 | "Currently" section highlighting LedgerCross active work | ✅ Home section between Work and Research |
 | 4 | Animated career timeline: AIUB → Dean's Awards → BSS → LedgerCross | ✅ Home (scroll-driven line draw + node glow) |
 | 5 | Apple/Stripe/Linear-grade premium UI (spacing, typography, subtle interactions) | ✅ Design tokens + interaction layer below |
 | 6 | Interactions: cursor glow, card tilt, magnetic buttons, depth-on-hover, animated network/grid background (performant) | ✅ |
 | 7 | Optional Terminal Mode (visitor browses profile via commands) | ✅ ` (backtick) or nav button → full-screen terminal |
 | 8 | Strong animated statistics (3.92/4.00, 218+ tests, 5× Dean's, etc.) | ✅ Count-up counters |
-| 9 | Handcrafted, unique pages — no template look | ✅ Bespoke copy + per-page layouts |
+| 9 | Handcrafted, unique pages - no template look | ✅ Bespoke copy + per-page layouts |
 
 ### Interaction Layer (v1.1)
 - **Cursor glow:** fixed radial gradient following pointer (transform-only, disabled on touch/reduced-motion).
@@ -303,6 +303,6 @@ CTA: thesis PDF / GitHub
 4. **CaseVault/InvoicePilot GitHub links:** omit links that would 404 (private `ledgercross-team` repos); keep case-study content. LedgerTurf keeps its public link.
 5. **Light theme:** v2 only. ✅
 2. **Domain:** register `sajidur.dev` or use a Vercel subdomain for now?
-3. **Screenshots:** InvoicePilot + LedgerTurf have none on disk — I'll capture from the running app / deployed demo during build. OK?
+3. **Screenshots:** InvoicePilot + LedgerTurf have none on disk - I'll capture from the running app / deployed demo during build. OK?
 4. CaseVault/InvoicePilot GitHub links: repos are under `ledgercross-team` (likely private). Link to the repos anyway (may 404 for visitors) or omit GitHub links and show only a case-study? **Recommend: omit links that 404; keep case study content.**
-5. Light theme in v2 only — OK?
+5. Light theme in v2 only - OK?

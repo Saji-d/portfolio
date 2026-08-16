@@ -25,7 +25,7 @@ export function StatusBadge({ status }: { status: ProjectStatus }) {
 
 export function Pill({ children }: { children: string }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-3 py-1 font-mono text-xs text-text-secondary">
+    <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2.5 py-0.5 font-mono text-[11px] text-text-secondary">
       {children}
     </span>
   );
