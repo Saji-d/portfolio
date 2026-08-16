@@ -193,7 +193,7 @@ const txHash = await walletClient.writeContract({
   },
   {
     slug: "fumak-inventory",
-    name: "Inventory Management System",
+    name: "FUMAK Inventory",
     tagline: "Production inventory and point-of-sale system for a retail operation: a phone barcode scanner feeds a web app that manages products, stock, sales, and revenue analytics over the shop's local network.",
     summary:
       "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",

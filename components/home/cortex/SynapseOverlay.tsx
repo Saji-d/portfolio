@@ -10,19 +10,51 @@ const ACCENT_3 = "34, 211, 238";
 const BLUE = "96, 165, 250";
 const PALE = "248, 250, 252";
 const FRAME_MS = 33;
-const TOTAL = 5.5;
+
+// --- Timeline -------------------------------------------------------------
+// PHASE 1  0            -> CONSTRUCT_START     network idle, quiet drift.
+// PHASE 2  CONSTRUCT_START -> (per letter)      signals depart the field and
+//                                                converge on each letter's
+//                                                node positions.
+// PHASE 3  (per letter)                         nodes land, edges etch in -
+//                                                the circuit assembles SAJID
+//                                                left to right.
+// PHASE 4  CONSTRUCTION_END -> FADE_OUT_START    full identity holds, subtle
+//                                                premium glow, subtitle in.
+// PHASE 5  (within phase 4 window)               living circuit: occasional
+//                                                signal pulses along strokes.
+const SYNAPSE_NAME = "SAJID";
+const LETTER_ORDER = SYNAPSE_NAME.split("");
+const CONSTRUCT_START = 1.0;
+const LETTER_STAGGER = 0.5;
+const LETTER_WINDOW = 0.6;
+const TRAVEL_DUR_BASE = 0.28;
+const TRAVEL_DUR_VAR = 0.14;
+const EDGE_REVEAL_LAG = 0.05;
+const EDGE_REVEAL_DUR = 0.22;
+const EDGE_SETTLE_DUR = 0.45;
+const EDGE_PEAK_ALPHA = 0.72;
+const EDGE_REST_ALPHA = 0.42;
+const NODE_FLASH_DUR = 0.3;
+const CONSTRUCTION_END =
+  CONSTRUCT_START +
+  (LETTER_ORDER.length - 1) * LETTER_STAGGER +
+  LETTER_WINDOW +
+  EDGE_REVEAL_LAG +
+  EDGE_REVEAL_DUR;
+const SUBTITLE_IN_START = CONSTRUCTION_END - 0.4;
+const SUBTITLE_IN_END = SUBTITLE_IN_START + 0.55;
+const FADE_OUT_START = 5.7;
+const FADE_OUT_END = 6.05;
+const TOTAL = 6.3;
 const BG_MAX = 0.9;
 const BG_IN = 0.7;
-const BG_OUT_START = 4.8;
-const BG_OUT_END = 5.25;
-// The centre block now fades up *before* the etch begins (the CSS reveal
-// starts at 0.42s) so the scan line never sweeps a half-visible word.
-const TEXT_IN_START = 0.05;
-const TEXT_IN_END = 0.35;
-const TEXT_OUT_START = 4.7;
-const TEXT_OUT_END = 5.0;
+const BG_RESTRAIN = 0.4;
+const BG_REST = 0.62;
 const REDUCED_FADE_START = 0.9;
 const REDUCED_FADE_END = 1.15;
+const COMPLETE_BOOST_DUR = 0.65;
+const COMPLETE_BOOST_RISE = 0.16;
 
 interface SynNode {
   x: number;
@@ -73,49 +105,42 @@ interface Drifter {
   phase: number;
 }
 
-// "SAJID" stays REAL typography (font-display + the site's text-neon gradient)
-// so it is always crisply legible; the circuit metaphor is layered *around* it
-// instead of being used to build the letterforms. A single indigo scan line
-// sweeps the word once and each glyph etches in behind it (left-to-right
-// clip-path wipe + a brief indigo flash), framed by four circuit corner
-// brackets that resolve and pulse once as the name lands. Everything is pure
-// CSS: no second rAF loop competes with the canvas.
-const SYNAPSE_NAME = "SAJID";
-const LETTER_ETCH_START = 0.5;
-const LETTER_ETCH_STEP = 0.19;
-const SYNAPSE_CORNERS = ["tl", "tr", "bl", "br"] as const;
+/** A single circuit node that is part of the constructed SAJID glyph. Each
+ *  one is "sent" from somewhere out in the network (originX/originY) and
+ *  arrives at its final letterform position (x/y) at revealAt. */
+interface LetterNode {
+  x: number;
+  y: number;
+  letterIndex: number;
+  raster: number;
+  revealAt: number;
+  travelStart: number;
+  travelDur: number;
+  originX: number;
+  originY: number;
+  flicker: number;
+}
 
-function SynapseIdentity() {
-  return (
-    <div className="synapse-name" role="img" aria-label="SAJID">
-      <span aria-hidden="true" className="synapse-glow" />
-      {SYNAPSE_CORNERS.map((c) => (
-        <span
-          key={c}
-          aria-hidden="true"
-          data-cortex-anim
-          className={`synapse-corner synapse-corner--${c}`}
-        />
-      ))}
-      <span aria-hidden="true" data-cortex-anim className="synapse-scan">
-        <span className="synapse-scan-line" />
-      </span>
-      <span aria-hidden="true" className="synapse-word">
-        {SYNAPSE_NAME.split("").map((ch, i) => (
-          <span
-            key={ch + i}
-            data-cortex-anim
-            className="synapse-letter text-neon"
-            style={{
-              animationDelay: `${LETTER_ETCH_START + i * LETTER_ETCH_STEP}s`,
-            }}
-          >
-            {ch}
-          </span>
-        ))}
-      </span>
-    </div>
-  );
+interface LetterEdge {
+  a: number;
+  b: number;
+  revealAt: number;
+  color: string;
+}
+
+interface IdlePulse {
+  edge: number;
+  start: number;
+  dur: number;
+}
+
+interface LetterScene {
+  nodes: LetterNode[];
+  edges: LetterEdge[];
+  idlePulses: IdlePulse[];
+  cellSize: number;
+  centerY: number;
+  glyphHeight: number;
 }
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -132,6 +157,68 @@ function mulberry32(seed: number) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+// 5x7 dot-matrix strokes for the identity glyphs. Adjacent "on" cells
+// (including diagonals) become circuit nodes joined by trace edges, so the
+// bitmap *is* the letter's wiring diagram rather than a decorative overlay.
+const GRID_COLS = 5;
+const GRID_ROWS = 7;
+const LETTER_GAP_COLS = 1;
+const LETTER_BITMAPS: Record<string, number[]> = {
+  S: [
+    0, 1, 1, 1, 1,
+    1, 0, 0, 0, 0,
+    1, 0, 0, 0, 0,
+    0, 1, 1, 1, 0,
+    0, 0, 0, 0, 1,
+    0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0,
+  ],
+  A: [
+    0, 1, 1, 1, 0,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 1, 1, 1, 1,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+  ],
+  J: [
+    0, 0, 0, 1, 1,
+    0, 0, 0, 0, 1,
+    0, 0, 0, 0, 1,
+    0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    0, 1, 1, 1, 0,
+  ],
+  I: [
+    1, 1, 1, 1, 1,
+    0, 0, 1, 0, 0,
+    0, 0, 1, 0, 0,
+    0, 0, 1, 0, 0,
+    0, 0, 1, 0, 0,
+    0, 0, 1, 0, 0,
+    1, 1, 1, 1, 1,
+  ],
+  D: [
+    1, 1, 1, 1, 0,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 0, 0, 0, 1,
+    1, 1, 1, 1, 0,
+  ],
+};
+// Forward-only neighbour offsets (right, down, down-right, down-left) walk
+// every 8-connected pair exactly once in a single raster pass.
+const NEIGHBOR_DIRS: [number, number][] = [
+  [1, 0],
+  [0, 1],
+  [1, 1],
+  [-1, 1],
+];
 
 const PICK_STAR_COLOR = () => {
   const r = Math.random();
@@ -210,8 +297,13 @@ function buildNetwork(width: number, height: number, mobile: boolean) {
   const cols = Math.max(2, Math.round((width - padX * 2) / cell));
   const rows = Math.max(2, Math.round((height - padY * 2) / cell));
 
+  // The hub used to render as an oversized standalone dot; it now stays
+  // structurally the BFS root (index 0, anchoring hop distances below) but
+  // is sized/lit exactly like its depth-1 neighbours, so it reads as part
+  // of the mesh rather than a decorative centrepiece.
+  const hubSpec = nodeSpec(1);
   const nodes: SynNode[] = [
-    { x: cx, y: cy, depth: 0, size: 13, sub: 1, ...withDrift(0) },
+    { x: cx, y: cy, depth: 1, size: hubSpec.size, sub: hubSpec.sub, ...withDrift(1) },
   ];
   const field: number[] = [];
 
@@ -354,17 +446,170 @@ function buildNetwork(width: number, height: number, mobile: boolean) {
   return { nodes, edges, drifters };
 }
 
+/** Builds the SAJID circuit: a node per lit bitmap cell (with a convergence
+ *  origin somewhere out in the field) and an edge per adjacent pair, timed
+ *  so the whole thing assembles left to right, letter by letter. */
+function buildLetters(width: number, height: number, mobile: boolean): LetterScene {
+  const rng = mulberry32(0x53414a49);
+  const totalCols =
+    LETTER_ORDER.length * GRID_COLS + (LETTER_ORDER.length - 1) * LETTER_GAP_COLS;
+  const widthFrac = width < 640 ? 0.88 : width < 1024 ? 0.72 : 0.56;
+  const heightFrac = 0.42;
+  const cellSize = Math.max(
+    4,
+    Math.min(
+      (width * widthFrac) / totalCols,
+      (height * heightFrac) / GRID_ROWS,
+    ),
+  );
+  const glyphWidth = cellSize * totalCols;
+  const glyphHeight = cellSize * GRID_ROWS;
+  const centerY = height * 0.46;
+  const originX = width / 2 - glyphWidth / 2;
+  const originY = centerY - glyphHeight / 2;
+  const convergeRadius = Math.min(width, height) * (mobile ? 0.22 : 0.28);
+  const maxRaster = GRID_ROWS * GRID_COLS - 1;
+
+  const nodes: LetterNode[] = [];
+  const byCell = new Map<string, number>();
+
+  LETTER_ORDER.forEach((letter, li) => {
+    const bitmap = LETTER_BITMAPS[letter];
+    const colBase = li * (GRID_COLS + LETTER_GAP_COLS);
+    for (let row = 0; row < GRID_ROWS; row++) {
+      for (let col = 0; col < GRID_COLS; col++) {
+        if (!bitmap[row * GRID_COLS + col]) continue;
+        const raster = row * GRID_COLS + col;
+        const x = originX + (colBase + col + 0.5) * cellSize;
+        const y = originY + (row + 0.5) * cellSize;
+        const revealAt =
+          CONSTRUCT_START +
+          li * LETTER_STAGGER +
+          (raster / maxRaster) * LETTER_WINDOW;
+        const angle = rng() * Math.PI * 2;
+        const radius = convergeRadius * (0.65 + rng() * 0.55);
+        const travelDur = TRAVEL_DUR_BASE + rng() * TRAVEL_DUR_VAR;
+        nodes.push({
+          x,
+          y,
+          letterIndex: li,
+          raster,
+          revealAt,
+          travelStart: revealAt - travelDur,
+          travelDur,
+          originX: x + Math.cos(angle) * radius,
+          originY: y + Math.sin(angle) * radius,
+          flicker: rng() * Math.PI * 2,
+        });
+        byCell.set(`${li}-${row}-${col}`, nodes.length - 1);
+      }
+    }
+  });
+
+  const edges: LetterEdge[] = [];
+  LETTER_ORDER.forEach((letter, li) => {
+    const bitmap = LETTER_BITMAPS[letter];
+    for (let row = 0; row < GRID_ROWS; row++) {
+      for (let col = 0; col < GRID_COLS; col++) {
+        if (!bitmap[row * GRID_COLS + col]) continue;
+        const aIdx = byCell.get(`${li}-${row}-${col}`);
+        if (aIdx === undefined) continue;
+        for (const [dc, dr] of NEIGHBOR_DIRS) {
+          const nr = row + dr;
+          const nc = col + dc;
+          if (nr < 0 || nr >= GRID_ROWS || nc < 0 || nc >= GRID_COLS) continue;
+          if (!bitmap[nr * GRID_COLS + nc]) continue;
+          const bIdx = byCell.get(`${li}-${nr}-${nc}`);
+          if (bIdx === undefined) continue;
+          const a = nodes[aIdx];
+          const b = nodes[bIdx];
+          const r = rng();
+          edges.push({
+            a: aIdx,
+            b: bIdx,
+            revealAt: Math.max(a.revealAt, b.revealAt) + EDGE_REVEAL_LAG,
+            color: r < 0.15 ? ACCENT_2 : r < 0.26 ? BLUE : ACCENT,
+          });
+        }
+      }
+    }
+  });
+
+  const idlePulses: IdlePulse[] = [];
+  if (edges.length) {
+    const idleStart = CONSTRUCTION_END + 0.25;
+    const idleEnd = FADE_OUT_START - 0.3;
+    const count = mobile ? 5 : 8;
+    for (let i = 0; i < count; i++) {
+      idlePulses.push({
+        edge: Math.floor(rng() * edges.length),
+        start: idleStart + rng() * Math.max(0.1, idleEnd - idleStart),
+        dur: 0.45 + rng() * 0.25,
+      });
+    }
+    idlePulses.sort((p, q) => p.start - q.start);
+  }
+
+  return { nodes, edges, idlePulses, cellSize, centerY, glyphHeight };
+}
+
+/** Restrains the background network while SAJID is under construction so
+ *  the name stays the clear focal point, then settles to a still-subdued
+ *  resting level once it has landed (never back to full strength - the
+ *  network stays atmospheric, not competing) - with a brief bloom each time
+ *  a new letter's signals depart, as if the field just routed something
+ *  toward the centre. */
+function bgIntensity(elapsed: number): number {
+  let base: number;
+  if (elapsed < CONSTRUCT_START) {
+    base = 1;
+  } else if (elapsed < CONSTRUCT_START + 0.4) {
+    base =
+      1 - (1 - BG_RESTRAIN) * easeOutCubic((elapsed - CONSTRUCT_START) / 0.4);
+  } else if (elapsed < CONSTRUCTION_END) {
+    base = BG_RESTRAIN;
+  } else if (elapsed < CONSTRUCTION_END + 0.6) {
+    base =
+      BG_RESTRAIN +
+      (BG_REST - BG_RESTRAIN) *
+        easeOutCubic((elapsed - CONSTRUCTION_END) / 0.6);
+  } else {
+    base = BG_REST;
+  }
+
+  let bump = 0;
+  for (let i = 0; i < LETTER_ORDER.length; i++) {
+    const t = CONSTRUCT_START + i * LETTER_STAGGER;
+    const d = Math.abs(elapsed - t);
+    if (d < 0.35) bump = Math.max(bump, (1 - d / 0.35) * 0.16);
+  }
+  return Math.min(1, base + bump);
+}
+
+/** A single restrained brightness beat across the *completed* SAJID circuit
+ *  right as construction finishes - "the system just completed" rather than
+ *  a flash. Quick rise, eased decay, back to the calm resting glow. */
+function completionBoost(elapsed: number): number {
+  const t = elapsed - CONSTRUCTION_END;
+  if (t < 0 || t > COMPLETE_BOOST_DUR) return 0;
+  const riseEnd = COMPLETE_BOOST_DUR * COMPLETE_BOOST_RISE;
+  if (t < riseEnd) return easeOutCubic(t / riseEnd);
+  return 1 - easeInCubic(clamp01((t - riseEnd) / (COMPLETE_BOOST_DUR - riseEnd)));
+}
+
 function draw(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
   elapsed: number,
   fade: number,
+  bgMul: number,
   reduced: boolean,
   stars: Star[],
   nodes: SynNode[],
   edges: SynEdge[],
   drifters: Drifter[],
+  letters: LetterScene,
 ) {
   ctx.clearRect(0, 0, width, height);
 
@@ -384,6 +629,7 @@ function draw(
 
   // Starry atmosphere: the same round-dot visual language as the site's
   // background field, so the overlay feels like the environment expanded.
+  // Left untouched by bgMul - it's ambient dressing, not the "network".
   for (const s of stars) {
     const sx = s.fx * width;
     const sy = s.fy * height;
@@ -416,7 +662,7 @@ function draw(
       }
     }
     if (p <= 0) continue;
-    const alpha = e.base * p * flicker * fade;
+    const alpha = e.base * p * flicker * fade * bgMul;
     if (alpha < 0.004) continue;
     ctx.strokeStyle = `rgba(${e.color}, ${alpha})`;
     ctx.lineWidth = 1;
@@ -438,7 +684,7 @@ function draw(
       const x = ax + (bx - ax) * q;
       const y = ay + (by - ay) * q;
       const env = 1 - Math.abs(q * 2 - 1);
-      const alpha = env * 0.85 * fade;
+      const alpha = env * 0.85 * fade * bgMul;
       ctx.fillStyle = `rgba(${ACCENT}, ${alpha * 0.15})`;
       ctx.beginPath();
       ctx.arc(x, y, 7, 0, Math.PI * 2);
@@ -454,9 +700,7 @@ function draw(
     const n = nodes[i];
     let lit = 0;
     if (reduced) {
-      lit = n.depth === 0 ? 1 : 0.8;
-    } else if (n.depth === 0) {
-      lit = easeOutCubic(clamp01(elapsed / BG_IN));
+      lit = 0.8;
     } else {
       for (const e of edges) {
         if (e.to !== i || !e.pulse) continue;
@@ -469,47 +713,16 @@ function draw(
     }
     if (lit <= 0.003) continue;
 
-    const g = lit * fade;
-    const size =
-      n.depth === 0
-        ? n.size * (1 + 0.05 * Math.sin(elapsed * 2.4))
-        : n.size;
-
-    if (n.depth === 0) {
-      const halo = ctx.createRadialGradient(rx[i], ry[i], 0, rx[i], ry[i], size * 4.2);
-      halo.addColorStop(0, `rgba(${ACCENT}, ${0.34 * g})`);
-      halo.addColorStop(1, `rgba(${ACCENT}, 0)`);
-      ctx.fillStyle = halo;
-      ctx.beginPath();
-      ctx.arc(rx[i], ry[i], size * 4.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      if (!reduced) {
-        const ringR = size * 1.6 + ((elapsed * 34) % (size * 3.4));
-        const ringA =
-          Math.max(0, 1 - (ringR - size * 1.6) / (size * 3.4)) * 0.16 * fade;
-        ctx.strokeStyle = `rgba(${ACCENT}, ${ringA})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(rx[i], ry[i], ringR, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      ctx.fillStyle = `rgba(${PALE}, ${Math.min(1, 0.9 * g + 0.1)})`;
-      ctx.beginPath();
-      ctx.arc(rx[i], ry[i], size, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      const s = n.sub;
-      ctx.fillStyle = `rgba(${ACCENT_2}, ${0.16 * g * s})`;
-      ctx.beginPath();
-      ctx.arc(rx[i], ry[i], size * 2.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = `rgba(${ACCENT_2}, ${(0.3 + 0.7 * lit) * fade * s})`;
-      ctx.beginPath();
-      ctx.arc(rx[i], ry[i], size, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    const g = lit * fade * bgMul;
+    const s = n.sub;
+    ctx.fillStyle = `rgba(${ACCENT_2}, ${0.16 * g * s})`;
+    ctx.beginPath();
+    ctx.arc(rx[i], ry[i], n.size * 2.8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = `rgba(${ACCENT_2}, ${(0.3 + 0.7 * lit) * fade * bgMul * s})`;
+    ctx.beginPath();
+    ctx.arc(rx[i], ry[i], n.size, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   const fieldIn = reduced ? 1 : Math.min(1, elapsed / BG_IN);
@@ -525,11 +738,129 @@ function draw(
     const a =
       (0.06 + 0.07 * (0.5 + 0.5 * Math.sin(elapsed * 1.3 + pt.phase))) *
       fade *
-      fieldIn;
+      fieldIn *
+      bgMul;
     ctx.fillStyle = `rgba(${ACCENT_2}, ${a})`;
     ctx.beginPath();
     ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
     ctx.fill();
+  }
+
+  // --- SAJID circuit: signals converging, then landed strokes -------------
+  const nodeSize = Math.max(1.7, letters.cellSize * 0.16);
+  const { nodes: lNodes, edges: lEdges, idlePulses } = letters;
+  const boost = reduced ? 0 : completionBoost(elapsed);
+  const boostMul = 1 + boost * 0.35;
+
+  for (let i = 0; i < lNodes.length; i++) {
+    const n = lNodes[i];
+    const arrived = reduced || elapsed >= n.revealAt;
+    if (arrived) {
+      const since = reduced ? 1 : elapsed - n.revealAt;
+      const flash =
+        !reduced && since >= 0 && since < NODE_FLASH_DUR
+          ? 1 - since / NODE_FLASH_DUR
+          : 0;
+      const alpha = fade * boostMul;
+
+      const halo = ctx.createRadialGradient(
+        n.x,
+        n.y,
+        0,
+        n.x,
+        n.y,
+        nodeSize * 3.2,
+      );
+      halo.addColorStop(0, `rgba(${ACCENT_2}, ${0.3 * alpha})`);
+      halo.addColorStop(1, `rgba(${ACCENT_2}, 0)`);
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, nodeSize * 3.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (flash > 0) {
+        ctx.strokeStyle = `rgba(${PALE}, ${flash * 0.55 * alpha})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, nodeSize * (1.3 + (1 - flash) * 2.4), 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Calmer once settled: the arrival flash (above) carries the "active"
+      // brightness, so the resting breathe is a modest, sophisticated drift
+      // rather than a second bright pulse.
+      const breathe = reduced
+        ? 1
+        : 0.56 + 0.22 * Math.sin(elapsed * 1.5 + n.flicker);
+      ctx.fillStyle = `rgba(${PALE}, ${Math.min(1, breathe + flash * 0.6) * alpha})`;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, nodeSize, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (!reduced && elapsed >= n.travelStart) {
+      const p = clamp01((elapsed - n.travelStart) / n.travelDur);
+      const eased = easeOutCubic(p);
+      const cx = n.originX + (n.x - n.originX) * eased;
+      const cy = n.originY + (n.y - n.originY) * eased;
+      const alpha = (0.5 + 0.5 * p) * fade;
+      ctx.fillStyle = `rgba(${ACCENT}, ${0.2 * alpha})`;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(${PALE}, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  for (const e of lEdges) {
+    const t = elapsed - e.revealAt;
+    if (!reduced && t < 0) continue;
+    // Traces glow brighter the instant they connect, then ease down to a
+    // calmer resting brightness - "activating" reads as distinct from
+    // "settled" rather than a flat fade-in.
+    let level: number;
+    if (reduced) {
+      level = EDGE_REST_ALPHA;
+    } else if (t < EDGE_REVEAL_DUR) {
+      level = EDGE_PEAK_ALPHA * easeOutCubic(t / EDGE_REVEAL_DUR);
+    } else {
+      const settle = clamp01((t - EDGE_REVEAL_DUR) / EDGE_SETTLE_DUR);
+      level = EDGE_PEAK_ALPHA + (EDGE_REST_ALPHA - EDGE_PEAK_ALPHA) * easeOutCubic(settle);
+    }
+    const alpha = level * fade * boostMul;
+    if (alpha < 0.004) continue;
+    const na = lNodes[e.a];
+    const nb = lNodes[e.b];
+    ctx.strokeStyle = `rgba(${e.color}, ${alpha})`;
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.moveTo(na.x, na.y);
+    ctx.lineTo(nb.x, nb.y);
+    ctx.stroke();
+  }
+
+  if (!reduced) {
+    for (const ip of idlePulses) {
+      const q = (elapsed - ip.start) / ip.dur;
+      if (q < 0 || q > 1) continue;
+      const e = lEdges[ip.edge];
+      if (!e) continue;
+      const na = lNodes[e.a];
+      const nb = lNodes[e.b];
+      const x = na.x + (nb.x - na.x) * q;
+      const y = na.y + (nb.y - na.y) * q;
+      const env = 1 - Math.abs(q * 2 - 1);
+      const alpha = env * fade;
+      ctx.fillStyle = `rgba(${ACCENT_3}, ${alpha * 0.22})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(${PALE}, ${alpha * 0.95})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.7, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 }
 
@@ -562,6 +893,14 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
     let edges: SynEdge[] = [];
     let drifters: Drifter[] = [];
     let stars: Star[] = [];
+    let letters: LetterScene = {
+      nodes: [],
+      edges: [],
+      idlePulses: [],
+      cellSize: 0,
+      centerY: 0,
+      glyphHeight: 0,
+    };
 
     const resize = () => {
       width = window.innerWidth;
@@ -580,6 +919,9 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
           ? Math.min(150, Math.floor((width * height) / 3000))
           : Math.min(420, Math.floor((width * height) / 5200)),
       );
+      letters = buildLetters(width, height, mobile);
+      const gap = width < 640 ? 20 : width < 1024 ? 28 : 36;
+      textEl.style.top = `${letters.centerY + letters.glyphHeight / 2 + gap}px`;
     };
     resize();
 
@@ -600,15 +942,16 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
     const frame = (now: number) => {
       if (finished) return;
       if (skipRef.current && !skipApplied) {
-        start = now - (reduced ? REDUCED_FADE_START : BG_OUT_START) * 1000;
+        start = now - (reduced ? REDUCED_FADE_START : FADE_OUT_START) * 1000;
         skipApplied = true;
       }
       const elapsed = (now - start) / 1000;
 
       let bgOp: number;
-      let textOp: number;
-      let textScale: number;
+      let subtitleOp: number;
+      let subtitleScale: number;
       let fade: number;
+      let bgMul: number;
 
       if (reduced) {
         const f = clamp01(
@@ -616,33 +959,49 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
             (REDUCED_FADE_END - REDUCED_FADE_START),
         );
         bgOp = BG_MAX * (1 - f);
-        textOp = 1 - f;
-        textScale = 1;
+        subtitleOp = 1 - f;
+        subtitleScale = 1;
         fade = 1 - f;
+        bgMul = 1;
       } else {
         bgOp = BG_MAX * easeOutCubic(clamp01(elapsed / BG_IN));
         const rampIn = easeOutCubic(
-          clamp01((elapsed - TEXT_IN_START) / (TEXT_IN_END - TEXT_IN_START)),
+          clamp01(
+            (elapsed - SUBTITLE_IN_START) /
+              (SUBTITLE_IN_END - SUBTITLE_IN_START),
+          ),
         );
-        const fadeOut = 1 - easeInCubic(
-          clamp01((elapsed - TEXT_OUT_START) / (TEXT_OUT_END - TEXT_OUT_START)),
-        );
-        textOp = Math.min(rampIn, fadeOut);
-        textScale = 0.97 + 0.03 * rampIn;
-        fade =
+        const fadeOut =
           1 -
           easeInCubic(
-            clamp01((elapsed - BG_OUT_START) / (BG_OUT_END - BG_OUT_START)),
+            clamp01((elapsed - FADE_OUT_START) / (FADE_OUT_END - FADE_OUT_START)),
           );
+        subtitleOp = Math.min(rampIn, fadeOut);
+        subtitleScale = 0.97 + 0.03 * rampIn;
+        fade = fadeOut;
+        bgMul = bgIntensity(elapsed);
       }
 
       bgEl.style.opacity = String(bgOp);
-      textEl.style.opacity = String(textOp);
-      textEl.style.transform = `translate(-50%, -50%) scale(${textScale})`;
+      textEl.style.opacity = String(subtitleOp);
+      textEl.style.transform = `translate(-50%, 0) scale(${subtitleScale})`;
 
       if (now - lastDraw >= FRAME_MS) {
         lastDraw = now;
-        draw(ctx, width, height, elapsed, fade, reduced, stars, nodes, edges, drifters);
+        draw(
+          ctx,
+          width,
+          height,
+          elapsed,
+          fade,
+          bgMul,
+          reduced,
+          stars,
+          nodes,
+          edges,
+          drifters,
+          letters,
+        );
       }
 
       if (elapsed >= doneAt) {
@@ -673,7 +1032,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Synapse: full-screen neural visual"
+      aria-label="Synapse: the network assembling the identity SAJID"
       className="fixed inset-0 z-[80] touch-none overflow-hidden"
     >
       <div
@@ -704,16 +1063,16 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
       >
         <X className="h-4 w-4" />
       </button>
+      <span className="sr-only">{SYNAPSE_NAME}</span>
       <div
         ref={textRef}
-        className="absolute left-1/2 top-1/2 w-[min(88vw,1040px)] min-w-[260px] text-center"
-        style={{ opacity: 0, transform: "translate(-50%, -50%)" }}
+        className="absolute left-1/2 w-[min(88vw,640px)] min-w-[220px] text-center"
+        style={{ opacity: 0, transform: "translate(-50%, 0)" }}
       >
-        <SynapseIdentity />
         <div
           aria-hidden="true"
           data-cortex-anim
-          className="synapse-trace mx-auto mt-6 sm:mt-8"
+          className="synapse-trace mx-auto"
         />
         <p
           data-cortex-anim
