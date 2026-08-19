@@ -99,7 +99,7 @@ export default function AboutSection() {
             <h2 className="section-title text-gradient mt-2 sm:mt-2.5">
               The world is part of the work.
             </h2>
-            <ul className="mt-3.5 space-y-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted sm:mt-4">
+            <ul className="mt-3.5 space-y-2 font-mono text-[12px] font-medium uppercase leading-[1.7] tracking-[0.08em] text-text-muted sm:mt-4">
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
