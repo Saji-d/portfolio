@@ -59,6 +59,7 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-script: var(--font-caveat), cursive;
 }
 
 @layer base {
@@ -180,6 +181,30 @@
     var(--text-neon-via) 45%,
     var(--text-muted) 100%
   );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* The hero name mark: a bold signature accent, distinct from the neutral
+   text-neon gradient and the indigo UI accent used elsewhere - electric
+   blue into cyan, so the name reads as its own tier in the hierarchy
+   (navy background -> indigo UI -> electric blue name -> cyan highlight)
+   without pulling the rest of the page's palette toward cyan. */
+@utility text-name-signature {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-synthesis: none;
+  /* text-shadow rather than `filter: drop-shadow(...)` for the glow - a
+     filter clips its rendering to the element's layout box, which cuts off
+     any descender ink that overshoots it, where text-shadow paints per-glyph
+     and never clips. Restrained opacity keeps the glow a soft lift rather
+     than a neon halo. */
+  text-shadow:
+    0 0 16px rgba(79, 124, 255, 0.35),
+    0 0 30px rgba(34, 211, 238, 0.22);
+  background: linear-gradient(100deg, #4f7cff 0%, #22d3ee 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -374,6 +399,26 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Same entrance timing as .hero-enter, but opacity-only. The hero name's
+   script font has ink (the "j" loop tails) that overshoots its own layout
+   box; animating `transform` promotes the element to its own compositing
+   layer, and that layer's paint bounds get fixed to the layout box while
+   the transform is active, clipping the overshoot. Dropping the transform
+   here removes that layer promotion entirely, so the descenders are never
+   clipped, while the fade-in still reads the same as its siblings. */
+@keyframes hero-name-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-name-enter {
+  animation: hero-name-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-enter {
@@ -869,22 +914,6 @@
     opacity: 0;
     transform: translate(3px, 6px) scale(0.4);
   }
-}
-
-/* The frontmost node of the How I Build pipeline gives off a soft breathing
-   glow while the sequence is still coming online. */
-@keyframes pipeline-front-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 var(--accent-soft);
-  }
-  50% {
-    box-shadow: 0 0 16px 3px var(--accent-soft);
-  }
-}
-
-.animate-pipeline-front {
-  animation: pipeline-front-pulse 1.6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

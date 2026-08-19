@@ -264,7 +264,7 @@ export default function ParticleField() {
       // atmosphere, not a simulation, and mobile gets a sparser field.
       const target = mobile
         ? Math.min(700, Math.max(420, Math.floor((width * height) / 900)))
-        : Math.min(1300, Math.max(1050, Math.floor((width * height) / 1800)));
+        : Math.min(2200, Math.max(1600, Math.floor((width * height) / 1100)));
 
       particles = makeParticles(target);
       for (const p of particles) {

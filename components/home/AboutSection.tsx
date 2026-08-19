@@ -90,7 +90,7 @@ export default function AboutSection() {
     <section
       id="about"
       aria-label="About"
-      className="relative scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
+      className="relative scroll-mt-0 flex min-h-screen min-h-dvh flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
     >
       <div className="container-site">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-start lg:gap-8">

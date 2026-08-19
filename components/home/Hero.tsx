@@ -59,7 +59,7 @@ export default function Hero() {
           </div>
 
           <h1
-            className="hero-enter mt-5 text-center font-display text-[clamp(2.1rem,8.5vw,2.75rem)] font-medium leading-[1.08] tracking-tight text-neon"
+            className="hero-name-enter mt-5 text-center text-[clamp(2.3rem,10vw,3.1rem)] leading-[1.5] tracking-normal text-name-signature"
             style={{ animationDelay: mobileDelays[2] }}
           >
             Sajidur Rahman Sajid
@@ -124,7 +124,7 @@ export default function Hero() {
             </div>
 
             <h1
-              className="hero-enter mt-5 max-w-4xl font-display text-5xl font-medium leading-[1.05] tracking-tight text-neon sm:text-6xl lg:text-7xl"
+              className="hero-name-enter mt-5 max-w-2xl text-5xl leading-[1.5] tracking-normal text-name-signature sm:text-6xl"
               style={{ animationDelay: delays[1] }}
             >
               Sajidur Rahman Sajid

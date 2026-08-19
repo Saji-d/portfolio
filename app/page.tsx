@@ -7,7 +7,6 @@ import ExperienceTimeline from "@/components/home/ExperienceTimeline";
 import EducationSection from "@/components/home/EducationSection";
 import ContactSection from "@/components/home/ContactSection";
 import SkillsSection from "@/components/home/SkillsSection";
-import EngineeringMindSection from "@/components/home/EngineeringMindSection";
 import { OverlayProvider } from "@/components/overlay-context";
 
 export default function Home() {
@@ -15,7 +14,6 @@ export default function Home() {
     <OverlayProvider>
       <Hero />
       <AboutSection />
-      <EngineeringMindSection />
       <CortexSection />
       <ProjectsSection />
       <ResearchSpotlight />
