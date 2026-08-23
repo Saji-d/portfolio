@@ -30,7 +30,7 @@ export default function Hero() {
     <section
       id="home"
       aria-label="Home"
-      className="relative scroll-mt-24 overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-10 lg:pt-40 lg:pb-14"
+      className="relative scroll-mt-24 overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-10 lg:pt-40 lg:pb-[75px]"
     >
       <div className="container-site relative">
         {/* Mobile / tablet: a compact, centered composition purpose-built for
@@ -159,7 +159,7 @@ export default function Hero() {
           </div>
 
           <div
-            className="hero-enter mt-16 grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
+            className="hero-enter mt-[49px] grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
             style={{ animationDelay: delays[4] }}
           >
             <HeroStats />

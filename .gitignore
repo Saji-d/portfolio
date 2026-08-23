@@ -50,3 +50,6 @@ next-env.d.ts
 /realesrgan-ncnn-vulkan.zip
 /RealESRGAN_x2plus.pth
 /enhance_hero.py
+
+# local development research notes (not part of the project)
+/.portfolio-analysis/
