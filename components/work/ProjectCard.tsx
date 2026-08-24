@@ -13,7 +13,7 @@ import { Pill, StatusBadge } from "@/components/ui/Badge";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import TiltCard from "@/components/ui/TiltCard";
 
-function primaryHref(project: Project): string | undefined {
+export function primaryHref(project: Project): string | undefined {
   if (project.caseStudy) return `/projects/${project.slug}`;
   if (project.thesis) return project.thesis;
   return project.github;
@@ -23,7 +23,7 @@ function isProfessional(project: Project): boolean {
   return project.category === "Professional";
 }
 
-function SmartLink({
+export function SmartLink({
   href,
   className,
   ariaLabel,
@@ -49,11 +49,11 @@ function SmartLink({
   );
 }
 
-function GlassChip({
+export function GlassChip({
   children,
   accent = false,
 }: {
-  children: string;
+  children: ReactNode;
   accent?: boolean;
 }) {
   return (

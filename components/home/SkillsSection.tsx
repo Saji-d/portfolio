@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Blocks,
   Cpu,
@@ -24,32 +23,7 @@ const GROUP_ICON: Record<string, LucideIcon> = {
   "Tooling & Practice": Wrench,
 };
 
-// Index pairs matching skillGroups order: 0 Backend, 1 AI/ML, 2 Frontend,
-// 3 Data & Databases, 4 Blockchain, 5 Tooling & Practice. Drives both the
-// connector paths below and which cards light up together on hover.
-const CONNECTIONS: [number, number][] = [
-  [0, 2],
-  [0, 1],
-  [1, 3],
-  [3, 4],
-  [1, 5],
-];
-
-const PATHS = [
-  "M75,45 Q56,100 37.5,155",
-  "M75,45 Q150,45 225,45",
-  "M225,45 Q168,100 112.5,155",
-  "M112.5,155 Q150,155 187.5,155",
-  "M225,45 Q243,100 262.5,155",
-];
-
 export default function SkillsSection() {
-  const [hovered, setHovered] = useState<number | null>(null);
-
-  const isRelated = (i: number) =>
-    hovered !== null &&
-    (i === hovered || CONNECTIONS.some(([a, b]) => (a === hovered && b === i) || (b === hovered && a === i)));
-
   return (
     <section
       id="capabilities"
@@ -72,94 +46,44 @@ export default function SkillsSection() {
           </div>
         </Reveal>
 
-        <div className="relative mt-8">
-          <svg
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
-            viewBox="0 0 300 200"
-            preserveAspectRatio="none"
-            fill="none"
-          >
-            {PATHS.map((d, i) => {
-              const active = hovered !== null && CONNECTIONS[i].includes(hovered);
-              const tone = i === 1 || i === 3 ? "var(--accent)" : "var(--accent-2)";
-              return (
-                <path
-                  key={d}
-                  d={d}
-                  stroke={active ? "var(--accent)" : tone}
-                  strokeWidth={active ? 1.6 : 1}
-                  strokeDasharray="3 5"
-                  className="animate-circuit-flow transition-[stroke-width,opacity] duration-300"
-                  style={{ opacity: hovered === null ? 0.35 : active ? 0.9 : 0.12 }}
-                />
-              );
-            })}
-          </svg>
-
-          <div className="relative grid gap-5 md:grid-cols-2 lg:grid-cols-12">
-            {skillGroups.map((group, i) => {
-              const Icon = GROUP_ICON[group.label] ?? Server;
-              // Backend and AI/ML carry the actual role narrative (Backend &
-              // AI Systems) - give them the primary row and let the rest sit
-              // as the supporting layer, instead of six uniform boxes.
-              const primary = i < 2;
-              const related = isRelated(i);
-              const dimmed = hovered !== null && !related;
-              return (
-                <Reveal
-                  key={group.label}
-                  delay={i * 0.04}
-                  className={primary ? "lg:col-span-6" : "lg:col-span-3"}
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {skillGroups.map((group, i) => {
+            const Icon = GROUP_ICON[group.label] ?? Server;
+            return (
+              <Reveal key={group.label} delay={i * 0.04}>
+                <div
+                  tabIndex={0}
+                  className="group card-surface flex h-full flex-col p-5 outline-none transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-[3px] hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(99,102,241,0.35)] focus-visible:-translate-y-[3px] focus-visible:border-accent/60 focus-visible:shadow-[0_12px_32px_-20px_rgba(99,102,241,0.35)] focus-visible:ring-2 focus-visible:ring-accent/30 sm:p-6"
                 >
-                  <div
-                    onMouseEnter={() => setHovered(i)}
-                    onMouseLeave={() => setHovered(null)}
-                    className={`card-surface group h-full transition-all duration-300 hover:-translate-y-0.5 ${
-                      primary ? "border-accent/25 p-5 sm:p-6" : "p-4"
-                    } ${
-                      related
-                        ? "border-accent/60 shadow-[0_16px_40px_-24px_rgba(99, 102, 241,0.4)]"
-                        : "hover:border-accent/40"
-                    } ${dimmed ? "opacity-60" : "opacity-100"}`}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2.5">
-                        <span
-                          className={`grid shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-colors duration-300 group-hover:border-accent/40 ${
-                            primary ? "h-9 w-9" : "h-7 w-7"
-                          }`}
-                        >
-                          <Icon className={primary ? "h-4.5 w-4.5" : "h-3.5 w-3.5"} />
-                        </span>
-                        <h3
-                          className={`font-mono font-semibold uppercase tracking-widest text-accent ${
-                            primary ? "text-xs" : "text-[11px]"
-                          }`}
-                        >
-                          {group.label}
-                        </h3>
-                      </div>
-                      <span className="font-mono text-[10px] text-text-muted">
-                        {String(i + 1).padStart(2, "0")}/
-                        {String(skillGroups.length).padStart(2, "0")}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105">
+                        <Icon className="h-4.5 w-4.5" />
                       </span>
+                      <h3 className="font-mono text-xs font-semibold uppercase tracking-widest text-text-primary transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent">
+                        {group.label}
+                      </h3>
                     </div>
-                    <div className="mt-3.5 flex flex-wrap gap-1.5">
-                      {group.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="rounded-full border border-line bg-surface-2 px-2.5 py-1 font-mono text-xs text-text-secondary transition-colors group-hover:border-accent/20"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    <span className="font-mono text-[10px] text-text-muted">
+                      {String(i + 1).padStart(2, "0")}/
+                      {String(skillGroups.length).padStart(2, "0")}
+                    </span>
                   </div>
-                </Reveal>
-              );
-            })}
-          </div>
+
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {group.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="rounded-full border border-line bg-surface-2 px-2.5 py-1 font-mono text-xs text-text-secondary"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

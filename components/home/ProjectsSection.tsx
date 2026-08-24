@@ -5,11 +5,16 @@ import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import { ProjectCard } from "@/components/work/ProjectCard";
+import FeaturedProjectCase from "@/components/home/FeaturedProjectCase";
 import { primaryProjects } from "@/data/projects";
 import { useOverlay } from "@/components/overlay-context";
 
+const FEATURED_COUNT = 3;
+
 export default function ProjectsSection() {
   const { openProject } = useOverlay();
+  const featured = primaryProjects.slice(0, FEATURED_COUNT);
+  const archive = primaryProjects.slice(FEATURED_COUNT);
 
   return (
     <section
@@ -36,18 +41,52 @@ export default function ProjectsSection() {
           </div>
         </Reveal>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {primaryProjects.map((p, i) => (
-            <Reveal key={p.slug} delay={(i % 3) * 0.06}>
-              <ProjectCard
-                project={p}
-                compact
-                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+        <div className="mt-10 sm:mt-12 lg:mt-14">
+          {featured.map((project, i) => (
+            <div
+              key={project.slug}
+              className={
+                i === 0
+                  ? ""
+                  : "mt-16 sm:mt-20 lg:mt-24"
+              }
+            >
+              <FeaturedProjectCase
+                project={project}
+                index={i}
+                total={featured.length}
+                imageFirst={i % 2 === 0}
                 onOpenCaseStudy={openProject}
               />
-            </Reveal>
+            </div>
           ))}
         </div>
+
+        {archive.length > 0 && (
+          <div className="mt-16 sm:mt-20 lg:mt-24">
+            <Reveal>
+              <div className="border-t border-line pt-10">
+                <Eyebrow>Archive</Eyebrow>
+                <h3 className="section-title mt-2">
+                  More from the build log.
+                </h3>
+              </div>
+            </Reveal>
+
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {archive.map((p, i) => (
+                <Reveal key={p.slug} delay={(i % 3) * 0.06}>
+                  <ProjectCard
+                    project={p}
+                    compact
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    onOpenCaseStudy={openProject}
+                  />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
