@@ -401,6 +401,85 @@
   }
 }
 
+/* Hero portrait: a curtain-wipe mask distinct from the opacity+lift used by
+   every other hero element, so the portrait reads as its own entrance beat
+   rather than another item in the same stagger. Runs on a wrapper with
+   overflow-hidden + rounded corners; the pointer-parallax transform (set
+   imperatively in HeroPortrait.tsx) lives on the image *inside* this
+   wrapper, so the two never fight over the `transform` property. */
+@keyframes hero-portrait-enter {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.08);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+    transform: scale(1);
+  }
+}
+
+.hero-portrait-mask {
+  animation: hero-portrait-enter 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portrait-mask {
+    clip-path: none;
+  }
+}
+
+/* Fixed navbar + logo: a single quiet drop-in on first paint so the chrome
+   joins the hero's choreography instead of simply existing before it. */
+@keyframes nav-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-enter {
+  animation: nav-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* AboutGlobe: the WebGL canvas boots a beat after the section is already
+   visible (see the double-rAF gate in AboutGlobe.tsx) - without this it
+   just pops in mid-scroll. A plain fade reads as "assembling" without
+   faking a loading state for what's actually near-instant. */
+@keyframes globe-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.globe-fade-in {
+  animation: globe-fade-in 0.7s ease-out both;
+}
+
+/* Contact cards: a soft radial highlight pinned to the cursor position via
+   --sx/--sy (set imperatively on pointermove, MagneticButton-style - no
+   re-renders). Opacity is toggled by Tailwind's group-hover, this rule only
+   supplies the gradient itself so the two stay decoupled. */
+.spotlight-layer {
+  background: radial-gradient(
+    220px circle at var(--sx, 50%) var(--sy, 50%),
+    rgba(99, 102, 241, 0.16),
+    transparent 72%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-layer {
+    display: none;
+  }
+}
+
 /* Same entrance timing as .hero-enter, but opacity-only. The hero name's
    script font has ink (the "j" loop tails) that overshoots its own layout
    box; animating `transform` promotes the element to its own compositing

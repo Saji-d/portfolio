@@ -426,6 +426,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
       className="about-globe-canvas absolute inset-0 touch-none"
     >
       {(booted || reducedMotion) && size.width > 0 && size.height > 0 && (
+        <div className={reducedMotion ? undefined : "globe-fade-in"}>
         <Globe
           ref={globeRef}
           width={size.width}
@@ -470,6 +471,7 @@ export default function AboutGlobe({ selectedId, onSelect }: AboutGlobeProps) {
           enablePointerInteraction
           onGlobeReady={handleGlobeReady}
         />
+        </div>
       )}
       <RocketExhaust
         targetRef={containerRef}

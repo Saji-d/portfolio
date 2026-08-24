@@ -5,6 +5,7 @@ import TerminalCard from "@/components/home/TerminalCard";
 import Eyebrow from "@/components/ui/Eyebrow";
 import HeroStats from "@/components/home/HeroStats";
 import HeroMarquee from "@/components/home/HeroMarquee";
+import HeroPortrait from "@/components/home/HeroPortrait";
 // Imported (rather than referenced as a "/images/hero.webp" string) so
 // Next.js fingerprints it by content hash at build time. Both the image
 // optimizer cache and the browser's HTTP cache key off the URL - with a
@@ -46,16 +47,18 @@ export default function Hero() {
             className="hero-enter mx-auto mt-5 flex w-fit items-center justify-center"
             style={{ animationDelay: mobileDelays[1] }}
           >
-            <Image
-              src={heroPortrait}
-              alt="Portrait of Sajidur Rahman Sajid"
-              width={2916}
-              height={4376}
-              priority
-              quality={90}
-              sizes="180px"
-              className="block h-auto w-36 sm:w-40"
-            />
+            <div className="hero-portrait-mask overflow-hidden rounded-xl">
+              <Image
+                src={heroPortrait}
+                alt="Portrait of Sajidur Rahman Sajid"
+                width={2916}
+                height={4376}
+                priority
+                quality={90}
+                sizes="180px"
+                className="block h-auto w-36 sm:w-40"
+              />
+            </div>
           </div>
 
           <h1
@@ -170,15 +173,9 @@ export default function Hero() {
             <HeroMarquee />
           </div>
 
-          <Image
+          <HeroPortrait
             src={heroPortrait}
-            alt="Portrait of Sajidur Rahman Sajid"
-            width={2916}
-            height={4376}
-            priority
-            quality={100}
-            sizes="240px"
-            className="hero-enter pointer-events-none absolute right-28 top-[-17px] block h-auto w-60 rounded-2xl"
+            className="hero-enter pointer-events-none absolute right-28 top-[-17px] w-60"
             style={{ animationDelay: delays[4] }}
           />
         </div>

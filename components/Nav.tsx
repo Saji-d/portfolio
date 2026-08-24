@@ -230,7 +230,7 @@ export default function Nav() {
         href="/"
         onClick={handleLogoClick}
         aria-label="Scroll to top"
-        className="group fixed top-6 z-50 s-button-left sm:top-7"
+        className="nav-enter group fixed top-6 z-50 s-button-left sm:top-7"
       >
         <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface font-mono text-sm font-bold text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-colors group-hover:border-accent/50">
           S
@@ -242,7 +242,8 @@ export default function Nav() {
         className="pointer-events-none fixed inset-x-0 top-3 z-40 flex justify-center px-4 sm:top-4"
       >
         <div
-          className={`pointer-events-auto w-full max-w-4xl rounded-2xl border backdrop-blur-xl transition-all duration-300 ${
+          style={{ animationDelay: "0.08s" }}
+          className={`nav-enter pointer-events-auto w-full max-w-4xl rounded-2xl border backdrop-blur-xl transition-all duration-300 ${
             scrolled || open
               ? "border-line-strong bg-bg/85 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)]"
               : "border-line bg-bg/55 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]"

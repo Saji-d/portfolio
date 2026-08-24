@@ -3,6 +3,7 @@ import { Award, Calendar, MapPin, Star } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TiltCard from "@/components/ui/TiltCard";
+import AnimatedMetric from "@/components/ui/AnimatedMetric";
 
 interface EducationEntry {
   institution: string;
@@ -87,7 +88,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
             </div>
             <div className="text-right">
               <div className="font-display text-2xl font-medium tracking-tight text-accent">
-                {entry.gpa}
+                <AnimatedMetric value={entry.gpa} />
               </div>
               <div className="mt-0.5 card-meta">
                 {entry.gpaLabel}
@@ -107,14 +108,13 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
           </div>
 
           <div className="mt-auto flex flex-wrap gap-1.5 border-t border-line pt-2">
-            {(entry.badges ?? []).map((badge) => (
-              <span
-                key={badge}
-                className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent"
-              >
-                <Award className="h-3 w-3" />
-                {badge}
-              </span>
+            {(entry.badges ?? []).map((badge, i) => (
+              <Reveal key={badge} delay={i * 0.07} y={6}>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+                  <Award className="h-3 w-3" />
+                  {badge}
+                </span>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -152,7 +152,7 @@ function SchoolCard({ entry }: { entry: EducationEntry }) {
           <div className="mt-auto flex items-end justify-between border-t border-line pt-1.5">
             <div>
               <div className="font-display text-xl font-medium tracking-tight text-accent">
-                {entry.gpa}
+                <AnimatedMetric value={entry.gpa} />
               </div>
               <div className="mt-0.5 card-meta">
                 {entry.gpaLabel}

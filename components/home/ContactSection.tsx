@@ -36,6 +36,12 @@ const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.07 } },
 };
 
+function handleSpotlight(e: React.MouseEvent<HTMLElement>) {
+  const rect = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty("--sx", `${e.clientX - rect.left}px`);
+  e.currentTarget.style.setProperty("--sy", `${e.clientY - rect.top}px`);
+}
+
 export default function ContactSection() {
   return (
     <section
@@ -58,7 +64,7 @@ export default function ContactSection() {
               <div className="max-w-2xl">
                 <Eyebrow index="08">Contact</Eyebrow>
                 <h2 className="section-title">
-                  Let's turn the idea into something real.
+                  Let&apos;s turn the idea into something real.
                 </h2>
               </div>
               <span className="mt-1 inline-flex shrink-0 items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1.5 font-mono text-xs font-medium text-success">
@@ -81,8 +87,13 @@ export default function ContactSection() {
                     href={c.href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
+                    onMouseMove={handleSpotlight}
                     className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(99, 102, 241,0.35)]"
                   >
+                    <span
+                      aria-hidden="true"
+                      className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
                     <span
                       aria-hidden="true"
                       className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[250%] skew-x-12 bg-gradient-to-r from-transparent via-accent/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[450%]"
@@ -105,11 +116,18 @@ export default function ContactSection() {
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <motion.div variants={fadeUp} whileHover={{ y: -3 }}>
-                <div className="card-surface flex h-full items-center gap-3 px-4 py-3.5 transition-colors duration-300 hover:border-accent/40">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
+                <div
+                  onMouseMove={handleSpotlight}
+                  className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  />
+                  <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
                     <MapPin className="h-4 w-4" />
                   </span>
-                  <div className="min-w-0">
+                  <div className="relative min-w-0">
                     <p className="mono-label text-text-muted">
                       Location
                     </p>
@@ -122,11 +140,18 @@ export default function ContactSection() {
               </motion.div>
 
               <motion.div variants={fadeUp} whileHover={{ y: -3 }}>
-                <div className="card-surface flex h-full items-center gap-3 px-4 py-3.5 transition-colors duration-300 hover:border-accent/40">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
+                <div
+                  onMouseMove={handleSpotlight}
+                  className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  />
+                  <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
                     <Clock className="h-4 w-4" />
                   </span>
-                  <div className="min-w-0">
+                  <div className="relative min-w-0">
                     <p className="mono-label text-text-muted">
                       Availability
                     </p>

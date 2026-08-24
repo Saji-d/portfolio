@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { motion, useScroll, useTransform, type Variants } from "motion/react";
@@ -195,8 +195,42 @@ export default function FeaturedProjectCase({
   const infoColStart = imageFirst ? "lg:col-start-8" : "lg:col-start-1";
   const imageColStart = imageFirst ? "lg:col-start-1" : "lg:col-start-7";
 
+  // Each featured project dims slightly as it approaches the top/bottom edge
+  // of the viewport and holds full presence while centered - a chapter cue
+  // that never touches scroll position itself, so native scrolling is
+  // untouched. Gated on pointer:fine (mirroring the tilt effect above) so
+  // touch scrolling, where this reads as flicker rather than depth, is
+  // unaffected.
+  const chapterRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: chapterProgress } = useScroll({
+    target: chapterRef,
+    offset: ["start end", "end start"],
+  });
+  const chapterOpacity = useTransform(chapterProgress, [0, 0.18, 0.82, 1], [0.45, 1, 1, 0.45]);
+
+  // useScroll's motion value can't be evaluated during SSR, so the server
+  // markup and the very first client paint both have to render *without*
+  // the scroll-linked style - otherwise React flags a hydration mismatch
+  // the instant the client computes a real (non-zero) scroll position.
+  // The effect flips this a tick after mount, once hydration is already
+  // settled, so the dimming fades in as a progressive enhancement.
+  const [scrollLinked, setScrollLinked] = useState(false);
+  useEffect(() => {
+    // Deliberately a post-mount state flip, not a derived render value: it
+    // has to be false on both the server render and the client's first
+    // (pre-hydration) render for the two to match. Computing it inline from
+    // finePointerQuery would make it true on the client's very first render
+    // too, since matchMedia already resolves synchronously there.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!reducedMotionQuery?.matches && finePointerQuery?.matches) setScrollLinked(true);
+  }, []);
+
   return (
-    <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-14">
+    <motion.div
+      ref={chapterRef}
+      style={scrollLinked ? { opacity: chapterOpacity } : undefined}
+      className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-14"
+    >
       <div className={`order-1 lg:order-none lg:col-span-6 lg:row-start-1 ${imageColStart}`}>
         <FeaturedImage project={project} onOpenCaseStudy={onOpenCaseStudy} />
       </div>
@@ -295,6 +329,6 @@ export default function FeaturedProjectCase({
           )}
         </motion.div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

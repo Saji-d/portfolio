@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, type Variants } from "motion/react";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Reveal from "@/components/ui/Reveal";
 import { GLOBE_LOCATIONS } from "@/data/globe";
@@ -57,6 +57,18 @@ function LocationList({
   );
 }
 
+// Shared with the featured project reveal, so About's entrance reads as
+// the same design language rather than a section-specific one-off.
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
+};
+
 function FloatingLocationPanel({ id }: { id: string }) {
   const loc = GLOBE_LOCATIONS.find((l) => l.id === id);
   if (!loc) return null;
@@ -94,54 +106,61 @@ export default function AboutSection() {
     >
       <div className="container-site">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-start lg:gap-8">
-          <Reveal delay={0.04}>
-            <Eyebrow index="01">About</Eyebrow>
-            <h2 className="section-title text-gradient mt-2 sm:mt-2.5">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-10% 0px" }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp}>
+              <Eyebrow index="01">About</Eyebrow>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="section-title text-gradient mt-2 sm:mt-2.5">
               The world is part of the work.
-            </h2>
+            </motion.h2>
             <ul className="mt-3.5 space-y-2 font-mono text-[12px] font-medium uppercase leading-[1.7] tracking-[0.08em] text-text-muted sm:mt-4">
-              <li className="flex items-start gap-2">
+              <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
                   <span>CURRENTLY BUILDING</span>
                   <span className="text-accent">·</span>
                   <span className="text-text-secondary">SOFTWARE SYSTEMS</span>
                 </span>
-              </li>
-              <li className="flex items-start gap-2">
+              </motion.li>
+              <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
                   <span>WORKING ACROSS</span>
                   <span className="text-accent">·</span>
                   <span className="text-text-secondary">FULL-STACK + AI/ML</span>
                 </span>
-              </li>
-              <li className="flex items-start gap-2">
+              </motion.li>
+              <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
                   <span>BASED IN DHAKA, BANGLADESH</span>
                   <span className="text-accent">·</span>
                   <span className="text-text-secondary">{SITE.timezone}</span>
                 </span>
-              </li>
+              </motion.li>
             </ul>
 
             <div className="mt-4 space-y-2.5 sm:mt-5">
-              <p className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
+              <motion.p variants={fadeUp} className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
                 I&apos;m Sajid, a software engineer in Dhaka. I work across
                 full-stack systems and AI/ML, building software that turns
                 complicated problems into something practical and reliable.
-              </p>
-              <p className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
+              </motion.p>
+              <motion.p variants={fadeUp} className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
                 The work reaches past my desk. There&apos;s a growing footprint
                 across America and Europe, and I like software that travels well
                 beyond where it was built.
-              </p>
+              </motion.p>
             </div>
-            <div className="mt-4 sm:mt-4.5">
+            <motion.div variants={fadeUp} className="mt-4 sm:mt-4.5">
               <LocationList selectedId={selectedId} onSelect={setSelectedId} />
-            </div>
-          </Reveal>
+            </motion.div>
+          </motion.div>
 
           <Reveal delay={0.08} className="min-w-0 lg:mt-12">
             <div className="relative h-[280px] overflow-hidden rounded-2xl border border-line bg-surface/30 sm:h-[320px] lg:h-[345px]">
