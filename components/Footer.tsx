@@ -100,7 +100,13 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="container-site pb-8 pt-2 sm:pb-10">
+      {/* Deliberately NOT container-site: the signature is sized in JS off
+          its own container's width (FooterSignature.tsx), so giving it the
+          full viewport width (minus a small edge gutter) rather than the
+          76rem content column is what lets it scale up to an editorial,
+          oversized closing statement on wide viewports instead of being
+          capped at the same width as the page copy above it. */}
+      <div className="px-4 pb-8 pt-2 sm:px-6 sm:pb-10">
         <FooterSignature />
       </div>
     </footer>

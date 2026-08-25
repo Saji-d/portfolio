@@ -13,9 +13,11 @@ import { useEffect, useRef } from "react";
  */
 
 const TEXT = "SAJIDUR RAHMAN SAJID";
-const DOT_PITCH = 4.4; // CSS px between grid samples - controls dot density
+const DOT_PITCH = 4.4; // CSS px between grid samples at REFERENCE_FONT_PX - scales up with the actual rendered size so the halftone stays a dot texture instead of filling in solid at large sizes
 const DOT_SIZE = 1.6;
+const REFERENCE_FONT_PX = 90; // the font size DOT_PITCH/DOT_SIZE were tuned at
 const MIN_FONT_PX = 30; // below this, wrap to more lines instead of shrinking further
+const MAX_FONT_PX = 192; // 12rem ceiling - an editorial signature, not an ultra-wide-monitor curiosity
 const MAX_LINES = 3;
 
 const BASE_COLOR = [148, 163, 210] as const; // muted indigo-grey, matches --text-muted's hue family
@@ -40,7 +42,7 @@ function wrapLines(ctx: CanvasRenderingContext2D, text: string, fontFamily: stri
     return ctx.measureText(str).width;
   };
 
-  let fontSize = 220;
+  let fontSize = MAX_FONT_PX;
   while (fontSize > MIN_FONT_PX && measure(text, fontSize) > maxWidth) fontSize -= 2;
 
   if (measure(text, fontSize) <= maxWidth) {
@@ -99,13 +101,17 @@ export default function FooterSignature() {
     let lastDraw = 0;
     let running = false;
     let visible = false;
+    let dotSizePx = DOT_SIZE;
     const FRAME_MS = 16;
 
     // Falloff/return physics: identical shape to ParticleField's cursor
     // field (exp(-dist/decayRadius) push, spring-eased toward target) so
-    // this reads as the same interaction language as the background.
-    const DECAY_RADIUS = 70;
-    const MAX_PUSH = 30;
+    // this reads as the same interaction language as the background. Both
+    // scale up with the rendered font size (recomputed in sampleDots) so
+    // the interaction stays proportionate on a much larger signature
+    // instead of reading as a pinprick against huge letters.
+    let decayRadius = 70;
+    let maxPush = 30;
     const SPRING_EASE = 0.12;
 
     function sampleDots() {
@@ -118,7 +124,17 @@ export default function FooterSignature() {
       const sampleCtx = document.createElement("canvas").getContext("2d")!;
       const { fontSize, lines } = wrapLines(sampleCtx, TEXT, fontFamily.trim() || "sans-serif", width * 0.98);
 
-      const lineHeight = fontSize * 1.18;
+      // Dot pitch/size and the cursor-push radius all scale with the
+      // rendered font size (relative to the size these were originally
+      // tuned at) so a huge signature keeps the same halftone character
+      // and a proportionate, still-legible-as-dots interaction instead of
+      // either filling in solid or feeling like a pinprick.
+      const sizeScale = Math.min(2.3, Math.max(1, fontSize / REFERENCE_FONT_PX));
+      dotSizePx = DOT_SIZE * Math.min(1.9, Math.max(1, sizeScale * 0.9));
+      decayRadius = Math.min(150, 70 * sizeScale);
+      maxPush = Math.min(60, 30 * sizeScale);
+
+      const lineHeight = fontSize * 1.05;
       height = lineHeight * lines.length + fontSize * 0.3;
 
       canvas.width = Math.round(width * dpr);
@@ -141,7 +157,7 @@ export default function FooterSignature() {
       });
 
       const img = octx.getImageData(0, 0, off.width, off.height).data;
-      const pitchPx = DOT_PITCH * dpr;
+      const pitchPx = DOT_PITCH * sizeScale * dpr;
       const next: Dot[] = [];
       for (let py = pitchPx / 2; py < off.height; py += pitchPx) {
         for (let px = pitchPx / 2; px < off.width; px += pitchPx) {
@@ -161,13 +177,13 @@ export default function FooterSignature() {
       ctx.clearRect(0, 0, width, height);
       for (const d of dots) {
         const distFromHome = Math.hypot(d.dispX, d.dispY);
-        const t = Math.min(1, distFromHome / MAX_PUSH);
+        const t = Math.min(1, distFromHome / maxPush);
         const r = BASE_COLOR[0] + (NEAR_COLOR_A[0] - BASE_COLOR[0]) * t * 0.6 + (NEAR_COLOR_B[0] - BASE_COLOR[0]) * t * 0.2;
         const g = BASE_COLOR[1] + (NEAR_COLOR_A[1] - BASE_COLOR[1]) * t * 0.6 + (NEAR_COLOR_B[1] - BASE_COLOR[1]) * t * 0.2;
         const b = BASE_COLOR[2] + (NEAR_COLOR_A[2] - BASE_COLOR[2]) * t * 0.6 + (NEAR_COLOR_B[2] - BASE_COLOR[2]) * t * 0.2;
         const alpha = 0.34 + t * 0.5;
         ctx.fillStyle = `rgba(${r.toFixed(0)},${g.toFixed(0)},${b.toFixed(0)},${alpha.toFixed(3)})`;
-        ctx.fillRect(d.x - DOT_SIZE / 2, d.y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
+        ctx.fillRect(d.x - dotSizePx / 2, d.y - dotSizePx / 2, dotSizePx, dotSizePx);
       }
     }
 
@@ -180,7 +196,7 @@ export default function FooterSignature() {
           const dy = d.fy - pointerY;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist > 0.5) {
-            const push = Math.exp(-dist / DECAY_RADIUS) * MAX_PUSH;
+            const push = Math.exp(-dist / decayRadius) * maxPush;
             targetDispX = (dx / dist) * push;
             targetDispY = (dy / dist) * push;
           }

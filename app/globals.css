@@ -482,24 +482,6 @@
   animation: globe-fade-in 0.7s ease-out both;
 }
 
-/* Contact cards: a soft radial highlight pinned to the cursor position via
-   --sx/--sy (set imperatively on pointermove, MagneticButton-style - no
-   re-renders). Opacity is toggled by Tailwind's group-hover, this rule only
-   supplies the gradient itself so the two stay decoupled. */
-.spotlight-layer {
-  background: radial-gradient(
-    220px circle at var(--sx, 50%) var(--sy, 50%),
-    rgba(99, 102, 241, 0.16),
-    transparent 72%
-  );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .spotlight-layer {
-    display: none;
-  }
-}
-
 /* Same entrance timing as .hero-enter, but opacity-only. The hero name's
    script font has ink (the "j" loop tails) that overshoots its own layout
    box; animating `transform` promotes the element to its own compositing
@@ -1039,6 +1021,88 @@
   .marquee-duplicate {
     display: none;
   }
+}
+
+/* Rotating neon perimeter ring, shared by the Hero portrait frame (always
+   running) and the skill cards (hover-gated). A conic-gradient painted on
+   the full box, clipped down to just the border-width ring via the
+   mask-composite "exclude" trick (content-box cut out of the padding-box),
+   so the highlight genuinely travels around the perimeter rather than
+   sweeping across a filled shape. --neon-angle is an animatable custom
+   property (not a plain background-position) because conic-gradient angles
+   can't be interpolated any other way in CSS alone. */
+@property --neon-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes neon-ring-rotate {
+  to {
+    --neon-angle: 360deg;
+  }
+}
+
+/* Card perimeter ring (skill cards + contact cards): the ring exists at
+   opacity 0 and its animation sits paused whenever the card isn't
+   hovered/focused, so a dozen of these cost nothing while idle - only the
+   hovered card actually repaints each frame. Two techniques were tried
+   before this one and both had visible defects, so the reasoning is
+   worth keeping:
+   1. mask-composite "exclude" (background painted on the full box,
+      content-box cut out via mask so only the border band remains) is
+      the textbook way to do this and renders a geometrically perfect
+      ring around rounded corners - but the build's CSS pipeline
+      (Tailwind v4/Lightning CSS) silently dropped the mask-image
+      declarations during optimization when they lived in this
+      stylesheet (confirmed via computed styles coming back
+      mask-image: none), so nothing masked and the full gradient
+      (including its transparent pie-slice sector) rendered unclipped.
+   2. border-image with a conic-gradient source avoids that pipeline bug
+      entirely, but border-image-slice divides the source into a 3x3
+      grid and the four corner tiles get stretched into the rounded
+      corners rather than truly following the arc - visibly chunkier/
+      less smooth there than along the straight edges.
+   This keeps technique 1 (the correct rendering) but sets mask-image/
+   mask-composite via inline style on the element instead of here -
+   inline styles are literal DOM attributes the build's CSS optimizer
+   never touches, so the declarations survive. See NeonRing.tsx. */
+.card-neon-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--neon-angle),
+    transparent 0deg,
+    transparent 250deg,
+    rgba(99, 102, 241, 0.85) 292deg,
+    rgba(34, 211, 238, 0.95) 312deg,
+    rgba(168, 85, 247, 0.85) 332deg,
+    transparent 360deg
+  );
+  animation: neon-ring-rotate 3.2s linear infinite;
+  animation-play-state: paused;
+}
+
+.group:hover .card-neon-ring,
+.group:focus-visible .card-neon-ring {
+  animation-play-state: running;
+}
+
+/* Hero portrait: the same ring technique, always rotating (not hover-gated)
+   and slower, replacing what used to be a static linear-gradient border. */
+.hero-portrait-ring {
+  background: conic-gradient(
+    from var(--neon-angle),
+    rgba(99, 102, 241, 0.35) 0deg,
+    rgba(99, 102, 241, 0.35) 250deg,
+    rgba(99, 102, 241, 0.9) 288deg,
+    rgba(34, 211, 238, 1) 310deg,
+    rgba(168, 85, 247, 0.9) 332deg,
+    rgba(99, 102, 241, 0.35) 360deg
+  );
+  animation: neon-ring-rotate 5.5s linear infinite;
 }
 
 /* Cursor (grab/grabbing) is applied imperatively in AboutGlobe.tsx, scoped

@@ -5,7 +5,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import Eyebrow from "@/components/ui/Eyebrow";
-import { handleSpotlight } from "@/components/ui/spotlight";
+import NeonRing from "@/components/ui/NeonRing";
 import { SITE } from "@/data/site";
 
 interface Channel {
@@ -82,13 +82,9 @@ export default function ContactSection() {
                     href={c.href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
-                    onMouseMove={handleSpotlight}
                     className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(99, 102, 241,0.35)]"
                   >
-                    <span
-                      aria-hidden="true"
-                      className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
+                    <NeonRing />
                     <span
                       aria-hidden="true"
                       className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[250%] skew-x-12 bg-gradient-to-r from-transparent via-accent/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[450%]"
@@ -111,14 +107,8 @@ export default function ContactSection() {
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <motion.div variants={fadeUp} whileHover={{ y: -3 }}>
-                <div
-                  onMouseMove={handleSpotlight}
-                  className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  />
+                <div className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40">
+                  <NeonRing />
                   <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
                     <MapPin className="h-4 w-4" />
                   </span>
@@ -135,14 +125,8 @@ export default function ContactSection() {
               </motion.div>
 
               <motion.div variants={fadeUp} whileHover={{ y: -3 }}>
-                <div
-                  onMouseMove={handleSpotlight}
-                  className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  />
+                <div className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40">
+                  <NeonRing />
                   <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
                     <Clock className="h-4 w-4" />
                   </span>

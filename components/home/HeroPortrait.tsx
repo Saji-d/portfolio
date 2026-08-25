@@ -64,12 +64,15 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
         aria-hidden="true"
         className="pointer-events-none absolute -inset-5 -z-10 rounded-[1.5rem] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-70 blur-2xl transition-transform duration-500 ease-out will-change-transform"
       />
-      {/* The frame IS the border - a hairline neon gradient ring sitting
-          flush against the portrait (padding-box trick: gradient fill on
-          the outer box, inset radius on the inner) rather than a separate
+      {/* The frame IS the border - a hairline neon ring sitting flush
+          against the portrait (padding-box trick: gradient fill on the
+          outer box, inset radius on the inner) rather than a separate
           outline offset outward from it. That offset gap read as dead
-          space around the image; this reads as a signature accent instead. */}
-      <div className="rounded-2xl bg-gradient-to-br from-accent-3/70 via-accent/70 to-accent-2/70 p-px">
+          space around the image; this reads as a signature accent instead.
+          .hero-portrait-ring (globals.css) replaces what used to be a
+          static linear gradient with a slow, continuously rotating conic
+          one - a thin neon highlight travelling around the perimeter. */}
+      <div className="hero-portrait-ring rounded-2xl p-px">
         <div className="hero-portrait-mask overflow-hidden rounded-[calc(1rem-1px)] bg-bg">
           <div
             ref={imgLayerRef}

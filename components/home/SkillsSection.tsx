@@ -13,7 +13,7 @@ import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TechMarquee from "@/components/home/Marquee";
 import TiltCard from "@/components/ui/TiltCard";
-import { handleSpotlight } from "@/components/ui/spotlight";
+import NeonRing from "@/components/ui/NeonRing";
 import { skillGroups } from "@/data/skills";
 
 const GROUP_ICON: Record<string, LucideIcon> = {
@@ -56,13 +56,9 @@ export default function SkillsSection() {
                 <TiltCard max={2.5} className="h-full">
                   <div
                     tabIndex={0}
-                    onMouseMove={handleSpotlight}
                     className="group card-surface relative flex h-full flex-col overflow-hidden p-4 outline-none transition-[border-color,box-shadow] duration-300 ease-out hover:border-accent/60 hover:shadow-[0_16px_40px_-22px_rgba(99,102,241,0.4)] focus-visible:border-accent/60 focus-visible:shadow-[0_16px_40px_-22px_rgba(99,102,241,0.4)] focus-visible:ring-2 focus-visible:ring-accent/30 sm:p-5"
                   >
-                    <span
-                      aria-hidden="true"
-                      className="spotlight-layer pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
+                    <NeonRing />
                     <div className="relative flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5">
                         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105">
