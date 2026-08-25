@@ -15,6 +15,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-globe.gl": "^2.38.0",
+    "sharp": "^0.35.3",
     "three": "^0.185.1",
     "topojson-client": "^3.1.0",
     "world-atlas": "^2.0.2"

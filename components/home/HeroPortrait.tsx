@@ -38,7 +38,7 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
       const dx = (e.clientX - rect.left) / rect.width - 0.5;
       const dy = (e.clientY - rect.top) / rect.height - 0.5;
       if (imgLayerRef.current) {
-        imgLayerRef.current.style.transform = `translate3d(${(dx * -7).toFixed(2)}px, ${(dy * -7).toFixed(2)}px, 0)`;
+        imgLayerRef.current.style.transform = `translate3d(${(dx * -6).toFixed(2)}px, ${(dy * -6).toFixed(2)}px, 0)`;
       }
       if (glowRef.current) {
         glowRef.current.style.transform = `translate3d(${(dx * 12).toFixed(2)}px, ${(dy * 12).toFixed(2)}px, 0)`;
@@ -76,12 +76,13 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
         <div className="hero-portrait-mask overflow-hidden rounded-[calc(1rem-1px)] bg-bg">
           <div
             ref={imgLayerRef}
-            className="relative aspect-[4/5] transition-transform duration-500 ease-out will-change-transform"
+            className="relative aspect-[1060/1484] transition-transform duration-500 ease-out will-change-transform"
           >
-            {/* fill + object-cover + object-top: a deliberately shorter crop
-                than the source photo's natural ~2:3 ratio, biased to the
-                upper body so the face/shoulders stay prominent in a more
-                compact frame rather than shrinking the whole figure down. */}
+            {/* aspect-[1060/1484] matches the source photo's native pixel
+                ratio exactly, so object-cover has nothing to crop - the
+                full figure (head to hands) loads in at its own size
+                instead of the old tight bust-only crop, and the frame
+                grows taller with it. */}
             <Image
               src={src}
               alt="Portrait of Sajidur Rahman Sajid"
@@ -89,7 +90,7 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
               priority
               quality={100}
               sizes="(min-width: 1024px) 256px, (min-width: 640px) 144px, 128px"
-              className="object-cover object-top scale-[1.04]"
+              className="object-cover object-center"
             />
           </div>
         </div>

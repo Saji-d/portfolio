@@ -1091,18 +1091,21 @@
 }
 
 /* Hero portrait: the same ring technique, always rotating (not hover-gated)
-   and slower, replacing what used to be a static linear-gradient border. */
+   and slower, replacing what used to be a static linear-gradient border.
+   A narrower, dimmer base arc than the card ring reads as one restrained
+   travelling highlight rather than a third of the ring glowing at once. */
 .hero-portrait-ring {
   background: conic-gradient(
     from var(--neon-angle),
-    rgba(99, 102, 241, 0.35) 0deg,
-    rgba(99, 102, 241, 0.35) 250deg,
-    rgba(99, 102, 241, 0.9) 288deg,
-    rgba(34, 211, 238, 1) 310deg,
-    rgba(168, 85, 247, 0.9) 332deg,
-    rgba(99, 102, 241, 0.35) 360deg
+    rgba(99, 102, 241, 0.28) 0deg,
+    rgba(99, 102, 241, 0.28) 268deg,
+    rgba(96, 165, 250, 0.85) 296deg,
+    rgba(34, 211, 238, 1) 308deg,
+    rgba(168, 85, 247, 0.85) 320deg,
+    rgba(99, 102, 241, 0.28) 348deg,
+    rgba(99, 102, 241, 0.28) 360deg
   );
-  animation: neon-ring-rotate 5.5s linear infinite;
+  animation: neon-ring-rotate 5s linear infinite;
 }
 
 /* Cursor (grab/grabbing) is applied imperatively in AboutGlobe.tsx, scoped

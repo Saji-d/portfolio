@@ -9,7 +9,7 @@ import HeroPortrait from "@/components/home/HeroPortrait";
 // plain string path, replacing the file while keeping the same filename
 // is invisible to either cache. A content-hashed import sidesteps that
 // permanently: any future replacement gets a new URL automatically.
-import heroPortrait from "@/public/images/hero.webp";
+import heroPortrait from "@/public/images/herooo.webp";
 
 // [eyebrow, headline, description, ctas, portrait, stats]
 const delays = ["0s", "0.08s", "0.18s", "0.28s", "0.36s", "0.5s"];
@@ -160,7 +160,7 @@ export default function Hero() {
               </div>
 
               <div
-                className="hero-enter mt-12 border-t border-line pt-6 xl:mt-14"
+                className="hero-enter mt-10 xl:mt-12"
                 style={{ animationDelay: delays[5] }}
               >
                 <HeroStats />
@@ -169,7 +169,7 @@ export default function Hero() {
 
             <HeroPortrait
               src={heroPortrait}
-              className="hero-enter w-60 justify-self-end xl:w-64"
+              className="hero-enter mt-6 w-60 justify-self-end xl:mt-10 xl:w-64"
               style={{ animationDelay: delays[4] }}
             />
           </div>

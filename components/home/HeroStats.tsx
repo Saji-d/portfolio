@@ -95,7 +95,7 @@ export default function HeroStats() {
             ref={(el) => {
               valueRefs.current[i] = el;
             }}
-            className="font-display text-2xl font-semibold tracking-tight text-text-primary lg:text-[2.1rem]"
+            className="font-display text-[1.6rem] font-semibold tracking-tight text-text-primary lg:text-[2.25rem]"
           >
             {s.value.toFixed(s.decimals) + s.suffix}
           </span>
