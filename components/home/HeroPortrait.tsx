@@ -58,24 +58,37 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
   }, []);
 
   return (
-    <div ref={wrapRef} className={className} style={style}>
+    <div ref={wrapRef} className={`relative ${className ?? ""}`} style={style}>
       <div
         ref={glowRef}
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-5 -z-10 rounded-[1.75rem] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-70 blur-2xl transition-transform duration-500 ease-out will-change-transform"
+        className="pointer-events-none absolute -inset-5 -z-10 rounded-[1.5rem] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-70 blur-2xl transition-transform duration-500 ease-out will-change-transform"
       />
-      <div className="hero-portrait-mask overflow-hidden rounded-2xl">
-        <div ref={imgLayerRef} className="transition-transform duration-500 ease-out will-change-transform">
-          <Image
-            src={src}
-            alt="Portrait of Sajidur Rahman Sajid"
-            width={2916}
-            height={4376}
-            priority
-            quality={100}
-            sizes="240px"
-            className="block h-auto w-60 scale-[1.03]"
-          />
+      {/* The frame IS the border - a hairline neon gradient ring sitting
+          flush against the portrait (padding-box trick: gradient fill on
+          the outer box, inset radius on the inner) rather than a separate
+          outline offset outward from it. That offset gap read as dead
+          space around the image; this reads as a signature accent instead. */}
+      <div className="rounded-2xl bg-gradient-to-br from-accent-3/70 via-accent/70 to-accent-2/70 p-px">
+        <div className="hero-portrait-mask overflow-hidden rounded-[calc(1rem-1px)] bg-bg">
+          <div
+            ref={imgLayerRef}
+            className="relative aspect-[4/5] transition-transform duration-500 ease-out will-change-transform"
+          >
+            {/* fill + object-cover + object-top: a deliberately shorter crop
+                than the source photo's natural ~2:3 ratio, biased to the
+                upper body so the face/shoulders stay prominent in a more
+                compact frame rather than shrinking the whole figure down. */}
+            <Image
+              src={src}
+              alt="Portrait of Sajidur Rahman Sajid"
+              fill
+              priority
+              quality={100}
+              sizes="(min-width: 1024px) 256px, (min-width: 640px) 144px, 128px"
+              className="object-cover object-top scale-[1.04]"
+            />
+          </div>
         </div>
       </div>
     </div>

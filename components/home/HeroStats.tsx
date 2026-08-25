@@ -18,10 +18,12 @@ const STATS: Stat[] = [
 
 const DURATION_MS = 1400;
 
+// A quiet closing strip beneath the hero's headline/portrait pairing, not a
+// second dominant block: small value type, a hairline divider between
+// items instead of individual progress bars, generous horizontal spacing.
 export default function HeroStats() {
   const gridRef = useRef<HTMLDivElement>(null);
   const valueRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -32,8 +34,6 @@ export default function HeroStats() {
       STATS.forEach((s, i) => {
         const el = valueRefs.current[i];
         if (el) el.textContent = finalText(s);
-        const bar = barRefs.current[i];
-        if (bar) bar.style.transform = "scaleX(1)";
       });
     };
 
@@ -55,8 +55,6 @@ export default function HeroStats() {
             STATS.forEach((s, i) => {
               const el = valueRefs.current[i];
               if (el) el.textContent = (s.value * eased).toFixed(s.decimals);
-              const bar = barRefs.current[i];
-              if (bar) bar.style.transform = `scaleX(${eased.toFixed(4)})`;
             });
             raf = requestAnimationFrame(tick);
           } else {
@@ -78,21 +76,27 @@ export default function HeroStats() {
   return (
     <div
       ref={gridRef}
-      className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-1"
+      className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:justify-start sm:gap-x-0"
     >
       {STATS.map((s, i) => (
-        <div key={s.label}>
-          <div className="font-display text-2xl font-medium tracking-tight text-text-primary sm:text-3xl">
-            <span ref={(el) => { valueRefs.current[i] = el; }}>
+        <div key={s.label} className="flex items-center">
+          {i > 0 && (
+            <span
+              aria-hidden="true"
+              className="mx-6 hidden h-8 w-px shrink-0 bg-line sm:block lg:mx-8"
+            />
+          )}
+          <div className="flex items-baseline gap-2">
+            <span
+              ref={(el) => {
+                valueRefs.current[i] = el;
+              }}
+              className="font-display text-lg font-medium tracking-tight text-text-primary sm:text-xl"
+            >
               {s.value.toFixed(s.decimals) + s.suffix}
             </span>
+            <span className="card-meta whitespace-nowrap">{s.label}</span>
           </div>
-          <p className="mt-1 card-meta">{s.label}</p>
-          <span
-            aria-hidden="true"
-            className="mt-1.5 block h-px w-full origin-left scale-x-0 bg-gradient-to-r from-accent to-transparent transition-transform duration-100"
-            ref={(el) => { barRefs.current[i] = el; }}
-          />
         </div>
       ))}
     </div>

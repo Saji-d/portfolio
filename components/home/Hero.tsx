@@ -1,10 +1,7 @@
 import { ArrowRight, ChevronDown, Download } from "lucide-react";
-import Image from "next/image";
 import MagneticButton from "@/components/ui/MagneticButton";
-import TerminalCard from "@/components/home/TerminalCard";
 import Eyebrow from "@/components/ui/Eyebrow";
 import HeroStats from "@/components/home/HeroStats";
-import HeroMarquee from "@/components/home/HeroMarquee";
 import HeroPortrait from "@/components/home/HeroPortrait";
 // Imported (rather than referenced as a "/images/hero.webp" string) so
 // Next.js fingerprints it by content hash at build time. Both the image
@@ -14,77 +11,67 @@ import HeroPortrait from "@/components/home/HeroPortrait";
 // permanently: any future replacement gets a new URL automatically.
 import heroPortrait from "@/public/images/hero.webp";
 
-const delays = ["0s", "0.07s", "0.14s", "0.21s", "0.45s"];
+// [eyebrow, headline, description, ctas, portrait, stats]
+const delays = ["0s", "0.08s", "0.18s", "0.28s", "0.36s", "0.5s"];
 const mobileDelays = [
   "0s",
-  "0.06s",
-  "0.12s",
-  "0.18s",
-  "0.24s",
-  "0.3s",
+  "0.07s",
+  "0.16s",
+  "0.26s",
   "0.36s",
-  "0.42s",
+  "0.46s",
+  "0.56s",
 ];
+
+const accentSplit =
+  "bg-gradient-to-r from-accent to-accent-3 bg-clip-text text-transparent";
 
 export default function Hero() {
   return (
     <section
       id="home"
       aria-label="Home"
-      className="relative scroll-mt-24 overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-10 lg:pt-40 lg:pb-[75px]"
+      className="relative flex min-h-screen min-h-dvh scroll-mt-24 flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-10 sm:pb-14"
     >
       <div className="container-site relative">
         {/* Mobile / tablet: a compact, centered composition purpose-built for
-            narrow viewports - eyebrow, portrait, name, positioning line,
-            description, CTAs, credentials, scroll cue, in that order. This is
-            not the desktop layout squeezed down; it's a separate hierarchy. */}
+            narrow viewports - eyebrow, portrait, headline, description,
+            CTAs, credentials, scroll cue, in that order. This is not the
+            desktop layout squeezed down; it's a separate hierarchy. */}
         <div className="lg:hidden">
           <div className="hero-enter" style={{ animationDelay: mobileDelays[0] }}>
-            <Eyebrow className="text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
+            <Eyebrow className="text-center">
+              Software Engineer · AI/ML · Dhaka, Bangladesh
+            </Eyebrow>
           </div>
 
           <div
-            className="hero-enter mx-auto mt-5 flex w-fit items-center justify-center"
+            className="hero-enter mx-auto mt-6 flex w-fit items-center justify-center"
             style={{ animationDelay: mobileDelays[1] }}
           >
-            <div className="hero-portrait-mask overflow-hidden rounded-xl">
-              <Image
-                src={heroPortrait}
-                alt="Portrait of Sajidur Rahman Sajid"
-                width={2916}
-                height={4376}
-                priority
-                quality={90}
-                sizes="180px"
-                className="block h-auto w-36 sm:w-40"
-              />
-            </div>
+            <HeroPortrait src={heroPortrait} className="w-32 sm:w-36" />
           </div>
 
           <h1
-            className="hero-name-enter mt-5 text-center text-[clamp(2.3rem,10vw,3.1rem)] leading-[1.5] tracking-normal text-name-signature"
+            className="hero-enter mt-6 text-center font-display text-[2rem] font-semibold leading-[1.1] tracking-tight text-text-primary"
             style={{ animationDelay: mobileDelays[2] }}
           >
-            Sajidur Rahman Sajid
+            Full-stack systems.
+            <br />
+            <span className={accentSplit}>Production-grade AI.</span>
           </h1>
 
           <p
-            className="hero-enter mt-2.5 text-center font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-text-secondary"
+            className="hero-enter mx-auto mt-4 max-w-[34ch] text-center text-[15px] leading-relaxed text-text-secondary"
             style={{ animationDelay: mobileDelays[3] }}
           >
-            Full-Stack · AI/ML · Product Engineering
-          </p>
-
-          <p
-            className="hero-enter mx-auto mt-4 max-w-[32ch] text-center text-[15px] leading-relaxed text-text-secondary"
-            style={{ animationDelay: mobileDelays[4] }}
-          >
-            I build full-stack software and production AI/ML systems, end to end.
+            I build full-stack products and applied AI systems that turn
+            complex problems into reliable software.
           </p>
 
           <div
-            className="hero-enter mx-auto mt-6 flex w-full max-w-[280px] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
-            style={{ animationDelay: mobileDelays[5] }}
+            className="hero-enter mx-auto mt-7 flex w-full max-w-[280px] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
+            style={{ animationDelay: mobileDelays[4] }}
           >
             <MagneticButton
               href="/projects"
@@ -102,15 +89,15 @@ export default function Hero() {
           </div>
 
           <div
-            className="hero-enter mx-auto mt-9 max-w-[300px] sm:max-w-sm"
-            style={{ animationDelay: mobileDelays[6] }}
+            className="hero-enter mx-auto mt-10 flex justify-center"
+            style={{ animationDelay: mobileDelays[5] }}
           >
             <HeroStats />
           </div>
 
           <div
-            className="hero-enter mt-8 flex flex-col items-center gap-1.5 text-text-muted"
-            style={{ animationDelay: mobileDelays[7] }}
+            className="hero-enter mt-9 flex flex-col items-center gap-1.5 text-text-muted"
+            style={{ animationDelay: mobileDelays[6] }}
           >
             <span className="font-mono text-[10px] uppercase tracking-[0.2em]">
               Scroll
@@ -119,65 +106,70 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Desktop (lg+): the approved baseline composition, unchanged. */}
+        {/* Desktop (lg+): an editorial split rather than an absolute overlay
+            - headline/copy and portrait each own half of the row (equal
+            grid columns, not an auto-sized image floating in the leftover
+            space), so the two halves read as one composition instead of a
+            text block with a photo stranded off to the side. The metrics
+            live below both as a single quiet closing strip, not a
+            competing block. */}
         <div className="hidden lg:block">
-          <div>
-            <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-              <Eyebrow>AI Engineer &amp; Full-Stack Developer</Eyebrow>
+          <div className="grid items-center gap-10 lg:grid-cols-2 xl:gap-14">
+            <div className="max-w-xl">
+              <div className="hero-enter" style={{ animationDelay: delays[0] }}>
+                <Eyebrow>Software Engineer · AI/ML · Dhaka, Bangladesh</Eyebrow>
+              </div>
+
+              <h1
+                className="hero-enter mt-6 font-display text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-text-primary sm:text-[3rem] lg:text-[3.25rem]"
+                style={{ animationDelay: delays[1] }}
+              >
+                Full-stack systems.
+                <br />
+                <span className={accentSplit}>Production-grade AI.</span>
+              </h1>
+
+              <p
+                className="hero-enter mt-6 max-w-md text-base leading-relaxed text-text-secondary sm:text-lg"
+                style={{ animationDelay: delays[2] }}
+              >
+                I build full-stack products and applied AI systems that turn
+                complex problems into reliable software.
+              </p>
+
+              <div
+                className="hero-enter mt-8 flex flex-wrap items-center gap-3"
+                style={{ animationDelay: delays[3] }}
+              >
+                <MagneticButton
+                  href="/projects"
+                  className="bg-accent px-6 py-3 text-sm font-medium text-accent-ink hover:bg-accent/90"
+                >
+                  View projects <ArrowRight className="h-4 w-4" />
+                </MagneticButton>
+                <MagneticButton
+                  href="/Sajidur_Rahman_Sajid.pdf"
+                  external
+                  className="border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
+                >
+                  <Download className="h-4 w-4" /> Download CV
+                </MagneticButton>
+              </div>
             </div>
 
-            <h1
-              className="hero-name-enter mt-5 max-w-2xl text-5xl leading-[1.5] tracking-normal text-name-signature sm:text-6xl"
-              style={{ animationDelay: delays[1] }}
-            >
-              Sajidur Rahman Sajid
-            </h1>
-
-            <p
-              className="hero-enter mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl"
-              style={{ animationDelay: delays[2] }}
-            >
-              I build full-stack systems and production-ready AI/ML solutions,
-              turning complex problems into reliable software for the real world.
-            </p>
-
-            <div
-              className="hero-enter mt-8 flex flex-wrap items-center gap-3"
-              style={{ animationDelay: delays[3] }}
-            >
-              <MagneticButton
-                href="/projects"
-                className="bg-accent px-6 py-3 text-sm font-medium text-accent-ink hover:bg-accent/90"
-              >
-                View projects <ArrowRight className="h-4 w-4" />
-              </MagneticButton>
-              <MagneticButton
-                href="/Sajidur_Rahman_Sajid.pdf"
-                external
-                className="border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
-              >
-                <Download className="h-4 w-4" /> Download CV
-              </MagneticButton>
-            </div>
+            <HeroPortrait
+              src={heroPortrait}
+              className="hero-enter w-60 justify-self-end xl:w-64"
+              style={{ animationDelay: delays[4] }}
+            />
           </div>
 
           <div
-            className="hero-enter mt-[49px] grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)] lg:items-center"
-            style={{ animationDelay: delays[4] }}
+            className="hero-enter mt-12 border-t border-line pt-6 xl:mt-14"
+            style={{ animationDelay: delays[5] }}
           >
             <HeroStats />
-            <TerminalCard />
           </div>
-
-          <div className="hero-enter mt-10 sm:mt-12 lg:mt-16" style={{ animationDelay: delays[4] }}>
-            <HeroMarquee />
-          </div>
-
-          <HeroPortrait
-            src={heroPortrait}
-            className="hero-enter pointer-events-none absolute right-28 top-[-17px] w-60"
-            style={{ animationDelay: delays[4] }}
-          />
         </div>
       </div>
     </section>

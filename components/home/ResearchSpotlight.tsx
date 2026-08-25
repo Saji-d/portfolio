@@ -18,7 +18,7 @@ export default function ResearchSpotlight() {
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="04">Research</Eyebrow>
-            <h2 className="section-title">
+            <h2 className="section-title lg:text-[1.625rem]">
               Where the models meet the messy real world.
             </h2>
           </div>

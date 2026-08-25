@@ -105,7 +105,7 @@ export default function AboutSection() {
       className="relative scroll-mt-0 flex min-h-screen min-h-dvh flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
     >
       <div className="container-site">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-start lg:gap-8">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start lg:gap-8">
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -115,7 +115,10 @@ export default function AboutSection() {
             <motion.div variants={fadeUp}>
               <Eyebrow index="01">About</Eyebrow>
             </motion.div>
-            <motion.h2 variants={fadeUp} className="section-title text-gradient mt-2 sm:mt-2.5">
+            <motion.h2
+              variants={fadeUp}
+              className="section-title text-gradient mt-2 sm:mt-2.5 sm:text-[1.4rem] lg:text-[1.5rem]"
+            >
               The world is part of the work.
             </motion.h2>
             <ul className="mt-3.5 space-y-2 font-mono text-[12px] font-medium uppercase leading-[1.7] tracking-[0.08em] text-text-muted sm:mt-4">
@@ -163,19 +166,39 @@ export default function AboutSection() {
           </motion.div>
 
           <Reveal delay={0.08} className="min-w-0 lg:mt-12">
-            <div className="relative h-[280px] overflow-hidden rounded-2xl border border-line bg-surface/30 sm:h-[320px] lg:h-[345px]">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,var(--accent-dim),transparent)] opacity-40"
-              />
+            {/* No card border/fill here on purpose - a boxed panel is what
+                made this read as "a widget next to some text" rather than
+                one scene. The globe's edges dissolve into the page via a
+                radial mask instead of a hard rounded-rectangle clip, so the
+                atmosphere glow and the starfield behind it stay continuous. */}
+            <div className="relative h-[300px] sm:h-[340px] lg:h-[380px]">
+              {/* Only the canvas + its glow sit inside the mask - the "drag
+                  to explore" hint and the location panel are UI, not scene,
+                  so they stay fully legible even where the globe itself has
+                  faded toward the edge. */}
+              <div className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(62%_62%_at_50%_46%,black_58%,transparent_100%)]">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,var(--accent-dim),transparent)] opacity-50"
+                />
+                <AboutGlobe selectedId={selectedId} onSelect={setSelectedId} />
+              </div>
               <span className="pointer-events-none absolute right-4 top-4 z-10 font-mono text-[10px] uppercase tracking-wider text-text-muted">
                 drag to explore
               </span>
-              <AboutGlobe selectedId={selectedId} onSelect={setSelectedId} />
               <FloatingLocationPanel id={selectedId} />
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={0.14}>
+          <div className="mt-10 flex items-center gap-3 border-t border-line pt-4 sm:mt-12">
+            <span className="h-1 w-1 shrink-0 rounded-full bg-accent/70" />
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+              {GLOBE_LOCATIONS.length} regions tracked · footprint growing
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

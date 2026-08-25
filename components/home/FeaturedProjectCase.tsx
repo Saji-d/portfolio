@@ -53,14 +53,14 @@ interface FeaturedProjectCaseProps {
   onOpenCaseStudy: (slug: string) => void;
 }
 
-const FLAT_TRANSFORM = "perspective(1400px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
-
 function FeaturedImage({
   project,
   onOpenCaseStudy,
+  tiltSign,
 }: {
   project: Project;
   onOpenCaseStudy: (slug: string) => void;
+  tiltSign: 1 | -1;
 }) {
   const scrollTargetRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -70,10 +70,19 @@ function FeaturedImage({
   });
   const y = useTransform(scrollYProgress, [0, 1], [-16, 16]);
 
-  // Flat and undistorted at rest - the screenshot has to read accurately.
-  // Tilt only appears while the cursor is actually over the card, and it's
-  // kept small (max ~4deg) so it reads as a premium hover cue rather than a
-  // gimmicky "tilted credit card".
+  // A hairline resting tilt (alternating left/right per chapter) is what
+  // turns this from "screenshot pasted flat" into "print propped against
+  // the page" - small enough to be nearly subliminal, obvious enough that
+  // removing it would be noticed. Hover tilt is layered on top of this
+  // baseline rather than replacing it, so the surface never snaps to a
+  // dead-flat 0deg at any point in the interaction.
+  const restRotateY = tiltSign * 1.1;
+  const restRotateX = 0.5;
+  const restTransform = `perspective(1400px) rotateX(${restRotateX}deg) rotateY(${restRotateY}deg) scale3d(1, 1, 1)`;
+
+  // Tilt only intensifies while the cursor is actually over the card, and
+  // it's kept small (max ~4deg total) so it reads as a premium hover cue
+  // rather than a gimmicky "tilted credit card".
   function onMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = frameRef.current;
     if (!el) return;
@@ -82,15 +91,15 @@ function FeaturedImage({
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    const rotateY = px * 4;
-    const rotateX = -py * 4;
-    el.style.transform = `perspective(1400px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
+    const rotateY = restRotateY + px * 3.4;
+    const rotateX = restRotateX - py * 3.4;
+    el.style.transform = `perspective(1400px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.012, 1.012, 1.012)`;
   }
 
   function onLeave() {
     const el = frameRef.current;
     if (!el) return;
-    el.style.transform = FLAT_TRANSFORM;
+    el.style.transform = restTransform;
   }
 
   const opensCaseStudy = Boolean(project.caseStudy);
@@ -117,65 +126,67 @@ function FeaturedImage({
 
       <div className="pointer-events-none absolute inset-0 bg-bg/0 transition-colors duration-300 group-hover:bg-bg/5" />
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      >
-        <span className="animate-scan-sweep absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-accent/20 to-transparent" />
-      </div>
-      <span className="pointer-events-none absolute left-3 top-3 h-4 w-4 -translate-x-1 -translate-y-1 border-l border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100" />
-      <span className="pointer-events-none absolute right-3 top-3 h-4 w-4 translate-x-1 -translate-y-1 border-r border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100" />
-      <span className="pointer-events-none absolute bottom-3 left-3 h-4 w-4 -translate-x-1 translate-y-1 border-b border-l border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100" />
-      <span className="pointer-events-none absolute bottom-3 right-3 h-4 w-4 translate-x-1 translate-y-1 border-b border-r border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100" />
-
       <span className="pointer-events-none absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-accent text-accent-ink opacity-0 shadow-[0_10px_28px_rgba(99,102,241,0.4)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <ArrowUpRight className="h-4 w-4" />
       </span>
     </>
   );
 
-  return (
-    <div ref={scrollTargetRef} className="group relative" style={{ perspective: "1400px" }}>
-      {/* Contact shadow - a soft blurred ellipse grounding the card, plus an
-          accent-tinted bloom behind it that intensifies on hover, giving the
-          mockup a "floating above the page" depth cue without a container. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-4 -z-10 rounded-[28px] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-50"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-x-6 -bottom-6 -z-10 h-14 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.45),transparent)] opacity-60 blur-2xl"
-      />
+  const shadowSide = tiltSign > 0 ? "12px" : "-12px";
 
-      <div
-        ref={frameRef}
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        style={{ transform: FLAT_TRANSFORM }}
-        className="relative h-[190px] w-full overflow-hidden rounded-2xl border border-line/80 bg-surface-2 shadow-[0_24px_50px_-24px_rgba(0,0,0,0.6)] transition-transform duration-500 ease-out will-change-transform sm:h-[240px] lg:h-auto lg:aspect-[3/2]"
-      >
-        {opensCaseStudy ? (
-          <button
-            type="button"
-            onClick={() => onOpenCaseStudy(project.slug)}
-            aria-label={`Open ${project.name} case study`}
-            className="absolute inset-0 block h-full w-full cursor-pointer"
-          >
-            {art}
-          </button>
-        ) : href ? (
-          <SmartLink
-            href={href}
-            ariaLabel={`${project.name}: ${project.tagline}`}
-            className="absolute inset-0 block h-full w-full"
-          >
-            {art}
-          </SmartLink>
-        ) : (
-          <div className="absolute inset-0 h-full w-full">{art}</div>
-        )}
+  return (
+    <div className="group relative">
+      <div ref={scrollTargetRef} className="relative" style={{ perspective: "1400px" }}>
+        {/* Contact shadow - a soft blurred ellipse grounding the card, plus an
+            accent-tinted bloom behind it that intensifies on hover, giving the
+            mockup a "floating above the page" depth cue without a container. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-4 -z-10 rounded-[28px] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-50"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-6 -bottom-6 -z-10 h-14 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.45),transparent)] opacity-60 blur-2xl"
+        />
+
+        <div
+          ref={frameRef}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          style={{ transform: restTransform, boxShadow: `${shadowSide} 26px 50px -26px rgba(0,0,0,0.62)` }}
+          className="relative h-[190px] w-full overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform sm:h-[240px] lg:h-auto lg:aspect-[3/2]"
+        >
+          {opensCaseStudy ? (
+            <button
+              type="button"
+              onClick={() => onOpenCaseStudy(project.slug)}
+              aria-label={`Open ${project.name} case study`}
+              className="absolute inset-0 block h-full w-full cursor-pointer"
+            >
+              {art}
+            </button>
+          ) : href ? (
+            <SmartLink
+              href={href}
+              ariaLabel={`${project.name}: ${project.tagline}`}
+              className="absolute inset-0 block h-full w-full"
+            >
+              {art}
+            </SmartLink>
+          ) : (
+            <div className="absolute inset-0 h-full w-full">{art}</div>
+          )}
+        </div>
       </div>
+
+      {/* A photo-caption line beneath the print, physically separate from
+          the image frame rather than another line inside a card - keeps
+          image and metadata "compositionally connected, visually distinct"
+          per the brief rather than fusing them into one bordered block. */}
+      <p className="mt-3 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-text-muted">
+        <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/70" />
+        {project.status.toLowerCase()} build · {project.category.toLowerCase()}
+      </p>
     </div>
   );
 }
@@ -232,7 +243,11 @@ export default function FeaturedProjectCase({
       className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-14"
     >
       <div className={`order-1 lg:order-none lg:col-span-6 lg:row-start-1 ${imageColStart}`}>
-        <FeaturedImage project={project} onOpenCaseStudy={onOpenCaseStudy} />
+        <FeaturedImage
+          project={project}
+          onOpenCaseStudy={onOpenCaseStudy}
+          tiltSign={imageFirst ? -1 : 1}
+        />
       </div>
 
       <motion.div

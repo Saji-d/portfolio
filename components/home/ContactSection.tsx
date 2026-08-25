@@ -5,6 +5,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import Eyebrow from "@/components/ui/Eyebrow";
+import { handleSpotlight } from "@/components/ui/spotlight";
 import { SITE } from "@/data/site";
 
 interface Channel {
@@ -36,18 +37,12 @@ const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.07 } },
 };
 
-function handleSpotlight(e: React.MouseEvent<HTMLElement>) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty("--sx", `${e.clientX - rect.left}px`);
-  e.currentTarget.style.setProperty("--sy", `${e.clientY - rect.top}px`);
-}
-
 export default function ContactSection() {
   return (
     <section
       id="contact"
       aria-label="Contact"
-      className="relative min-h-0 scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_2rem)] pb-6 sm:pb-8 sm:pt-[calc(var(--nav-offset)_+_3rem)]"
+      className="relative min-h-0 scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-4 sm:pb-6 sm:pt-[calc(var(--nav-offset)_+_2rem)]"
     >
       <div className="container-site">
         <MotionConfig reducedMotion="user">
@@ -63,7 +58,7 @@ export default function ContactSection() {
             >
               <div className="max-w-2xl">
                 <Eyebrow index="08">Contact</Eyebrow>
-                <h2 className="section-title">
+                <h2 className="section-title lg:text-[1.75rem]">
                   Let&apos;s turn the idea into something real.
                 </h2>
               </div>
@@ -76,7 +71,7 @@ export default function ContactSection() {
               </span>
             </motion.div>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {channels.map((c) => {
                 const external = c.href.startsWith("http");
                 return (

@@ -50,19 +50,23 @@ export default function ExperienceTimeline() {
     <section
       id="experience"
       aria-label="Experience"
-      className="section-chapter relative overflow-hidden pt-[calc(var(--nav-offset)_+_3.5rem)] pb-16 sm:pb-20"
+      className="section-chapter relative overflow-hidden pt-[calc(var(--nav-offset)_+_1.75rem)] pb-10 sm:pb-14"
     >
       <div className="container-site">
         <Reveal>
-          <div className="max-w-2xl">
+          {/* No max-w-2xl here on purpose - at 71 characters this is by far
+              the longest section title on the page, so it gets the full
+              content width and the smallest size in the section-title
+              range to still land on one line at desktop widths. */}
+          <div>
             <Eyebrow index="05">Experience</Eyebrow>
-            <h2 className="section-title">
+            <h2 className="section-title lg:text-[1.5rem]">
               Engineering scalable applications and enterprise production software.
             </h2>
           </div>
         </Reveal>
 
-        <div className="relative mt-8 lg:mt-12">
+        <div className="relative mt-6 lg:mt-8">
           {/* Single-column rail (mobile / tablet) */}
           <span
             aria-hidden="true"
@@ -80,7 +84,7 @@ export default function ExperienceTimeline() {
             <TimelineProgress center />
           </div>
 
-          <div className="space-y-5 lg:space-y-10">
+          <div className="space-y-4 lg:space-y-6">
             {experiences.map((experience, i) => {
               const isCurrent = i === 0;
               const active = isCurrent || activeIndex === i;

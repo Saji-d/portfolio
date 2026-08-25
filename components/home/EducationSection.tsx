@@ -177,19 +177,19 @@ export default function EducationSection() {
     <section
       id="education"
       aria-label="Education"
-      className="section-chapter section-chapter-tight relative pb-10 sm:pb-12"
+      className="section-chapter section-chapter-tight relative pb-6 sm:pb-8"
     >
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
             <Eyebrow index="06">Education</Eyebrow>
-            <h2 className="section-title">
+            <h2 className="section-title lg:text-[1.75rem]">
               The foundations underneath the stack.
             </h2>
           </div>
         </Reveal>
 
-        <div className="mt-6 space-y-3">
+        <div className="mt-4 space-y-2.5">
           {featured && (
             <Reveal>
               <FeaturedCard entry={featured} />

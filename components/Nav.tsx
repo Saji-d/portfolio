@@ -269,7 +269,7 @@ export default function Nav() {
                 {aboutActive && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent"
+                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.7)]"
                     transition={NAV_INDICATOR_TRANSITION}
                   />
                 )}
@@ -290,7 +290,7 @@ export default function Nav() {
                 {cortexActive && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent"
+                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.7)]"
                     transition={NAV_INDICATOR_TRANSITION}
                   />
                 )}
@@ -313,7 +313,7 @@ export default function Nav() {
                     {active && (
                       <motion.span
                         layoutId="nav-underline"
-                        className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent"
+                        className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.7)]"
                         transition={NAV_INDICATOR_TRANSITION}
                       />
                     )}

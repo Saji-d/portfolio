@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <footer className="relative z-10">
       <Reveal>
-        <div className="container-site flex flex-col gap-8 py-8 md:flex-row md:items-start md:justify-between">
+        <div className="container-site flex flex-col gap-6 py-6 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <div className="flex items-center gap-2">
               <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-bold text-accent">
@@ -84,7 +84,7 @@ export default function Footer() {
             shrunk-from-bottom trigger band (the document runs out of
             scroll room first) - it would sit at opacity:0 forever. The
             block above it already carries the reveal-on-scroll moment. */}
-        <div className="container-site flex flex-col items-center justify-between gap-3 py-4 sm:flex-row">
+        <div className="container-site flex flex-col items-center justify-between gap-3 py-3 sm:flex-row">
           <p className="card-meta">
             {`© ${new Date().getFullYear()} ${SITE.name} · All rights reserved.`}
           </p>
