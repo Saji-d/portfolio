@@ -18,9 +18,11 @@ const STATS: Stat[] = [
 
 const DURATION_MS = 1400;
 
-// A quiet closing strip beneath the hero's headline/portrait pairing, not a
-// second dominant block: small value type, a hairline divider between
-// items instead of individual progress bars, generous horizontal spacing.
+// A compact closing block beneath the hero's left-column copy, sized to its
+// content (inline-grid) rather than stretching across the section - it
+// belongs to the text column, not the full hero width. Large value type
+// with a subordinate mono label stacked underneath, hairline dividers
+// between items instead of individual progress bars.
 export default function HeroStats() {
   const gridRef = useRef<HTMLDivElement>(null);
   const valueRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -76,27 +78,28 @@ export default function HeroStats() {
   return (
     <div
       ref={gridRef}
-      className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:justify-start sm:gap-x-0"
+      className="inline-grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4 sm:gap-x-9 sm:gap-y-0 lg:gap-x-10"
     >
       {STATS.map((s, i) => (
-        <div key={s.label} className="flex items-center">
+        <div
+          key={s.label}
+          className="relative flex flex-col gap-1.5 sm:pl-7 sm:first:pl-0 lg:pl-8"
+        >
           {i > 0 && (
             <span
               aria-hidden="true"
-              className="mx-6 hidden h-8 w-px shrink-0 bg-line sm:block lg:mx-8"
+              className="absolute left-0 top-0.5 hidden h-7 w-px shrink-0 bg-line sm:block lg:h-8"
             />
           )}
-          <div className="flex items-baseline gap-2">
-            <span
-              ref={(el) => {
-                valueRefs.current[i] = el;
-              }}
-              className="font-display text-lg font-medium tracking-tight text-text-primary sm:text-xl"
-            >
-              {s.value.toFixed(s.decimals) + s.suffix}
-            </span>
-            <span className="card-meta whitespace-nowrap">{s.label}</span>
-          </div>
+          <span
+            ref={(el) => {
+              valueRefs.current[i] = el;
+            }}
+            className="font-display text-2xl font-semibold tracking-tight text-text-primary lg:text-[2.1rem]"
+          >
+            {s.value.toFixed(s.decimals) + s.suffix}
+          </span>
+          <span className="card-meta whitespace-nowrap">{s.label}</span>
         </div>
       ))}
     </div>

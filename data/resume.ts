@@ -1,6 +1,6 @@
 export const resume = {
   about:
-    "Full-stack Software Engineer and AI/ML Developer building production software across frontend, backend, and intelligent machine-learning systems. Adept at turning complex architectural problems into elegant, production-ready code.",
+    "Software Engineer and AI Developer engineering the bridge between high-throughput backend systems and intelligent machine learning models. Adept at turning complex architectural problems into elegant, production-ready code.",
   experience: [
     {
       org: "Ledgercross",
@@ -8,9 +8,9 @@ export const resume = {
       role: "Software Developer Trainee",
       period: "May 2026 - Present",
       points: [
-        "Developing production software systems using Python (FastAPI), PostgreSQL, Redis, and cloud infrastructure.",
-        "Designing and implementing REST APIs, asynchronous and distributed processing, multi-tenant data layers, and automated testing suites.",
-        "Collaborating with the engineering team to build scalable services, ensure system reliability, and maintain code quality.",
+        "Built MERN-based business systems and authored 218 automated pytest cases for backend workflows.",
+        "Engineered AI invoice processing pipelines using Python, FastAPI, Mindee OCR, PostgreSQL, and Redis Streams.",
+        "Developed FUMAK, a client inventory and POS system with Android barcode scanning and stock management.",
       ],
     },
     {
@@ -19,20 +19,29 @@ export const resume = {
       role: "Software Engineer Intern",
       period: "Feb 2026 - Apr 2026",
       points: [
-        "Developed and delivered responsive web applications using modern web technologies and frontend frameworks.",
-        "Integrated frontend interfaces with RESTful APIs, implemented production-ready UI components, and resolved technical issues.",
-        "Collaborated in agile team workflows, utilizing Git for version control and participating in code reviews.",
+        "Developed responsive frontend interfaces utilizing HTML5, CSS3, and modern JavaScript (ES6+).",
+        "Integrated frontend layout structures with backend RESTful APIs with robust error handling.",
+        "Collaborated in agile development workflows utilizing Git for version control and system deployment.",
       ],
     },
   ],
   projects: [
     {
-      name: "InvoicePilot (Ledgercross product)",
-      stack: "Python, FastAPI, React 19, PostgreSQL, Redis",
+      name: "InvoicePilot (Ledgercross Product)",
+      stack: "Python, FastAPI, Mindee OCR, PostgreSQL, Redis",
       points: [
-        "Designed an 11-stage processing pipeline for automated Mindee OCR extraction and fraud detection.",
-        "Authored a Web3 cryptographic seal kernel in Solidity to record tamper-evident verification hashes.",
-        "Configured dead-letter queues and exponential backoff retries for fault-tolerant background jobs.",
+        "Built an AI invoice processing microservice for OCR extraction and structured data generation.",
+        "Implemented invoice normalization, validation, duplicate, fraud, and anomaly detection rules.",
+        "Developed an 11-stage pipeline with Redis Streams for synchronous and asynchronous processing.",
+      ],
+    },
+    {
+      name: "FUMAK Inventory & POS System (Client Project)",
+      stack: "Kotlin, Android, Next.js, PostgreSQL",
+      points: [
+        "Built an inventory and POS platform with Android barcode scanning and a Next.js web application.",
+        "Implemented real-time product lookup, stock management, checkout, and sales analytics.",
+        "Integrated ML Kit, Prisma, Neon PostgreSQL, and Cloudflare R2 for core workflows.",
       ],
     },
     {
@@ -52,18 +61,18 @@ export const resume = {
       ],
     },
     {
-      name: "3D City Simulator",
-      stack: "C++, OpenGL, Computer Graphics",
+      name: "Face Recognition System",
+      stack: "Python, OpenCV, LBPH",
       points: [
-        "Built a 3D simulated city featuring dynamic day/night cycles, weather effects, and traffic light logic.",
-        "Implemented real-time graphics rendering pipelines and interactive keyboard controls.",
+        "Developed a real-time face recognition system leveraging OpenCV and Local Binary Patterns Histograms (LBPH).",
+        "Engineered efficient image processing pipelines for accurate feature extraction and identification.",
       ],
     },
   ],
   education: [
     {
       org: "American International University-Bangladesh (AIUB)",
-      degree: "BSc in Computer Science & Engineering",
+      degree: "Bachelor of Science in Computer Science and Engineering",
       detail: "CGPA 3.92 / 4.00",
       period: "Sep 2022 - Apr 2026",
     },
@@ -101,8 +110,8 @@ export const resume = {
     { group: "Tools & DevOps", items: "Git, Docker, Celery, BullMQ, Jupyter Notebook, Cloudflare R2" },
   ],
   honors: [
-    { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 - 2026" },
-    { name: "The Duke of Edinburgh's Bronze Award", detail: "Community service, skill development, and expedition tasks.", period: "2025 - 2026" },
+    { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "Awarded 70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 - 2026" },
+    { name: "The Duke of Edinburgh's Bronze Award", detail: "Completed rigorous requirements encompassing community service, skill development, and expedition tasks.", period: "2025 - 2026" },
   ],
   leadership: [
     { role: "Student Activity Coordinator", org: "Space Innovation Camp", period: "2022 - 2025", detail: "Led robotics and UAV engineering workshops mentoring over 500 students." },

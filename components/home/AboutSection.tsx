@@ -192,7 +192,7 @@ export default function AboutSection() {
         </div>
 
         <Reveal delay={0.14}>
-          <div className="mt-10 flex items-center gap-3 border-t border-line pt-4 sm:mt-12">
+          <div className="mt-10 flex items-center gap-3 pt-4 sm:mt-12">
             <span className="h-1 w-1 shrink-0 rounded-full bg-accent/70" />
             <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
               {GLOBE_LOCATIONS.length} regions tracked · footprint growing

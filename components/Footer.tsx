@@ -3,6 +3,7 @@ import { Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import BackToTop from "@/components/ui/BackToTop";
 import Reveal from "@/components/ui/Reveal";
+import FooterSignature from "@/components/FooterSignature";
 import { NAV_LINKS, SITE } from "@/data/site";
 
 // Shared by every footer link: an underline that grows in from the left
@@ -97,6 +98,10 @@ export default function Footer() {
             <BackToTop />
           </div>
         </div>
+      </div>
+
+      <div className="container-site pb-8 pt-2 sm:pb-10">
+        <FooterSignature />
       </div>
     </footer>
   );

@@ -111,10 +111,13 @@ export default function Hero() {
             grid columns, not an auto-sized image floating in the leftover
             space), so the two halves read as one composition instead of a
             text block with a photo stranded off to the side. The metrics
-            live below both as a single quiet closing strip, not a
-            competing block. */}
+            close out the left column itself (not a full-width strip below
+            both columns), so they stay inside the text column's width and
+            never reach toward the portrait. items-start (not items-center)
+            keeps the portrait pinned to the top of the row regardless of
+            how tall the left column grows with the metrics appended. */}
         <div className="hidden lg:block">
-          <div className="grid items-center gap-10 lg:grid-cols-2 xl:gap-14">
+          <div className="grid items-start gap-10 lg:grid-cols-2 xl:gap-14">
             <div className="max-w-xl">
               <div className="hero-enter" style={{ animationDelay: delays[0] }}>
                 <Eyebrow>Software Engineer · AI/ML · Dhaka, Bangladesh</Eyebrow>
@@ -155,6 +158,13 @@ export default function Hero() {
                   <Download className="h-4 w-4" /> Download CV
                 </MagneticButton>
               </div>
+
+              <div
+                className="hero-enter mt-12 border-t border-line pt-6 xl:mt-14"
+                style={{ animationDelay: delays[5] }}
+              >
+                <HeroStats />
+              </div>
             </div>
 
             <HeroPortrait
@@ -162,13 +172,6 @@ export default function Hero() {
               className="hero-enter w-60 justify-self-end xl:w-64"
               style={{ animationDelay: delays[4] }}
             />
-          </div>
-
-          <div
-            className="hero-enter mt-12 border-t border-line pt-6 xl:mt-14"
-            style={{ animationDelay: delays[5] }}
-          >
-            <HeroStats />
           </div>
         </div>
       </div>
