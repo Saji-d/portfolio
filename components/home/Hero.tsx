@@ -169,7 +169,7 @@ export default function Hero() {
 
             <HeroPortrait
               src={heroPortrait}
-              className="hero-enter mt-6 w-60 justify-self-end xl:mt-10 xl:w-64"
+              className="hero-enter w-[350px] justify-self-end"
               style={{ animationDelay: delays[4] }}
             />
           </div>

@@ -1,15 +1,4 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Image, { type StaticImageData } from "next/image";
-
-const reducedMotion =
-  typeof window !== "undefined"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)")
-    : null;
-
-const finePointer =
-  typeof window !== "undefined" ? window.matchMedia("(pointer: fine)") : null;
 
 interface HeroPortraitProps {
   src: StaticImageData;
@@ -17,80 +6,51 @@ interface HeroPortraitProps {
   style?: React.CSSProperties;
 }
 
-// Desktop-only depth cue: the portrait and the accent glow behind it drift a
-// few px in opposite directions as the cursor moves across the hero,
-// reading as two layers at different depths rather than one flat cutout.
-// Tracked across the whole hero section (not just the image) so the effect
-// is already settling by the time the cursor reaches the portrait itself.
+// A plain, static portrait card - no glow, no gradient border, no filter
+// effects. The only reaction to the cursor is a near-imperceptible lift:
+// scale to 1.01 and the hairline border tinting slightly toward the
+// accent color, both plain CSS transitions on the card itself (no JS,
+// no animation loop, nothing touching the photo's own pixels).
 export default function HeroPortrait({ src, className, style }: HeroPortraitProps) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const imgLayerRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (reducedMotion?.matches || !finePointer?.matches) return;
-    const section = wrapRef.current?.closest("section");
-    if (!section) return;
-
-    function onMove(e: PointerEvent) {
-      if (e.pointerType !== "mouse") return;
-      const rect = section!.getBoundingClientRect();
-      const dx = (e.clientX - rect.left) / rect.width - 0.5;
-      const dy = (e.clientY - rect.top) / rect.height - 0.5;
-      if (imgLayerRef.current) {
-        imgLayerRef.current.style.transform = `translate3d(${(dx * -6).toFixed(2)}px, ${(dy * -6).toFixed(2)}px, 0)`;
-      }
-      if (glowRef.current) {
-        glowRef.current.style.transform = `translate3d(${(dx * 12).toFixed(2)}px, ${(dy * 12).toFixed(2)}px, 0)`;
-      }
-    }
-    function onLeave() {
-      imgLayerRef.current?.style.setProperty("transform", "translate3d(0,0,0)");
-      glowRef.current?.style.setProperty("transform", "translate3d(0,0,0)");
-    }
-
-    section.addEventListener("pointermove", onMove, { passive: true });
-    section.addEventListener("pointerleave", onLeave, { passive: true });
-    return () => {
-      section.removeEventListener("pointermove", onMove);
-      section.removeEventListener("pointerleave", onLeave);
-    };
-  }, []);
-
   return (
-    <div ref={wrapRef} className={`relative ${className ?? ""}`} style={style}>
-      <div
-        ref={glowRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-5 -z-10 rounded-[1.5rem] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-70 blur-2xl transition-transform duration-500 ease-out will-change-transform"
-      />
-      {/* The frame IS the border - a hairline neon ring sitting flush
-          against the portrait (padding-box trick: gradient fill on the
-          outer box, inset radius on the inner) rather than a separate
-          outline offset outward from it. That offset gap read as dead
-          space around the image; this reads as a signature accent instead.
-          .hero-portrait-ring (globals.css) replaces what used to be a
-          static linear gradient with a slow, continuously rotating conic
-          one - a thin neon highlight travelling around the perimeter. */}
-      <div className="hero-portrait-ring rounded-2xl p-px">
-        <div className="hero-portrait-mask overflow-hidden rounded-[calc(1rem-1px)] bg-bg">
-          <div
-            ref={imgLayerRef}
-            className="relative aspect-[1060/1484] transition-transform duration-500 ease-out will-change-transform"
-          >
-            {/* aspect-[1060/1484] matches the source photo's native pixel
-                ratio exactly, so object-cover has nothing to crop - the
-                full figure (head to hands) loads in at its own size
-                instead of the old tight bust-only crop, and the frame
-                grows taller with it. */}
+    <div className={`group relative ${className ?? ""}`} style={style}>
+      {/* The hover scale lives on this wrapper, one level above
+          .hero-portrait-mask, deliberately - that inner element already
+          animates `transform` on entrance (hero-portrait-enter,
+          globals.css), and a fill-mode "both" animation keeps controlling
+          a property indefinitely once it's run, which would silently
+          block or fight a `transform` set here by group-hover. Keeping
+          the two transforms on different elements sidesteps that
+          entirely instead of relying on timing. */}
+      <div className="transition-transform duration-300 ease-out group-hover:scale-[1.01]">
+        <div className="hero-portrait-mask overflow-hidden rounded-2xl border border-line bg-bg transition-colors duration-300 ease-out group-hover:border-accent/40">
+          <div className="relative aspect-[4/5]">
+            {/* The source photo's own ratio (2790x3480) is already close
+                to this box's 4:5, so a plain object-cover barely crops
+                anything - it shows the almost-full standing figure at
+                thumbnail scale. object-position and transform-origin
+                share one Y anchor (25%, a point just below the hairline
+                rather than the box's dead-center, which would zoom
+                toward the waist instead); scaling around that fixed
+                point crops evenly toward it in every direction, so a
+                bigger scale value always means "show a smaller slice of
+                the source," with that slice's own height set by
+                1/scale. scale-[1.35] is a deliberately mild zoom (tried
+                and rejected 2.2-2.5 first - that read as a tight
+                head-and-shoulders headshot, not a portrait) that keeps
+                the composition close to the original photo: full head
+                with headroom, a strip of the red roof truss overhead,
+                both hands in pockets, and the crop landing around the
+                upper thigh. Overflow is clipped by the parent's
+                overflow-hidden mask, not by the box itself. */}
             <Image
               src={src}
               alt="Portrait of Sajidur Rahman Sajid"
               fill
               priority
               quality={100}
-              sizes="(min-width: 1024px) 256px, (min-width: 640px) 144px, 128px"
-              className="object-cover object-center"
+              sizes="(min-width: 1024px) 380px, (min-width: 640px) 144px, 128px"
+              className="scale-[1.35] object-cover object-[50%_25%] origin-[50%_25%]"
             />
           </div>
         </div>

@@ -424,9 +424,11 @@
 /* Hero portrait: a curtain-wipe mask distinct from the opacity+lift used by
    every other hero element, so the portrait reads as its own entrance beat
    rather than another item in the same stagger. Runs on a wrapper with
-   overflow-hidden + rounded corners; the pointer-parallax transform (set
-   imperatively in HeroPortrait.tsx) lives on the image *inside* this
-   wrapper, so the two never fight over the `transform` property. */
+   overflow-hidden + rounded corners; this animation's own `transform` (the
+   1.08->1 scale below) is why the hover-scale in HeroPortrait.tsx lives on
+   a separate wrapping element instead of here - a fill-mode "both"
+   animation keeps controlling a property indefinitely once it's run, which
+   would fight anything else trying to set `transform` on this element. */
 @keyframes hero-portrait-enter {
   from {
     clip-path: inset(0 0 100% 0);
@@ -1088,24 +1090,6 @@
 .group:hover .card-neon-ring,
 .group:focus-visible .card-neon-ring {
   animation-play-state: running;
-}
-
-/* Hero portrait: the same ring technique, always rotating (not hover-gated)
-   and slower, replacing what used to be a static linear-gradient border.
-   A narrower, dimmer base arc than the card ring reads as one restrained
-   travelling highlight rather than a third of the ring glowing at once. */
-.hero-portrait-ring {
-  background: conic-gradient(
-    from var(--neon-angle),
-    rgba(99, 102, 241, 0.28) 0deg,
-    rgba(99, 102, 241, 0.28) 268deg,
-    rgba(96, 165, 250, 0.85) 296deg,
-    rgba(34, 211, 238, 1) 308deg,
-    rgba(168, 85, 247, 0.85) 320deg,
-    rgba(99, 102, 241, 0.28) 348deg,
-    rgba(99, 102, 241, 0.28) 360deg
-  );
-  animation: neon-ring-rotate 5s linear infinite;
 }
 
 /* Cursor (grab/grabbing) is applied imperatively in AboutGlobe.tsx, scoped
