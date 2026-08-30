@@ -411,26 +411,26 @@
 }
 
 /* Hero halo: a gigantic celestial portal emerging from behind the fixed
-   navbar. Earlier passes used a stack of bordered circles for every layer -
-   even thinned down, a border is a hard-edged geometric line, so the whole
-   stack still read as concentric CSS circles with glow around them, not
-   atmosphere. This version keeps exactly ONE bordered circle - a thin,
-   near-white line that supplies the crisp "hot core" edge and, by being a
-   circle cropped above the viewport, the deep U-shaped geometry. Everything
-   else is a smooth radial-gradient "ring" (transparent -> color ->
-   transparent, so it has no drawn edge at all, only continuous falloff),
-   each one bigger and more blurred than the last. Gradients can't be
-   individually counted the way bordered rings can - they blend into one
-   another by construction - which is what makes this read as diffuse gas
-   instead of a stack of outlines. */
+   navbar. The previous pass's atmosphere gradients had their "transparent
+   until" stop set far too low relative to each layer's own radius (e.g.
+   60% of an ry=580 ellipse = radius 348, well INSIDE the core's own
+   radius of 500) - meaning the "atmosphere" started glowing before the
+   core's dark hole even ended, filling the interior with color instead of
+   leaving it dark. This version calculates each layer's transparent-until
+   stop from its actual radius so the color band starts at roughly the same
+   *absolute* pixel radius the previous layer's left off (~480 -> 520 ->
+   560 -> 600), keeping the whole interior genuinely dark all the way out
+   to the core. The atmosphere layers are also now wide, flat ellipses
+   (much larger horizontal than vertical radius) rather than near-circles,
+   so they spread far left/right without reaching much deeper - matching a
+   broad horizontal nebula rather than a bigger version of the same circle.
+   The container spans the full viewport (not a fixed 1400px) so that
+   spread isn't clipped on wide screens. */
 .hero-halo {
   position: absolute;
-  left: 50%;
+  inset-inline: 0;
   top: 0;
-  width: 1400px;
-  max-width: 100vw;
   height: 280px;
-  transform: translateX(-50%);
   overflow: hidden;
   pointer-events: none;
 }
@@ -442,74 +442,99 @@
   content: "";
   position: absolute;
   left: 50%;
-  top: -200px;
-  width: 1380px;
-  height: 380px;
+  top: -275px;
+  width: 2200px;
+  height: 460px;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse 70% 96% at 50% 0%, rgba(124, 58, 237, 0.24), transparent 80%);
-  filter: blur(46px);
+  background: radial-gradient(ellipse 58% 94% at 50% 0%, rgba(139, 92, 246, 0.36), transparent 80%);
+  filter: blur(56px);
 }
 
-/* Layer 2: the huge outer atmosphere - the biggest, faintest, most blurred
-   ring-shaped gradient (transparent center, indigo bloom, transparent
-   edge). This is most of the effect's visual mass, and it has no hard
-   edge anywhere - only a soft peak that fades in both directions. */
+/* Central hot spot: a normal (non-ring) glow, not annular like the layers
+   below - it exists purely to make the middle of the portal noticeably
+   hotter than its sides, per the reference's concentrated white/lavender
+   core. Centered on the core's own lowest point so it reinforces the most
+   visually prominent part of the arc rather than washing the whole ring
+   evenly. */
+.hero-halo-hotspot {
+  position: absolute;
+  left: 50%;
+  top: -45px;
+  width: 640px;
+  height: 260px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(233, 213, 255, 0.26) 35%,
+    rgba(168, 85, 247, 0.14) 62%,
+    transparent 88%
+  );
+  filter: blur(26px);
+}
+
+/* Layer 2: the huge outer atmosphere - wide and shallow (rx >> ry) so it
+   spreads far horizontally without reaching deep. Color only appears past
+   90% of its own radius (absolute radius ~560, just past layer 3's own
+   band), so the interior stays dark - it isn't "60% of a huge ellipse",
+   it's calculated the same way as every layer below. */
 .hero-halo-outer {
   position: absolute;
   left: 50%;
-  top: -940px;
-  width: 1400px;
+  top: -1035px;
+  width: 1900px;
+  height: 1240px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    transparent 0%,
+    transparent 90%,
+    rgba(99, 102, 241, 0.24) 95%,
+    rgba(99, 102, 241, 0.1) 98%,
+    transparent 100%
+  );
+  filter: blur(30px);
+}
+
+/* Layer 3: medium violet atmosphere - narrower and shallower than the
+   outer layer, its color band starting at absolute radius ~520. */
+.hero-halo-mid {
+  position: absolute;
+  left: 50%;
+  top: -995px;
+  width: 1520px;
   height: 1160px;
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
     transparent 0%,
-    transparent 60%,
-    rgba(99, 102, 241, 0.22) 78%,
-    rgba(99, 102, 241, 0.1) 90%,
+    transparent 90%,
+    rgba(168, 85, 247, 0.36) 96%,
+    rgba(168, 85, 247, 0.13) 98%,
     transparent 100%
   );
-  filter: blur(38px);
+  filter: blur(20px);
 }
 
-/* Layer 3: medium violet atmosphere, smaller and less blurred than the
-   outer layer so its (still soft) peak sits closer to the core. */
-.hero-halo-mid {
-  position: absolute;
-  left: 50%;
-  top: -910px;
-  width: 1220px;
-  height: 1100px;
-  transform: translateX(-50%);
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    transparent 0%,
-    transparent 66%,
-    rgba(168, 85, 247, 0.32) 82%,
-    rgba(168, 85, 247, 0.14) 92%,
-    transparent 100%
-  );
-  filter: blur(26px);
-}
-
-/* Layer 4: lavender glow immediately around the hot core - the closest,
-   brightest atmosphere layer, still a smooth gradient with no drawn edge. */
+/* Layer 4: lavender glow immediately around the hot core - its color band
+   starting at absolute radius ~480, right at the core's own edge, with a
+   few px of overlap so the two blend rather than leaving a hard seam. */
 .hero-halo-bright {
   position: absolute;
   left: 50%;
-  top: -880px;
-  width: 1080px;
-  height: 1040px;
+  top: -975px;
+  width: 1240px;
+  height: 1120px;
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
     transparent 0%,
-    transparent 70%,
-    rgba(216, 180, 254, 0.4) 85%,
-    rgba(216, 180, 254, 0.16) 94%,
+    transparent 85%,
+    rgba(216, 180, 254, 0.42) 93%,
+    rgba(216, 180, 254, 0.15) 97%,
     transparent 100%
   );
-  filter: blur(16px);
+  filter: blur(12px);
 }
 
 /* Layer 5: the thin hot core - the ONE crisp geometric edge in the whole
@@ -518,7 +543,7 @@
 .hero-halo-core {
   position: absolute;
   left: 50%;
-  top: -860px;
+  top: -915px;
   width: 1000px;
   height: 1000px;
   transform: translateX(-50%);
@@ -540,27 +565,32 @@
     height: 170px;
   }
   .hero-halo::before {
-    top: -100px;
-    width: 660px;
-    height: 190px;
+    top: -138px;
+    width: 1100px;
+    height: 230px;
+  }
+  .hero-halo-hotspot {
+    top: -33px;
+    width: 380px;
+    height: 150px;
   }
   .hero-halo-outer {
-    top: -470px;
-    width: 700px;
-    height: 580px;
+    top: -518px;
+    width: 950px;
+    height: 620px;
   }
   .hero-halo-mid {
-    top: -455px;
-    width: 610px;
-    height: 550px;
+    top: -498px;
+    width: 760px;
+    height: 580px;
   }
   .hero-halo-bright {
-    top: -440px;
-    width: 540px;
-    height: 520px;
+    top: -488px;
+    width: 620px;
+    height: 560px;
   }
   .hero-halo-core {
-    top: -430px;
+    top: -458px;
     width: 500px;
     height: 500px;
     border-width: 2px;

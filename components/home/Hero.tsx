@@ -28,6 +28,7 @@ export default function Hero() {
         <div className="hero-halo-outer" />
         <div className="hero-halo-mid" />
         <div className="hero-halo-bright" />
+        <div className="hero-halo-hotspot" />
         <div className="hero-halo-core" />
       </div>
       <div className="container-site relative">
