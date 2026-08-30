@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, SquareTerminal, X } from "lucide-react";
 import { MotionConfig, motion } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
-import { ABOUT_LINK, ALL_SECTION_LINKS, CORTEX_LINK, NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
+import { ABOUT_LINK, ALL_SECTION_LINKS, NAV_LINKS, RESUME_LINK, SITE } from "@/data/site";
 import { useCommandPalette } from "@/components/command-palette-context";
 
 // One shared active-indicator bar that slides beneath nav items when the
@@ -222,7 +222,6 @@ export default function Nav() {
   }, [open]);
 
   const aboutActive = pathname === "/" && activeSection === ABOUT_LINK.section;
-  const cortexActive = pathname === "/" && activeSection === CORTEX_LINK.section;
 
   return (
     <>
@@ -274,33 +273,14 @@ export default function Nav() {
                   />
                 )}
               </Link>
-              <Link
-                href={CORTEX_LINK.href}
-                data-cortex
-                onClick={(e) => handleSectionClick(e, CORTEX_LINK.section)}
-                aria-current={cortexActive ? "true" : undefined}
-                title="Enter Cortex, the console behind this site"
-                className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
-                  cortexActive
-                    ? "font-semibold text-accent"
-                    : "font-medium text-text-secondary hover:-translate-y-px hover:text-text-primary"
-                }`}
-              >
-                <span className="relative z-10">{CORTEX_LINK.label}</span>
-                {cortexActive && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute inset-x-2 bottom-0.5 h-[2px] rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.7)]"
-                    transition={NAV_INDICATOR_TRANSITION}
-                  />
-                )}
-              </Link>
               {NAV_LINKS.map((link) => {
                 const active = pathname === "/" && activeSection === link.section;
                 return (
                   <Link
                     key={link.section}
                     href={link.href}
+                    data-cortex={link.section === "cortex" ? true : undefined}
+                    title={link.title}
                     onClick={(e) => handleSectionClick(e, link.section)}
                     aria-current={active ? "true" : undefined}
                     className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
@@ -412,24 +392,6 @@ export default function Nav() {
                   }`}
                 />
                 {ABOUT_LINK.label}
-              </Link>
-              <Link
-                href={CORTEX_LINK.href}
-                onClick={(e) => handleSectionClick(e, CORTEX_LINK.section)}
-                aria-current={cortexActive ? "true" : undefined}
-                className={`flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
-                  cortexActive
-                    ? "bg-accent-dim text-accent"
-                    : "text-text-secondary hover:bg-surface hover:text-text-primary"
-                }`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`h-1 w-1 shrink-0 rounded-full bg-accent transition-opacity duration-200 ${
-                    cortexActive ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-                {CORTEX_LINK.label}
               </Link>
               {NAV_LINKS.map((link) => {
                 const active = pathname === "/" && activeSection === link.section;

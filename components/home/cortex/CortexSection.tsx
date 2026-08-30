@@ -18,7 +18,7 @@ export default function CortexSection() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="max-w-2xl">
               <Reveal>
-                <Eyebrow index="02">cortex</Eyebrow>
+                <Eyebrow index="07">cortex</Eyebrow>
               </Reveal>
               <Reveal delay={0.08}>
                 <h2 className="section-title">

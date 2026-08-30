@@ -35,7 +35,7 @@ export default function SkillsSection() {
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="07">Skills</Eyebrow>
+            <Eyebrow index="04">Skills</Eyebrow>
             <h2 className="section-title">
               My current engineering toolkit.
             </h2>

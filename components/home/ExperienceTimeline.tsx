@@ -59,7 +59,7 @@ export default function ExperienceTimeline() {
               content width and the smallest size in the section-title
               range to still land on one line at desktop widths. */}
           <div>
-            <Eyebrow index="05">Experience</Eyebrow>
+            <Eyebrow index="02">Experience</Eyebrow>
             <h2 className="section-title lg:text-[1.5rem]">
               Engineering scalable applications and enterprise production software.
             </h2>

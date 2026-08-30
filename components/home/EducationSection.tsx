@@ -182,7 +182,7 @@ export default function EducationSection() {
       <div className="container-site">
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow index="06">Education</Eyebrow>
+            <Eyebrow index="05">Education</Eyebrow>
             <h2 className="section-title lg:text-[1.75rem]">
               The foundations underneath the stack.
             </h2>
