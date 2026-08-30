@@ -25,8 +25,10 @@ export default function Hero() {
       className="relative flex min-h-screen min-h-dvh scroll-mt-24 flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-10 sm:pb-14"
     >
       <div aria-hidden="true" className="hero-halo pointer-events-none">
-        <div className="hero-halo-bloom" />
-        <div className="hero-halo-ring" />
+        <div className="hero-halo-outer" />
+        <div className="hero-halo-mid" />
+        <div className="hero-halo-bright" />
+        <div className="hero-halo-core" />
       </div>
       <div className="container-site relative">
         {/* Mobile / tablet: a compact, centered composition purpose-built for

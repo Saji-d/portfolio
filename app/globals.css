@@ -410,124 +410,163 @@
   transform: none;
 }
 
-/* Hero halo: a cosmic ring bursting from behind the fixed navbar. This is
-   geometry, not a gradient blob - a real circle, ~1000px across, positioned
-   with its center well above the viewport so only its lower arc is ever
-   visible. Because a circle's border traces the circle's own path, that
-   visible arc reads as a genuine downward-opening ring (wide where it
-   crosses the top edge, narrowing to a point where the circle's bottom
-   touches down), the way an event horizon or a giant orbital ring would
-   look cropped by a viewport - not a soft circular smear. Four concentric
-   circles of increasing size/blur/decreasing opacity (outer indigo bloom ->
-   violet bloom -> crisp white/lavender ring) give the white-to-indigo
-   falloff perpendicular to the ring itself, while a broad separate wash
-   underneath supplies the horizontal atmosphere spanning the navbar. */
+/* Hero halo: a gigantic celestial portal emerging from behind the fixed
+   navbar. Earlier passes used a stack of bordered circles for every layer -
+   even thinned down, a border is a hard-edged geometric line, so the whole
+   stack still read as concentric CSS circles with glow around them, not
+   atmosphere. This version keeps exactly ONE bordered circle - a thin,
+   near-white line that supplies the crisp "hot core" edge and, by being a
+   circle cropped above the viewport, the deep U-shaped geometry. Everything
+   else is a smooth radial-gradient "ring" (transparent -> color ->
+   transparent, so it has no drawn edge at all, only continuous falloff),
+   each one bigger and more blurred than the last. Gradients can't be
+   individually counted the way bordered rings can - they blend into one
+   another by construction - which is what makes this read as diffuse gas
+   instead of a stack of outlines. */
 .hero-halo {
   position: absolute;
   left: 50%;
   top: 0;
-  width: 1200px;
+  width: 1400px;
   max-width: 100vw;
-  height: 260px;
+  height: 280px;
   transform: translateX(-50%);
   overflow: hidden;
   pointer-events: none;
 }
 
-/* Layer 1 + 5: broad horizontal atmosphere spanning under the navbar, wide
-   enough to visually connect to the ring rather than reading as a separate
-   element. */
+/* Layer 1: very broad horizontal nebula band the portal's arms merge into -
+   a wide, low, soft ellipse of atmosphere spanning almost the full width,
+   not a rectangular strip. */
 .hero-halo::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: -130px;
-  width: 1000px;
-  height: 320px;
+  top: -200px;
+  width: 1380px;
+  height: 380px;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse 55% 85% at 50% 0%, rgba(99, 102, 241, 0.3), transparent 72%);
-  filter: blur(28px);
+  background: radial-gradient(ellipse 70% 96% at 50% 0%, rgba(124, 58, 237, 0.24), transparent 80%);
+  filter: blur(46px);
 }
 
-/* Layer 2: the huge luminous ring's outer indigo bloom - a real circle, most
-   of it above the viewport, traced by a thick heavily-blurred border. */
-.hero-halo::after {
-  content: "";
+/* Layer 2: the huge outer atmosphere - the biggest, faintest, most blurred
+   ring-shaped gradient (transparent center, indigo bloom, transparent
+   edge). This is most of the effect's visual mass, and it has no hard
+   edge anywhere - only a soft peak that fades in both directions. */
+.hero-halo-outer {
   position: absolute;
   left: 50%;
-  top: -820px;
+  top: -940px;
+  width: 1400px;
+  height: 1160px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    transparent 0%,
+    transparent 60%,
+    rgba(99, 102, 241, 0.22) 78%,
+    rgba(99, 102, 241, 0.1) 90%,
+    transparent 100%
+  );
+  filter: blur(38px);
+}
+
+/* Layer 3: medium violet atmosphere, smaller and less blurred than the
+   outer layer so its (still soft) peak sits closer to the core. */
+.hero-halo-mid {
+  position: absolute;
+  left: 50%;
+  top: -910px;
+  width: 1220px;
+  height: 1100px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    transparent 0%,
+    transparent 66%,
+    rgba(168, 85, 247, 0.32) 82%,
+    rgba(168, 85, 247, 0.14) 92%,
+    transparent 100%
+  );
+  filter: blur(26px);
+}
+
+/* Layer 4: lavender glow immediately around the hot core - the closest,
+   brightest atmosphere layer, still a smooth gradient with no drawn edge. */
+.hero-halo-bright {
+  position: absolute;
+  left: 50%;
+  top: -880px;
+  width: 1080px;
+  height: 1040px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    transparent 0%,
+    transparent 70%,
+    rgba(216, 180, 254, 0.4) 85%,
+    rgba(216, 180, 254, 0.16) 94%,
+    transparent 100%
+  );
+  filter: blur(16px);
+}
+
+/* Layer 5: the thin hot core - the ONE crisp geometric edge in the whole
+   effect. Small box-shadow bloom right at the line itself, not the source
+   of the effect's overall size (the gradients above carry that). */
+.hero-halo-core {
+  position: absolute;
+  left: 50%;
+  top: -860px;
   width: 1000px;
   height: 1000px;
   transform: translateX(-50%);
   border-radius: 50%;
-  border: 60px solid rgba(99, 102, 241, 0.24);
-  filter: blur(38px);
-}
-
-.hero-halo-bloom {
-  position: absolute;
-  left: 50%;
-  top: -792px;
-  width: 950px;
-  height: 950px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  border: 34px solid rgba(139, 92, 246, 0.62);
-  filter: blur(16px);
-}
-
-/* Layer 3: the bright thin inner ring/arc - the crisp core of the effect. */
-.hero-halo-ring {
-  position: absolute;
-  left: 50%;
-  top: -770px;
-  width: 900px;
-  height: 900px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  border: 7px solid rgba(255, 255, 255, 0.98);
+  border: 3px solid rgba(255, 255, 255, 0.95);
   box-shadow:
-    0 0 20px 6px rgba(255, 255, 255, 0.7),
-    0 0 56px 20px rgba(233, 213, 255, 0.6),
-    0 0 110px 44px rgba(168, 85, 247, 0.4);
-  filter: blur(1px);
+    0 0 10px 2px rgba(255, 255, 255, 0.75),
+    0 0 24px 6px rgba(233, 213, 255, 0.45);
+  filter: blur(0.5px);
 }
 
 /* Every circle above is sized in fixed px so the ring's curvature stays
-   correct at any width - on a phone-width viewport the same ~900px circle
+   correct at any width - on a phone-width viewport the same ~1000px circle
    would only show a nearly-flat sliver near its very top, losing the U
-   shape entirely. Scaling every layer down together (~55%) keeps the same
+   shape entirely. Scaling every layer down together (~50%) keeps the same
    proportions - and the same downward-opening arc - at phone widths. */
 @media (max-width: 640px) {
   .hero-halo {
-    height: 150px;
+    height: 170px;
   }
   .hero-halo::before {
-    top: -70px;
-    width: 560px;
-    height: 180px;
+    top: -100px;
+    width: 660px;
+    height: 190px;
   }
-  .hero-halo::after {
-    top: -450px;
-    width: 550px;
+  .hero-halo-outer {
+    top: -470px;
+    width: 700px;
+    height: 580px;
+  }
+  .hero-halo-mid {
+    top: -455px;
+    width: 610px;
     height: 550px;
-    border-width: 34px;
   }
-  .hero-halo-bloom {
-    top: -436px;
-    width: 525px;
-    height: 525px;
-    border-width: 19px;
+  .hero-halo-bright {
+    top: -440px;
+    width: 540px;
+    height: 520px;
   }
-  .hero-halo-ring {
-    top: -424px;
-    width: 495px;
-    height: 495px;
-    border-width: 4px;
+  .hero-halo-core {
+    top: -430px;
+    width: 500px;
+    height: 500px;
+    border-width: 2px;
     box-shadow:
-      0 0 11px 3px rgba(255, 255, 255, 0.7),
-      0 0 31px 11px rgba(233, 213, 255, 0.6),
-      0 0 60px 24px rgba(168, 85, 247, 0.4);
+      0 0 6px 1px rgba(255, 255, 255, 0.75),
+      0 0 14px 4px rgba(233, 213, 255, 0.45);
   }
 }
 
