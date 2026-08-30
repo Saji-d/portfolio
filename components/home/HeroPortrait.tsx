@@ -6,11 +6,13 @@ interface HeroPortraitProps {
   style?: React.CSSProperties;
 }
 
-// A plain, static portrait card - no glow, no gradient border, no filter
-// effects. The only reaction to the cursor is a near-imperceptible lift:
-// scale to 1.01 and the hairline border tinting slightly toward the
-// accent color, both plain CSS transitions on the card itself (no JS,
-// no animation loop, nothing touching the photo's own pixels).
+// A circular portrait ringed in a two-tone accent gradient (cyan into
+// violet) - built as a gradient background showing through the padding gap
+// around an opaque inner circle, rather than a mask-composite ring. That's
+// deliberate: this build's CSS pipeline (Tailwind v4 / Lightning CSS)
+// silently drops mask-composite declarations unless they're set imperatively
+// via JS (see NeonRing.tsx for the workaround that requires), and the
+// padding trick gets the same ringed look without needing any of that.
 export default function HeroPortrait({ src, className, style }: HeroPortraitProps) {
   return (
     <div className={`group relative ${className ?? ""}`} style={style}>
@@ -22,36 +24,23 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
           block or fight a `transform` set here by group-hover. Keeping
           the two transforms on different elements sidesteps that
           entirely instead of relying on timing. */}
-      <div className="transition-transform duration-300 ease-out group-hover:scale-[1.01]">
-        <div className="hero-portrait-mask overflow-hidden rounded-2xl border border-line bg-bg transition-colors duration-300 ease-out group-hover:border-accent/40">
-          <div className="relative aspect-[4/5]">
-            {/* The source photo's own ratio (2790x3480) is already close
-                to this box's 4:5, so a plain object-cover barely crops
-                anything - it shows the almost-full standing figure at
-                thumbnail scale. object-position and transform-origin
-                share one Y anchor (25%, a point just below the hairline
-                rather than the box's dead-center, which would zoom
-                toward the waist instead); scaling around that fixed
-                point crops evenly toward it in every direction, so a
-                bigger scale value always means "show a smaller slice of
-                the source," with that slice's own height set by
-                1/scale. scale-[1.35] is a deliberately mild zoom (tried
-                and rejected 2.2-2.5 first - that read as a tight
-                head-and-shoulders headshot, not a portrait) that keeps
-                the composition close to the original photo: full head
-                with headroom, a strip of the red roof truss overhead,
-                both hands in pockets, and the crop landing around the
-                upper thigh. Overflow is clipped by the parent's
-                overflow-hidden mask, not by the box itself. */}
-            <Image
-              src={src}
-              alt="Portrait of Sajidur Rahman Sajid"
-              fill
-              priority
-              quality={100}
-              sizes="(min-width: 1024px) 380px, (min-width: 640px) 144px, 128px"
-              className="scale-[1.35] object-cover object-[50%_25%] origin-[50%_25%]"
-            />
+      <div className="transition-transform duration-300 ease-out group-hover:scale-[1.02]">
+        <div
+          className="rounded-full p-[3px] shadow-[0_0_50px_-10px_rgba(99,102,241,0.6)]"
+          style={{ background: "linear-gradient(45deg, var(--accent-3) 0%, var(--accent) 50%, var(--accent-2) 100%)" }}
+        >
+          <div className="hero-portrait-mask overflow-hidden rounded-full bg-bg">
+            <div className="relative aspect-square">
+              <Image
+                src={src}
+                alt="Portrait of Sajidur Rahman Sajid"
+                fill
+                priority
+                quality={100}
+                sizes="(min-width: 1024px) 380px, (min-width: 640px) 220px, 176px"
+                className="object-cover object-[50%_18%]"
+              />
+            </div>
           </div>
         </div>
       </div>
