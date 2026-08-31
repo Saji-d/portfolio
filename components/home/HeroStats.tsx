@@ -81,16 +81,7 @@ export default function HeroStats() {
       className="inline-grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4 sm:gap-x-9 sm:gap-y-0 lg:gap-x-10"
     >
       {STATS.map((s, i) => (
-        <div
-          key={s.label}
-          className="relative flex flex-col gap-1.5 sm:pl-7 sm:first:pl-0 lg:pl-8"
-        >
-          {i > 0 && (
-            <span
-              aria-hidden="true"
-              className="absolute left-0 top-0.5 hidden h-7 w-px shrink-0 bg-line sm:block lg:h-8"
-            />
-          )}
+        <div key={s.label} className="flex flex-col gap-1.5">
           <span
             ref={(el) => {
               valueRefs.current[i] = el;

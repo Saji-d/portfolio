@@ -111,7 +111,7 @@ export default function Hero() {
               </div>
 
               <p
-                className="hero-enter mt-6 max-w-md text-base leading-relaxed text-text-secondary sm:text-lg"
+                className="hero-enter mt-6 -mr-3 max-w-md text-base leading-relaxed text-text-secondary sm:max-w-[36rem] sm:text-lg"
                 style={{ animationDelay: delays[1] }}
               >
                 I build full-stack systems and production-ready AI/ML
@@ -153,7 +153,7 @@ export default function Hero() {
             />
           </div>
 
-          <div className="hero-enter mt-14 xl:mt-16" style={{ animationDelay: delays[4] }}>
+          <div className="hero-enter mt-20 xl:mt-24" style={{ animationDelay: delays[4] }}>
             <HeroMarquee />
           </div>
         </div>
