@@ -6,13 +6,14 @@ interface HeroPortraitProps {
   style?: React.CSSProperties;
 }
 
-// A circular portrait ringed in a two-tone accent gradient (cyan into
-// violet) - built as a gradient background showing through the padding gap
-// around an opaque inner circle, rather than a mask-composite ring. That's
-// deliberate: this build's CSS pipeline (Tailwind v4 / Lightning CSS)
-// silently drops mask-composite declarations unless they're set imperatively
-// via JS (see NeonRing.tsx for the workaround that requires), and the
-// padding trick gets the same ringed look without needing any of that.
+// A circular portrait ringed in a near-black tone (not a colored accent
+// ring) with a soft, low-opacity white bloom around it - built as a gradient
+// background showing through the padding gap around an opaque inner circle,
+// rather than a mask-composite ring. That's deliberate: this build's CSS
+// pipeline (Tailwind v4 / Lightning CSS) silently drops mask-composite
+// declarations unless they're set imperatively via JS (see NeonRing.tsx for
+// the workaround that requires), and the padding trick gets the same ringed
+// look without needing any of that.
 export default function HeroPortrait({ src, className, style }: HeroPortraitProps) {
   return (
     <div className={`group relative ${className ?? ""}`} style={style}>
@@ -26,8 +27,8 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
           entirely instead of relying on timing. */}
       <div className="transition-transform duration-300 ease-out group-hover:scale-[1.02]">
         <div
-          className="rounded-full p-[3px] shadow-[0_0_50px_-10px_rgba(99,102,241,0.6)]"
-          style={{ background: "linear-gradient(45deg, var(--accent-3) 0%, var(--accent) 50%, var(--accent-2) 100%)" }}
+          className="rounded-full p-[3px] shadow-[0_0_44px_-6px_rgba(255,255,255,0.22)]"
+          style={{ background: "linear-gradient(145deg, var(--surface-2) 0%, var(--surface) 100%)" }}
         >
           <div className="hero-portrait-mask overflow-hidden rounded-full bg-bg">
             <div className="relative aspect-square">

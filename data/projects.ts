@@ -83,6 +83,7 @@ export const projects: Project[] = [
     cover: "/images/thumbnails/fumak-thumbnail.webp",
     caseStudy: true,
     github: "https://github.com/Saji-d/fumak-inventory",
+    demo: "https://fumak-inventory.vercel.app/",
     stack: ["Kotlin", "Jetpack Compose", "Next.js", "Neon PostgreSQL", "Prisma", "Cloudflare R2"],
   },
   {

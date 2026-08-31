@@ -188,9 +188,6 @@ export default function Footer() {
             ref={containerRef}
             className="grid grid-cols-2 gap-10 sm:grid-cols-3"
           >
-            <p className="mono-label col-span-2 -mt-1 mb-1 text-text-muted/60 sm:col-span-3">
-              hover to interact
-            </p>
             <div>
               <p className="eyebrow mb-3">Navigate</p>
               <ul className="space-y-2">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight, BookOpen, ExternalLink } from "lucide-react";
 import { motion, useScroll, useTransform, type Variants } from "motion/react";
 import type { Project } from "@/data/projects";
 import { GithubIcon } from "@/components/ui/BrandIcons";
@@ -332,6 +332,16 @@ export default function FeaturedProjectCase({
               View project
             </MagneticButton>
           ) : null}
+          {project.demo && (
+            <MagneticButton
+              href={project.demo}
+              external
+              className="border border-line bg-surface px-5 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
+            >
+              <ExternalLink className="h-4 w-4" />
+              Live Demo
+            </MagneticButton>
+          )}
           {project.github && (
             <MagneticButton
               href={project.github}

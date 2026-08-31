@@ -205,6 +205,7 @@ const txHash = await walletClient.writeContract({
     cover: "/images/thumbnails/fumak-thumbnail.webp",
     caseStudy: true,
     github: "https://github.com/Saji-d/fumak-inventory",
+    demo: "https://fumak-inventory.vercel.app/",
     stack: ["Kotlin", "Jetpack Compose", "Next.js", "Neon PostgreSQL", "Prisma", "Cloudflare R2"],
     problem: [
       "A single-shop retail business kept inventory and revenue on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
