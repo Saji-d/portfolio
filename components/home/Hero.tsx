@@ -49,8 +49,8 @@ export default function Hero() {
             style={{ animationDelay: mobileDelays[1] }}
           >
             <Eyebrow className="text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
-            <h1 className="mt-2 font-display text-[1.9rem] font-semibold leading-[1.15] tracking-tight text-text-primary sm:text-[2.2rem]">
-              Sajidur Rahman <span className="text-accent-3">Sajid</span>
+            <h1 className="mt-2 bg-linear-to-r from-[var(--accent)] via-[var(--accent-3)] to-[var(--accent-2)] bg-clip-text font-display text-[1.9rem] font-semibold leading-[1.15] tracking-tight text-transparent sm:text-[2.2rem]">
+              Sajidur Rahman <span>Sajid</span>
             </h1>
           </div>
 
@@ -105,8 +105,8 @@ export default function Hero() {
             <div className="max-w-xl">
               <div className="hero-enter" style={{ animationDelay: delays[0] }}>
                 <Eyebrow>AI Engineer &amp; Full-Stack Developer</Eyebrow>
-                <h1 className="mt-3 font-display text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-text-primary sm:text-[3rem] lg:text-[3.25rem]">
-                  Sajidur Rahman <span className="text-accent-3">Sajid</span>
+                <h1 className="mt-3 bg-linear-to-r from-[var(--accent)] via-[var(--accent-3)] to-[var(--accent-2)] bg-clip-text font-display text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-transparent sm:text-[3rem] lg:text-[3.25rem]">
+                  Sajidur Rahman <span>Sajid</span>
                 </h1>
               </div>
 
