@@ -108,20 +108,6 @@ function CoverImage({
         <span className="animate-scan-sweep absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-accent/25 to-transparent" />
       </div>
 
-      {/* Targeting-reticle corners: reveal on hover, framing the cover like a system under inspection. */}
-      <span
-        aria-hidden="true"
-        className="absolute left-2.5 top-2.5 h-3.5 w-3.5 -translate-x-1 -translate-y-1 border-l border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute right-2.5 top-2.5 h-3.5 w-3.5 translate-x-1 -translate-y-1 border-r border-t border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute bottom-2.5 left-2.5 h-3.5 w-3.5 -translate-x-1 translate-y-1 border-b border-l border-accent/0 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:border-accent/70 group-hover:opacity-100"
-      />
-
       <div className="absolute left-3 top-3 flex max-w-[calc(100%-6rem)] flex-wrap gap-1.5">
         <GlassChip accent={pro}>{project.category}</GlassChip>
         {project.badges.map((badge) => (
