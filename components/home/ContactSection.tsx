@@ -1,7 +1,7 @@
 "use client";
 
 import type { ComponentType } from "react";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { ChevronDown, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import Eyebrow from "@/components/ui/Eyebrow";
@@ -141,6 +141,23 @@ export default function ContactSection() {
                 </div>
               </motion.div>
             </div>
+
+            <motion.div variants={fadeUp} className="mt-6 flex justify-center sm:mt-8">
+              <a
+                href="#site-footer"
+                className="group inline-flex flex-col items-center gap-1 text-text-muted transition-colors duration-300 hover:text-accent"
+              >
+                <span className="mono-label">Interactive footer</span>
+                <motion.span
+                  aria-hidden="true"
+                  animate={{ y: [0, 4, 0] }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                  className="flex"
+                >
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </motion.span>
+              </a>
+            </motion.div>
           </motion.div>
         </MotionConfig>
       </div>

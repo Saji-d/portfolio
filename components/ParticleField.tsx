@@ -24,6 +24,9 @@ import { useEffect, useRef } from "react";
  * with a blurred, fading tail so they read as meteor streaks - not CSS lines.
  * Only one is ever active at a time.
  *
+ * There is no cursor/pointer interaction anywhere in this file - every star
+ * moves purely on its own simulated trajectory.
+ *
  * The existing nebula/atmosphere wash (rendered as a sibling layer above the
  * canvas) stays the dominant atmospheric element; the stars only add depth
  * and motion around it. No grid, no connectors, no UI-particle glow.
@@ -141,15 +144,17 @@ function makeStars(count: number): Star[] {
 const FRAME_MS = 16;
 
 /** A multi-tone color wash - indigo / electric blue / cyan pooling toward a
- *  few corners - so the canvas reads as a living nebula behind the stars.
- *  Kept identical to the previous atmosphere: huge radius, very low alpha, no
- *  animation, rendered as a sibling div above the canvas so it remains the
- *  dominant atmospheric element. */
+ *  few corners, plus a soft violet dust patch - so the canvas reads as a
+ *  living nebula behind the stars. Every stop stays extremely low-alpha on
+ *  purpose: this is meant to read as atmosphere, not a literal galaxy photo.
+ *  Rendered as a sibling div above the canvas so it stays the dominant
+ *  atmospheric element regardless of what's drawn beneath it. */
 const ATMOSPHERE_STYLE = {
   backgroundImage: [
     "radial-gradient(60% 60% at 18% 15%, rgba(99,102,241,0.055), transparent 70%)",
     "radial-gradient(55% 55% at 78% 30%, rgba(59,130,246,0.035), transparent 72%)",
     "radial-gradient(65% 65% at 85% 88%, rgba(34,211,238,0.03), transparent 70%)",
+    "radial-gradient(70% 70% at 40% 75%, rgba(139,92,246,0.03), transparent 74%)",
   ].join(","),
 };
 
@@ -214,24 +219,28 @@ export default function ParticleField() {
       return s.baseAlpha * twinkle;
     }
 
-    function drawStatic() {
-      ctx.clearRect(0, 0, width, height);
+    function drawStars(staticFrame: boolean) {
       ctx.shadowBlur = 0;
       for (const s of stars) {
         if (s.glow) continue;
-        const a = starAlpha(s, true).toFixed(3);
+        const a = starAlpha(s, staticFrame).toFixed(3);
         ctx.fillStyle = `rgba(${s.color.join(",")}, ${a})`;
         ctx.fillRect(s.fx * width, s.fy * height, s.size, s.size);
       }
       ctx.shadowBlur = 4;
       for (const s of stars) {
         if (!s.glow) continue;
-        const a = starAlpha(s, true).toFixed(3);
+        const a = starAlpha(s, staticFrame).toFixed(3);
         ctx.shadowColor = `rgba(${s.color.join(",")}, ${a})`;
         ctx.fillStyle = `rgba(${s.color.join(",")}, ${a})`;
         ctx.fillRect(s.fx * width, s.fy * height, s.size, s.size);
       }
       ctx.shadowBlur = 0;
+    }
+
+    function drawStatic() {
+      ctx.clearRect(0, 0, width, height);
+      drawStars(true);
     }
 
     function stepStars(dt: number) {
@@ -330,27 +339,7 @@ export default function ParticleField() {
 
     function draw() {
       ctx.clearRect(0, 0, width, height);
-
-      // Pass 1: all non-glow stars (dim majority) - plain fills, no shadow.
-      ctx.shadowBlur = 0;
-      for (const s of stars) {
-        if (s.glow) continue;
-        const a = starAlpha(s, false).toFixed(3);
-        ctx.fillStyle = `rgba(${s.color.join(",")}, ${a})`;
-        ctx.fillRect(s.fx * width, s.fy * height, s.size, s.size);
-      }
-
-      // Pass 2: glow stars (bright/foreground/tinted) - a soft halo each.
-      ctx.shadowBlur = 4;
-      for (const s of stars) {
-        if (!s.glow) continue;
-        const a = starAlpha(s, false).toFixed(3);
-        ctx.shadowColor = `rgba(${s.color.join(",")}, ${a})`;
-        ctx.fillStyle = `rgba(${s.color.join(",")}, ${a})`;
-        ctx.fillRect(s.fx * width, s.fy * height, s.size, s.size);
-      }
-      ctx.shadowBlur = 0;
-
+      drawStars(false);
       // Shooting stars render on top of the field.
       if (meteor) drawMeteor(meteor);
     }
