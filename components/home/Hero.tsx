@@ -34,7 +34,7 @@ export default function Hero() {
             className="hero-enter mx-auto flex w-fit items-center justify-center"
             style={{ animationDelay: mobileDelays[0] }}
           >
-            <HeroPortrait src={heroPortrait} className="w-36 sm:w-40" />
+            <HeroPortrait src={heroPortrait} className="w-28 sm:w-32" />
           </div>
 
           <div
@@ -141,7 +141,7 @@ export default function Hero() {
 
             <HeroPortrait
               src={heroPortrait}
-              className="hero-enter w-[350px] justify-self-end"
+              className="hero-enter w-[280px] justify-self-end"
               style={{ animationDelay: delays[4] }}
             />
           </div>
