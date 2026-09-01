@@ -72,7 +72,7 @@ function FeaturedCardBody({
     </>
   );
   const linkClasses =
-    "inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-opacity hover:opacity-80";
+    "inline-flex items-center gap-1.5 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80";
 
   return (
     <>
@@ -130,7 +130,7 @@ function FeaturedCardBody({
                 <AnimatedMetric
                   value={m.value}
                   showBar
-                  className="block font-display text-base font-medium tracking-tight text-accent sm:text-lg"
+                  className="block font-display text-base font-medium tracking-tight text-accent-hover sm:text-lg"
                 />
                 <div className="mt-0.5 card-meta">{m.label}</div>
               </div>

@@ -125,7 +125,7 @@ export default function ExperienceTimeline() {
                         <span
                           className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider transition-colors duration-500 ${
                             isCurrent
-                              ? "border-accent/30 bg-accent-dim text-accent"
+                              ? "border-accent/30 bg-accent-dim text-accent-hover"
                               : "border-line bg-surface text-text-muted"
                           }`}
                         >
@@ -140,7 +140,7 @@ export default function ExperienceTimeline() {
 
                       <div className="p-4 sm:p-5">
                         <h3 className="card-title-xl">{experience.company}</h3>
-                        <p className="mt-0.5 font-mono text-sm font-medium text-accent">
+                        <p className="mt-0.5 font-mono text-sm font-medium text-accent-hover">
                           {experience.position}
                         </p>
                         <p className="mt-2 body-copy text-text-secondary line-clamp-3">

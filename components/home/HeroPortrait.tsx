@@ -6,14 +6,12 @@ interface HeroPortraitProps {
   style?: React.CSSProperties;
 }
 
-// A circular portrait ringed in a near-black tone (not a colored accent
-// ring) with a soft, low-opacity white bloom around it - built as a gradient
-// background showing through the padding gap around an opaque inner circle,
-// rather than a mask-composite ring. That's deliberate: this build's CSS
-// pipeline (Tailwind v4 / Lightning CSS) silently drops mask-composite
-// declarations unless they're set imperatively via JS (see NeonRing.tsx for
-// the workaround that requires), and the padding trick gets the same ringed
-// look without needing any of that.
+// The source image is a cutout (transparent background), so this stays
+// transparent all the way through rather than backing it with a solid
+// fill or a glow - no opaque ring, no bg-bg fallback, no bloom shadow.
+// Whatever is transparent in the portrait shows the fixed starfield
+// (ParticleField, z-0 behind all page content) straight through, stars and
+// shooting stars included. Only a hairline border marks the circular crop.
 export default function HeroPortrait({ src, className, style }: HeroPortraitProps) {
   return (
     <div className={`group relative ${className ?? ""}`} style={style}>
@@ -26,22 +24,17 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
           the two transforms on different elements sidesteps that
           entirely instead of relying on timing. */}
       <div className="transition-transform duration-300 ease-out group-hover:scale-[1.02]">
-        <div
-          className="rounded-full p-[3px] shadow-[0_0_44px_-6px_rgba(255,255,255,0.22)]"
-          style={{ background: "linear-gradient(145deg, var(--surface-2) 0%, var(--surface) 100%)" }}
-        >
-          <div className="hero-portrait-mask overflow-hidden rounded-full bg-bg">
-            <div className="relative aspect-square">
-              <Image
-                src={src}
-                alt="Portrait of Sajidur Rahman Sajid"
-                fill
-                priority
-                quality={100}
-                sizes="(min-width: 1024px) 380px, (min-width: 640px) 220px, 176px"
-                className="object-cover object-[50%_18%]"
-              />
-            </div>
+        <div className="hero-portrait-mask overflow-hidden rounded-full border border-white/10">
+          <div className="relative aspect-square">
+            <Image
+              src={src}
+              alt="Portrait of Sajidur Rahman Sajid"
+              fill
+              priority
+              quality={100}
+              sizes="(min-width: 1024px) 380px, (min-width: 640px) 220px, 176px"
+              className="object-cover object-[50%_18%]"
+            />
           </div>
         </div>
       </div>

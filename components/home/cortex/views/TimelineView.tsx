@@ -10,7 +10,7 @@ export default function TimelineView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ timeline</span>
+        <span className="text-accent-hover">$ timeline</span>
         <span className="h-px flex-1 bg-line" />
         <span>{`// education & career · ${ENTRIES.length} stops`}</span>
       </div>
@@ -36,7 +36,7 @@ export default function TimelineView() {
               <div className="flex flex-wrap items-baseline gap-x-2">
                 <span className="font-mono text-xs text-text-muted">{entry.period}</span>
                 {entry.current && (
-                  <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-accent">
+                  <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-accent-hover">
                     current
                   </span>
                 )}

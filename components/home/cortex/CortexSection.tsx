@@ -27,7 +27,7 @@ export default function CortexSection() {
               </Reveal>
             </div>
             <Reveal delay={0.12}>
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-accent">
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-accent-hover">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
@@ -44,7 +44,7 @@ export default function CortexSection() {
           <noscript>
             <p className="mt-4 font-mono text-xs text-text-muted">
               The console needs JavaScript. See{" "}
-              <a href="/resume" className="text-accent">
+              <a href="/resume" className="text-accent-hover">
                 the resume
               </a>{" "}
               instead.

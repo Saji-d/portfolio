@@ -6,7 +6,7 @@ export default function SkillsView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ skills</span>
+        <span className="text-accent-hover">$ skills</span>
         <span className="h-px flex-1 bg-line" />
         <span>{"// the engineer · 7 disciplines"}</span>
       </div>

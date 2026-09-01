@@ -89,14 +89,14 @@ export default function ContactSection() {
                       aria-hidden="true"
                       className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[250%] skew-x-12 bg-gradient-to-r from-transparent via-accent/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[450%]"
                     />
-                    <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
+                    <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent-hover transition-transform duration-300 group-hover:scale-105">
                       <c.icon className="h-4 w-4" />
                     </span>
                     <span className="min-w-0">
                       <span className="block mono-label text-text-muted">
                         {c.label}
                       </span>
-                      <span className="mt-0.5 block truncate font-mono text-sm text-text-primary transition-colors group-hover:text-accent">
+                      <span className="mt-0.5 block truncate font-mono text-sm text-text-primary transition-colors group-hover:text-accent-hover">
                         {c.value}
                       </span>
                     </span>
@@ -109,7 +109,7 @@ export default function ContactSection() {
               <motion.div variants={fadeUp} whileHover={{ y: -3 }}>
                 <div className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40">
                   <NeonRing />
-                  <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
+                  <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent-hover transition-transform duration-300 group-hover:scale-105">
                     <MapPin className="h-4 w-4" />
                   </span>
                   <div className="relative min-w-0">
@@ -127,7 +127,7 @@ export default function ContactSection() {
               <motion.div variants={fadeUp} whileHover={{ y: -3 }}>
                 <div className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-colors duration-300 hover:border-accent/40">
                   <NeonRing />
-                  <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105">
+                  <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent-hover transition-transform duration-300 group-hover:scale-105">
                     <Clock className="h-4 w-4" />
                   </span>
                   <div className="relative min-w-0">
@@ -145,7 +145,7 @@ export default function ContactSection() {
             <motion.div variants={fadeUp} className="mt-6 flex justify-center sm:mt-8">
               <a
                 href="#site-footer"
-                className="group inline-flex flex-col items-center gap-1 text-text-muted transition-colors duration-300 hover:text-accent"
+                className="group inline-flex flex-col items-center gap-1 text-text-muted transition-colors duration-300 hover:text-accent-hover"
               >
                 <span className="mono-label">Interactive footer</span>
                 <motion.span

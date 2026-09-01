@@ -22,7 +22,7 @@ const RESEARCH_RIGHT_GAP = 138;
 const pillClass = (on: boolean) =>
   `absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap rounded-full border px-1.5 py-1 font-mono text-[clamp(0.4375rem,2.1cqw,0.75rem)] leading-none transition-colors sm:gap-1.5 sm:px-2 sm:py-1.5 ${
     on
-      ? "border-accent/50 bg-surface-2 text-accent"
+      ? "border-accent/50 bg-surface-2 text-accent-hover"
       : "border-line bg-surface text-text-secondary hover:border-accent/30 hover:text-text-primary"
   }`;
 
@@ -118,12 +118,12 @@ export default function SkillsNetwork() {
             />
             <span
               aria-hidden="true"
-              className="grid h-16 w-16 place-items-center rounded-full border border-accent/40 bg-surface text-accent shadow-[0_0_24px_rgba(99, 102, 241,0.18)]"
+              className="grid h-16 w-16 place-items-center rounded-full border border-accent/40 bg-surface text-accent-hover shadow-[0_0_24px_rgba(99, 102, 241,0.18)]"
             >
               <BrainCircuit className="h-7 w-7" />
             </span>
           </div>
-          <span className="mx-auto mt-1.5 block w-fit rounded-md bg-surface px-1.5 py-0.5 text-center font-mono font-semibold uppercase tracking-[0.18em] text-accent text-[clamp(0.4375rem,1.9cqw,0.6875rem)]">
+          <span className="mx-auto mt-1.5 block w-fit rounded-md bg-surface px-1.5 py-0.5 text-center font-mono font-semibold uppercase tracking-[0.18em] text-accent-hover text-[clamp(0.4375rem,1.9cqw,0.6875rem)]">
             {SKILL_NETWORK.center}
           </span>
         </div>
@@ -205,7 +205,7 @@ export default function SkillsNetwork() {
             {selected.techs.map((tech) => (
               <span
                 key={tech}
-                className="rounded-md border border-accent/20 bg-accent-dim/30 px-1.5 py-0.5 font-mono text-[10px] text-accent"
+                className="rounded-md border border-accent/20 bg-accent-dim/30 px-1.5 py-0.5 font-mono text-[10px] text-accent-hover"
               >
                 {tech}
               </span>

@@ -40,7 +40,7 @@ function LocationList({
             title={loc.sublabel}
             className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-wider transition-all duration-300 ${
               active
-                ? "border-accent/50 bg-accent-dim text-accent"
+                ? "border-accent/50 bg-accent-dim text-accent-hover"
                 : "border-line bg-surface text-text-secondary hover:border-accent/30 hover:text-text-primary"
             }`}
           >
@@ -83,7 +83,7 @@ function FloatingLocationPanel({ id }: { id: string }) {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="pointer-events-auto rounded-xl border border-line bg-surface/85 px-4 py-2.5 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.5)] backdrop-blur-md"
         >
-          <p className="font-mono text-[10px] font-medium uppercase tracking-wider text-accent">
+          <p className="font-mono text-[10px] font-medium uppercase tracking-wider text-accent-hover">
             {loc.label}
           </p>
           <p className="mt-0.5 text-sm text-text-secondary">{loc.sublabel}</p>
@@ -126,7 +126,7 @@ export default function AboutSection() {
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
                   <span>CURRENTLY BUILDING</span>
-                  <span className="text-accent">·</span>
+                  <span className="text-accent-hover">·</span>
                   <span className="text-text-secondary">SOFTWARE SYSTEMS</span>
                 </span>
               </motion.li>
@@ -134,7 +134,7 @@ export default function AboutSection() {
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
                   <span>WORKING ACROSS</span>
-                  <span className="text-accent">·</span>
+                  <span className="text-accent-hover">·</span>
                   <span className="text-text-secondary">FULL-STACK + AI/ML</span>
                 </span>
               </motion.li>
@@ -142,7 +142,7 @@ export default function AboutSection() {
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
                   <span>BASED IN DHAKA, BANGLADESH</span>
-                  <span className="text-accent">·</span>
+                  <span className="text-accent-hover">·</span>
                   <span className="text-text-secondary">{SITE.timezone}</span>
                 </span>
               </motion.li>

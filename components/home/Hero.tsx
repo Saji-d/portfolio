@@ -10,7 +10,7 @@ import HeroMarquee from "@/components/home/HeroMarquee";
 // plain string path, replacing the file while keeping the same filename
 // is invisible to either cache. A content-hashed import sidesteps that
 // permanently: any future replacement gets a new URL automatically.
-import heroPortrait from "@/public/images/herooo.webp";
+import heroPortrait from "@/public/images/heroo.webp";
 
 // [eyebrow/name, description, ctas, stats, portrait]
 const delays = ["0s", "0.1s", "0.2s", "0.3s", "0.36s"];

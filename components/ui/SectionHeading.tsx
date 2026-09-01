@@ -37,7 +37,7 @@ export default function SectionHeading({
         {actionLabel && actionHref && (
           <Link
             href={actionHref}
-            className="group flex items-center gap-2 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+            className="group flex items-center gap-2 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80"
           >
             {actionLabel}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

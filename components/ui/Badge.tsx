@@ -2,7 +2,7 @@ import type { ProjectStatus } from "@/data/projects";
 
 const statusColor: Record<ProjectStatus, string> = {
   ACTIVE: "text-success border-success/30 bg-success/10",
-  COMPLETE: "text-accent border-accent/30 bg-accent-dim",
+  COMPLETE: "text-accent-hover border-accent/30 bg-accent-dim",
   CONCEPT: "text-warning border-warning/30 bg-warning/10",
 };
 
@@ -33,7 +33,7 @@ export function Pill({ children }: { children: string }) {
 
 export function ProjectBadgeChip({ children }: { children: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
       <span className="h-1.5 w-1.5 rounded-full bg-accent" />
       {children}
     </span>

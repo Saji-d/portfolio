@@ -282,7 +282,7 @@ export default function CortexConsole() {
           <label htmlFor="cortex-input" className="sr-only">
             Enter a command
           </label>
-          <span className="shrink-0 font-mono text-sm text-accent">{PROMPT}</span>
+          <span className="shrink-0 font-mono text-sm text-accent-hover">{PROMPT}</span>
           <input
             id="cortex-input"
             ref={inputRef}
@@ -310,8 +310,8 @@ export default function CortexConsole() {
               title={cmd.desc}
               className={`rounded-full border px-3 py-1 font-mono text-xs transition-colors ${
                 lastCmd === cmd.id
-                  ? "border-accent/60 bg-accent-dim text-accent"
-                  : "border-line bg-surface-2 text-text-secondary hover:border-accent/40 hover:text-accent"
+                  ? "border-accent/60 bg-accent-dim text-accent-hover"
+                  : "border-line bg-surface-2 text-text-secondary hover:border-accent/40 hover:text-accent-hover"
               }`}
             >
               {cmd.id}
@@ -349,10 +349,10 @@ export default function CortexConsole() {
               {view === null && (
                 <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 text-center">
                   <div className="font-mono text-sm text-text-muted">
-                    awaiting input<span className="animate-caret text-accent" data-cortex-anim>_</span>
+                    awaiting input<span className="animate-caret text-accent-hover" data-cortex-anim>_</span>
                   </div>
                   <p className="max-w-sm text-sm leading-relaxed text-text-muted">
-                    run <span className="text-accent">help </span>  or click a command above
+                    run <span className="text-accent-hover">help </span>  or click a command above
                     to explore what&apos;s inside.
                   </p>
                 </div>
@@ -384,7 +384,7 @@ export default function CortexConsole() {
                 }
                 setView(entry.view);
               }}
-              className="rounded-md border border-line bg-surface-2 px-2 py-0.5 font-mono text-xs text-text-secondary transition-colors hover:border-accent/40 hover:text-accent"
+              className="rounded-md border border-line bg-surface-2 px-2 py-0.5 font-mono text-xs text-text-secondary transition-colors hover:border-accent/40 hover:text-accent-hover"
             >
               $ {entry.cmd}
             </button>

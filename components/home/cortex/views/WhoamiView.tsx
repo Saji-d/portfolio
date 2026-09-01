@@ -96,7 +96,7 @@ export default function WhoamiView() {
     <div className="grid gap-4 lg:grid-cols-[1fr_minmax(300px,340px)]">
       <div className="card-surface relative overflow-hidden p-5 sm:p-6">
         <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-          <span className="text-accent">$ whoami</span>
+          <span className="text-accent-hover">$ whoami</span>
           <span className="h-px flex-1 bg-line" />
           <span>{`// identity`}</span>
         </div>
@@ -142,7 +142,7 @@ export default function WhoamiView() {
           className="animate-scan-sweep pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-accent/[0.07] to-transparent"
         />
         <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-          <span className="text-accent">$ system</span>
+          <span className="text-accent-hover">$ system</span>
           <span className="h-px flex-1 bg-line" />
           <span>{`// runtime`}</span>
         </div>
@@ -205,7 +205,7 @@ export default function WhoamiView() {
         </div>
 
         <div className="mt-5 border-t border-line pt-4 font-mono text-xs">
-          <span className="text-accent">$ status</span>
+          <span className="text-accent-hover">$ status</span>
           <div aria-hidden="true" className="relative mt-2 h-4 overflow-hidden">
             {STATUS_PHRASES.map((phrase, i) => (
               <span
@@ -214,7 +214,7 @@ export default function WhoamiView() {
                 className="whoami-status-rotate absolute inset-0 whitespace-nowrap text-text-secondary"
                 style={{ animationDelay: `${-i * 3.6}s` }}
               >
-                <span className="text-accent">›</span> {phrase}
+                <span className="text-accent-hover">›</span> {phrase}
               </span>
             ))}
           </div>

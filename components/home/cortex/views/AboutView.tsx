@@ -12,14 +12,14 @@ export default function AboutView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ about</span>
+        <span className="text-accent-hover">$ about</span>
         <span className="h-px flex-1 bg-line" />
         <span>{"// profile"}</span>
       </div>
 
       <div className="card-surface mt-4 p-5 sm:p-6">
         <div className="flex items-center gap-3">
-          <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-accent/30 bg-accent-dim font-display text-lg font-medium text-accent">
+          <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-accent/30 bg-accent-dim font-display text-lg font-medium text-accent-hover">
             S
             <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-surface bg-success" />
           </div>
@@ -43,7 +43,7 @@ export default function AboutView() {
             {SKILL_NETWORK.disciplines.map((d) => (
               <span
                 key={d.id}
-                className="rounded-full border border-accent/25 bg-accent-dim/40 px-3 py-1 font-mono text-[11px] text-accent"
+                className="rounded-full border border-accent/25 bg-accent-dim/40 px-3 py-1 font-mono text-[11px] text-accent-hover"
               >
                 {d.label}
               </span>

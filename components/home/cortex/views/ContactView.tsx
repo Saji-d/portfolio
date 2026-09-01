@@ -15,7 +15,7 @@ export default function ContactView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ contact</span>
+        <span className="text-accent-hover">$ contact</span>
         <span className="h-px flex-1 bg-line" />
         <span>{`// contact details`}</span>
       </div>
@@ -26,12 +26,12 @@ export default function ContactView() {
             const Icon = row.icon;
             const content = (
               <>
-                <Icon className="h-3.5 w-3.5 shrink-0 text-text-muted transition-colors group-hover:text-accent" />
+                <Icon className="h-3.5 w-3.5 shrink-0 text-text-muted transition-colors group-hover:text-accent-hover" />
                 <span className="min-w-0">
                   <span className="block font-mono text-[10px] uppercase tracking-wider text-text-muted">
                     {row.label}
                   </span>
-                  <span className="block truncate font-mono text-xs text-text-secondary transition-colors group-hover:text-accent">
+                  <span className="block truncate font-mono text-xs text-text-secondary transition-colors group-hover:text-accent-hover">
                     {row.value}
                   </span>
                 </span>

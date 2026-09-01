@@ -22,7 +22,7 @@ export default function FullTimeline() {
                   {typeLabel[entry.type]}
                 </span>
                 {entry.current && (
-                  <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+                  <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
                     CURRENT
                   </span>
                 )}

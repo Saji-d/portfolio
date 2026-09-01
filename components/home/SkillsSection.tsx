@@ -61,10 +61,10 @@ export default function SkillsSection() {
                     <NeonRing />
                     <div className="relative flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5">
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent-hover transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105">
                           <Icon className="h-4.5 w-4.5" />
                         </span>
-                        <h3 className="font-mono text-xs font-semibold uppercase tracking-widest text-text-primary transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent">
+                        <h3 className="font-mono text-xs font-semibold uppercase tracking-widest text-text-primary transition-colors duration-300 group-hover:text-accent-hover group-focus-visible:text-accent-hover">
                           {group.label}
                         </h3>
                       </div>

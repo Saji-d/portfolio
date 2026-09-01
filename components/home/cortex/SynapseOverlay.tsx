@@ -1059,7 +1059,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
           skipRef.current = true;
         }}
         aria-label="Close synapse"
-        className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface/70 text-text-secondary backdrop-blur-md transition-colors hover:border-accent/50 hover:text-accent sm:right-5 sm:top-5"
+        className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface/70 text-text-secondary backdrop-blur-md transition-colors hover:border-accent/50 hover:text-accent-hover sm:right-5 sm:top-5"
       >
         <X className="h-4 w-4" />
       </button>

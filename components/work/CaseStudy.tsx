@@ -100,7 +100,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                   <Link
                     key={link.label}
                     href={link.href as string}
-                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                   >
                     {link.label}
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -111,7 +111,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                   >
                     {link.label}
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -177,7 +177,7 @@ export default function CaseStudy({ project }: { project: Project }) {
             <ol className="space-y-6">
               {project.decisions.map((d, i) => (
                 <li key={d.title} className="grid gap-2 sm:grid-cols-[64px_1fr]">
-                  <span className="font-mono text-sm text-accent">
+                  <span className="font-mono text-sm text-accent-hover">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -205,7 +205,7 @@ export default function CaseStudy({ project }: { project: Project }) {
             <div className="card-surface grid grid-cols-2 gap-8 p-8 sm:grid-cols-3 sm:p-10">
               {project.metrics.map((m) => (
                 <div key={m.label}>
-                  <div className="font-display text-2xl font-medium tracking-tight text-accent sm:text-3xl">
+                  <div className="font-display text-2xl font-medium tracking-tight text-accent-hover sm:text-3xl">
                     {m.value}
                   </div>
                   <div className="mt-1 font-mono text-xs text-text-muted">{m.label}</div>
@@ -254,7 +254,7 @@ export default function CaseStudy({ project }: { project: Project }) {
           </div>
           <Link
             href="/projects"
-            className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+            className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80"
           >
             Back to all projects
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

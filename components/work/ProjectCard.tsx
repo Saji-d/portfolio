@@ -177,8 +177,8 @@ function CardButton({
 }) {
   const classes = `inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-all ${
     primary
-      ? "border-accent/40 bg-accent-dim text-accent hover:border-accent hover:bg-accent/20"
-      : "border-line bg-surface-2 text-text-secondary hover:border-accent/50 hover:text-accent"
+      ? "border-accent/40 bg-accent-dim text-accent-hover hover:border-accent hover:bg-accent/20"
+      : "border-line bg-surface-2 text-text-secondary hover:border-accent/50 hover:text-accent-hover"
   }`;
   const inner = (
     <>
@@ -289,14 +289,14 @@ export function ProjectCard({
                 <button
                   type="button"
                   onClick={() => onOpenCaseStudy?.(project.slug)}
-                  className="text-left transition-colors group-hover:text-accent"
+                  className="text-left transition-colors group-hover:text-accent-hover"
                 >
                   {project.name}
                 </button>
               ) : href ? (
                 <SmartLink
                   href={href}
-                  className="transition-colors group-hover:text-accent"
+                  className="transition-colors group-hover:text-accent-hover"
                 >
                   {project.name}
                 </SmartLink>

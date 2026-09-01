@@ -36,7 +36,7 @@ export default function CodeBlock({ code, title, caption }: CodeBlockProps) {
         <button
           onClick={copy}
           aria-label="Copy code"
-          className="flex items-center gap-1.5 font-mono text-xs text-text-muted transition-colors hover:text-accent"
+          className="flex items-center gap-1.5 font-mono text-xs text-text-muted transition-colors hover:text-accent-hover"
         >
           {copied ? (
             <>

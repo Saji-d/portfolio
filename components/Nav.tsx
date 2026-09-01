@@ -231,7 +231,7 @@ export default function Nav() {
         aria-label="Scroll to top"
         className="nav-enter group fixed top-6 z-50 s-button-left sm:top-7"
       >
-        <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface font-mono text-sm font-bold text-accent shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-colors group-hover:border-accent/50">
+        <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface font-mono text-sm font-bold text-accent-hover shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl transition-colors group-hover:border-accent/50">
           S
           <span className="absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_6px_rgba(63,178,138,0.8)]" />
         </span>
@@ -260,7 +260,7 @@ export default function Nav() {
                 aria-current={aboutActive ? "true" : undefined}
                 className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
                   aboutActive
-                    ? "font-semibold text-accent"
+                    ? "font-semibold text-accent-hover"
                     : "font-medium text-text-secondary hover:-translate-y-px hover:text-text-primary"
                 }`}
               >
@@ -285,7 +285,7 @@ export default function Nav() {
                     aria-current={active ? "true" : undefined}
                     className={`relative flex shrink-0 items-center px-2 py-2 text-sm transition-all duration-200 ${
                       active
-                        ? "font-semibold text-accent"
+                        ? "font-semibold text-accent-hover"
                         : "font-medium text-text-secondary hover:-translate-y-px hover:text-text-primary"
                     }`}
                   >
@@ -309,7 +309,7 @@ export default function Nav() {
                 onClick={() => setPaletteOpen(true)}
                 aria-label="Open Cortex, command console"
                 title="Search · ⌘K"
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-l-lg text-text-secondary transition-colors hover:text-accent"
+                className="grid h-9 w-9 shrink-0 place-items-center rounded-l-lg text-text-secondary transition-colors hover:text-accent-hover"
               >
                 <SquareTerminal className="h-4 w-4" />
               </button>
@@ -322,7 +322,7 @@ export default function Nav() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="hidden h-9 w-9 shrink-0 place-items-center text-text-secondary transition-colors hover:text-accent sm:grid"
+                className="hidden h-9 w-9 shrink-0 place-items-center text-text-secondary transition-colors hover:text-accent-hover sm:grid"
               >
                 <GithubIcon className="h-4 w-4" />
               </a>
@@ -335,7 +335,7 @@ export default function Nav() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="hidden h-9 w-9 shrink-0 place-items-center rounded-r-lg text-text-secondary transition-colors hover:text-accent md:grid"
+                className="hidden h-9 w-9 shrink-0 place-items-center rounded-r-lg text-text-secondary transition-colors hover:text-accent-hover md:grid"
               >
                 <LinkedinIcon className="h-4 w-4" />
               </a>
@@ -344,7 +344,7 @@ export default function Nav() {
               href={RESUME_LINK.href}
               data-resume
               aria-current={pathname === "/resume" ? "page" : undefined}
-              className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent md:inline-flex"
+              className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent-hover md:inline-flex"
             >
               <span className="relative z-10">{RESUME_LINK.label}</span>
               <ArrowUpRight className="h-3 w-3" />
@@ -355,7 +355,7 @@ export default function Nav() {
               aria-label="Toggle menu"
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface/60 text-text-secondary transition-colors hover:border-accent/50 hover:text-accent lg:hidden"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface/60 text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-hover lg:hidden"
             >
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
@@ -381,7 +381,7 @@ export default function Nav() {
                 aria-current={aboutActive ? "true" : undefined}
                 className={`flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
                   aboutActive
-                    ? "bg-accent-dim text-accent"
+                    ? "bg-accent-dim text-accent-hover"
                     : "text-text-secondary hover:bg-surface hover:text-text-primary"
                 }`}
               >
@@ -403,7 +403,7 @@ export default function Nav() {
                     aria-current={active ? "true" : undefined}
                     className={`flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
                       active
-                        ? "bg-accent-dim text-accent"
+                        ? "bg-accent-dim text-accent-hover"
                         : "text-text-secondary hover:bg-surface hover:text-text-primary"
                     }`}
                   >
@@ -423,7 +423,7 @@ export default function Nav() {
                 aria-current={pathname === "/resume" ? "page" : undefined}
                 className={`flex items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors ${
                   pathname === "/resume"
-                    ? "bg-accent-dim text-accent"
+                    ? "bg-accent-dim text-accent-hover"
                     : "text-text-secondary hover:bg-surface hover:text-text-primary"
                 }`}
               >

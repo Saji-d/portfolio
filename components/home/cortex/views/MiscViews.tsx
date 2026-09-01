@@ -8,7 +8,7 @@ export function HelpView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ help</span>
+        <span className="text-accent-hover">$ help</span>
         <span className="h-px flex-1 bg-line" />
         <span>{`// available commands`}</span>
       </div>
@@ -16,7 +16,7 @@ export function HelpView() {
       <ul className="card-surface mt-3 divide-y divide-line font-mono text-xs">
         {TERMINAL_COMMANDS.filter((c) => !/\s/.test(c.id)).map((cmd) => (
           <li key={cmd.id} className="flex items-baseline gap-3 px-4 py-1.5">
-            <span className="w-32 shrink-0 text-accent">{cmd.id}</span>
+            <span className="w-32 shrink-0 text-accent-hover">{cmd.id}</span>
             <span className="text-text-secondary">{cmd.desc}</span>
           </li>
         ))}
@@ -33,7 +33,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
   return (
     <div className="flex min-h-[260px] flex-col items-center justify-center gap-5 text-center">
       <div className="font-mono text-sm text-text-secondary">
-        session ended<span className="animate-caret text-accent" data-cortex-anim>_</span>
+        session ended<span className="animate-caret text-accent-hover" data-cortex-anim>_</span>
       </div>
       <p className="max-w-sm text-sm leading-relaxed text-text-muted">
         Thanks for poking around inside the machine. When you&apos;re ready, the work is
@@ -43,7 +43,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
         <button
           type="button"
           onClick={onReconnect}
-          className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-2.5 font-mono text-xs text-text-secondary transition-colors hover:border-accent/50 hover:text-accent"
+          className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-2.5 font-mono text-xs text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-hover"
         >
           <RefreshCw className="h-3.5 w-3.5" />
           reconnect
@@ -71,7 +71,7 @@ export function NotFoundView({ cmd }: { cmd: string }) {
         bash: <span className="text-text-primary">{cmd}</span>: command not found
       </div>
       <p className="font-mono text-xs text-text-muted">
-        hint: type <span className="text-accent">help</span> to list available commands
+        hint: type <span className="text-accent-hover">help</span> to list available commands
       </p>
     </div>
   );

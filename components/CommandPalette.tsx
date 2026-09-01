@@ -294,7 +294,7 @@ export default function CommandPalette() {
                   {Icon && (
                     <Icon
                       className={`h-4 w-4 shrink-0 ${
-                        i === activeIndex ? "text-accent" : "text-text-muted"
+                        i === activeIndex ? "text-accent-hover" : "text-text-muted"
                       }`}
                     />
                   )}
@@ -310,7 +310,7 @@ export default function CommandPalette() {
                     {item.group}
                   </span>
                   {i === activeIndex && (
-                    <CornerDownLeft className="h-3.5 w-3.5 shrink-0 text-accent" />
+                    <CornerDownLeft className="h-3.5 w-3.5 shrink-0 text-accent-hover" />
                   )}
                 </button>
               );

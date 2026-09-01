@@ -19,7 +19,7 @@ function Skeleton() {
   // hash-on-load correction) just placed it.
   return (
     <div className="flex flex-1 items-center justify-center rounded-2xl border border-line bg-surface/60 font-mono text-xs text-text-muted">
-      cortex loading<span className="animate-caret text-accent">_</span>
+      cortex loading<span className="animate-caret text-accent-hover">_</span>
     </div>
   );
 }

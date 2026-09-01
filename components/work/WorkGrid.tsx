@@ -76,7 +76,7 @@ export default function WorkGrid() {
             onClick={() => setActive(cat)}
             className={`rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors ${
               active === cat
-                ? "border-accent bg-accent-dim text-accent"
+                ? "border-accent bg-accent-dim text-accent-hover"
                 : "border-line bg-surface text-text-secondary hover:border-accent/40 hover:text-text-primary"
             }`}
           >
@@ -109,7 +109,7 @@ export default function WorkGrid() {
               setQuery("");
               setActive("All");
             }}
-            className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+            className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80"
           >
             Clear search & filters
           </button>

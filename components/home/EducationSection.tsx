@@ -70,7 +70,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-bg/10" />
 
-          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-bg/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider text-accent backdrop-blur-md">
+          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-bg/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider text-accent-hover backdrop-blur-md">
             <Star className="h-3 w-3 fill-current" />
             Highest qualification
           </span>
@@ -82,12 +82,12 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
               <h3 className="feature-title">
                 {entry.institution}
               </h3>
-              <p className="mt-0.5 text-sm font-medium text-accent">
+              <p className="mt-0.5 text-sm font-medium text-accent-hover">
                 {entry.degree}
               </p>
             </div>
             <div className="text-right">
-              <div className="font-display text-2xl font-medium tracking-tight text-accent">
+              <div className="font-display text-2xl font-medium tracking-tight text-accent-hover">
                 <AnimatedMetric value={entry.gpa} />
               </div>
               <div className="mt-0.5 card-meta">
@@ -110,7 +110,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
           <div className="mt-auto flex flex-wrap gap-1.5 border-t border-line pt-2">
             {(entry.badges ?? []).map((badge, i) => (
               <Reveal key={badge} delay={i * 0.07} y={6}>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
                   <Award className="h-3 w-3" />
                   {badge}
                 </span>
@@ -151,7 +151,7 @@ function SchoolCard({ entry }: { entry: EducationEntry }) {
 
           <div className="mt-auto flex items-end justify-between border-t border-line pt-1.5">
             <div>
-              <div className="font-display text-xl font-medium tracking-tight text-accent">
+              <div className="font-display text-xl font-medium tracking-tight text-accent-hover">
                 <AnimatedMetric value={entry.gpa} />
               </div>
               <div className="mt-0.5 card-meta">

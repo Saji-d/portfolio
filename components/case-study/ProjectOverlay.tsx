@@ -141,7 +141,7 @@ export default function ProjectOverlay({
                   <Link
                     key={link.label}
                     href={link.href as string}
-                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                   >
                     {link.label}
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -152,7 +152,7 @@ export default function ProjectOverlay({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                   >
                     {link.label}
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -197,7 +197,7 @@ export default function ProjectOverlay({
               <ol className="space-y-6">
                 {project.decisions.map((d, i) => (
                   <li key={d.title} className="grid gap-2 sm:grid-cols-[64px_1fr]">
-                    <span className="font-mono text-sm text-accent">
+                    <span className="font-mono text-sm text-accent-hover">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div>
@@ -232,7 +232,7 @@ export default function ProjectOverlay({
               <div className="card-surface grid grid-cols-2 gap-6 p-6 sm:grid-cols-3 sm:p-8">
                 {project.metrics.map((m) => (
                   <div key={m.label}>
-                    <div className="font-display text-2xl font-medium tracking-tight text-accent sm:text-3xl">
+                    <div className="font-display text-2xl font-medium tracking-tight text-accent-hover sm:text-3xl">
                       {m.value}
                     </div>
                     <div className="mt-1 font-mono text-xs text-text-muted">

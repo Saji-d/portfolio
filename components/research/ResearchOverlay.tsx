@@ -108,7 +108,7 @@ function BaselineTable({
                 <td className="px-5 py-3 text-sm font-medium text-text-primary">
                   {b.model}
                   {isWinner && (
-                    <span className="ml-2 font-mono text-[10px] text-accent">
+                    <span className="ml-2 font-mono text-[10px] text-accent-hover">
                       winner
                     </span>
                   )}
@@ -137,7 +137,7 @@ function FeatureGrid({
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {features.map((f, i) => (
         <div key={f.name} className="card-surface p-5">
-          <p className="font-mono text-xs text-accent">
+          <p className="font-mono text-xs text-accent-hover">
             {String(i + 1).padStart(2, "0")}
           </p>
           <h3 className="mt-2 font-display text-sm font-medium tracking-tight text-text-primary">
@@ -195,7 +195,7 @@ function MetricPanel({ metrics }: { metrics: ResearchMetric[] }) {
             <AnimatedMetric
               value={m.value}
               showBar
-              className="block font-display text-xl font-medium tracking-tight text-accent sm:text-2xl"
+              className="block font-display text-xl font-medium tracking-tight text-accent-hover sm:text-2xl"
             />
             <div className="mt-1.5 font-mono text-[11px] uppercase tracking-wide text-text-muted">
               {m.label}
@@ -236,7 +236,7 @@ function Pipeline({ label, stages }: { label: string; stages: string[] }) {
         {stages.map((stage, i) => (
           <div key={stage} className="flex items-center gap-2">
             <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs leading-snug text-text-secondary">
-              <span className="mr-1.5 text-accent">
+              <span className="mr-1.5 text-accent-hover">
                 {String(i + 1).padStart(2, "0")}
               </span>
               {stage}
@@ -377,7 +377,7 @@ function StudyLink({
         <h3 className="card-title">{paper.title}</h3>
         <p className="mt-1 card-meta">{paper.field}</p>
       </div>
-      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-text-muted transition-all group-hover:translate-x-0.5 group-hover:text-accent" />
+      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-text-muted transition-all group-hover:translate-x-0.5 group-hover:text-accent-hover" />
     </button>
   );
 }
@@ -403,7 +403,7 @@ export default function ResearchOverlay({
         <header>
           <div className="flex flex-wrap items-center gap-3 pr-12">
             {study.featured && (
-              <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+              <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
                 FEATURED THESIS
               </span>
             )}
@@ -438,7 +438,7 @@ export default function ResearchOverlay({
                   href={study.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+                  className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                 >
                   <GithubIcon className="h-4 w-4" /> Source code
                 </a>

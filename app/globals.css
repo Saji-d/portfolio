@@ -163,7 +163,12 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* --accent fails 4.5:1 text contrast against --bg/--surface (WCAG AA) at
+     this weight/size - --accent-hover is the same hue, lightened just
+     enough to pass (6.68:1 on --bg), while --accent itself stays reserved
+     for non-text uses (backgrounds, borders, focus rings) where the
+     contrast rule doesn't apply. */
+  color: var(--accent-hover);
 }
 
 @utility text-gradient {

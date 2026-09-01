@@ -14,7 +14,7 @@ interface MeasuredEdge {
 }
 
 const TAG_STYLE: Record<FlowTag, string> = {
-  production: "border-accent/30 bg-accent-dim text-accent",
+  production: "border-accent/30 bg-accent-dim text-accent-hover",
   research: "border-accent-2/30 bg-accent-2/10 text-accent-2",
   project: "border-line bg-surface-2 text-text-muted",
 };
@@ -123,7 +123,7 @@ export default function ProjectsView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ projects</span>
+        <span className="text-accent-hover">$ projects</span>
         <span className="h-px flex-1 bg-line" />
         <span>{`// dependency graph · ${FLOW_COLUMNS.length} clusters`}</span>
       </div>
@@ -243,7 +243,7 @@ export default function ProjectsView() {
               </div>
               <a
                 href={selected.href}
-                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] text-accent transition-opacity hover:opacity-80"
+                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] text-accent-hover transition-opacity hover:opacity-80"
               >
                 open node
                 <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

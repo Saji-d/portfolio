@@ -25,7 +25,7 @@ export default function ResearchCard({
             </span>
           ))}
         </div>
-        <ArrowUpRight className="h-4 w-4 shrink-0 text-text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+        <ArrowUpRight className="h-4 w-4 shrink-0 text-text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-hover" />
       </div>
       <h3 className="card-title mt-3 line-clamp-2">{paper.title}</h3>
       <p className="mt-1 card-meta">{paper.field}</p>
@@ -42,14 +42,14 @@ export default function ResearchCard({
                   />
                   <AnimatedMetric
                     value={m.value}
-                    className="font-display text-lg font-medium tracking-tight text-accent"
+                    className="font-display text-lg font-medium tracking-tight text-accent-hover"
                   />
                 </div>
                 <div className="card-meta">{m.label}</div>
               </div>
             ) : (
               <div key={m.label}>
-                <div className="font-display text-lg font-medium tracking-tight text-accent">
+                <div className="font-display text-lg font-medium tracking-tight text-accent-hover">
                   {m.value}
                 </div>
                 <div className="card-meta">{m.label}</div>

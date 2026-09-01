@@ -4,7 +4,7 @@ export default function BackToTop() {
   return (
     <a
       href="#top"
-      className="group/top flex items-center gap-2 font-mono text-xs text-text-muted transition-colors hover:text-accent"
+      className="group/top flex items-center gap-2 font-mono text-xs text-text-muted transition-colors hover:text-accent-hover"
       aria-label="Back to top"
     >
       back to top

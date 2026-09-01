@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ehsanul Haque Siam | AI Engineer · Full-Stack Developer · LLM Engineer</title>
+  <meta name="description" content="Portfolio of Ehsanul Haque Siam — AI Engineer, Full-Stack Developer, and LLM Engineer. Powered by @chenglou/pretext.">
+  <meta property="og:title" content="Ehsanul Haque Siam | Portfolio">
+  <meta property="og:description" content="Interactive portfolio showcasing Pretext — DOM-free text measurement and layout.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #06080d;
+      --bg-elevated: #0c0f17;
+      --bg-card: #0f1219;
+      --bg-card-hover: #141820;
+      --text-primary: #e2e4e9;
+      --text-dim: #7a7f8e;
+      --text-muted: #4a4f5e;
+      --accent: #00d4ff;
+      --accent-dim: rgba(0, 212, 255, 0.1);
+      --accent-glow: rgba(0, 212, 255, 0.25);
+      --coral: #ff6b6b;
+      --coral-dim: rgba(255, 107, 107, 0.12);
+      --gold: #ffd166;
+      --gold-dim: rgba(255, 209, 102, 0.1);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-hover: rgba(0, 212, 255, 0.2);
+      --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: var(--grain);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: color 0.25s; }
+    a:hover { color: var(--gold); }
+
+    canvas { display: block; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(6, 8, 13, 0.88);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; padding: 0 32px;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem;
+      color: var(--accent); letter-spacing: 2px;
+      text-shadow: 0 0 20px var(--accent-glow);
+    }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted); font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    #nav-toggle { display: none; }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 101;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px; background: var(--text-primary);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    @media (max-width: 768px) {
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+        background: var(--bg-elevated); flex-direction: column;
+        padding: 90px 36px 36px; gap: 28px; transition: right 0.35s;
+        border-left: 1px solid var(--border);
+      }
+      .nav-links a { font-size: 0.85rem; }
+      #nav-toggle:checked ~ .nav-links { right: 0; }
+      #nav-toggle:checked ~ .nav-hamburger span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      #nav-toggle:checked ~ .nav-hamburger span:nth-child(2) { opacity: 0; }
+      #nav-toggle:checked ~ .nav-hamburger span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    }
+
+    /* HERO */
+    #hero {
+      position: relative; height: 100vh; overflow: hidden; cursor: none;
+      background: radial-gradient(ellipse at 50% 30%, rgba(0,212,255,0.03) 0%, transparent 60%);
+    }
+    #particle-canvas { position: absolute; inset: 0; }
+    .hero-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      display: flex; flex-direction: column; align-items: center;
+      padding-bottom: 36px; pointer-events: none;
+    }
+    .hero-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.65rem, 1.2vw, 0.82rem); font-weight: 300;
+      color: var(--text-muted); letter-spacing: 4px; text-transform: uppercase;
+    }
+    .hero-badge {
+      margin-top: 12px; margin-bottom: 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--accent); letter-spacing: 1px;
+      background: var(--accent-dim); border: 1px solid rgba(0,212,255,0.15);
+      padding: 4px 14px; border-radius: 20px;
+    }
+    .scroll-indicator {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      animation: scrollBounce 2.5s ease-in-out infinite;
+    }
+    .scroll-indicator span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase;
+    }
+    .scroll-indicator svg {
+      width: 16px; height: 16px; stroke: var(--text-muted); fill: none; stroke-width: 2;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(10px); }
+    }
+
+    /* CONTROLS */
+    #controls {
+      position: absolute; top: 76px; right: 32px;
+      display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center;
+      background: rgba(12, 15, 23, 0.75);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+      padding: 10px 20px; z-index: 10;
+    }
+    #controls label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    #controls select {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      padding: 5px 10px; outline: none; cursor: pointer;
+    }
+    #controls input[type="range"] {
+      -webkit-appearance: none; width: 70px; height: 3px;
+      background: rgba(255,255,255,0.08); border-radius: 2px; outline: none;
+    }
+    #controls input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: var(--accent); cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .control-group { display: flex; align-items: center; gap: 6px; }
+    @media (max-width: 600px) { #controls { top: 70px; right: 12px; left: 12px; padding: 8px 14px; gap: 8px; } }
+
+    /* SECTIONS */
+    .section { max-width: 1400px; margin: 0 auto; padding: 120px 40px; position: relative; }
+    @media (max-width: 768px) { .section { padding: 80px 20px; } }
+    .section-header { position: relative; margin-bottom: 64px; }
+    .section-header canvas { display: block; max-width: 100%; }
+    .section-header .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--accent); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .section-header .section-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--text-muted); margin-top: 6px;
+    }
+
+    /* reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* ABOUT */
+    .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    @media (max-width: 900px) { .about-layout { grid-template-columns: 1fr; } }
+    .about-canvas-wrap {
+      position: relative; width: 100%;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--bg-card); overflow: hidden;
+    }
+    .about-canvas-wrap canvas { width: 100%; display: block; }
+    .about-canvas-label {
+      position: absolute; top: 12px; left: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; color: var(--accent); letter-spacing: 2px;
+      text-transform: uppercase; background: var(--bg-card); padding: 2px 8px;
+      border-radius: 4px; border: 1px solid rgba(0,212,255,0.15);
+    }
+    .about-right { display: flex; flex-direction: column; gap: 28px; }
+    .stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px; text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .stat-value {
+      font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800;
+      color: var(--accent); display: block;
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;
+    }
+
+    /* PRETEXT LAB */
+    .lab-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    @media (max-width: 900px) { .lab-layout { grid-template-columns: 1fr; } }
+    .lab-panel {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px; position: relative; overflow: hidden;
+    }
+    .lab-panel::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .lab-title {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+      color: var(--text-primary); margin-bottom: 16px;
+    }
+    .lab-input-group { margin-bottom: 14px; }
+    .lab-input-group label {
+      display: block; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--text-muted); letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .lab-input-group textarea {
+      width: 100%; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+      color: var(--text-primary); font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; padding: 10px 14px; resize: vertical;
+      min-height: 60px; outline: none; line-height: 1.5;
+    }
+    .lab-input-group textarea:focus { border-color: var(--accent); }
+    .lab-slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .lab-slider-row input[type="range"] {
+      -webkit-appearance: none; flex: 1; height: 3px;
+      background: rgba(255,255,255,0.08); border-radius: 2px; outline: none;
+    }
+    .lab-slider-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: var(--coral); cursor: pointer;
+    }
+    .lab-slider-row .lab-val {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      color: var(--coral); min-width: 42px; text-align: right;
+    }
+    .lab-output {
+      background: rgba(0,0,0,0.3); border-radius: 8px;
+      padding: 14px; margin-top: 14px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      line-height: 1.8; color: var(--text-dim);
+    }
+    .lab-output .val { color: var(--gold); font-weight: 500; }
+    .lab-output .fn { color: var(--coral); }
+    .lab-output .str { color: #a8d8a8; }
+    .lab-canvas-wrap {
+      border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden; background: rgba(0,0,0,0.2); position: relative;
+    }
+    .lab-canvas-wrap canvas { width: 100%; display: block; }
+    .lab-perf { display: flex; gap: 16px; margin-top: 14px; }
+    .lab-perf-item {
+      flex: 1; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; text-align: center;
+    }
+    .lab-perf-item .perf-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+    }
+    .lab-perf-item .perf-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; }
+    .perf-pretext { color: var(--accent); }
+    .perf-dom { color: var(--coral); }
+
+    /* EXPERIENCE */
+    .exp-canvas-wrap {
+      width: 100%; border: 1px solid var(--border); border-radius: 12px;
+      background: var(--bg-card); overflow: hidden; position: relative;
+    }
+    .exp-canvas-wrap canvas { width: 100%; display: block; }
+    .exp-canvas-label {
+      position: absolute; top: 12px; right: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; color: var(--text-muted); letter-spacing: 1px;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 18px;
+    }
+    @media (max-width: 440px) { .projects-grid { grid-template-columns: 1fr; } }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .project-card-header {
+      position: relative; overflow: hidden; border-bottom: 1px solid var(--border);
+    }
+    .project-card-header canvas { width: 100%; display: block; }
+    .project-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .project-desc {
+      font-size: 0.82rem; color: var(--text-dim); line-height: 1.6;
+      margin-bottom: 14px; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .project-metrics { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .project-metric {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--accent); background: var(--accent-dim);
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+    .project-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--text-muted);
+      background: rgba(255,255,255,0.03); padding: 2px 9px;
+      border-radius: 20px; border: 1px solid var(--border);
+    }
+    .project-links {
+      display: flex; gap: 14px; margin-top: auto; padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .project-links a {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500;
+    }
+
+    /* PUBLICATIONS */
+    .pub-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 18px;
+    }
+    .pub-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .pub-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .pub-venue {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--gold); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .pub-title {
+      font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600;
+      line-height: 1.4; margin-bottom: 8px;
+    }
+    .pub-date { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
+    .pub-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
+
+    /* CONTACT */
+    .contact-grid { display: flex; flex-direction: column; gap: 14px; max-width: 520px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: 12px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .contact-item:hover { border-color: var(--border-hover); transform: translateX(6px); }
+    .contact-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--accent-dim); display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .contact-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2; }
+    .contact-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .contact-value { font-weight: 500; font-size: 0.92rem; }
+
+    /* FOOTER */
+    footer {
+      text-align: center; padding: 48px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; color: var(--text-muted);
+      letter-spacing: 1px; border-top: 1px solid var(--border);
+    }
+
+    .section-divider { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+    .section-divider hr {
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">EHS</a>
+      <input type="checkbox" id="nav-toggle" hidden>
+      <label for="nav-toggle" class="nav-hamburger"><span></span><span></span><span></span></label>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#lab">Pretext Lab</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <canvas id="particle-canvas"></canvas>
+    <div id="controls">
+      <div class="control-group"><label for="mode-select">Mode</label>
+        <select id="mode-select"><option value="repel">Repel</option><option value="vortex">Vortex</option><option value="explode">Explode</option><option value="magnet">Magnet</option></select>
+      </div>
+      <div class="control-group"><label for="radius-slider">Radius</label><input type="range" id="radius-slider" min="40" max="300" value="120"></div>
+      <div class="control-group"><label for="force-slider">Force</label><input type="range" id="force-slider" min="1" max="30" value="12"></div>
+    </div>
+    <div class="hero-overlay">
+      <p class="hero-subtitle">AI Engineer &middot; Full-Stack Developer &middot; LLM Engineer</p>
+      <div class="hero-badge">text measured &amp; rendered via @chenglou/pretext</div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="section-header reveal">
+      <div class="section-label">01 / About</div>
+      <canvas id="header-about" height="60"></canvas>
+      <div class="section-meta">layoutWithLines() &rarr; canvas render &middot; 0 DOM reflows</div>
+    </div>
+    <div class="about-layout">
+      <div class="about-canvas-wrap reveal reveal-delay-1">
+        <div class="about-canvas-label">pretext &rarr; layoutNextLine() &middot; variable-width wrapping</div>
+        <canvas id="about-varwidth"></canvas>
+      </div>
+      <div class="about-right reveal reveal-delay-2">
+        <div class="stats-row">
+          <div class="stat-card"><span class="stat-value">60+</span><span class="stat-label">GitHub Stars</span></div>
+          <div class="stat-card"><span class="stat-value">15+</span><span class="stat-label">Projects</span></div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><span class="stat-value">3x</span><span class="stat-label">Dean's List</span></div>
+          <div class="stat-card"><span class="stat-value">3</span><span class="stat-label">Publications</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><hr></div>
+
+  <section id="lab" class="section">
+    <div class="section-header reveal">
+      <div class="section-label">02 / Pretext Lab</div>
+      <canvas id="header-lab" height="60"></canvas>
+      <div class="section-meta">interactive demo &middot; prepare() &rarr; layout() &rarr; layoutWithLines() pipeline</div>
+    </div>
+    <div class="lab-layout">
+      <div class="lab-panel reveal reveal-delay-1">
+        <div class="lab-title">Input</div>
+        <div class="lab-input-group"><label>Text</label>
+          <textarea id="lab-text">AGI spring has arrived. The journey begins now — from transformers to world models, the paradigm shift is real.</textarea>
+        </div>
+        <div class="lab-input-group"><label>Max Width</label>
+          <div class="lab-slider-row"><input type="range" id="lab-width" min="100" max="600" value="360"><span class="lab-val" id="lab-width-val">360px</span></div>
+        </div>
+        <div class="lab-input-group"><label>Line Height</label>
+          <div class="lab-slider-row"><input type="range" id="lab-lh" min="16" max="48" value="26"><span class="lab-val" id="lab-lh-val">26px</span></div>
+        </div>
+        <div class="lab-output" id="lab-output">
+          <span class="fn">prepare</span>(text, <span class="str">"15px DM Sans"</span>)<br>
+          <span class="fn">layout</span>(prepared, <span class="val">360</span>, <span class="val">26</span>)<br><br>
+          height: <span class="val" id="lab-h">&mdash;</span>px<br>
+          lineCount: <span class="val" id="lab-lc">&mdash;</span><br>
+          lines: [<span class="val" id="lab-lines">&mdash;</span>]
+        </div>
+        <div class="lab-perf">
+          <div class="lab-perf-item"><div class="perf-label">Pretext</div><div class="perf-val perf-pretext" id="lab-perf-pt">&mdash;</div></div>
+          <div class="lab-perf-item"><div class="perf-label">DOM Reflow</div><div class="perf-val perf-dom" id="lab-perf-dom">&mdash;</div></div>
+        </div>
+      </div>
+      <div class="lab-panel reveal reveal-delay-2">
+        <div class="lab-title">Canvas Output</div>
+        <div class="lab-canvas-wrap"><canvas id="lab-canvas"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><hr></div>
+
+  <section id="experience" class="section">
+    <div class="section-header reveal">
+      <div class="section-label">03 / Experience</div>
+      <canvas id="header-exp" height="60"></canvas>
+      <div class="section-meta">layoutWithLines() &rarr; per-line canvas rendering</div>
+    </div>
+    <div class="exp-canvas-wrap reveal reveal-delay-1">
+      <div class="exp-canvas-label">all text measured &amp; rendered by pretext</div>
+      <canvas id="exp-canvas"></canvas>
+    </div>
+  </section>
+
+  <div class="section-divider"><hr></div>
+
+  <section id="projects" class="section">
+    <div class="section-header reveal">
+      <div class="section-label">04 / Projects</div>
+      <canvas id="header-projects" height="60"></canvas>
+      <div class="section-meta">project names rendered via pretext &rarr; canvas</div>
+    </div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </section>
+
+  <div class="section-divider"><hr></div>
+
+  <section id="publications" class="section">
+    <div class="section-header reveal">
+      <div class="section-label">05 / Publications</div>
+      <canvas id="header-pubs" height="60"></canvas>
+    </div>
+    <div class="pub-grid reveal reveal-delay-1">
+      <div class="pub-card">
+        <div class="pub-venue">IEEE QPAIN 2026</div>
+        <div class="pub-title">Decoding Research Trends: A Clustering Based Topic Modeling Framework</div>
+        <div class="pub-date">2026 &middot; Accepted (IEEE Xplore, Scopus Indexed)</div>
+        <div class="pub-desc">Proposed a clustering-based topic modeling framework for decoding research trends.</div>
+      </div>
+      <div class="pub-card">
+        <div class="pub-venue">IDAA 2025 &middot; Taylor &amp; Francis</div>
+        <div class="pub-title">Beyond NER: A Comparative Benchmark of Medical BERTs for Multi-Label ADR Classification</div>
+        <div class="pub-date">Dec 2025 &middot; Book Chapter</div>
+        <div class="pub-desc">Benchmarked Medical BERT models for multi-label adverse drug reaction classification on PsyTAR.</div>
+      </div>
+      <div class="pub-card">
+        <div class="pub-venue">South Asian Climate Conference</div>
+        <div class="pub-title">Unfolding Emerging Issues in the Context of Changing Climatic Scenario</div>
+        <div class="pub-date">Sep 2024 &middot; Statistical Analysis &amp; Presentation</div>
+        <div class="pub-desc">Statistical analysis of emerging climate issues presented to an international audience.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"><hr></div>
+
+  <section id="contact" class="section">
+    <div class="section-header reveal">
+      <div class="section-label">06 / Contact</div>
+      <canvas id="header-contact" height="60"></canvas>
+    </div>
+    <div class="contact-grid reveal reveal-delay-1">
+      <a href="mailto:ehsanul.siamdev@gmail.com" class="contact-item">
+        <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div>
+        <div><div class="contact-label">Email</div><div class="contact-value">ehsanul.siamdev@gmail.com</div></div>
+      </a>
+      <a href="https://github.com/EhsanulHaqueSiam" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+        <div><div class="contact-label">GitHub</div><div class="contact-value">EhsanulHaqueSiam</div></div>
+      </a>
+      <a href="https://www.linkedin.com/in/EhsanulHaqueSiam/" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+        <div><div class="contact-label">LinkedIn</div><div class="contact-value">EhsanulHaqueSiam</div></div>
+      </a>
+      <a href="https://www.kaggle.com/ehsanulhaquesiam" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div><div class="contact-label">Kaggle</div><div class="contact-value">ehsanulhaquesiam</div></div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    All text on this page measured &amp; laid out with
+    <a href="https://github.com/chenglou/pretext" target="_blank" rel="noopener">@chenglou/pretext</a>
+    &middot; 0 DOM reflows &middot; Ehsanul Haque Siam &copy; 2026
+  </footer>
+
+  <script type="module">
+    // ============================================
+    //  PRETEXT IMPORT — all core APIs
+    // ============================================
+    let PT = {};
+    try { PT = await import('https://esm.sh/@chenglou/pretext'); } catch (e) { console.warn('Pretext load failed:', e); }
+    const { prepare, prepareWithSegments, layout, layoutWithLines, layoutNextLine } = PT;
+    const ptReady = !!prepare;
+
+    const DPR = window.devicePixelRatio || 1;
+    function hiDpiCanvas(canvas, w, h) {
+      canvas.width = w * DPR; canvas.height = h * DPR;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      const ctx = canvas.getContext('2d');
+      ctx.scale(DPR, DPR);
+      return ctx;
+    }
+
+    // ============================================
+    //  1. HERO — PARTICLE SYSTEM (prepare + layout)
+    // ============================================
+    const heroCanvas = document.getElementById('particle-canvas');
+    const heroCtx = heroCanvas.getContext('2d');
+    const heroEl = document.getElementById('hero');
+    let particles = [], W, H, isHeroVisible = true;
+    const mouse = { x: -9999, y: -9999, down: false };
+    const config = { mode: 'repel', radius: 120, force: 12, friction: 0.85, returnSpeed: 0.065, gap: 3 };
+
+    function heroResize() {
+      W = heroEl.clientWidth; H = heroEl.clientHeight;
+      heroCanvas.width = W * DPR; heroCanvas.height = H * DPR;
+      heroCanvas.style.width = W + 'px'; heroCanvas.style.height = H + 'px';
+      heroCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      config.gap = W < 480 ? 5 : W < 768 ? 4 : 3;
+      buildParticles();
+    }
+
+    function buildParticles() {
+      particles = [];
+      const text = W < 480 ? 'SIAM' : 'Ehsanul Haque Siam';
+      const targetW = W * 0.72;
+      const ff = '"Syne", sans-serif';
+      const sizer = document.createElement('canvas').getContext('2d');
+      let fs = 220;
+      while (fs > 20) { sizer.font = '800 ' + fs + 'px ' + ff; if (sizer.measureText(text).width <= targetW) break; fs -= 2; }
+
+      let th = fs * 1.15;
+      if (ptReady) { try { const p = prepare(text, fs + 'px Syne'); const r = layout(p, targetW + 400, fs * 1.15); if (r && r.height) th = r.height; } catch {} }
+
+      const off = document.createElement('canvas');
+      const octx = off.getContext('2d');
+      octx.font = '800 ' + fs + 'px ' + ff;
+      const m = octx.measureText(text);
+      const ow = Math.ceil(m.width) + 20, oh = Math.ceil(th) + 20;
+      off.width = ow; off.height = oh;
+      octx.fillStyle = '#fff'; octx.font = '800 ' + fs + 'px ' + ff;
+      octx.textBaseline = 'top'; octx.fillText(text, 10, 10);
+
+      const data = octx.getImageData(0, 0, ow, oh).data;
+      const gap = config.gap, ox = (W - ow) / 2, oy = (H - oh) / 2 - 20;
+      for (let y = 0; y < oh; y += gap) {
+        for (let x = 0; x < ow; x += gap) {
+          if (data[(y * ow + x) * 4 + 3] > 128) {
+            const hx = ox + x, hy = oy + y;
+            particles.push({ homeX: hx, homeY: hy, x: hx + (Math.random() - 0.5) * W * 0.8, y: hy + (Math.random() - 0.5) * H * 0.8, vx: 0, vy: 0, hue: 185 + (x / ow) * 50, size: gap * 0.7 + Math.random() * gap * 0.3 });
+          }
+        }
+      }
+    }
+
+    heroEl.addEventListener('mousemove', e => { const r = heroEl.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+    heroEl.addEventListener('mousedown', () => mouse.down = true);
+    heroEl.addEventListener('mouseup', () => mouse.down = false);
+    heroEl.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; mouse.down = false; });
+    heroEl.addEventListener('touchmove', e => { e.preventDefault(); const r = heroEl.getBoundingClientRect(); const t = e.touches[0]; mouse.x = t.clientX - r.left; mouse.y = t.clientY - r.top; mouse.down = true; }, { passive: false });
+    heroEl.addEventListener('touchend', () => { mouse.x = -9999; mouse.y = -9999; mouse.down = false; });
+
+    function heroAnimate() {
+      requestAnimationFrame(heroAnimate);
+      if (!isHeroVisible) return;
+      heroCtx.clearRect(0, 0, W, H);
+      const { mode, radius, force, friction, returnSpeed } = config;
+      const str = force * (mouse.down ? 2.5 : 1);
+      for (const p of particles) {
+        const dx = p.x - mouse.x, dy = p.y - mouse.y, dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < radius && dist > 0.1) {
+          const f = (1 - dist / radius) * str, nx = dx / dist, ny = dy / dist;
+          switch (mode) {
+            case 'repel': p.vx += nx * f; p.vy += ny * f; break;
+            case 'vortex': p.vx += (-ny * 0.8 + nx * 0.2) * f; p.vy += (nx * 0.8 + ny * 0.2) * f; break;
+            case 'explode': { const a = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.5; p.vx += Math.cos(a) * f * 1.5; p.vy += Math.sin(a) * f * 1.5; break; }
+            case 'magnet': p.vx -= nx * f * 0.6; p.vy -= ny * f * 0.6; break;
+          }
+        }
+        p.vx += (p.homeX - p.x) * returnSpeed; p.vy += (p.homeY - p.y) * returnSpeed;
+        p.vx *= friction; p.vy *= friction; p.x += p.vx; p.y += p.vy;
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const disp = Math.sqrt((p.x - p.homeX) ** 2 + (p.y - p.homeY) ** 2);
+        let h = p.hue, s = 55, l = 68, a = 0.88;
+        if (disp > 2) { h += speed * 4; s = Math.min(100, 55 + speed * 6); l = Math.min(90, 68 + speed * 2); a = Math.min(1, 0.88 + speed * 0.02); }
+        heroCtx.fillStyle = 'hsla(' + h + ',' + s + '%,' + l + '%,' + a + ')';
+        heroCtx.fillRect(p.x, p.y, p.size, p.size);
+      }
+      if (mouse.x > 0 && mouse.x < W && mouse.y > 0 && mouse.y < H) {
+        const g = heroCtx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, radius * 0.35);
+        g.addColorStop(0, 'rgba(0,212,255,0.06)'); g.addColorStop(1, 'rgba(0,212,255,0)');
+        heroCtx.fillStyle = g; heroCtx.beginPath(); heroCtx.arc(mouse.x, mouse.y, radius * 0.35, 0, Math.PI * 2); heroCtx.fill();
+        heroCtx.strokeStyle = 'rgba(0,212,255,' + (mouse.down ? 0.45 : 0.2) + ')'; heroCtx.lineWidth = 1;
+        heroCtx.beginPath(); heroCtx.arc(mouse.x, mouse.y, radius * 0.15, 0, Math.PI * 2); heroCtx.stroke();
+        heroCtx.fillStyle = 'rgba(0,212,255,0.8)'; heroCtx.beginPath(); heroCtx.arc(mouse.x, mouse.y, 2.5, 0, Math.PI * 2); heroCtx.fill();
+      }
+    }
+
+    document.getElementById('mode-select').addEventListener('change', e => config.mode = e.target.value);
+    document.getElementById('radius-slider').addEventListener('input', e => config.radius = +e.target.value);
+    document.getElementById('force-slider').addEventListener('input', e => config.force = +e.target.value);
+
+    // ============================================
+    //  2. SECTION HEADERS — layoutWithLines() canvas
+    // ============================================
+    const headers = [
+      { id: 'header-about', text: 'About', color: '#00d4ff' },
+      { id: 'header-lab', text: 'Pretext Lab', color: '#ff6b6b' },
+      { id: 'header-exp', text: 'Experience', color: '#00d4ff' },
+      { id: 'header-projects', text: 'Projects', color: '#ffd166' },
+      { id: 'header-pubs', text: 'Publications', color: '#00d4ff' },
+      { id: 'header-contact', text: 'Contact', color: '#ffd166' },
+    ];
+
+    function renderSectionHeaders() {
+      const fontSize = Math.min(52, window.innerWidth * 0.045);
+      for (const hdr of headers) {
+        const c = document.getElementById(hdr.id);
+        if (!c) continue;
+        const w = c.parentElement.clientWidth;
+        const hh = fontSize * 1.3 + 10;
+        const ctx = hiDpiCanvas(c, w, hh);
+        ctx.font = '800 ' + fontSize + 'px "Syne", sans-serif';
+        ctx.textBaseline = 'top';
+        if (ptReady) {
+          try {
+            const prepared = prepareWithSegments(hdr.text, fontSize + 'px Syne');
+            const result = layoutWithLines(prepared, w, fontSize * 1.3);
+            if (result && result.lines) {
+              let y = 4;
+              for (let i = 0; i < result.lines.length; i++) {
+                const line = result.lines[i];
+                const t = line.text !== undefined ? line.text : line;
+                ctx.fillStyle = hdr.color;
+                ctx.globalAlpha = 1 - i * 0.15;
+                ctx.fillText(t, 0, y);
+                const lw = line.width !== undefined ? line.width : ctx.measureText(t).width;
+                ctx.globalAlpha = 0.15; ctx.fillStyle = hdr.color;
+                ctx.fillRect(0, y + fontSize + 2, lw, 2);
+                y += fontSize * 1.3;
+              }
+              ctx.globalAlpha = 1;
+              continue;
+            }
+          } catch {}
+        }
+        ctx.fillStyle = hdr.color; ctx.fillText(hdr.text, 0, 4);
+      }
+    }
+
+    // ============================================
+    //  3. ABOUT — Variable-Width Wrapping (layoutNextLine)
+    // ============================================
+    const bioText = "I've shipped 4 production React websites driving 1.5x revenue growth as a Solo Developer at BetaScript LLC, built retrieval-augmented generation systems during an AI internship at Unies, published medical AI research in IEEE & Taylor & Francis, and earned triple Dean's List honors at AIUB. I build things that work at scale \u2014 from 50,000+ user platforms to 272-spider scraping pipelines \u2014 across AI/ML, full-stack web, and systems engineering. Currently exploring blockchain security at Deepchain Labs and powering Bangladesh's tracking infrastructure at BDTracks.";
+
+    function renderAboutVarWidth() {
+      const c = document.getElementById('about-varwidth');
+      const wrap = c.parentElement;
+      const w = wrap.clientWidth;
+      const fontSize = 14, lineHeight = 24;
+      const font = fontSize + 'px "DM Sans", sans-serif';
+      const padding = 28;
+      const circleR = Math.min(w * 0.18, 80);
+      const circleCX = w - padding - circleR - 10;
+      const circleCY = circleR + padding + 20;
+
+      if (!ptReady) {
+        const ctx = hiDpiCanvas(c, w, 300);
+        ctx.fillStyle = '#7a7f8e'; ctx.font = font;
+        ctx.fillText('Pretext loading\u2026', padding, padding + 20);
+        return;
+      }
+
+      const prepared = prepareWithSegments(bioText, font);
+      const fullLayout = layout(prepared, w - padding * 2, lineHeight);
+      const totalLines = (fullLayout && fullLayout.lineCount) ? fullLayout.lineCount : 16;
+      const canvasH = padding * 2 + totalLines * lineHeight + 60;
+      const ctx = hiDpiCanvas(c, w, canvasH);
+
+      // Draw obstacle
+      ctx.save();
+      ctx.beginPath(); ctx.arc(circleCX, circleCY, circleR, 0, Math.PI * 2);
+      const grad = ctx.createRadialGradient(circleCX, circleCY, 0, circleCX, circleCY, circleR);
+      grad.addColorStop(0, 'rgba(0,212,255,0.08)'); grad.addColorStop(0.7, 'rgba(0,212,255,0.03)'); grad.addColorStop(1, 'rgba(0,212,255,0)');
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = 'rgba(0,212,255,0.15)'; ctx.lineWidth = 1; ctx.stroke();
+      for (let r = circleR * 0.3; r < circleR; r += circleR * 0.3) {
+        ctx.beginPath(); ctx.arc(circleCX, circleCY, r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(0,212,255,0.06)'; ctx.stroke();
+      }
+      ctx.font = '600 11px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(0,212,255,0.5)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('OBSTACLE', circleCX, circleCY - 8);
+      ctx.font = '400 9px "JetBrains Mono", monospace'; ctx.fillStyle = 'rgba(0,212,255,0.3)';
+      ctx.fillText('text wraps', circleCX, circleCY + 6);
+      ctx.fillText('around me', circleCX, circleCY + 18);
+      ctx.restore();
+
+      // Variable-width wrapping with layoutNextLine
+      // API: layoutNextLine(preparedWithSegments, startPos, maxWidth) => {text, width, start, end}
+      ctx.font = font; ctx.textBaseline = 'top'; ctx.textAlign = 'left';
+      let cursorPos = {segmentIndex: 0, graphemeIndex: 0};
+      let y = padding + 16, lineIdx = 0;
+
+      while (lineIdx < 40) {
+        const lineCenterY = y + lineHeight / 2;
+        let maxLineW = w - padding * 2;
+        const dy = lineCenterY - circleCY;
+        if (Math.abs(dy) < circleR + 4) {
+          const chord = Math.sqrt(Math.max(0, circleR * circleR - dy * dy));
+          const circleLeft = circleCX - chord;
+          if (circleLeft > padding) maxLineW = Math.max(80, circleLeft - padding - 8);
+        }
+        let line;
+        try { line = layoutNextLine(prepared, cursorPos, maxLineW); } catch { break; }
+        if (!line) break;
+        cursorPos = line.end;
+        const text = line.text;
+        ctx.fillStyle = 'rgba(0,212,255,0.03)'; ctx.fillRect(padding, y, maxLineW, lineHeight);
+        ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.setLineDash([2, 4]);
+        ctx.beginPath(); ctx.moveTo(padding + maxLineW, y); ctx.lineTo(padding + maxLineW, y + lineHeight); ctx.stroke();
+        ctx.setLineDash([]);
+        const alpha = 0.6 + 0.4 * (1 - lineIdx / totalLines);
+        ctx.fillStyle = 'rgba(226,228,233,' + alpha + ')';
+        ctx.fillText(text, padding, y + (lineHeight - fontSize) / 2);
+        y += lineHeight; lineIdx++;
+      }
+    }
+
+    // ============================================
+    //  4. PRETEXT LAB — Interactive Demo
+    // ============================================
+    function updateLab() {
+      if (!ptReady) return;
+      const text = document.getElementById('lab-text').value;
+      const maxW = +document.getElementById('lab-width').value;
+      const lh = +document.getElementById('lab-lh').value;
+      document.getElementById('lab-width-val').textContent = maxW + 'px';
+      document.getElementById('lab-lh-val').textContent = lh + 'px';
+      const font = '15px "DM Sans", sans-serif';
+      const preparedBasic = prepare(text, font);
+      const preparedSeg = prepareWithSegments(text, font);
+
+      // Pretext benchmark (use basic prepare for speed test)
+      const t0 = performance.now();
+      for (let i = 0; i < 500; i++) layout(preparedBasic, maxW, lh);
+      const ptTime = ((performance.now() - t0) / 500).toFixed(3);
+
+      // DOM benchmark
+      const measEl = document.createElement('div');
+      measEl.style.cssText = 'position:absolute;visibility:hidden;width:' + maxW + 'px;font:' + font + ';line-height:' + lh + 'px;white-space:pre-wrap;word-wrap:break-word;';
+      document.body.appendChild(measEl);
+      const t1 = performance.now();
+      for (let i = 0; i < 500; i++) { measEl.textContent = text; measEl.getBoundingClientRect(); }
+      const domTime = ((performance.now() - t1) / 500).toFixed(3);
+      document.body.removeChild(measEl);
+
+      document.getElementById('lab-perf-pt').textContent = ptTime + 'ms';
+      document.getElementById('lab-perf-dom').textContent = domTime + 'ms';
+
+      const result = layout(preparedBasic, maxW, lh);
+      document.getElementById('lab-h').textContent = result && result.height ? result.height.toFixed(1) : '\u2014';
+      document.getElementById('lab-lc').textContent = result ? result.lineCount : '\u2014';
+
+      // layoutWithLines needs prepareWithSegments
+      let linesResult;
+      try { linesResult = layoutWithLines(preparedSeg, maxW, lh); } catch {}
+      const lines = (linesResult && linesResult.lines) ? linesResult.lines : [];
+      const lineTexts = lines.map(function(l) { var t = l.text !== undefined ? l.text : l; return '"' + t.substring(0, 30) + (t.length > 30 ? '\u2026' : '') + '"'; });
+      document.getElementById('lab-lines').textContent = lineTexts.join(', ');
+
+      // Canvas render
+      const c = document.getElementById('lab-canvas');
+      const cw = c.parentElement.clientWidth;
+      const ch = Math.max(200, ((result && result.height) ? result.height : 200) + 60);
+      const ctx = hiDpiCanvas(c, cw, ch);
+
+      ctx.strokeStyle = 'rgba(255,107,107,0.3)'; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(20 + maxW, 0); ctx.lineTo(20 + maxW, ch); ctx.stroke(); ctx.setLineDash([]);
+      ctx.font = '10px "JetBrains Mono", monospace'; ctx.fillStyle = 'rgba(255,107,107,0.4)';
+      ctx.fillText('maxWidth: ' + maxW + 'px', 20 + maxW + 6, 16);
+
+      ctx.font = font; ctx.textBaseline = 'top';
+      let y = 20;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const t = line.text !== undefined ? line.text : line;
+        const lw = line.width !== undefined ? line.width : ctx.measureText(t).width;
+        ctx.fillStyle = i % 2 === 0 ? 'rgba(0,212,255,0.03)' : 'rgba(255,209,102,0.02)';
+        ctx.fillRect(20, y, lw, lh);
+        ctx.fillStyle = 'rgba(0,212,255,0.2)'; ctx.fillRect(20 + lw, y, 1, lh);
+        ctx.fillStyle = 'rgba(122,127,142,0.5)'; ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.fillText(lw.toFixed(0) + 'px', 20 + lw + 4, y + lh / 2 - 4);
+        ctx.font = font; ctx.fillStyle = '#e2e4e9';
+        ctx.fillText(t, 20, y + (lh - 15) / 2);
+        y += lh;
+      }
+    }
+
+    document.getElementById('lab-text').addEventListener('input', updateLab);
+    document.getElementById('lab-width').addEventListener('input', updateLab);
+    document.getElementById('lab-lh').addEventListener('input', updateLab);
+
+    // ============================================
+    //  5. EXPERIENCE — Canvas Timeline (layoutWithLines)
+    // ============================================
+    const experiences = [
+      { date: 'Apr 2026 \u2013 Present', role: 'Research Assistant', company: 'Deepchain Labs', desc: 'R&D in blockchain, cybersecurity, and quantum cryptography. Producing academic papers and driving innovation across security domains.' },
+      { date: 'Jan 2026 \u2013 Present', role: 'Solo Developer', company: 'BetaScript LLC', desc: 'Shipped 4 production React websites driving 1.5x revenue growth. Full lifecycle ownership across restaurant, e-commerce, and agency platforms serving 50,000+ end users.' },
+      { date: 'Aug 2025 \u2013 Present', role: 'AI & Data Engineer', company: 'BDTracks', desc: 'Built 15+ web scrapers, fine-tuned Gemini 2.5 via Vertex AI. Production pipelines processing daily feeds from national sources.' },
+      { date: 'Feb \u2013 May 2026', role: 'AI Engineering Intern', company: 'Unies', desc: 'Built RAG pipelines with Pinecone, ChromaDB, LangChain. Automated LLM evaluation pipelines and FastAPI backends for tutoring systems.' },
+      { date: 'Oct \u2013 Dec 2024', role: 'Team Lead, Game Dev', company: 'AIUB', desc: 'Led 5 developers shipping a 2D platformer: custom OpenGL engine, SFML audio, SQLite persistence in 3 months.' },
+    ];
+
+    function renderExperience() {
+      if (!ptReady) return;
+      const c = document.getElementById('exp-canvas');
+      const w = c.parentElement.clientWidth;
+      const padding = 36, entryGap = 44;
+      const roleFont = '600 17px "Syne", sans-serif';
+      const companyFont = '500 13px "JetBrains Mono", monospace';
+      const dateFont = '400 11px "JetBrains Mono", monospace';
+      const descFont = '400 13px "DM Sans", sans-serif';
+      const descLH = 22, textW = w - padding * 2 - 50;
+
+      let totalH = padding;
+      const entryData = [];
+      for (const exp of experiences) {
+        const pDesc = prepareWithSegments(exp.desc, descFont);
+        const rDesc = layout(pDesc, textW, descLH);
+        const lDesc = layoutWithLines(pDesc, textW, descLH);
+        const descH = (rDesc && rDesc.height) ? rDesc.height : 60;
+        entryData.push(Object.assign({}, exp, { descH: descH, descLines: (lDesc && lDesc.lines) ? lDesc.lines : [] }));
+        totalH += 22 + 24 + 16 + descH + entryGap;
+      }
+      totalH += padding;
+      const ctx = hiDpiCanvas(c, w, totalH);
+      let y = padding;
+
+      ctx.strokeStyle = 'rgba(0,212,255,0.12)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(padding + 4, padding + 10); ctx.lineTo(padding + 4, totalH - padding); ctx.stroke();
+
+      for (const entry of entryData) {
+        const x = padding + 30;
+        ctx.fillStyle = '#00d4ff'; ctx.beginPath(); ctx.arc(padding + 4, y + 8, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(0,212,255,0.15)'; ctx.beginPath(); ctx.arc(padding + 4, y + 8, 10, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = dateFont; ctx.fillStyle = '#00d4ff'; ctx.textBaseline = 'top';
+        ctx.fillText(entry.date, x, y); y += 20;
+        ctx.font = roleFont; ctx.fillStyle = '#e2e4e9'; ctx.fillText(entry.role, x, y); y += 24;
+        ctx.font = companyFont; ctx.fillStyle = '#7a7f8e'; ctx.fillText(entry.company, x, y); y += 20;
+
+        ctx.font = descFont;
+        for (let i = 0; i < entry.descLines.length; i++) {
+          const line = entry.descLines[i];
+          const t = line.text !== undefined ? line.text : line;
+          ctx.fillStyle = 'rgba(122,127,142,' + (0.8 - i * 0.05) + ')';
+          ctx.fillText(t, x, y); y += descLH;
+        }
+        y += entryGap;
+      }
+    }
+
+    // ============================================
+    //  6. PROJECTS — Canvas-rendered names
+    // ============================================
+    const projects = [
+      { name: 'ScholarHub', desc: 'Unified scholarship discovery platform indexing 12,000+ opportunities daily from 272 automated spiders.', metrics: ['12,000+ daily', '272 spiders'], tags: ['React', 'TypeScript', 'TanStack Start', 'Convex'], links: { live: 'https://thescholarhub.netlify.app/', code: 'https://github.com/EhsanulHaqueSiam/ScholarHub' } },
+      { name: 'TTT Autos', desc: "Cinematic dealership platform with 3D Spline vehicle showcases and 17-page admin dashboard.", metrics: ['3D Spline', '17 admin pages'], tags: ['React', 'TypeScript', 'Drizzle ORM', 'Spline 3D'], links: { live: 'https://ttt.autos/' } },
+      { name: 'KaajKormo', desc: 'Job platform with swipe-to-apply, AI CV parsing, and employer Kanban boards. React + Rust/Axum.', metrics: ['AI CV parsing', 'Rust/Axum'], tags: ['React', 'Rust', 'PostgreSQL'], links: { code: 'https://github.com/EhsanulHaqueSiam/kaajkormo' } },
+      { name: 'OfferLagbe', desc: 'Community deals marketplace with trust scores and real-time map clustering. PWA with offline.', metrics: ['Real-time', 'MapLibre'], tags: ['React', 'Convex', 'MapLibre', 'PWA'], links: { live: 'https://offerlagbe.netlify.app/', code: 'https://github.com/EhsanulHaqueSiam/offerlagbe' } },
+      { name: 'Aurum Gold', desc: 'Premium gold e-commerce with live pricing and Lighthouse 90+ performance.', metrics: ['Lighthouse 90+', 'Live rates'], tags: ['React', 'TypeScript', 'Zustand'], links: { live: 'https://theaurum.netlify.app', code: 'https://github.com/EhsanulHaqueSiam/aurum-gold' } },
+      { name: 'Void Threads', desc: 'Streetwear platform with sales psychology UX. SSR via Nitro 3, 320px-1920px responsive.', metrics: ['SSR Nitro 3', 'Sales UX'], tags: ['React', 'TypeScript', 'TanStack Start'], links: { live: 'https://voidthreadsco.netlify.app', code: 'https://github.com/EhsanulHaqueSiam/void-threads' } },
+      { name: 'Indian Claypit', desc: 'Full-stack restaurant platform serving 50,000+ customers. 4.9\u2605 from 2,847 Google reviews.', metrics: ['50K+ users', '4.9\u2605'], tags: ['React', 'TypeScript', 'Node.js'], links: { live: 'https://indianclaypit.com/' } },
+      { name: 'BetaScript', desc: 'US digital agency website. Animated showcases, conversion-optimized flows. 150+ clients.', metrics: ['150+ clients', '100% satisfaction'], tags: ['React', 'TypeScript', 'Framer Motion'], links: { live: 'https://betascript.online/' } },
+      { name: 'Student Mgmt System', desc: 'University data retrieval optimized from 50ms to 7ms. 3NF normalized schema.', metrics: ['17 Stars', '7x faster'], tags: ['Java', 'MySQL', 'JDBC'], links: { code: 'https://github.com/EhsanulHaqueSiam/StudentManagementSystem' } },
+      { name: 'Spotify Sentiment', desc: 'Classified 52,702 reviews at 85-90% accuracy. TF-IDF + Naive Bayes pipeline.', metrics: ['85-90%', '52K reviews'], tags: ['Python', 'scikit-learn', 'NLP'], links: { code: 'https://github.com/EhsanulHaqueSiam/spotify-review-sentiment' } },
+      { name: "Mario's Multiverse", desc: '2D platformer with custom OpenGL engine, SFML audio, SQLite. Led team of 5.', metrics: ['3 levels', 'OpenGL'], tags: ['C++', 'OpenGL', 'SFML'], links: { live: 'https://www.youtube.com/watch?v=wK7qjTRkStg', code: 'https://github.com/EhsanulHaqueSiam/MarioMultiverseAdventures' } },
+      { name: 'BD News Scraper', desc: 'Daily scraping of 74+ news sources. 82 spiders, ML sentiment, live Kaggle dataset.', metrics: ['74+ sources', '82 spiders'], tags: ['Python', 'Scrapy', 'FastAPI', 'Docker'], links: { live: 'https://www.kaggle.com/datasets/ehsanulhaquesiam/bangladesh-news-articles', code: 'https://github.com/EhsanulHaqueSiam/BDNewsPaperScraper' } },
+    ];
+
+    function renderProjectCards() {
+      const grid = document.getElementById('projects-grid');
+      while (grid.firstChild) grid.removeChild(grid.firstChild);
+
+      for (const p of projects) {
+        const card = document.createElement('div');
+        card.className = 'project-card reveal';
+        const canvasId = 'proj-' + p.name.replace(/\W/g, '');
+
+        // Build card with DOM methods (no innerHTML)
+        const header = document.createElement('div');
+        header.className = 'project-card-header';
+        const canvas = document.createElement('canvas');
+        canvas.id = canvasId;
+        header.appendChild(canvas);
+
+        const body = document.createElement('div');
+        body.className = 'project-card-body';
+
+        const desc = document.createElement('div');
+        desc.className = 'project-desc';
+        desc.textContent = p.desc;
+        body.appendChild(desc);
+
+        const metricsDiv = document.createElement('div');
+        metricsDiv.className = 'project-metrics';
+        for (const m of p.metrics) {
+          const span = document.createElement('span');
+          span.className = 'project-metric';
+          span.textContent = m;
+          metricsDiv.appendChild(span);
+        }
+        body.appendChild(metricsDiv);
+
+        const tagsDiv = document.createElement('div');
+        tagsDiv.className = 'project-tags';
+        for (const t of p.tags) {
+          const span = document.createElement('span');
+          span.className = 'project-tag';
+          span.textContent = t;
+          tagsDiv.appendChild(span);
+        }
+        body.appendChild(tagsDiv);
+
+        const linksDiv = document.createElement('div');
+        linksDiv.className = 'project-links';
+        if (p.links.live) {
+          const a = document.createElement('a');
+          a.href = p.links.live; a.target = '_blank'; a.rel = 'noopener';
+          a.textContent = 'Live \u2197';
+          linksDiv.appendChild(a);
+        }
+        if (p.links.code) {
+          const a = document.createElement('a');
+          a.href = p.links.code; a.target = '_blank'; a.rel = 'noopener';
+          a.textContent = 'Code \u2197';
+          linksDiv.appendChild(a);
+        }
+        body.appendChild(linksDiv);
+
+        card.appendChild(header);
+        card.appendChild(body);
+        grid.appendChild(card);
+
+        // Render project name on canvas via Pretext
+        requestAnimationFrame(function() {
+          const c = document.getElementById(canvasId);
+          if (!c) return;
+          const w = c.parentElement.clientWidth;
+          const h = 56;
+          const ctx = hiDpiCanvas(c, w, h);
+          const fs = 20;
+          ctx.font = '700 ' + fs + 'px "Syne", sans-serif';
+          ctx.textBaseline = 'middle';
+          if (ptReady) {
+            try {
+              var prepared = prepare(p.name, fs + 'px Syne');
+              var result = layout(prepared, w - 40, fs * 1.3);
+              ctx.fillStyle = '#e2e4e9';
+              ctx.fillText(p.name, 20, h / 2);
+              var tw = ctx.measureText(p.name).width;
+              ctx.fillStyle = 'rgba(0,212,255,0.12)';
+              ctx.fillRect(20, h - 8, tw, 2);
+              ctx.font = '9px "JetBrains Mono", monospace';
+              ctx.fillStyle = 'rgba(0,212,255,0.35)';
+              ctx.fillText(((result && result.height) ? result.height.toFixed(0) : '?') + 'px h', tw + 28, h / 2 + 1);
+              return;
+            } catch {}
+          }
+          ctx.fillStyle = '#e2e4e9'; ctx.fillText(p.name, 20, h / 2);
+        });
+      }
+    }
+
+    // ============================================
+    //  OBSERVERS & INIT
+    // ============================================
+    new IntersectionObserver(function(e) { isHeroVisible = e[0].isIntersecting; }, { threshold: 0.05 }).observe(heroEl);
+
+    const revealObs = new IntersectionObserver(function(e) {
+      e.forEach(function(en) { if (en.isIntersecting) en.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+
+    function observeReveals() {
+      document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+    }
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const navObs = new IntersectionObserver(function(e) {
+      e.forEach(function(en) {
+        if (en.isIntersecting) {
+          navLinks.forEach(function(a) { a.classList.remove('active'); });
+          var l = document.querySelector('.nav-links a[href="#' + en.target.id + '"]');
+          if (l) l.classList.add('active');
+        }
+      });
+    }, { threshold: 0.25 });
+    document.querySelectorAll('section[id]').forEach(function(s) { navObs.observe(s); });
+    navLinks.forEach(function(a) { a.addEventListener('click', function() { document.getElementById('nav-toggle').checked = false; }); });
+
+    // BOOT
+    document.fonts.ready.then(function() {
+      heroResize(); heroAnimate();
+      renderSectionHeaders();
+      renderAboutVarWidth();
+      updateLab();
+      renderExperience();
+      renderProjectCards();
+      observeReveals();
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        heroResize(); renderSectionHeaders(); renderAboutVarWidth();
+        updateLab(); renderExperience(); renderProjectCards(); observeReveals();
+      }, 200);
+    });
+  </script>
+</body>
+</html>

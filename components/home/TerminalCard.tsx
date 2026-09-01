@@ -83,7 +83,7 @@ export default function TerminalCard() {
         <span className="text-xs text-text-muted">~/brain</span>
       </div>
       <div className="flex items-center gap-2 px-4 py-4 text-sm">
-        <span aria-hidden="true" className="shrink-0 text-accent">{PROMPT}</span>
+        <span aria-hidden="true" className="shrink-0 text-accent-hover">{PROMPT}</span>
         <span aria-hidden="true" className="min-w-0 flex-1 truncate text-text-primary">
           <span ref={textRef} />
         </span>

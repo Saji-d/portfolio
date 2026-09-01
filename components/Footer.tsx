@@ -15,7 +15,7 @@ import { NAV_LINKS, SITE } from "@/data/site";
 // track "current"). will-change-transform primes the marble-dodge physics
 // below for the transform writes it does every frame while active.
 const footerLink =
-  "group/link relative inline-flex w-fit items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 will-change-transform";
+  "group/link relative inline-flex w-fit items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent-hover after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 will-change-transform";
 
 // Marble-dodge physics for the Navigate/Connect links: as the cursor nears
 // a link it's pushed radially away (quadratic falloff, so the push fades
@@ -172,7 +172,7 @@ export default function Footer() {
         <div className="container-site flex flex-col gap-6 py-6 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <div className="flex items-center gap-2">
-              <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-bold text-accent">
+              <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-bold text-accent-hover">
                 S
               </span>
               <span className="font-display font-medium tracking-tight">

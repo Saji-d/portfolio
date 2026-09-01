@@ -14,7 +14,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
           project not found: <span className="text-text-primary">{slug}</span>
         </div>
         <p className="font-mono text-xs text-text-muted">
-          hint: type <span className="text-accent">projects</span> to list available slugs
+          hint: type <span className="text-accent-hover">projects</span> to list available slugs
         </p>
       </div>
     );
@@ -23,7 +23,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ projects {slug}</span>
+        <span className="text-accent-hover">$ projects {slug}</span>
         <span className="h-px flex-1 bg-line" />
         <span>{`// project detail`}</span>
       </div>
@@ -40,7 +40,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
           </div>
           <Link
             href={`/projects/${project.slug}`}
-            className="group inline-flex items-center gap-1.5 font-mono text-xs text-accent transition-opacity hover:opacity-80"
+            className="group inline-flex items-center gap-1.5 font-mono text-xs text-accent-hover transition-opacity hover:opacity-80"
           >
             open project
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -70,7 +70,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
       </div>
 
       <p className="mt-4 font-mono text-[11px] text-text-muted">
-        &gt; run <span className="text-accent">projects</span> to go back to the full graph
+        &gt; run <span className="text-accent-hover">projects</span> to go back to the full graph
       </p>
     </div>
   );

@@ -274,12 +274,12 @@ export default function FeaturedProjectCase({
             <button
               type="button"
               onClick={() => onOpenCaseStudy(project.slug)}
-              className="text-left transition-colors hover:text-accent"
+              className="text-left transition-colors hover:text-accent-hover"
             >
               {project.name}
             </button>
           ) : href ? (
-            <SmartLink href={href} className="transition-colors hover:text-accent">
+            <SmartLink href={href} className="transition-colors hover:text-accent-hover">
               {project.name}
             </SmartLink>
           ) : (
@@ -289,7 +289,7 @@ export default function FeaturedProjectCase({
 
         <motion.p
           variants={fadeUp}
-          className="mt-2 font-mono text-xs font-medium uppercase tracking-[0.14em] text-accent sm:text-sm"
+          className="mt-2 font-mono text-xs font-medium uppercase tracking-[0.14em] text-accent-hover sm:text-sm"
         >
           {project.role}
         </motion.p>
@@ -317,7 +317,7 @@ export default function FeaturedProjectCase({
           {opensCaseStudy ? (
             <MagneticButton
               onClick={() => onOpenCaseStudy(project.slug)}
-              className="border border-accent/40 bg-surface px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:border-accent hover:bg-accent-dim"
+              className="border border-accent/40 bg-surface px-5 py-2.5 text-sm font-medium text-accent-hover transition-colors hover:border-accent hover:bg-accent-dim"
             >
               <BookOpen className="h-4 w-4" />
               Case study
@@ -326,7 +326,7 @@ export default function FeaturedProjectCase({
             <MagneticButton
               href={href}
               external={href.startsWith("http")}
-              className="border border-accent/40 bg-surface px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:border-accent hover:bg-accent-dim"
+              className="border border-accent/40 bg-surface px-5 py-2.5 text-sm font-medium text-accent-hover transition-colors hover:border-accent hover:bg-accent-dim"
             >
               <BookOpen className="h-4 w-4" />
               View project

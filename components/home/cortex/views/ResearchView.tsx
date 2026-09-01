@@ -23,7 +23,7 @@ export default function ResearchView() {
   return (
     <div>
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-        <span className="text-accent">$ research</span>
+        <span className="text-accent-hover">$ research</span>
         <span className="h-px flex-1 bg-line" />
         <span>{`// research archive · ${LEAVES.length} studies`}</span>
       </div>
@@ -50,7 +50,7 @@ export default function ResearchView() {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
-                  <span className="text-accent">{FOLDER_FOR[selected.id]}</span>
+                  <span className="text-accent-hover">{FOLDER_FOR[selected.id]}</span>
                   <span className="h-2.5 w-px bg-line" />
                   <span className="truncate">{selected.file}</span>
                 </div>
@@ -63,7 +63,7 @@ export default function ResearchView() {
               </div>
               <a
                 href={selected.href}
-                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-accent transition-opacity hover:opacity-80"
+                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-accent-hover transition-opacity hover:opacity-80"
               >
                 open study
                 <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -81,7 +81,7 @@ export default function ResearchView() {
                     key={m.label}
                     className={`py-1.5 ${i > 0 ? "border-l border-line px-2.5" : "pr-2.5"}`}
                   >
-                    <div className="truncate font-mono text-xs font-medium text-accent">
+                    <div className="truncate font-mono text-xs font-medium text-accent-hover">
                       {m.value}
                     </div>
                     <div className="truncate text-[9px] uppercase tracking-[0.12em] text-text-muted">
@@ -120,19 +120,19 @@ export default function ResearchView() {
                   type="button"
                   onClick={() => setSelectedId(leaf.id)}
                   className={`group flex w-full items-center gap-3 border-b border-line/60 py-1 text-left last:border-b-0 ${
-                    on ? "text-accent" : "text-text-secondary hover:text-text-primary"
+                    on ? "text-accent-hover" : "text-text-secondary hover:text-text-primary"
                   }`}
                 >
                   <span
                     className={`w-6 shrink-0 font-mono text-[10px] ${
-                      on ? "text-accent" : "text-text-muted/60"
+                      on ? "text-accent-hover" : "text-text-muted/60"
                     }`}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span
                     className={`w-40 shrink-0 truncate font-mono text-[10px] ${
-                      on ? "text-accent/80" : "text-text-muted"
+                      on ? "text-accent-hover/80" : "text-text-muted"
                     }`}
                   >
                     {leaf.file}
@@ -144,7 +144,7 @@ export default function ResearchView() {
                   <span
                     className={`hidden shrink-0 rounded-sm border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider sm:inline ${
                       on
-                        ? "border-accent/40 bg-accent-dim/30 text-accent"
+                        ? "border-accent/40 bg-accent-dim/30 text-accent-hover"
                         : "border-line bg-surface text-text-muted"
                     }`}
                   >
