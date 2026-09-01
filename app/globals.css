@@ -171,6 +171,22 @@
   color: var(--accent-hover);
 }
 
+/* Hero-only override of the shared .eyebrow color above - the hero name
+   already owns the bold accent/indigo gradient, so its eyebrow is
+   deliberately dimmer and cooler instead of repeating that same hue,
+   letting the name stay the one bright element in that group. A soft
+   sky/cyan - the same family as --accent-3 (used elsewhere for
+   starfield/space accents: the rocket-exhaust sparks, the "Open to work"
+   badge dot), just lighter and quieter than a bright UI accent. Every
+   other section's eyebrow (About,
+   Experience, Projects, ...) keeps the default accent color; this class
+   is applied only in Hero.tsx, and it's a plain unlayered rule (see the
+   cascade-layer note near .hero-portrait-badge) so it reliably beats the
+   @utility eyebrow color regardless of class order in the DOM. */
+.hero-eyebrow-muted {
+  color: #7dd3fc;
+}
+
 @utility text-gradient {
   background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-fade) 100%);
   -webkit-background-clip: text;

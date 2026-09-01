@@ -41,7 +41,7 @@ export default function Hero() {
             className="hero-enter mt-6 text-center"
             style={{ animationDelay: mobileDelays[1] }}
           >
-            <Eyebrow className="text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
+            <Eyebrow className="hero-eyebrow-muted text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
             <h1 className="mt-2 bg-linear-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text font-display text-[1.9rem] font-semibold leading-[1.15] tracking-tight text-transparent sm:text-[2.2rem]">
               Sajidur Rahman <span>Sajid</span>
             </h1>
@@ -97,7 +97,7 @@ export default function Hero() {
           <div className="grid items-start gap-10 lg:grid-cols-2 xl:gap-14">
             <div className="max-w-xl">
               <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-                <Eyebrow>AI Engineer &amp; Full-Stack Developer</Eyebrow>
+                <Eyebrow className="hero-eyebrow-muted">AI Engineer &amp; Full-Stack Developer</Eyebrow>
                 <h1 className="mt-3 bg-linear-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text font-display text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-transparent sm:text-[3rem] lg:text-[3.25rem]">
                   Sajidur Rahman <span>Sajid</span>
                 </h1>
@@ -141,7 +141,7 @@ export default function Hero() {
 
             <HeroPortrait
               src={heroPortrait}
-              className="hero-enter w-[280px] justify-self-end"
+              className="hero-enter mt-[25px] w-[280px] justify-self-end"
               style={{ animationDelay: delays[4] }}
             />
           </div>
