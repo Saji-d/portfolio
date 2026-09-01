@@ -234,8 +234,8 @@ export default function CommandPalette() {
         if (e.target === e.currentTarget) setOpen(false);
       }}
     >
-      <div className="w-full max-w-xl overflow-hidden rounded-xl border border-line bg-surface shadow-2xl shadow-black/60">
-        <div className="flex items-center gap-3 border-b border-line px-4">
+      <div className="flex max-h-[min(32rem,calc(100dvh-8rem))] w-full max-w-xl flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-2xl shadow-black/60">
+        <div className="flex shrink-0 items-center gap-3 border-b border-line px-4">
           <Search className="h-4 w-4 shrink-0 text-text-muted" />
           <input
             ref={inputRef}
@@ -267,7 +267,7 @@ export default function CommandPalette() {
           id="command-palette-list"
           role="listbox"
           aria-label="Results"
-          className="max-h-[50vh] overflow-y-auto p-2"
+          className="min-h-0 flex-1 overflow-y-auto p-2"
         >
           {filtered.length === 0 ? (
             <p className="px-4 py-10 text-center font-mono text-sm text-text-muted">
@@ -318,7 +318,9 @@ export default function CommandPalette() {
           )}
         </div>
 
-        <div className="flex items-center gap-4 border-t border-line px-4 py-2.5 font-mono text-[10px] text-text-muted">
+        {/* Keyboard hints only - meaningless on a touch device with no arrow/esc
+            keys, and three groups plus icons don't fit a narrow phone width. */}
+        <div className="hidden shrink-0 items-center gap-4 border-t border-line px-4 py-2.5 font-mono text-[10px] text-text-muted sm:flex">
           <span className="flex items-center gap-1.5">
             <ArrowRight className="h-3 w-3" /> navigate
           </span>

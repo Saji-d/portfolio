@@ -83,8 +83,11 @@ export default function GalleryLightbox({
           >
             <X className="h-5 w-5" />
           </button>
+          {/* z-10 (matching Close above): on narrow viewports the image frame
+              spans nearly edge-to-edge and its box would otherwise paint over
+              these buttons, making them unclickable where they overlap. */}
           <button
-            className="absolute left-2 grid h-10 w-10 place-items-center rounded-md border border-line bg-surface text-text-secondary hover:text-text-primary sm:left-6"
+            className="absolute left-2 z-10 grid h-10 w-10 place-items-center rounded-md border border-line bg-surface text-text-secondary hover:text-text-primary sm:left-6"
             onClick={(e) => {
               e.stopPropagation();
               onPrev();
@@ -94,7 +97,7 @@ export default function GalleryLightbox({
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
-            className="absolute right-2 grid h-10 w-10 place-items-center rounded-md border border-line bg-surface text-text-secondary hover:text-text-primary sm:right-6"
+            className="absolute right-2 z-10 grid h-10 w-10 place-items-center rounded-md border border-line bg-surface text-text-secondary hover:text-text-primary sm:right-6"
             onClick={(e) => {
               e.stopPropagation();
               onNext();
@@ -107,7 +110,7 @@ export default function GalleryLightbox({
             initial={{ scale: 0.96, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.96, opacity: 0 }}
-            className="relative max-h-[85vh] w-full max-w-4xl"
+            className="relative max-h-[85vh] w-full max-w-4xl overflow-y-auto overscroll-contain"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-line">

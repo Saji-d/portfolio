@@ -129,7 +129,7 @@ export default function SkillsNetwork() {
             />
             <span
               aria-hidden="true"
-              className="grid h-16 w-16 place-items-center rounded-full border border-accent/40 bg-surface text-accent-hover shadow-[0_0_24px_rgba(99, 102, 241,0.18)]"
+              className="grid h-16 w-16 place-items-center rounded-full border border-accent/40 bg-surface text-accent-hover shadow-[0_0_24px_rgba(99,102,241,0.18)]"
             >
               <BrainCircuit className="h-7 w-7" />
             </span>

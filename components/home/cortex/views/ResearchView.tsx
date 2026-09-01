@@ -130,8 +130,11 @@ export default function ResearchView() {
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
+                  {/* Fixed-width filename column ate half the row on narrow
+                      screens, leaving almost nothing for the title - hide it
+                      below sm like the folder badge already does. */}
                   <span
-                    className={`w-40 shrink-0 truncate font-mono text-[10px] ${
+                    className={`hidden w-40 shrink-0 truncate font-mono text-[10px] sm:inline-block ${
                       on ? "text-accent-hover/80" : "text-text-muted"
                     }`}
                   >

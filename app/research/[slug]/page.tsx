@@ -99,44 +99,49 @@ function ResultNotes({ items }: { items: string[] }) {
 function BaselineTable({ baselines }: { baselines: { model: string; accuracy: string }[] }) {
   return (
     <div className="card-surface overflow-hidden">
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b border-line font-mono text-xs uppercase tracking-wider text-text-muted">
-            <th className="px-5 py-3 font-medium">Model</th>
-            <th className="px-5 py-3 text-right font-medium">Accuracy</th>
-            <th className="px-5 py-3 text-right font-medium">Delta</th>
-          </tr>
-        </thead>
-        <tbody>
-          {baselines.map((b, i) => {
-            const best = parseFloat(baselines[0].accuracy);
-            const delta =
-              i === 0 ? "baseline" : `+${(best - parseFloat(b.accuracy)).toFixed(2)} vs best`;
-            const isWinner = i === 0;
-            return (
-              <tr
-                key={b.model}
-                className={`border-b border-line last:border-0 ${
-                  isWinner ? "bg-accent-dim/60" : ""
-                }`}
-              >
-                <td className="px-5 py-3 text-sm font-medium text-text-primary">
-                  {b.model}
-                  {isWinner && (
-                    <span className="ml-2 font-mono text-[10px] text-accent">winner</span>
-                  )}
-                </td>
-                <td className="px-5 py-3 text-right font-mono text-sm text-text-secondary">
-                  {b.accuracy}
-                </td>
-                <td className="px-5 py-3 text-right font-mono text-xs text-text-muted">
-                  {delta}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {/* Model names can be long enough to force the table past a narrow
+          viewport - scope the scroll to the table only so the card's
+          rounded corners stay intact. */}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[420px] text-left">
+          <thead>
+            <tr className="border-b border-line font-mono text-xs uppercase tracking-wider text-text-muted">
+              <th className="px-5 py-3 font-medium">Model</th>
+              <th className="px-5 py-3 text-right font-medium">Accuracy</th>
+              <th className="px-5 py-3 text-right font-medium">Delta</th>
+            </tr>
+          </thead>
+          <tbody>
+            {baselines.map((b, i) => {
+              const best = parseFloat(baselines[0].accuracy);
+              const delta =
+                i === 0 ? "baseline" : `+${(best - parseFloat(b.accuracy)).toFixed(2)} vs best`;
+              const isWinner = i === 0;
+              return (
+                <tr
+                  key={b.model}
+                  className={`border-b border-line last:border-0 ${
+                    isWinner ? "bg-accent-dim/60" : ""
+                  }`}
+                >
+                  <td className="px-5 py-3 text-sm font-medium text-text-primary">
+                    {b.model}
+                    {isWinner && (
+                      <span className="ml-2 font-mono text-[10px] text-accent">winner</span>
+                    )}
+                  </td>
+                  <td className="px-5 py-3 text-right font-mono text-sm text-text-secondary">
+                    {b.accuracy}
+                  </td>
+                  <td className="px-5 py-3 text-right font-mono text-xs text-text-muted">
+                    {delta}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

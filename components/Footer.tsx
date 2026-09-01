@@ -184,9 +184,15 @@ export default function Footer() {
             </p>
           </div>
 
+          {/* Only 2 categories (Navigate, Connect) exist - grid-cols-3 here
+              left a dead empty column, and since this div has no width of
+              its own it stretches to the full flex-col cross size below md
+              (align-items defaults to stretch), so that empty column showed
+              as a real blank gap in the sm-md range, not just extra grid
+              track that never mattered. */}
           <div
             ref={containerRef}
-            className="grid grid-cols-2 gap-10 sm:grid-cols-3"
+            className="grid grid-cols-2 gap-10"
           >
             <div>
               <p className="eyebrow mb-3">Navigate</p>

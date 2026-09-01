@@ -58,7 +58,7 @@ const education: EducationEntry[] = [
 function FeaturedCard({ entry }: { entry: EducationEntry }) {
   return (
     <TiltCard className="h-full">
-      <article className="card-surface group relative flex h-full flex-col overflow-hidden border-accent/30 shadow-[0_0_0_1px_rgba(99, 102, 241,0.1),0_20px_60px_-24px_rgba(99, 102, 241,0.15)] transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(99, 102, 241,0.22),0_32px_80px_-28px_rgba(99, 102, 241,0.32)]">
+      <article className="card-surface group relative flex h-full flex-col overflow-hidden border-accent/30 shadow-[0_0_0_1px_rgba(99,102,241,0.1),0_20px_60px_-24px_rgba(99,102,241,0.15)] transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(99,102,241,0.22),0_32px_80px_-28px_rgba(99,102,241,0.32)]">
         <div className="relative aspect-[16/4] overflow-hidden bg-surface-2 sm:aspect-[16/2.25]">
           <Image
             src={entry.image}
@@ -125,7 +125,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
 function SchoolCard({ entry }: { entry: EducationEntry }) {
   return (
     <TiltCard className="h-full">
-      <article className="card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(99, 102, 241,0.18)]">
+      <article className="card-surface group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-24px_rgba(99,102,241,0.18)]">
         <div className="relative h-20 w-full overflow-hidden bg-surface-2">
           <Image
             src={entry.image}

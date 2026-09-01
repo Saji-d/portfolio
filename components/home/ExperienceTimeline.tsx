@@ -105,7 +105,7 @@ export default function ExperienceTimeline() {
                       <span
                         className={`rounded-full transition-all duration-500 ${
                           active
-                            ? "h-2.5 w-2.5 bg-accent shadow-[0_0_16px_rgba(99, 102, 241,0.6)]"
+                            ? "h-2.5 w-2.5 bg-accent shadow-[0_0_16px_rgba(99,102,241,0.6)]"
                             : "h-2 w-2 bg-text-muted"
                         }`}
                       />
@@ -114,7 +114,7 @@ export default function ExperienceTimeline() {
                     <article
                       className={`card-surface ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-0.5 ${
                         isCurrent
-                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99, 102, 241,0.4)] lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
+                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99,102,241,0.4)] lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
                           : "hover:border-accent/40 lg:ml-[calc(50%_+_2rem)] lg:mr-0"
                       }`}
                     >
