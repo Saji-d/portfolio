@@ -68,7 +68,6 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             style={{ objectPosition: entry.imagePosition ?? "center center" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-bg/10" />
 
           <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-bg/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider text-accent-hover backdrop-blur-md">
             <Star className="h-3 w-3 fill-current" />
