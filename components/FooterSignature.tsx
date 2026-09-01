@@ -39,30 +39,36 @@ import { useEffect, useRef, useState } from "react";
  * control panel, but as two small sliders flanking the mode pills, driving
  * refs the tick loop reads directly (no per-drag re-render).
  *
- * Dot color is a fixed left-to-right gradient across the site's three
- * accent hues (cyan -> indigo -> violet), precomputed per dot at sample
- * time rather than recomputed every frame, then blended toward a bright
- * spark color based on that dot's current displacement from home - same
- * "physics drives the color" idea as before, just built on a colorful base
- * instead of a flat muted one.
+ * Dot color is a fixed left-to-right gradient across a four-stop jewel-tone
+ * sweep (cyan -> indigo -> violet -> magenta - see THEME_STOPS), precomputed
+ * per dot at sample time rather than recomputed every frame, then blended
+ * toward a bright spark color based on that dot's current displacement from
+ * home - same "physics drives the color" idea as before, just built on a
+ * richer base instead of a flat muted one.
  */
 
 const TEXT = "SAJIDUR RAHMAN SAJID";
-const DOT_PITCH = 3; // CSS px between grid samples at REFERENCE_FONT_PX - lower = more, smaller dots tracing the letterforms
+const DOT_PITCH = 2.4; // CSS px between grid samples at REFERENCE_FONT_PX - lower = more, smaller dots tracing the letterforms (denser than the original 3px pitch - ~56% more dots for a richer, more substantial signature)
 const DOT_SIZE = 1.3;
 const REFERENCE_FONT_PX = 90; // the font size DOT_PITCH/DOT_SIZE were tuned at
 const MIN_FONT_PX = 30; // below this, wrap to more lines instead of shrinking further
 const MAX_FONT_PX = 192; // 12rem ceiling - an editorial signature, not an ultra-wide-monitor curiosity
 const MAX_LINES = 3;
 
-// Left-to-right base gradient across the name, using the theme's three
-// accent hues verbatim (--accent-3, --accent, --accent-2 from globals.css).
+// Left-to-right base gradient across the name: a four-stop jewel-tone sweep
+// built from the site's own accent tokens (cyan/--accent-3, indigo/--accent,
+// violet/--accent-2) plus one extra magenta stop past violet for a richer,
+// more premium finish than the site's three-color system alone would give -
+// the name is the one place on the page that earns a fourth, more saturated
+// stop. sampleDots() below interpolates across however many stops this
+// array has, so adding/removing stops here just works.
 const THEME_STOPS = [
-  [34, 211, 238], // --accent-3, cyan
-  [99, 102, 241], // --accent, indigo
-  [168, 85, 247], // --accent-2, violet
+  [34, 211, 238], // cyan (--accent-3)
+  [99, 102, 241], // indigo (--accent)
+  [168, 85, 247], // violet (--accent-2)
+  [217, 70, 239], // magenta - a premium fourth stop past the site's own three accents
 ] as const;
-const SPARK_COLOR = [224, 231, 255] as const; // near-white with a cool cast - what a dot blends toward as it's displaced
+const SPARK_COLOR = [236, 242, 255] as const; // bright, slightly cool white - what a dot blends toward as it's displaced, read as a diamond-white spark rather than a warm one
 const ACCENT_RGB = "99,102,241"; // --accent, used for the cursor glow/ring
 
 // Simulation constants, matched 1:1 to the reference hero particle system's
@@ -76,14 +82,21 @@ const RETURN_SPEED = 0.065;
 // px/frame safety clamp only - friction bounds velocity in practice; the
 // reference has no clamp at all. Must clear the worst-case peak force
 // across every mode at max font size and max force slider, or the modes
-// with the biggest inline multipliers (explode's x1.7, magnet's implicit
-// stacking) get silently capped well before repel does, which is exactly
-// what "the slider doesn't do anything for some modes" looks like - not a
-// bug in the slider itself, a too-low ceiling truncating only some modes.
-// Worst case is explode: ~21 (max baseForce) * 1.9 (tuning) * 1.7 (inline)
-// * 2.5 (max force slider) =~ 170, so this needs real headroom above that.
+// with the biggest multipliers get silently capped well before repel does,
+// which is exactly what "the slider doesn't do anything for some modes"
+// looks like - not a bug in the slider itself, a too-low ceiling truncating
+// only some modes. Worst case is explode's one-time entry impulse (see
+// EXPLODE_IMPULSE_MULT below): ~21 (max baseForce) * 1.3 (tuning) * 2.5
+// (max force slider) * 2.0 (impulse mult) =~ 137, so this needs real
+// headroom above that - and magnet at full strength (1.5 tuning) held down
+// (HOLD_BOOST) at max force isn't far behind: ~21 * 1.5 * 2.5 * 2.5 =~ 197.
 const MAX_SPEED = 220;
 const HOLD_BOOST = 2.5; // click-and-hold multiplies strength, same as the reference's mouse.down handling
+// One-time multiplier applied to `strength` for explode's entry impulse
+// (see tick()) - separate from, and larger than, its continuous per-frame
+// multiplier (1.1x, inline in the "explode" case) since the impulse is what
+// now carries explode's "detonation" character instead of the ongoing field.
+const EXPLODE_IMPULSE_MULT = 2.0;
 
 type Mode = "repel" | "magnet" | "explode" | "vortex";
 
@@ -100,12 +113,13 @@ const MODES: { id: Mode; label: string }[] = [
 // gets a tighter radius but a stronger, jittered burst so it reads as
 // violent without swallowing the whole signature. Vortex gets a touch more
 // reach/force since most of its force is spent tangentially rather than
-// displacing dots radially.
+// displacing dots radially - nudged up a bit further so the swirl actually
+// reads as fast at the default 150% force setting instead of a lazy drift.
 const MODE_TUNING: Record<Mode, { radius: number; force: number }> = {
   repel: { radius: 1, force: 1 },
   magnet: { radius: 1.25, force: 1.5 },
-  explode: { radius: 0.8, force: 1.9 },
-  vortex: { radius: 1.1, force: 1.2 },
+  explode: { radius: 0.8, force: 1.3 },
+  vortex: { radius: 1.1, force: 1.4 },
 };
 
 interface Dot {
@@ -118,6 +132,13 @@ interface Dot {
   r: number;
   g: number;
   b: number;
+  // Explode-only: a per-dot direction offset assigned once at creation
+  // (not re-rolled every frame) so a wide spread reads as a coherent
+  // scatter instead of vibration, plus whether this dot was already
+  // inside the cursor radius last frame, used to fire a one-time entry
+  // impulse instead of a continuous push. See tick()'s "explode" case.
+  explodeJitter: number;
+  wasInRange: boolean;
 }
 
 // Slider ranges, expressed as a percentage of the auto-computed base
@@ -236,7 +257,7 @@ export default function FooterSignature() {
     // pinprick against huge letters or a hurricane against small ones.
     let baseRadius = 60;
     let baseForce = 9;
-    let colorNorm = 45;
+    let colorNorm = 200;
 
     function sampleDots() {
       const rect = container!.getBoundingClientRect();
@@ -255,7 +276,17 @@ export default function FooterSignature() {
       dotSizePx = DOT_SIZE * Math.min(1.9, Math.max(1, sizeScale * 0.9));
       baseRadius = Math.max(35, Math.min(150, fontSize * 0.65));
       baseForce = Math.max(4, Math.min(24, fontSize * 0.11));
-      colorNorm = Math.max(20, Math.min(110, fontSize * 0.55));
+      // How far a dot has to travel from home before it reads as fully
+      // "hot" white (see draw()'s spark blend). This used to be close to
+      // baseRadius itself, so almost any real interaction - which routinely
+      // pushes dots a good fraction of the (slider-scaled, up to 2.5x)
+      // radius - saturated to solid white almost immediately, and the
+      // site's whole cyan/indigo/violet/magenta gradient never really
+      // showed while dots were moving. Set several times wider than
+      // baseRadius instead, so color stays visible through most of the
+      // interaction and white is reserved for genuinely extreme
+      // displacement (a fast repel/explode fling), not the everyday case.
+      colorNorm = Math.max(90, Math.min(420, fontSize * 2.4));
 
       const lineHeight = fontSize * 1.05;
       const textHeight = lineHeight * lines.length + fontSize * 0.3;
@@ -297,19 +328,35 @@ export default function FooterSignature() {
             const fy = py / dpr;
             if (fx < minFx) minFx = fx;
             if (fx > maxFx) maxFx = fx;
-            next.push({ fx, fy, x: fx, y: fy, vx: 0, vy: 0, r: 0, g: 0, b: 0 });
+            next.push({
+              fx,
+              fy,
+              x: fx,
+              y: fy,
+              vx: 0,
+              vy: 0,
+              r: 0,
+              g: 0,
+              b: 0,
+              explodeJitter: (Math.random() - 0.5) * (Math.PI * 0.6),
+              wasInRange: false,
+            });
           }
         }
       }
 
       // Assign each dot's base color from its position along the actual
-      // sampled text span (not the padded canvas), so the cyan->indigo->
-      // violet sweep runs edge-to-edge across the letters themselves.
+      // sampled text span (not the padded canvas), so the THEME_STOPS sweep
+      // runs edge-to-edge across the letters themselves. Walks however many
+      // stops THEME_STOPS has (currently 4), not hard-coded to a fixed
+      // count, so the gradient can grow another stop without touching this.
       const span = Math.max(1, maxFx - minFx);
+      const segCount = THEME_STOPS.length - 1;
       for (const d of next) {
         const p = (d.fx - minFx) / span;
-        const seg = p < 0.5 ? 0 : 1;
-        const localT = p < 0.5 ? p * 2 : (p - 0.5) * 2;
+        const scaled = Math.min(segCount - 1e-6, Math.max(0, p * segCount));
+        const seg = Math.floor(scaled);
+        const localT = scaled - seg;
         const from = THEME_STOPS[seg];
         const to = THEME_STOPS[seg + 1];
         d.r = from[0] + (to[0] - from[0]) * localT;
@@ -387,7 +434,27 @@ export default function FooterSignature() {
           const dx = d.x - pointerX;
           const dy = d.y - pointerY;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < radius && dist > 0.1) {
+          const inRange = dist < radius && dist > 0.1;
+
+          // Explode gets a one-time entry impulse on top of the continuous
+          // field below - the "detonation" moment repel/magnet/vortex don't
+          // have, since they're pure continuous proximity effects with no
+          // notion of "just arrived." wasInRange only means anything for
+          // explode, so it's reset for every other mode to guarantee a
+          // fresh pop the next time explode is selected.
+          if (modeRef.current === "explode") {
+            if (inRange && !d.wasInRange) {
+              const angle = Math.atan2(dy, dx) + d.explodeJitter;
+              const kick = strength * EXPLODE_IMPULSE_MULT;
+              d.vx += Math.cos(angle) * kick;
+              d.vy += Math.sin(angle) * kick;
+            }
+            d.wasInRange = inRange;
+          } else if (d.wasInRange) {
+            d.wasInRange = false;
+          }
+
+          if (inRange) {
             // Linear falloff to 0 at the radius edge - no hard cutoff pop as
             // dots cross the boundary.
             const f = (1 - dist / radius) * strength;
@@ -398,24 +465,45 @@ export default function FooterSignature() {
                 ax = nx * f;
                 ay = ny * f;
                 break;
-              case "magnet":
-                // Same normal, sign flipped (pulls toward cursor) and
-                // damped to 0.85x so gathered dots cluster tightly short of
-                // the cursor instead of collapsing onto a single point -
-                // the always-on return spring is what actually prevents
-                // collapse, so this can run close to full strength.
-                ax = -nx * f * 0.85;
-                ay = -ny * f * 0.85;
+              case "magnet": {
+                // A linear falloff to 0 at the radius edge (like every
+                // other mode uses via the shared `f` above) meant
+                // outer-radius dots never visibly moved - their pull was
+                // too small to overcome the home spring within a normal
+                // hover, so only the innermost, already-captured dots
+                // showed any reaction; the rest looked untouched no matter
+                // the force setting. Blend in a floor so every dot inside
+                // the radius gets at least a small, immediately visible
+                // lean toward the cursor - straining to follow but not
+                // able to fully reach - growing smoothly up to the full
+                // pull at the pole. The floor and the peak both scale with
+                // `strength` (which already includes the force slider), so
+                // the whole gradient - lean and cluster alike - still
+                // scales with force exactly as before; this only changes
+                // the *shape* of the falloff, not whether the slider
+                // matters. Same normal, sign flipped (pulls toward cursor)
+                // and damped to 0.85x so gathered dots cluster tightly
+                // short of the cursor instead of collapsing onto a single
+                // point - the always-on return spring is what actually
+                // prevents collapse, so this can run close to full
+                // strength.
+                const proximity = 1 - dist / radius; // 0 at the radius edge, 1 at the cursor
+                const MAGNET_FLOOR = 0.18;
+                const fm = (MAGNET_FLOOR + (1 - MAGNET_FLOOR) * proximity) * strength;
+                ax = -nx * fm * 0.85;
+                ay = -ny * fm * 0.85;
                 break;
+              }
               case "explode": {
-                // Radial burst with a small angle jitter for a scattered
-                // look. Jitter is kept tight (vs. a wider spread) because a
-                // wide random angle mostly cancels itself out frame to
-                // frame - the burst needs to stay directed outward to read
-                // as an explosion rather than a vibration.
-                const angle = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.25;
-                ax = Math.cos(angle) * f * 1.7;
-                ay = Math.sin(angle) * f * 1.7;
+                // Light continuous scatter on top of the entry impulse
+                // above, using the same stable per-dot jitter so the
+                // direction doesn't flicker frame to frame. Most of
+                // explode's punch now comes from the one-time kick, not
+                // this ongoing field, which is what gives it a sudden
+                // peak-then-decay feel instead of repel's steady push.
+                const angle = Math.atan2(dy, dx) + d.explodeJitter;
+                ax = Math.cos(angle) * f * 1.1;
+                ay = Math.sin(angle) * f * 1.1;
                 break;
               }
               case "vortex":

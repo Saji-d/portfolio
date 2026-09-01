@@ -163,6 +163,13 @@ export default function AboutSection() {
             <motion.div variants={fadeUp} className="mt-4 sm:mt-4.5">
               <LocationList selectedId={selectedId} onSelect={setSelectedId} />
             </motion.div>
+
+            <motion.div variants={fadeUp} className="mt-8 flex items-center gap-3 sm:mt-9">
+              <span className="h-1 w-1 shrink-0 rounded-full bg-accent/70" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+                {GLOBE_LOCATIONS.length} regions tracked · footprint growing
+              </p>
+            </motion.div>
           </motion.div>
 
           <Reveal delay={0.08} className="min-w-0 lg:mt-12">
@@ -190,15 +197,6 @@ export default function AboutSection() {
             </div>
           </Reveal>
         </div>
-
-        <Reveal delay={0.14}>
-          <div className="mt-10 flex items-center gap-3 pt-4 sm:mt-12">
-            <span className="h-1 w-1 shrink-0 rounded-full bg-accent/70" />
-            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
-              {GLOBE_LOCATIONS.length} regions tracked · footprint growing
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

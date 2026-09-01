@@ -41,14 +41,14 @@ export default function Hero() {
             className="hero-enter mt-6 text-center"
             style={{ animationDelay: mobileDelays[1] }}
           >
-            <Eyebrow className="hero-eyebrow-muted text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
-            <h1 className="mt-2 bg-linear-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text font-display text-[1.9rem] font-semibold leading-[1.15] tracking-tight text-transparent sm:text-[2.2rem]">
+            <Eyebrow className="text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
+            <h1 className="hero-name-signature mt-1 whitespace-nowrap text-[2.7rem] font-bold leading-[1.3] sm:text-[3rem]">
               Sajidur Rahman <span>Sajid</span>
             </h1>
           </div>
 
           <p
-            className="hero-enter mx-auto mt-4 max-w-[34ch] text-center text-[15px] leading-relaxed text-text-secondary"
+            className="hero-enter mx-auto mt-2 max-w-[34ch] text-center text-[15px] leading-relaxed text-text-secondary"
             style={{ animationDelay: mobileDelays[2] }}
           >
             I build full-stack systems and production-ready AI/ML solutions,
@@ -97,14 +97,14 @@ export default function Hero() {
           <div className="grid items-start gap-10 lg:grid-cols-2 xl:gap-14">
             <div className="max-w-xl">
               <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-                <Eyebrow className="hero-eyebrow-muted">AI Engineer &amp; Full-Stack Developer</Eyebrow>
-                <h1 className="mt-3 bg-linear-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text font-display text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-transparent sm:text-[3rem] lg:text-[3.25rem]">
+                <Eyebrow>AI Engineer &amp; Full-Stack Developer</Eyebrow>
+                <h1 className="hero-name-signature mt-2 whitespace-nowrap text-[3.5rem] font-bold leading-[1.25] sm:text-[3.75rem] lg:text-[4rem]">
                   Sajidur Rahman <span>Sajid</span>
                 </h1>
               </div>
 
               <p
-                className="hero-enter mt-6 -mr-3 max-w-md text-base leading-relaxed text-text-secondary sm:max-w-[36rem] sm:text-lg"
+                className="hero-enter mt-3 -mr-3 max-w-md text-base leading-relaxed text-text-secondary sm:max-w-[36rem] sm:text-lg"
                 style={{ animationDelay: delays[1] }}
               >
                 I build full-stack systems and production-ready AI/ML

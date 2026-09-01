@@ -19,10 +19,17 @@ import { useEffect, useRef } from "react";
  * star exits an edge it is recycled from the opposite edge, so the field
  * never ends and never bounces.
  *
- * Rare shooting stars occasionally streak diagonally on top of the field
- * (roughly one every 8-20s, randomized), drawn as a glowing gradient head
- * with a blurred, fading tail so they read as meteor streaks - not CSS lines.
- * Only one is ever active at a time.
+ * Rare shooting stars occasionally streak across the field (randomized
+ * cadence, tuned so a normal scroll through the whole page catches roughly
+ * 4-5 of them), drawn as a glowing gradient head with a blurred, fading tail
+ * so they read as meteor streaks - not CSS lines. Only one is ever active at
+ * a time. Each meteor's direction is drawn from a weighted set of named
+ * trajectory families (upper-left/right descents, shallow left-right
+ * crossings, steep upper-middle descents) so streaks arrive from varied
+ * compass directions rather than one or two fixed corners, and its origin,
+ * travel distance, speed, size and trail length are all independently
+ * randomized and derived from the current viewport size, so nothing is
+ * hard-coded to one resolution.
  *
  * There is no cursor/pointer interaction anywhere in this file - every star
  * moves purely on its own simulated trajectory.
@@ -61,6 +68,7 @@ interface Meteor {
   vx: number;
   vy: number;
   len: number;
+  headR: number;
   dur: number;
   age: number;
 }
@@ -158,12 +166,41 @@ const ATMOSPHERE_STYLE = {
   ].join(","),
 };
 
-/** Shooting-star cadence (ms) between the end of one meteor and the next. */
-const METEOR_MIN_DELAY = 8000;
-const METEOR_MAX_DELAY = 20000;
-const METEOR_SPEED_MIN = 850;
-const METEOR_SPEED_MAX = 1300;
-const METEOR_ANGLE = (38 * Math.PI) / 180; // travel down-right, moderately steep
+/** Shooting-star cadence (ms) between the end of one meteor and the next.
+ *  Tuned so a visitor scrolling through the whole portfolio in a single,
+ *  fairly brisk pass (well under a minute) still reliably catches 4-5 of
+ *  them, without ever feeling like a metronome - the actual wait is drawn
+ *  from a triangular distribution (see randomMeteorDelay) that favors the
+ *  middle of this range over the extremes. */
+const METEOR_MIN_DELAY = 6000;
+const METEOR_MAX_DELAY = 14000;
+/** The very first meteor after page load/reduced-motion toggle arrives on a
+ *  shorter, separate delay so quick visitors still catch one early. */
+const METEOR_FIRST_MIN_DELAY = 2000;
+const METEOR_FIRST_MAX_DELAY = 5000;
+const METEOR_SPEED_MIN = 900;
+const METEOR_SPEED_MAX = 1350;
+
+/**
+ * Named trajectory families a meteor's direction is drawn from, as degrees
+ * measured with 0deg = travelling due right and 90deg = travelling straight
+ * down (canvas y grows downward). Excludes upward-travelling angles (180-360)
+ * entirely - a shooting star climbing the sky doesn't read as natural. Each
+ * family covers a continuous angle range (so no two meteors in the same
+ * family share an exact heading) and carries a selection weight so the four
+ * classic meteor-shower directions dominate while the steeper upper-middle
+ * descents show up as an occasional variant, matching how real meteor
+ * showers read: frequent shallow crossings, rarer steep drops.
+ */
+const TRAJECTORY_FAMILIES = [
+  { angleMin: 18, angleMax: 55, weight: 3 }, // upper-left -> lower-right
+  { angleMin: 125, angleMax: 162, weight: 3 }, // upper-right -> lower-left
+  { angleMin: 4, angleMax: 16, weight: 2 }, // left -> right, shallow descent
+  { angleMin: 164, angleMax: 176, weight: 2 }, // right -> left, shallow descent
+  { angleMin: 62, angleMax: 84, weight: 1.4 }, // upper-middle -> lower-right, steep
+  { angleMin: 96, angleMax: 118, weight: 1.4 }, // upper-middle -> lower-left, steep
+] as const;
+const TRAJECTORY_WEIGHT_TOTAL = TRAJECTORY_FAMILIES.reduce((sum, f) => sum + f.weight, 0);
 
 export default function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -194,6 +231,35 @@ export default function ParticleField() {
     let meteor: Meteor | null = null;
     let meteorArmed = true;
     let nextMeteorAt = 0;
+    let lastFamilyIndex = -1;
+
+    /** Triangular (sum-of-two-uniforms) draw biased toward the middle of the
+     *  range - avoids both a metronomic feel and unlucky back-to-back extremes. */
+    function randomMeteorDelay(minMs: number, maxMs: number) {
+      const t = (Math.random() + Math.random()) / 2;
+      return (minMs + t * (maxMs - minMs)) / 1000;
+    }
+
+    /** Weighted pick across the trajectory families, softly avoiding an exact
+     *  repeat of the previous family so consecutive meteors read as coming
+     *  from different parts of the sky. */
+    function pickTrajectoryFamily() {
+      let index = 0;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        let r = Math.random() * TRAJECTORY_WEIGHT_TOTAL;
+        index = 0;
+        for (let i = 0; i < TRAJECTORY_FAMILIES.length; i++) {
+          r -= TRAJECTORY_FAMILIES[i].weight;
+          if (r <= 0) {
+            index = i;
+            break;
+          }
+        }
+        if (index !== lastFamilyIndex || Math.random() > 0.65) break;
+      }
+      lastFamilyIndex = index;
+      return TRAJECTORY_FAMILIES[index];
+    }
 
     function resize() {
       width = window.innerWidth;
@@ -261,29 +327,43 @@ export default function ParticleField() {
     function earlyMeteor() {
       meteor = null;
       meteorArmed = true;
-      // Randomized wait before the next meteor can appear (8-20s).
-      nextMeteorAt = elapsed + (METEOR_MIN_DELAY + Math.random() * (METEOR_MAX_DELAY - METEOR_MIN_DELAY)) / 1000;
+      nextMeteorAt = elapsed + randomMeteorDelay(METEOR_MIN_DELAY, METEOR_MAX_DELAY);
     }
 
     function spawnMeteor() {
       if (!meteorArmed) return;
-      // Random side and vertical start so meteors come from varied skies.
-      const fromLeft = Math.random() < 0.5;
       const speed = METEOR_SPEED_MIN + Math.random() * (METEOR_SPEED_MAX - METEOR_SPEED_MIN);
-      const vx = (fromLeft ? 1 : -1) * speed * Math.cos(METEOR_ANGLE);
-      const vy = (fromLeft ? 1 : -1) * speed * Math.sin(METEOR_ANGLE);
-      const enterX = fromLeft ? -80 : width + 80;
-      const enterY = Math.random() * height * 0.55;
-      // Crossing time: full diagonal (viewport plus exit margins) so it visibly
-      // clears the screen before the next meteor is scheduled.
-      const crossing = width + 320;
-      const dist = crossing / Math.cos(METEOR_ANGLE);
+      const family = pickTrajectoryFamily();
+      const angle = ((family.angleMin + Math.random() * (family.angleMax - family.angleMin)) * Math.PI) / 180;
+      const dirX = Math.cos(angle);
+      const dirY = Math.sin(angle);
+      const vx = speed * dirX;
+      const vy = speed * dirY;
+
+      // A point the streak passes near, placed independently of the angle so
+      // horizontal and vertical start position vary on their own rather than
+      // being locked to the heading - biased toward the upper 3/4 of the sky
+      // and inset from the extreme edges, in viewport fractions so it's
+      // resolution-independent.
+      const passX = width * (0.12 + Math.random() * 0.76);
+      const passY = height * (0.05 + Math.random() * 0.7);
+      const diag = Math.hypot(width, height);
+      // How far back off-screen the meteor starts, and how much further it
+      // travels past the pass point - both randomized, so travel distance
+      // varies meteor to meteor rather than always crossing the full diagonal.
+      const reach = diag * (0.3 + Math.random() * 0.18);
+      const dist = reach + diag * (0.55 + Math.random() * 0.35);
+      const enterX = passX - dirX * reach;
+      const enterY = passY - dirY * reach;
+
+      const sizeScale = mobile ? 0.65 : 1;
       meteor = {
         x: enterX,
         y: enterY,
         vx,
         vy,
-        len: 90 + Math.random() * 70,
+        len: (85 + Math.random() * 75) * sizeScale,
+        headR: (1.3 + Math.random() * 0.8) * sizeScale,
         dur: Math.max(0.8, dist / speed),
         age: 0,
       };
@@ -318,7 +398,7 @@ export default function ParticleField() {
       ctx.shadowBlur = 10;
       ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
       ctx.beginPath();
-      ctx.arc(m.x, m.y, 1.7, 0, Math.PI * 2);
+      ctx.arc(m.x, m.y, m.headR, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
@@ -386,7 +466,7 @@ export default function ParticleField() {
         drawStatic();
       } else {
         elapsed = 0;
-        nextMeteorAt = 0.5;
+        nextMeteorAt = randomMeteorDelay(METEOR_FIRST_MIN_DELAY, METEOR_FIRST_MAX_DELAY);
         meteorArmed = true;
         if (!pageHidden) start();
       }
@@ -396,7 +476,9 @@ export default function ParticleField() {
     if (prefersReduced) {
       drawStatic();
     } else {
-      nextMeteorAt = 0.5; // first meteor comes reasonably soon after load
+      // First meteor arrives sooner than the steady-state cadence, so quick
+      // visitors still catch one early.
+      nextMeteorAt = randomMeteorDelay(METEOR_FIRST_MIN_DELAY, METEOR_FIRST_MAX_DELAY);
       start();
     }
 

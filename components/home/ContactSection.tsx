@@ -145,6 +145,10 @@ export default function ContactSection() {
             <motion.div variants={fadeUp} className="mt-6 flex justify-center sm:mt-8">
               <a
                 href="#site-footer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("site-footer")?.scrollIntoView({ behavior: "smooth", block: "end" });
+                }}
                 className="group inline-flex flex-col items-center gap-1 text-text-muted transition-colors duration-300 hover:text-accent-hover"
               >
                 <span className="mono-label">Interactive footer</span>

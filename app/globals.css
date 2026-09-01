@@ -171,20 +171,36 @@
   color: var(--accent-hover);
 }
 
-/* Hero-only override of the shared .eyebrow color above - the hero name
-   already owns the bold accent/indigo gradient, so its eyebrow is
-   deliberately dimmer and cooler instead of repeating that same hue,
-   letting the name stay the one bright element in that group. A soft
-   sky/cyan - the same family as --accent-3 (used elsewhere for
-   starfield/space accents: the rocket-exhaust sparks, the "Open to work"
-   badge dot), just lighter and quieter than a bright UI accent. Every
-   other section's eyebrow (About,
-   Experience, Projects, ...) keeps the default accent color; this class
-   is applied only in Hero.tsx, and it's a plain unlayered rule (see the
-   cascade-layer note near .hero-portrait-badge) so it reliably beats the
-   @utility eyebrow color regardless of class order in the DOM. */
-.hero-eyebrow-muted {
-  color: #7dd3fc;
+/* The hero eyebrow now uses the shared .eyebrow color above (var(--accent-hover),
+   #818cf8) like every other section - an off-palette hue kept reading as a
+   mismatch against the site's cool indigo/purple/cyan system no matter which
+   warm color it tried. Contrast against --bg (#080812): 6.68:1, passing WCAG
+   AA for normal text. Uniqueness now comes entirely from the name's script
+   typeface below instead of from the tag's color. */
+
+/* The hero name's typeface + color. A connected luxury script (Ephesis) is
+   the one deliberately different typeface on the page (every other heading
+   uses font-display/Space Grotesk) - distinctive by shape rather than by
+   breaking the site's palette. Ephesis's generous loops and light,
+   fashion-logotype stroke read as premium rather than a display font
+   pretending to be handwriting. Its stroke is lighter than the previous
+   Alex Brush pick, so Hero.tsx runs the type scale larger to keep it from
+   reading thin against the hero's size. Color is the same three accent
+   stops used sitewide (--accent -> --accent-2 -> --accent-3), just as a
+   fuller sweep than the original two-stop version, so it still reads as
+   native to the page.
+   WCAG: the darkest stop in the gradient (--accent, #6366f1) contrasts
+   4.46:1 against --bg - short of the 4.5:1 AA threshold for normal text, but
+   this heading is far above the 24px "large text" cutoff, where the
+   required ratio drops to 3:1, so every stop clears it; the --accent-2 and
+   --accent-3 stops clear 4.5:1 outright (5.0:1 and 11.0:1). */
+.hero-name-signature {
+  font-family: var(--font-ephesis), "Brush Script MT", cursive;
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 @utility text-gradient {

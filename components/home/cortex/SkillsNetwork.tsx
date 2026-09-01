@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { BrainCircuit } from "lucide-react";
 import { SKILL_NETWORK, type SkillNetworkNode } from "@/data/skills";
@@ -31,6 +31,7 @@ export default function SkillsNetwork() {
   const [selected, setSelected] = useState<SkillNetworkNode | null>(null);
   const [researchX, setResearchX] = useState(RESEARCH_MAX_LEFT);
   const containerRef = useRef<HTMLDivElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
 
   const researchNode = SKILL_NETWORK.disciplines.find(
     (n) => n.id === "research",
@@ -52,6 +53,16 @@ export default function SkillsNetwork() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // The tech-stack panel renders below the network diagram, which can push
+  // it past the bottom of the console's scrollable output - without this,
+  // clicking a discipline that's already visible looks like a no-op, so
+  // people don't think to scroll and never see the stack. Bring it into view
+  // whenever a discipline is selected.
+  useEffect(() => {
+    if (!selected) return;
+    detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selected]);
 
   return (
     <div
@@ -192,6 +203,7 @@ export default function SkillsNetwork() {
       <AnimatePresence>
         {selected && (
           <motion.div
+            ref={detailRef}
             key={selected.id}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
