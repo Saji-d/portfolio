@@ -79,6 +79,13 @@ const ACCENT_RGB = "99,102,241"; // --accent, used for the cursor glow/ring
 // at either end).
 const FRICTION = 0.85;
 const RETURN_SPEED = 0.065;
+// How many frames the first-reveal burst's spring-return stays boosted for
+// (see explodeIn()/tick()) - the normal RETURN_SPEED is tuned for snapping
+// back from a small interactive nudge, which is far too gentle to resolve a
+// full-canvas entrance scatter in a reasonable time; this fades a multiplier
+// on top of it back down to 1x over this many frames instead of leaving the
+// name drifting back together for several seconds.
+const INTRO_BOOST_FRAMES = 70;
 // px/frame safety clamp only - friction bounds velocity in practice; the
 // reference has no clamp at all. Must clear the worst-case peak force
 // across every mode at max font size and max force slider, or the modes
@@ -247,6 +254,8 @@ export default function FooterSignature() {
     let running = false;
     let visible = false;
     let dotSizePx = DOT_SIZE;
+    let hasExploded = false; // first-reveal burst fires once, not on every scroll back into view
+    let introFramesLeft = 0; // counts down during the post-burst boosted-return window
     const FRAME_MS = 16;
 
     // Base radius/force before the per-mode MODE_TUNING multiplier; both
@@ -418,6 +427,30 @@ export default function FooterSignature() {
       }
     }
 
+    // First-reveal entrance: scatter every dot outward from its home position
+    // with an outward kick, then let the same spring-return + friction that
+    // already drives reformation after an interaction (see tick() below)
+    // pull them back into the name - one physics system doing double duty
+    // instead of a separate scripted intro animation, so the settle reads
+    // the same as any other release. Distance scales with baseRadius (font
+    // size) so it stays proportional, and stays within the canvas's bleed
+    // padding (see sampleDots' bleedY) so dots don't vanish off the clipped
+    // edge before flying back in. Also arms the boosted-return window (see
+    // INTRO_BOOST_FRAMES) so this resolves in about a second instead of
+    // drifting back together at the normal, much gentler interactive pace.
+    function explodeIn() {
+      for (const d of dots) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = baseRadius * (0.4 + Math.random() * 0.9);
+        d.x = d.fx + Math.cos(angle) * dist;
+        d.y = d.fy + Math.sin(angle) * dist;
+        const speed = 40 + Math.random() * 70;
+        d.vx = Math.cos(angle) * speed;
+        d.vy = Math.sin(angle) * speed;
+      }
+      introFramesLeft = INTRO_BOOST_FRAMES;
+    }
+
     function tick() {
       const tuning = MODE_TUNING[modeRef.current];
       const radius = baseRadius * tuning.radius * (radiusPctRef.current / 100);
@@ -425,6 +458,14 @@ export default function FooterSignature() {
       const strength =
         baseForce * tuning.force * (forcePctRef.current / 100) * (mouseDown ? HOLD_BOOST : 1);
       currentRadius = radius;
+
+      // Fades from a strong multiplier back to 1x over INTRO_BOOST_FRAMES -
+      // only non-default right after explodeIn() fires.
+      let returnSpeed = RETURN_SPEED;
+      if (introFramesLeft > 0) {
+        returnSpeed = RETURN_SPEED * (1 + 3 * (introFramesLeft / INTRO_BOOST_FRAMES));
+        introFramesLeft--;
+      }
 
       for (const d of dots) {
         let ax = 0;
@@ -520,8 +561,8 @@ export default function FooterSignature() {
         // Spring-to-home is unconditional every frame, cursor force is
         // added on top when in range - one continuous system rather than a
         // "disturbed" state and a separate "returning" animation.
-        d.vx += ax + (d.fx - d.x) * RETURN_SPEED;
-        d.vy += ay + (d.fy - d.y) * RETURN_SPEED;
+        d.vx += ax + (d.fx - d.x) * returnSpeed;
+        d.vy += ay + (d.fy - d.y) * returnSpeed;
         d.vx *= FRICTION;
         d.vy *= FRICTION;
 
@@ -616,6 +657,30 @@ export default function FooterSignature() {
     );
     io.observe(container);
 
+    // Separate, stricter observer just for the first-reveal burst - the
+    // loop-start/stop observer above deliberately fires early (80px margin,
+    // 1% threshold) so the animation is already warmed up by the time the
+    // canvas is actually on screen, which is exactly wrong for a one-time
+    // entrance: it meant the burst mostly resolved before it was visible,
+    // so people scrolling at a normal pace never actually saw it. This one
+    // only fires once the canvas is substantially in the real viewport (no
+    // margin, 35% visible), so the burst starts right as it comes into view.
+    const explodeIo = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || hasExploded) return;
+        hasExploded = true;
+        explodeIo.disconnect();
+        // Skip the burst under reduced motion - the name just appears
+        // formed, same as it always did before this was added.
+        if (!reducedMotionQuery.matches) {
+          explodeIn();
+          draw();
+        }
+      },
+      { rootMargin: "0px", threshold: 0.35 }
+    );
+    explodeIo.observe(container);
+
     let resizeRaf = 0;
     const onWindowResize = () => {
       if (resizeRaf) return;
@@ -638,6 +703,7 @@ export default function FooterSignature() {
     return () => {
       stop();
       io.disconnect();
+      explodeIo.disconnect();
       window.removeEventListener("resize", onWindowResize);
       reducedMotionQuery.removeEventListener("change", onReducedMotionChange);
       finePointerQuery.removeEventListener("change", onReducedMotionChange);

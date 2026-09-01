@@ -59,19 +59,13 @@ export default function SkillsSection() {
                     className="group card-surface relative flex h-full flex-col overflow-hidden p-4 outline-none transition-[border-color,box-shadow] duration-300 ease-out hover:border-accent/60 hover:shadow-[0_16px_40px_-22px_rgba(99,102,241,0.4)] focus-visible:border-accent/60 focus-visible:shadow-[0_16px_40px_-22px_rgba(99,102,241,0.4)] focus-visible:ring-2 focus-visible:ring-accent/30 sm:p-5"
                   >
                     <NeonRing />
-                    <div className="relative flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2.5">
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent-hover transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105">
-                          <Icon className="h-4.5 w-4.5" />
-                        </span>
-                        <h3 className="font-mono text-xs font-semibold uppercase tracking-widest text-text-primary transition-colors duration-300 group-hover:text-accent-hover group-focus-visible:text-accent-hover">
-                          {group.label}
-                        </h3>
-                      </div>
-                      <span className="font-mono text-[10px] text-text-muted">
-                        {String(i + 1).padStart(2, "0")}/
-                        {String(skillGroups.length).padStart(2, "0")}
+                    <div className="relative flex items-center gap-2.5">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent-hover transition-transform duration-300 group-hover:scale-105 group-focus-visible:scale-105">
+                        <Icon className="h-4.5 w-4.5" />
                       </span>
+                      <h3 className="font-mono text-xs font-semibold uppercase tracking-widest text-text-primary transition-colors duration-300 group-hover:text-accent-hover group-focus-visible:text-accent-hover">
+                        {group.label}
+                      </h3>
                     </div>
 
                     <div className="relative mt-3 flex flex-wrap gap-1.5">
