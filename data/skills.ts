@@ -43,7 +43,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Blockchain",
-    skills: ["Solidity", "Foundry", "OpenZeppelin", "Viem", "Turnkey KMS"],
+    skills: ["Solidity", "Ethereum", "Smart Contracts", "Hardhat"],
   },
   {
     label: "Tooling & Practice",
