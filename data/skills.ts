@@ -15,7 +15,6 @@ export const skillGroups: SkillGroup[] = [
       "PostgreSQL",
       "SQLAlchemy",
       "Redis Streams",
-      "BullMQ",
       "Docker",
       "REST",
     ],
@@ -40,15 +39,15 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Data & Databases",
-    skills: ["MongoDB", "SQLite", "Supabase", "Cloudflare R2", "Qdrant", "Neo4j"],
+    skills: ["MongoDB", "SQLite", "Supabase", "Cloudflare R2"],
   },
   {
     label: "Blockchain",
-    skills: ["Solidity", "Foundry", "OpenZeppelin", "Viem", "Turnkey KMS"],
+    skills: ["Solidity"],
   },
   {
     label: "Tooling & Practice",
-    skills: ["Git", "pytest", "CI / CD", "Vercel", "Linux", "Npm Workspaces"],
+    skills: ["Git", "pytest", "Vercel", "Linux", "Npm Workspaces"],
   },
 ];
 
@@ -72,12 +71,12 @@ export const SKILL_NETWORK: {
     {
       id: "ai-engineering",
       label: "AI Engineering",
-      techs: ["PyTorch", "Hugging Face", "Transformers", "LLMs"],
+      techs: ["PyTorch", "Hugging Face", "Transformers"],
     },
     {
       id: "computer-vision",
       label: "Computer Vision",
-      techs: ["OpenCV", "FaceNet", "EfficientNet-B0", "Transfer Learning"],
+      techs: ["OpenCV", "LBPH", "EfficientNet-B0", "Transfer Learning"],
     },
     {
       id: "machine-learning",
@@ -87,12 +86,12 @@ export const SKILL_NETWORK: {
     {
       id: "databases",
       label: "Databases",
-      techs: ["PostgreSQL", "MongoDB", "MySQL", "Qdrant", "Neo4j"],
+      techs: ["PostgreSQL", "MongoDB", "MySQL"],
     },
     {
       id: "backend",
       label: "Backend",
-      techs: ["FastAPI", "Node.js", "Express", "Redis Streams", "BullMQ", "Docker"],
+      techs: ["FastAPI", "Node.js", "Express", "Redis Streams", "Docker"],
     },
     {
       id: "nlp",

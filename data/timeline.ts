@@ -18,7 +18,7 @@ export const timeline: TimelineEntry[] = [
     current: true,
     points: [
       "Engineering production software across the stack for enterprise finance using Python, FastAPI, PostgreSQL, Redis, and cloud infrastructure.",
-      "Designing and implementing REST APIs, asynchronous and distributed processing, multi-tenant data layers, and automated testing suites.",
+      "Designing and implementing REST APIs, asynchronous and distributed processing, and automated testing suites.",
       "Collaborating with the engineering team to build scalable services, optimize system reliability, and maintain operational security standards.",
     ],
   },
@@ -28,8 +28,9 @@ export const timeline: TimelineEntry[] = [
     org: "Bangladesh Software Solution (BSS)",
     type: "career",
     points: [
-      "Developed and delivered responsive web applications, working across frontend and backend development.",
-      "Implemented production-ready features, fixed software issues, and collaborated with the engineering team to complete client deliverables on schedule.",
+      "Developed responsive frontend interfaces utilizing HTML5, CSS3, and modern JavaScript (ES6+).",
+      "Integrated frontend layout structures with backend RESTful APIs with robust error handling.",
+      "Collaborated in agile development workflows utilizing Git for version control and system deployment.",
     ],
   },
   {

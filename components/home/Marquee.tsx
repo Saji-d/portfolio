@@ -29,8 +29,6 @@ const ROW_2_NAMES = [
   "Hugging Face",
   "OpenCV",
   "Docker",
-  "Qdrant",
-  "Neo4j",
   "Git",
   "Linux",
   "Vercel",

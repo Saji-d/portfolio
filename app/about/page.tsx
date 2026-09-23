@@ -15,12 +15,12 @@ const values = [
   {
     icon: Scale,
     title: "Honesty over hype",
-    body: "Every project lists its real numbers, and its real limitations. Blending beats a single model 95.20% of the time; I also tell you where it can't.",
+    body: "Every project lists its real numbers, and its real limitations. My thesis ensemble reaches 95.20% accuracy, beating either model alone; I also tell you where it can't.",
   },
   {
     icon: Wrench,
     title: "Systems thinking",
-    body: "From Redis Streams consumer groups to RLS tenant isolation, I design for the whole pipeline, not just the happy path.",
+    body: "From Redis Streams consumer groups to idle-message recovery with XCLAIM, I design for the whole pipeline, not just the happy path.",
   },
   {
     icon: Sparkles,

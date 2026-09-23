@@ -4,7 +4,7 @@
 
 Full-stack software engineer & AI/ML developer. One-page site with searchable project/research archives, case studies, and an interactive terminal console.
 
-[![Live Site](https://img.shields.io/badge/live-sajidur--rahman--sajid.vercel.app-6366f1?style=flat-square)](https://sajidur-rahman-sajid.vercel.app)
+[![Live Site](https://img.shields.io/badge/live-sajidur.me-6366f1?style=flat-square)](https://sajidur.me)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-149eca?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
@@ -77,6 +77,6 @@ public/              Static assets: CV PDF, images (thumbnails, artwork, case-st
 
 <div align="center">
 
-[GitHub](https://github.com/Saji-d) · [LinkedIn](https://www.linkedin.com/in/sajidur-rahman-sajid/) · [Live Site](https://sajidur-rahman-sajid.vercel.app)
+[GitHub](https://github.com/Saji-d) · [LinkedIn](https://www.linkedin.com/in/sajidur-rahman-sajid/) · [Live Site](https://sajidur.me)
 
 </div>

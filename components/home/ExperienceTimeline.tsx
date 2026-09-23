@@ -19,7 +19,7 @@ const experiences = [
     company: "Bangladesh Software Solution",
     position: "Software Engineering Intern",
     detail:
-      "Developed and delivered responsive web applications, working across frontend implementing production-ready features, fixing issues, collaborating with the engineering team, and completing client deliverables.",
+      "Developed responsive frontend interfaces with HTML5, CSS3, and modern JavaScript (ES6+), integrated them with backend RESTful APIs with robust error handling, and worked in agile, Git-based workflows.",
     tag: "Complete",
   },
 ];

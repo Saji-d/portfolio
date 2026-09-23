@@ -49,7 +49,7 @@ export const projects: Project[] = [
     featured: true,
     cover: "/images/thumbnails/invoicepilot-thumbnail.webp",
     caseStudy: true,
-    stack: ["React", "Fastify", "FastAPI", "PostgreSQL", "BullMQ", "Solidity"],
+    stack: ["FastAPI", "Python", "Mindee OCR", "PostgreSQL", "Redis Streams", "Cloudflare R2"],
     problem: [
       "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates, an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
       "Duplicate payments and fraud slip through because there is no structured audit trail, and any claim that an invoice was processed rests on someone's word.",
@@ -63,10 +63,10 @@ export const projects: Project[] = [
     ],
     contribution: [
       "I built the invoice-ai-service, the platform's extraction backbone: a FastAPI pipeline that turns an uploaded invoice into a structured, validated record: R2 ingest → OCR → transform → normalize → validate → persist.",
-      "Designed the provider-agnostic OCR layer (base provider plus a Mindee V2 adapter and a local Tesseract provider) so the extraction engine can swap OCR vendors without touching app code, and integrated the OCR path with Cloudflare R2 storage.",
+      "Designed the provider-agnostic OCR layer (base provider plus the Mindee V2 adapter; teammates later added a local Tesseract provider) so the extraction engine can swap OCR vendors without touching app code, and integrated the OCR path with Cloudflare R2 storage.",
       "Authored the structured invoice schema and the normalization/transformer services (money normalization, field coercion), including the {value, confidence, present} field contract the frontend's extraction review consumes.",
       "Implemented the validation layer and the 12-rule business scoring (empty invoice, non-positive totals, date/currency mismatches, OCR-confidence floors, duplicate line items, and more).",
-      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date per tenant) and the fraud rule set: 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches, and repeated-volume patterns once enough history exists.",
+      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date) and the fraud rule set: 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches, and repeated-volume patterns once enough history exists.",
       "My invoice-ai-service history was merged into the team monorepo and continues as the extraction backbone; the rest of the stack (frontend, API, worker, contracts, billing sync) was built by teammates.",
     ],
     architecture: [
@@ -92,28 +92,28 @@ export const projects: Project[] = [
     ],
     decisions: [
       {
-        title: "Hash-only on-chain (privacy by design)",
-        body: "The contract stores only {recordHash, recordType, sealedAt, sealedBy}, never amounts, PII, or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
+        title: "Hash-only on-chain (privacy by design) (team)",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. The contract stores only {recordHash, recordType, sealedAt, sealedBy}, never amounts, PII, or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
       },
       {
-        title: "The frozen anti-fabrication mapper",
-        body: "The AI service emits {value: 0.0, present: false} for a field it never found. The one shared mapper omits any key the extractor did not produce instead of writing a zero, so a $0 invoice invented from a default can never reach an approver, let alone a seal. It is deliberately frozen in shared-types so both ingest routes seal identical bytes.",
+        title: "The frozen anti-fabrication mapper (team)",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. The AI service emits {value: 0.0, present: false} for a field it never found. The one shared mapper omits any key the extractor did not produce instead of writing a zero, so a $0 invoice invented from a default can never reach an approver, let alone a seal. It is deliberately frozen in shared-types so both ingest routes seal identical bytes.",
       },
       {
-        title: "RLS FORCE + service-role split",
-        body: "Tenant isolation is enforced at the database, not the ORM. The API sets per-request GUCs, the worker connects with app.current_role='service' under a NOBYPASSRLS production role, and FORCE ROW LEVEL SECURITY keeps reads tenant-scoped however the query is written.",
+        title: "RLS FORCE + service-role split (team)",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. Tenant isolation is enforced at the database, not the ORM. The API sets per-request GUCs, the worker connects with app.current_role='service' under a NOBYPASSRLS production role, and FORCE ROW LEVEL SECURITY keeps reads tenant-scoped however the query is written.",
       },
       {
-        title: "AES-256-GCM for PII at rest",
-        body: "Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized, and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext. The rest of the system never sees it.",
+        title: "AES-256-GCM for PII at rest (team)",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized, and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext. The rest of the system never sees it.",
       },
       {
-        title: "Versioned, frozen approval hashes",
-        body: "The hashing kernel lives in shared-types behind a versioned domain tag (invoicepilot/approval/v1). v1 seals must stay verifiable forever, so a changed sealed-field set ships as approval-v2 rather than an edit to the payload builder.",
+        title: "Versioned, frozen approval hashes (team)",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. The hashing kernel lives in shared-types behind a versioned domain tag (invoicepilot/approval/v1). v1 seals must stay verifiable forever, so a changed sealed-field set ships as approval-v2 rather than an edit to the payload builder.",
       },
       {
-        title: "Verify never writes",
-        body: "The public verify path recomputes sha-256 in-process and calls a keyless view function on-chain: no DB write, no audit row, no signer. Every outcome (match, mismatch, not-yet-sealed, chain error, payload error) resolves explicitly and never throws.",
+        title: "Verify never writes (team)",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. The public verify path recomputes sha-256 in-process and calls a keyless view function on-chain: no DB write, no audit row, no signer. Every outcome (match, mismatch, not-yet-sealed, chain error, payload error) resolves explicitly and never throws.",
       },
     ],
     highlights: [
@@ -127,7 +127,7 @@ export function computeRecordHash(
 ): \`0x\${string}\` {
   return \`0x\${sha256Hex(domainTag + '\\n' + canonicalJSON(payload))}\`;
 }`,
-        caption: "RFC 8785 (JCS) canonical JSON + a versioned domain tag make the hash deterministic across languages: the Python service extracts, TypeScript seals, Solidity verifies.",
+        caption: "Teammate code, shown for context: RFC 8785 (JCS) canonical JSON + a versioned domain tag make the hash deterministic across languages: the Python service extracts, TypeScript seals, Solidity verifies.",
       },
       {
         title: "The anti-fabrication rule (frozen mapper)",
@@ -142,7 +142,7 @@ export interface ExtractedInvoiceFields {
   currency?: string;         // /^[A-Z]{3}$/
   lineItems?: NormalizedLineItem[]; // jsonb, sealed as-stored
 }`,
-        caption: "An invoice with no extracted total is never handed to an approver: the exact $0-invoice-sealed bug this branch exists to kill.",
+        caption: "Teammate code, shown for context: An invoice with no extracted total is never handed to an approver: the exact $0-invoice-sealed bug this branch exists to kill.",
       },
       {
         title: "The single on-chain write, with a fee policy",
@@ -168,16 +168,16 @@ const txHash = await walletClient.writeContract({
   maxFeePerGas: fees.maxFeePerGas,
   maxPriorityFeePerGas: fees.maxPriorityFeePerGas,
 });`,
-        caption: "The tip is our number, not the RPC's. A seal is never urgent, so over a hard fee cap the job waits for a cheaper block instead of overpaying.",
+        caption: "Teammate code, shown for context: The tip is our number, not the RPC's. A seal is never urgent, so over a hard fee cap the job waits for a cheaper block instead of overpaying.",
       },
     ],
     metrics: [
-      { value: "700", label: "API tests (Fastify suite)" },
-      { value: "160", label: "AI-service tests" },
+      { value: "700", label: "API tests (teammates' Fastify suite)" },
+      { value: "160", label: "AI-service tests (team repo)" },
       { value: "12+9", label: "business + fraud rules" },
-      { value: "4", label: "BullMQ queues" },
-      { value: "78.6k", label: "gas per on-chain seal" },
-      { value: "2", label: "OCR providers (Mindee + local)" },
+      { value: "4", label: "BullMQ queues (teammates' worker)" },
+      { value: "78.6k", label: "gas per on-chain seal (teammates' contract)" },
+      { value: "2", label: "OCR providers (my Mindee adapter + a teammate's local one)" },
     ],
     screenshots: [
       { src: "/images/invoicepilot/invoice-gpt.webp", alt: "Structured extraction sample from an invoice" },
@@ -323,9 +323,9 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
   {
     slug: "casevault",
     name: "CaseVault",
-    tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, and provides AI-generated summaries with verifiable citations.",
+    tagline: "Privacy-first legal research workspace that ingests case documents, ranks search results by relevance, with an AI summary and citation layer designed for Phase 2.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read with AI tabs for summaries and citations, built around 'verify, don't trust AI.'",
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read in a document viewer whose AI tabs (summaries, citations) are Phase 2 placeholders, built around 'verify, don't trust AI.'",
     role: "Full-Stack / AI Engineer",
     status: "ACTIVE",
     category: "Professional",
@@ -333,14 +333,14 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     featured: true,
     cover: "/images/thumbnails/casevault-thumbnail.webp",
     caseStudy: true,
-    stack: ["GraphRAG", "Neo4j", "Qdrant", "FastAPI", "LLMs"],
+    stack: ["FastAPI", "SQLAlchemy", "SQLite", "Next.js"],
     problem: [
       "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
       "Generic AI chatbots hallucinate citations, and firms cannot upload confidential client files to public AI tools without risking privacy.",
     ],
     solution: [
       "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related), query highlighting, and an XSS-safe hand-rolled markdown renderer.",
+      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related) that are Phase 2 placeholders, query highlighting, and an XSS-safe hand-rolled markdown renderer.",
       "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker, targeting ~790ms to first token.",
     ],
     architecture: [
@@ -396,9 +396,9 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
   {
     slug: "ledgerturf",
     name: "LedgerTurf",
-    tagline: "Real-time turf booking platform that lets players discover and reserve grounds on a map while owners publish and manage slots with overlapping-time protection.",
+    tagline: "Turf booking platform that lets players discover and reserve grounds on a Google Map while owners publish and manage slots with overlapping-time checks.",
     summary:
-      "Real-time turf booking for Dhaka: players find grounds on a map, owners publish slots, and every reservation is protected by an overlap check, live in production on Vercel.",
+      "Turf booking for Dhaka: players find grounds on a Google Map, owners publish slots, and every reservation is checked for overlaps, live on Vercel.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Professional",
@@ -408,14 +408,14 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     caseStudy: true,
     github: "https://github.com/Saji-d/ledgerturf",
     demo: "https://ledgerturf.vercel.app",
-    stack: ["Next.js", "TypeScript", "Mapbox"],
+    stack: ["React", "Express", "MongoDB Atlas", "Redux Toolkit", "Google Maps"],
     problem: [
       "Turf owners in Dhaka booked slots over phone and WhatsApp: double-booking was routine, availability was never current, and players had no way to compare grounds.",
       "Timezones and 24-hour clock confusion made 'is this slot free right now' a genuinely hard query to answer correctly.",
     ],
     solution: [
-      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on a geo-indexed map, owners publish and manage slots, and admins get full visibility, with JWT auth and role-based access at every layer.",
-      "Slots are protected with an overlap check inside a Mongoose transaction session, and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly, so 'available now' means the same thing to everyone.",
+      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on Google Maps (owners pin their location with a map picker), locations carry a GeoJSON 2dsphere index (the radius geo search is currently disabled), owners publish and manage slots, and admins get full visibility, with JWT auth and role-based access at every layer.",
+      "Bookings are checked for overlapping slots before a Mongoose transaction writes them, and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly, so 'available now' means the same thing to everyone.",
       "SPA deep links are handled with Vercel rewrite rules so refreshing /turf/:id never 404s.",
     ],
     architecture: [
@@ -423,7 +423,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       "                                          │  asyncHandler pattern",
       "                                          ├──► Mongo 2dsphere geo index",
       "                                          ├──► Booking overlap check",
-      "                                          │    (transaction session)",
+      "                                          │    (before the txn write)",
       "                                          ├──► Review avg-rating hooks",
       "                                          └──► Cloudinary uploads",
       "  Vercel: frontend + backend, SPA rewrite rules",
@@ -444,7 +444,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     ],
     highlights: [
       {
-        title: "Overlap check inside a transaction",
+        title: "Booking overlap check",
         code: `const session = await mongoose.startSession();
 session.startTransaction();
 try {
@@ -456,7 +456,7 @@ try {
   await Booking.create([{ turf, start, end }], { session });
   await session.commitTransaction();
 } finally { session.endSession(); }`,
-        caption: "Honest note: overlap validation is session-bound at creation; a unique partial index is the planned hardening step.",
+        caption: "Honest note: the overlap check runs before the transaction, outside its session, so it isn't race-safe yet; a unique partial index is the planned hardening step.",
       },
     ],
     metrics: [
@@ -505,9 +505,9 @@ try {
   {
     slug: "codingvibes-java-gui",
     name: "CodingVibes",
-    tagline: "Interactive Java learning platform featuring courses, quizzes, and progress tracking built around a clean event-driven architecture with persistent state.",
+    tagline: "Java Swing course-storefront app with admin and user login, course browsing and a cart, storing accounts in flat files.",
     summary:
-      "An interactive learning platform with courses, quizzes, and progress tracking, engineered around a clean event-driven architecture with persistent state behind every screen.",
+      "A desktop Java Swing storefront for programming courses: admin and user login and signup, course browsing and a cart, with accounts persisted to flat text files through plain file I/O.",
     role: "Desktop Developer",
     status: "COMPLETE",
     category: "Desktop",
@@ -515,14 +515,14 @@ try {
     featured: false,
     cover: "/images/thumbnails/codingvibes-thumbnail.webp",
     github: "https://github.com/Saji-d/codingvibes-java-gui",
-    stack: ["Java", "Swing", "MySQL"],
+    stack: ["Java", "Swing", "File I/O"],
   },
   {
     slug: "face-recognition-system",
     name: "Face Recognition System",
-    tagline: "Real-time face identification pipeline that detects faces in video, trains embeddings on a known set, and identifies people live, from dataset to inference in one reproducible notebook.",
+    tagline: "Real-time face identification pipeline that detects faces with a Haar cascade, trains an OpenCV LBPH recognizer on a known set, and identifies people live, from dataset to inference in one reproducible notebook.",
     summary:
-      "A complete face identification pipeline: detect faces in video, train embeddings on a known set, then identify people in real time, from dataset to inference in one reproducible notebook.",
+      "A complete face identification pipeline: detect faces with a Haar cascade, train an LBPH recognizer on a known set, then identify people in real time, from dataset to inference in one reproducible notebook.",
     role: "CV Engineer",
     status: "COMPLETE",
     category: "CVPR",
@@ -530,40 +530,40 @@ try {
     featured: false,
     cover: "/images/thumbnails/face-recognition-thumbnail.webp",
     github: "https://github.com/Saji-d/face-recognition-system",
-    stack: ["Python", "OpenCV", "FaceNet"],
+    stack: ["Python", "OpenCV", "LBPH"],
   },
   {
     slug: "3d-city-simulation",
-    name: "3D City Simulator",
-    tagline: "Procedurally generated 3D city with dynamic day-night lighting, rain and snow effects, and functioning traffic-light logic in a pure graphics showcase.",
+    name: "City Simulator",
+    tagline: "Animated OpenGL city scene built by a team of three; I led the animation work: a day/night toggle, particle rain and snow, a traffic-light state machine, and moving vehicles and pedestrians.",
     summary:
-      "A 3D procedurally laid-out city with dynamic day/night lighting, rain and snow, and working traffic-light logic, a pure graphics engineering showcase.",
-    role: "Graphics Engineer",
+      "An animated 2D OpenGL + GLUT city scene from a 3-person graphics course project. My part was the animation: day/night toggle, particle rain and snow, a keyboard-driven traffic light that stops the vehicles, and moving cars, a bus, pedestrians, birds and clouds.",
+    role: "Animation lead (team of 3)",
     status: "COMPLETE",
     category: "Graphics",
     badges: [],
     featured: false,
     cover: "/images/thumbnails/three-d-city-thumbnail.webp",
     github: "https://github.com/Saji-d/3d-city-simulation-opengl",
-    stack: ["C++", "OpenGL", "SFML"],
+    stack: ["C++", "OpenGL", "GLUT"],
     problem: [
       "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline (geometry, lighting, and interaction) rather than a single static scene.",
     ],
     solution: [
-      "The simulator builds an entire block grid with buildings, roads, and vehicles. A day/night cycle interpolates ambient and directional light; weather modes toggle particle rain and snow; and traffic lights cycle red → green with keyboard-controlled camera navigation.",
-      "Everything is generated from a single scene graph, so light state, weather state, and traffic state compose cleanly.",
+      "The scene draws roads, buildings and vehicles with legacy immediate-mode OpenGL on a 2D orthographic view. A day/night toggle (n/d keys) switches object colors and headlights; weather modes run particle systems for rain and snow; and a red/yellow/green traffic light, switched by keyboard, makes the bus and car stop at the crosswalk.",
+      "State lives in a few global flags and timers (night mode, weather particles, light state, vehicle positions), updated by GLUT timer callbacks. The team's proposal also planned textures, real lighting and camera controls, which were not built.",
     ],
     architecture: [
-      "  SceneGraph (city blocks, roads, vehicles)",
-      "   ├── DayCycle    → ambient + directional light lerp",
+      "  main.cpp (GLUT loop, 2D orthographic view)",
+      "   ├── isNight flag → per-object color branches",
       "   ├── Weather     → rain / snow particle emitters",
       "   ├── TrafficLights → per-intersection state machine",
-      "   └── Camera      → WASD + orbit (GLUT keyboard)",
+      "   └── Animation   → vehicles, pedestrians, birds, clouds",
     ],
     decisions: [
       {
         title: "State-as-machine over per-frame hacks",
-        body: "Traffic lights are a three-state machine (red → green → amber) advanced by a timer, so timing stays consistent regardless of frame rate.",
+        body: "The traffic light is a three-state machine (red, yellow, green) switched by the r/y/g keys; the vehicle update loop checks the state and stops the bus and car before the crosswalk on red.",
       },
     ],
     highlights: [
@@ -581,14 +581,14 @@ for (auto &p : particles) {
     ],
     metrics: [
       { value: "6", label: "rendered modes (day, night, rain, snow, traffic)" },
-      { value: "1", label: "scene graph for all state" },
-      { value: "WASD", label: "free camera controls" },
+      { value: "3", label: "person team (I led animation)" },
+      { value: "2D", label: "orthographic OpenGL view" },
     ],
     screenshots: [
-      { src: "/images/3d-city/day-mode.webp", alt: "3D City Simulator in daylight" },
-      { src: "/images/3d-city/night-mode.webp", alt: "3D City Simulator at night" },
-      { src: "/images/3d-city/rain-mode.webp", alt: "3D City Simulator under rain" },
-      { src: "/images/3d-city/snow-mode.webp", alt: "3D City Simulator in snow" },
+      { src: "/images/3d-city/day-mode.webp", alt: "City Simulator in daylight" },
+      { src: "/images/3d-city/night-mode.webp", alt: "City Simulator at night" },
+      { src: "/images/3d-city/rain-mode.webp", alt: "City Simulator under rain" },
+      { src: "/images/3d-city/snow-mode.webp", alt: "City Simulator in snow" },
       { src: "/images/3d-city/traffic-light-red.webp", alt: "Traffic light state: red" },
       { src: "/images/3d-city/traffic-light-green.webp", alt: "Traffic light state: green" },
     ],
@@ -614,9 +614,9 @@ for (auto &p : particles) {
   {
     slug: "employee-family-registry",
     name: "Employee & Family Registry",
-    tagline: "Employee registry with family relationship trees, full-text search, and on-demand PDF CV and list exports in one polished API-driven workspace.",
+    tagline: "Employee registry with spouse and children records, case-insensitive search across name, NID and department, and on-demand PDF CV and list exports from one ASP.NET Core API.",
     summary:
-      "An employee registry with family-relationship trees, full-text search, and on-demand PDF CV and list exports, one API serving a polished workspace.",
+      "An employee registry with spouse and children records, case-insensitive search across name, NID and department, and QuestPDF-generated CV and list exports, one ASP.NET Core API serving a React workspace.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Desktop",
@@ -624,7 +624,7 @@ for (auto &p : particles) {
     featured: false,
     cover: "/images/thumbnails/employee-registry-thumbnail.webp",
     github: "https://github.com/Saji-d/employee-family-registry",
-    stack: ["C#", "SQL Server"],
+    stack: ["ASP.NET Core", "EF Core", "PostgreSQL", "React"],
   },
   {
     slug: "my-wedding-invitation",
@@ -645,9 +645,9 @@ for (auto &p : particles) {
   {
     slug: "online-bookstore-database-design",
     name: "Bookstore Database",
-    tagline: "Fully normalized relational design for an online bookstore mapping every entity and dependency, ready to run catalog, orders, and inventory queries.",
+    tagline: "Relational design for an online bookstore, normalized through 3NF, with an ER diagram and catalog, order and payment queries.",
     summary:
-      "A fully normalized relational design for an online bookstore: every entity mapped, every dependency resolved, and the queries that run catalog, orders, and inventory.",
+      "A relational design for an online bookstore, worked from UNF through 3NF, with an ER diagram, the Oracle SQL schema, and the queries that run the catalog, orders and payments.",
     role: "Database Designer",
     status: "COMPLETE",
     category: "Database",
@@ -656,6 +656,38 @@ for (auto &p : particles) {
     cover: "/images/thumbnails/database-thumbnail.webp",
     github: "https://github.com/Saji-d/online-bookstore-database-design",
     stack: ["SQL", "Normalization", "ER Diagram"],
+  },
+  {
+    slug: "mini-kanban-board",
+    name: "Mini Kanban Board",
+    tagline: "Multi-user Kanban board with OWNER / EDITOR / VIEWER sharing and drag-and-drop task ordering, built as a technical assessment.",
+    summary:
+      "A NestJS + Prisma + PostgreSQL API with a Next.js 14 frontend: boards shared under a three-role RBAC model enforced at the route-guard and service layers, drag-and-drop task reordering with float-midpoint positions and row-locked moves, and 40 unit + e2e tests.",
+    role: "Full-stack Engineer",
+    status: "COMPLETE",
+    category: "Mini Project",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/mini-kanban-thumbnail.webp",
+    github: "https://github.com/Saji-d/mini-kanban-board",
+    demo: "https://mini-kanban-board-frontend.vercel.app",
+    stack: ["Next.js", "NestJS", "Prisma", "PostgreSQL", "Docker"],
+  },
+  {
+    slug: "doctor-tracker",
+    name: "Doctor Tracker",
+    tagline: "Admin console for managing doctors and their patients, with search, filtering, pagination and an analytics dashboard.",
+    summary:
+      "A Next.js frontend (TanStack Query) over a TypeScript Express API on MongoDB Atlas: doctor and patient CRUD, URL-synced search, filters and pagination, patient reassignment, a Recharts analytics dashboard, rate-limited JWT cookie auth, and Jest + Supertest integration tests. Built for a full-stack take-home task.",
+    role: "Full-stack Engineer",
+    status: "COMPLETE",
+    category: "Mini Project",
+    badges: [],
+    featured: false,
+    cover: "/images/thumbnails/doctor-tracker-thumbnail.webp",
+    github: "https://github.com/Saji-d/doctor-tracker",
+    demo: "https://doctor-tracker-web.vercel.app",
+    stack: ["Next.js", "TypeScript", "Express", "MongoDB Atlas", "TanStack Query"],
   },
 ];
 

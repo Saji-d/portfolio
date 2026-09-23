@@ -23,8 +23,6 @@ const ICON_NAMES = [
   "NumPy",
   "OpenCV",
   "Tailwind CSS",
-  "Qdrant",
-  "Neo4j",
   "Git",
   "Linux",
   "Vercel",

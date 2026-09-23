@@ -8,7 +8,7 @@ export const resume = {
       role: "Software Developer Trainee",
       period: "May 2026 - Present",
       points: [
-        "Built MERN-based business systems and authored 218 automated pytest cases for backend workflows.",
+        "Built MERN-based business systems and authored 246 automated pytest cases for backend workflows.",
         "Engineered AI invoice processing pipelines using Python, FastAPI, Mindee OCR, PostgreSQL, and Redis Streams.",
         "Developed FUMAK, a client inventory and POS system with Android barcode scanning and stock management.",
       ],
@@ -53,7 +53,7 @@ export const resume = {
       ],
     },
     {
-      name: "FinBERT",
+      name: "FinBERT Financial Sentiment Analysis",
       stack: "PyTorch, Hugging Face, NLP",
       points: [
         "Fine-tuned domain-specific transformer models (FinBERT) to classify sentiment in financial text datasets.",
@@ -94,8 +94,8 @@ export const resume = {
     stack: "CatBoost, PyTorch",
     points: [
       "Engineered a dual-path hybrid ensemble fusing gradient boosting classifiers and deep neural networks.",
-      "Achieved state-of-the-art performance with 95.20% accuracy and 0.982 ROC-AUC across 2,237 student records.",
-      "Identified mental fatigue, stress frequency, and sleep quality as primary predictive drivers of cognitive decline.",
+      "Achieved 95.20% accuracy and 0.982 ROC-AUC on a held-out test set from 2,237 student survey responses.",
+      "Identified mental fatigue, stress frequency, and sleep quality as top predictors of cognitive-impairment risk.",
     ],
   },
   certifications: [
@@ -106,8 +106,8 @@ export const resume = {
     { group: "AI & Machine Learning", items: "PyTorch, Hugging Face, Scikit-learn, OpenCV, CatBoost" },
     { group: "Programming Languages", items: "Python, Java, C/C++, C# (.NET), SQL, TypeScript, JavaScript, Solidity" },
     { group: "Web Development", items: "React, Next.js, FastAPI, Node.js, Express, HTML5, CSS3" },
-    { group: "Backend & Databases", items: "PostgreSQL, MySQL, SQL Server, MongoDB, Redis Streams, Qdrant" },
-    { group: "Tools & DevOps", items: "Git, Docker, Celery, BullMQ, Jupyter Notebook, Cloudflare R2" },
+    { group: "Backend & Databases", items: "PostgreSQL, MySQL, SQL Server, MongoDB, Redis Streams" },
+    { group: "Tools & DevOps", items: "Git, Docker, Jupyter Notebook, Cloudflare R2" },
   ],
   honors: [
     { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "Awarded 70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 - 2026" },

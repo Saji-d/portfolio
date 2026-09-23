@@ -62,7 +62,7 @@ export const neuronscreen: ResearchStudy = {
   oneLiner:
     "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students: 95.20% accuracy, 0.982 ROC-AUC.",
   summary:
-    "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from students aged 20–35, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
+    "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from Bangladeshi university students, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
   metrics: [
     { value: "95.20%", label: "accuracy" },
     { value: "94.40%", label: "precision" },
@@ -88,9 +88,9 @@ export const neuronscreen: ResearchStudy = {
     "Provide a practical, data-driven screening approach that helps universities flag at-risk students early.",
   ],
   methodology: [
-    "Survey design and collection: 2,237 responses from Bangladeshi university students aged 20–35, capturing demographics, lifestyle and behavioural habits, mental stamina, insomnia indicators, and cognitive-symptom indicators.",
-    "Preprocessing and target engineering: cleaned and scaled the 14 lifestyle input features, then aggregated multiple cognitive-symptom indicators into a single binary Healthy / Impaired target.",
-    "Dual-path training: CatBoost on the categorical tabular side and a three-layer ANN (128-64-1 MLP) on the numerical side, trained in parallel.",
+    "Survey design and collection: 2,237 responses from students at 30+ Bangladeshi universities, capturing demographics, lifestyle and behavioural habits, mental stamina, insomnia indicators, and cognitive-symptom indicators.",
+    "Preprocessing and target engineering: prepared the 21 survey input features (20 categorical + age), then aggregated multiple cognitive-symptom indicators into a single binary Healthy / Impaired target.",
+    "Dual-path training: CatBoost on the raw categorical answers and a three-layer ANN (128-64-1 MLP) on a 104-dimension one-hot encoding of the same features, trained in parallel.",
     "Ensemble blending: the final decision is the arithmetic mean of both models' predicted probabilities.",
     "Evaluation: an 80/20 stratified split (1,790 train / 447 test) scored with accuracy, precision, recall, F1-score, and ROC-AUC, plus confusion-matrix and learning-curve analysis.",
   ],
@@ -101,7 +101,7 @@ export const neuronscreen: ResearchStudy = {
     },
     {
       name: "ANN (128-64-1 MLP)",
-      role: "Three-layer feed-forward network for deep feature extraction over the vectorized numeric features.",
+      role: "Three-layer feed-forward network (128-64-1) over the one-hot encoded survey features.",
     },
     {
       name: "Hybrid ensemble",
@@ -109,14 +109,14 @@ export const neuronscreen: ResearchStudy = {
     },
   ],
   dataset: [
-    "2,237 survey responses from Bangladeshi university students aged 20–35.",
-    "14 lifestyle input features spanning demographics, caffeine intake, bedtime device use, cognitive load, stress frequency, mental stamina, spacing-out / audio-lag episodes, sleep hours, night awakenings, sleep quality, forgetfulness, reminder reliance, brain fog, missed deadlines, GPA impact, and fatigue.",
+    "2,237 survey responses from students at 30+ Bangladeshi universities.",
+    "21 input features spanning demographics, caffeine intake, bedtime device use, cognitive load, stress frequency, mental stamina, spacing-out / audio-lag episodes, sleep hours, night awakenings, sleep quality, forgetfulness, reminder reliance, brain fog, missed deadlines, GPA impact, and fatigue.",
     "A binary target engineered by aggregating multiple cognitive-symptom indicators into Healthy / Impaired.",
   ],
   implementation: [
     "Built in Python on Google Colab with pandas (data manipulation), CatBoost (gradient boosting), and PyTorch (ANN).",
     "Both modules trained in parallel, then combined with probability-level ensemble blending for the final binary prediction.",
-    "Validated with a confusion matrix and ROC-AUC analysis: the held-out matrix shows 212 true negatives, 192 true positives, 43 false negatives, and 63 false positives across 447 test cases.",
+    "Validated on the 447-response held-out test set with a confusion matrix and ROC-AUC analysis.",
     "Deployed as a Streamlit screening prototype: a slider-based Quick Check-in and a conversational check-in assistant that both return a 0–100 risk score with model confidence and the driving factors.",
   ],
   keyFeatures: [
@@ -146,13 +146,13 @@ export const neuronscreen: ResearchStudy = {
   tools: ["Python", "Google Colab", "Pandas", "CatBoost", "PyTorch", "Streamlit", "scikit-learn"],
   challenges: [
     "Self-reported survey data carry response and recall bias.",
-    "A single-institution cohort limits broader generalizability.",
+    "A convenience-sampled, self-reported survey cohort limits broader generalizability.",
     "Binary classification only: no severity levels for cognitive impairment.",
     "Hyperparameter tuning was constrained by local CPU/RAM availability.",
   ],
   futureWork: [
     "Multi-institutional and longitudinal data collection to study temporal changes in cognitive health.",
-    "Integrate Explainable AI (SHAP/LIME) for clinical interpretability.",
+    "Extend the app's per-prediction SHAP explanations with LIME and clinical validation.",
     "Add objective physiological biomarkers such as actigraphy or EEG signals.",
     "Deploy the framework within real campus health-surveillance systems.",
   ],

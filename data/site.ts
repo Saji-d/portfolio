@@ -12,7 +12,7 @@ export const SITE = {
   linkedin: "https://www.linkedin.com/in/sajidur-rahman-sajid/",
   github: "https://github.com/Saji-d",
   githubHandle: "Saji-d",
-  url: "https://sajidur-rahman-sajid.vercel.app",
+  url: "https://www.sajidur.me",
   availability:
     "I'm open to software engineering roles across full-stack, platform, and applied ML, plus select freelance and product work if it's interesting.",
 } as const;

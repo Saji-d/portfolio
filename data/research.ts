@@ -30,7 +30,7 @@ export const neuronscreen: ResearchStudy = {
   oneLiner:
     "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students: 95.20% accuracy, 0.982 ROC-AUC.",
   summary:
-    "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from students aged 20–35, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
+    "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from Bangladeshi university students, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
   metrics: [
     { value: "95.20%", label: "accuracy" },
     { value: "94.40%", label: "precision" },
