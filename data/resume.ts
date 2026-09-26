@@ -73,7 +73,7 @@ export const resume = {
     {
       org: "American International University-Bangladesh (AIUB)",
       degree: "Bachelor of Science in Computer Science and Engineering",
-      detail: "CGPA 3.92 / 4.00",
+      detail: "CGPA 3.91 / 4.00",
       period: "Sep 2022 - Apr 2026",
     },
     {

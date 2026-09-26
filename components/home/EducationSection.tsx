@@ -23,7 +23,7 @@ const education: EducationEntry[] = [
   {
     institution: "American International University-Bangladesh",
     degree: "Bachelor of Science in Computer Science and Engineering",
-    gpa: "3.92",
+    gpa: "3.91",
     gpaLabel: "CGPA / 4.00",
     period: "Sep 2022 - Apr 2026",
     location: "Dhaka, Bangladesh",

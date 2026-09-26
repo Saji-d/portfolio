@@ -40,7 +40,7 @@ export const timeline: TimelineEntry[] = [
     location: "Dhaka, Bangladesh",
     type: "education",
     points: [
-      "CGPA 3.92 / 4.00",
+      "CGPA 3.91 / 4.00",
       "Thesis: NeuroScreen hybrid ensemble (95.20% accuracy, 0.982 ROC-AUC)",
       "5× Dean's Award + AIUB Merit Scholar (70% tuition waiver)",
     ],
