@@ -332,6 +332,8 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     badges: ["Production"],
     featured: true,
     cover: "/images/thumbnails/casevault-thumbnail.webp",
+    github: "https://github.com/Saji-d/casevault",
+    demo: "https://casevault-bd.vercel.app",
     caseStudy: true,
     stack: ["FastAPI", "SQLAlchemy", "SQLite", "Next.js"],
     problem: [

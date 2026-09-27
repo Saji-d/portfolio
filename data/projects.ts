@@ -99,6 +99,8 @@ export const projects: Project[] = [
     badges: ["Production"],
     featured: true,
     cover: "/images/thumbnails/casevault-thumbnail.webp",
+    github: "https://github.com/Saji-d/casevault",
+    demo: "https://casevault-bd.vercel.app",
     caseStudy: true,
     stack: ["FastAPI", "SQLAlchemy", "SQLite", "Next.js"],
   },
