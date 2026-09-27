@@ -28,6 +28,7 @@ export const resume = {
   projects: [
     {
       name: "InvoicePilot (Ledgercross Product)",
+      link: null,
       stack: "Python, FastAPI, Mindee OCR, PostgreSQL, Redis",
       points: [
         "Built an AI invoice processing microservice for OCR extraction and structured data generation.",
@@ -37,6 +38,7 @@ export const resume = {
     },
     {
       name: "FUMAK Inventory & POS System (Client Project)",
+      link: "https://fumak-inventory.vercel.app/",
       stack: "Kotlin, Android, Next.js, PostgreSQL",
       points: [
         "Built an inventory and POS platform with Android barcode scanning and a Next.js web application.",
@@ -46,6 +48,7 @@ export const resume = {
     },
     {
       name: "LedgerTurf",
+      link: "https://ledgerturf.vercel.app/",
       stack: "React, Node.js, Express, MongoDB Atlas, Redux",
       points: [
         "Built a full-stack MERN turf booking ecosystem featuring geo-spatial MongoDB 2dsphere indexing.",
@@ -54,6 +57,7 @@ export const resume = {
     },
     {
       name: "FinBERT Financial Sentiment Analysis",
+      link: "https://github.com/Saji-d/financial-sentiment-analysis-bert",
       stack: "PyTorch, Hugging Face, NLP",
       points: [
         "Fine-tuned domain-specific transformer models (FinBERT) to classify sentiment in financial text datasets.",
@@ -62,6 +66,7 @@ export const resume = {
     },
     {
       name: "Face Recognition System",
+      link: "https://github.com/Saji-d/face-recognition-system",
       stack: "Python, OpenCV, LBPH",
       points: [
         "Developed a real-time face recognition system leveraging OpenCV and Local Binary Patterns Histograms (LBPH).",

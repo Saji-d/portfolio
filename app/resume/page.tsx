@@ -96,7 +96,20 @@ export default function ResumePage() {
               <div className="space-y-4">
                 {resume.projects.map((proj) => (
                   <div key={proj.name}>
-                    <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{proj.name}</h3>
+                    <h3 className="font-semibold text-text-primary text-xs sm:text-sm">
+                      {proj.link ? (
+                        <a
+                          href={proj.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-accent hover:underline"
+                        >
+                          {proj.name}
+                        </a>
+                      ) : (
+                        proj.name
+                      )}
+                    </h3>
                     <p className="font-mono text-[11px] text-text-muted">{proj.stack}</p>
                     <ul className="mt-1.5 space-y-1">
                       {proj.points.map((p) => (
