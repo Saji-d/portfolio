@@ -21,10 +21,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const study = getResearch(slug);
   if (!study) return { title: "Research" };
+  const url = `/research/${study.slug}`;
   return {
     title: `${study.shortTitle} | Research`,
     description: study.oneLiner,
-    alternates: { canonical: `/research/${study.slug}` },
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      siteName: SITE.name,
+      title: `${study.shortTitle} · ${SITE.name}`,
+      description: study.oneLiner,
+      images: [{ url: "/og-image.webp", width: 1200, height: 630 }],
+    },
   };
 }
 
