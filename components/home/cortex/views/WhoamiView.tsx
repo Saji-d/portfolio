@@ -131,7 +131,7 @@ export default function WhoamiView() {
           <Check className="h-3.5 w-3.5" />
           <span>identity verified</span>
           <span className="text-text-muted">·</span>
-          <span className="text-text-muted">occupation: software developer trainee, ledgercross</span>
+          <span className="text-text-muted">occupation: software developer, ledgercross</span>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ export interface TimelineEntry {
 export const timeline: TimelineEntry[] = [
   {
     period: "May 2026 - Present",
-    title: "Software Developer Trainee",
+    title: "Software Developer",
     org: "Ledgercross",
     location: "Dhaka, Bangladesh",
     type: "career",

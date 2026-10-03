@@ -9,7 +9,7 @@ const experiences = [
   {
     period: "May 2026 - Present",
     company: "Ledgercross",
-    position: "Software Developer Trainee",
+    position: "Software Developer",
     detail:
       "Engineering production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure, and system reliability.",
     tag: "Present",
@@ -17,7 +17,7 @@ const experiences = [
   {
     period: "Feb 2026 - Apr 2026",
     company: "Bangladesh Software Solution",
-    position: "Software Engineering Intern",
+    position: "Software Engineer Intern",
     detail:
       "Developed responsive frontend interfaces with HTML5, CSS3, and modern JavaScript (ES6+), integrated them with backend RESTful APIs with robust error handling, and worked in agile, Git-based workflows.",
     tag: "Complete",

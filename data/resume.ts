@@ -5,7 +5,7 @@ export const resume = {
     {
       org: "Ledgercross",
       location: "Dhaka, Bangladesh",
-      role: "Software Developer Trainee",
+      role: "Software Developer",
       period: "May 2026 - Present",
       points: [
         "Built MERN-based business systems and authored 246 automated pytest cases for backend workflows.",

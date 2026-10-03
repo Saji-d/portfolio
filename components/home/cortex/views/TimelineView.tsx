@@ -56,7 +56,7 @@ export default function TimelineView() {
       </ol>
 
       <p className="mt-4 font-mono text-[11px] text-text-muted">
-        &gt; current role · software developer trainee @ ledgercross
+        &gt; current role · software developer @ ledgercross
       </p>
     </div>
   );
