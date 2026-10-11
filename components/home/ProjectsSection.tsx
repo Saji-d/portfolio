@@ -20,7 +20,7 @@ export default function ProjectsSection() {
     <section
       id="projects"
       aria-label="Projects"
-      className="section-chapter relative overflow-hidden pb-10 sm:pb-12"
+      className="section-chapter relative overflow-hidden"
     >
       <div className="container-site">
         <Reveal>

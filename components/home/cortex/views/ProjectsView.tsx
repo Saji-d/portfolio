@@ -168,7 +168,7 @@ export default function ProjectsView() {
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${DOT_TONE[col.tone]}`}
                 />
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-text-muted">
+                <span className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-text-muted">
                   {col.label}
                 </span>
                 <span className="h-px flex-1 bg-line" />
@@ -195,11 +195,11 @@ export default function ProjectsView() {
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[10px] text-text-muted">
+                      <span className="font-mono text-[0.625rem] text-text-muted">
                         {colIdx + 1}.{rowIdx + 1}
                       </span>
                       <span
-                        className={`rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${TAG_STYLE[node.tag]}`}
+                        className={`rounded-full border px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-wider ${TAG_STYLE[node.tag]}`}
                       >
                         {node.tag}
                       </span>
@@ -231,7 +231,7 @@ export default function ProjectsView() {
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
-                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted">
+                <span className="font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-text-muted">
                   inspecting {selected.tag}
                 </span>
                 <h4 className="mt-0.5 font-display text-sm font-medium text-text-primary">
@@ -243,7 +243,7 @@ export default function ProjectsView() {
               </div>
               <a
                 href={selected.href}
-                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] text-accent-hover transition-opacity hover:opacity-80"
+                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[0.625rem] text-accent-hover transition-opacity hover:opacity-80"
               >
                 open node
                 <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -253,7 +253,7 @@ export default function ProjectsView() {
         )}
       </AnimatePresence>
 
-      <p className="mt-2 font-mono text-[11px] text-text-muted">
+      <p className="mt-2 font-mono text-[0.6875rem] text-text-muted">
         &gt; the graph follows a build path: production, research, vision, craft ·
         click a node
       </p>

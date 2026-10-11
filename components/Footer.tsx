@@ -261,7 +261,7 @@ export default function Footer() {
             {`© ${new Date().getFullYear()} ${SITE.name} · All rights reserved.`}
           </p>
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-text-muted">
+            <span className="inline-flex items-center gap-1.5 font-mono text-[0.6875rem] text-text-muted">
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-success/70" />
               systems nominal
             </span>

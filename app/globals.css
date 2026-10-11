@@ -31,7 +31,8 @@
   /* Bottom edge of the fixed navbar: top offset (top-3) + bar height
      (h-14 + 2px border). All in-page chapters land with their content
      starting just below this line. */
-  --nav-offset: calc(12px + 58px);
+  --section-y: clamp(2rem, 4vw, 3.5rem);
+  --nav-offset: 4.375rem;
 }
 
 @theme inline {
@@ -63,8 +64,13 @@
 }
 
 @layer base {
+  /* Fluid root scale: 16px up to a 1536px viewport (the size the site was
+     designed at), then growing in proportion so a 1920px / 100%-scaled
+     screen renders the same layout as 1536px / 125%. Capped at 24px. Every
+     rem-based size (type, spacing, container-site) scales with it. */
   html {
     scroll-behavior: smooth;
+    font-size: clamp(16px, 1.0417vw, 24px);
   }
 
   body {
@@ -117,7 +123,7 @@
 
 @media (min-width: 40rem) {
   :root {
-    --nav-offset: calc(16px + 58px); /* sm:top-4 */
+    --nav-offset: 4.625rem; /* sm:top-4 */
   }
 }
 
@@ -134,7 +140,7 @@
    the viewport edge - derived from the existing container, never by scaling
    the site. */
 @utility s-button-left {
-  left: max(1.5rem, calc((100vw - 76rem) / 2 + 1.5rem));
+  left: max(1.5rem, calc((100% - 76rem) / 2 + 1.5rem));
 }
 
 /* In-page navigation chapters (Projects, Research, Experience, Education,
@@ -145,16 +151,17 @@
    cannot peek in from below), and starts its content at a consistent gap
    below the fixed navbar via the padding-top. */
 @utility section-chapter {
-  scroll-margin-top: 0;
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding-top: calc(var(--nav-offset) + 2.5rem);
+  /* Anchors land with the section's top edge just under the fixed navbar;
+     the section's own padding then supplies the (small, fluid) gap, so no
+     nav-height of dead space is added between sections while scrolling. */
+  scroll-margin-top: var(--nav-offset);
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
 }
 
-/* Experience and Education start their content a little higher below the
-   fixed navbar than the other chapters. */
+/* Experience and Education sit a touch tighter than the other chapters. */
 .section-chapter-tight {
-  padding-top: calc(var(--nav-offset) + 1.25rem);
+  padding-top: calc(var(--section-y) * 0.6);
 }
 
 @utility eyebrow {

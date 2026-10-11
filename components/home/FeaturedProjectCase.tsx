@@ -142,7 +142,7 @@ function FeaturedImage({
             mockup a "floating above the page" depth cue without a container. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -inset-4 -z-10 rounded-[28px] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-50"
+          className="pointer-events-none absolute -inset-4 -z-10 rounded-[1.75rem] bg-[radial-gradient(closest-side,var(--accent-dim),transparent)] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-50"
         />
         <div
           aria-hidden="true"
@@ -154,7 +154,7 @@ function FeaturedImage({
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           style={{ transform: restTransform, boxShadow: `${shadowSide} 26px 50px -26px rgba(0,0,0,0.62)` }}
-          className="relative h-[190px] w-full overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform sm:h-[240px] lg:h-auto lg:aspect-[3/2]"
+          className="relative h-[11.875rem] w-full overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform sm:h-[15rem] lg:h-auto lg:aspect-[3/2]"
         >
           {opensCaseStudy ? (
             <button
@@ -183,7 +183,7 @@ function FeaturedImage({
           the image frame rather than another line inside a card - keeps
           image and metadata "compositionally connected, visually distinct"
           per the brief rather than fusing them into one bordered block. */}
-      <p className="mt-3 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-text-muted">
+      <p className="mt-3 flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-text-muted">
         <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/70" />
         {project.status.toLowerCase()} build · {project.category.toLowerCase()}
       </p>
@@ -296,7 +296,7 @@ export default function FeaturedProjectCase({
 
         <motion.p
           variants={fadeUp}
-          className="mt-3.5 max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]"
+          className="mt-3.5 max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]"
         >
           {project.tagline}
         </motion.p>
@@ -306,7 +306,7 @@ export default function FeaturedProjectCase({
             <motion.span
               key={tech}
               variants={pillFade}
-              className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2.5 py-0.5 font-mono text-[11px] text-text-secondary"
+              className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2.5 py-0.5 font-mono text-[0.6875rem] text-text-secondary"
             >
               {tech}
             </motion.span>

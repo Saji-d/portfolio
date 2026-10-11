@@ -49,7 +49,7 @@ export default function CodeBlock({ code, title, caption }: CodeBlockProps) {
           )}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-text-secondary">
+      <pre className="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-relaxed text-text-secondary">
         <code>{code}</code>
       </pre>
       {caption && (

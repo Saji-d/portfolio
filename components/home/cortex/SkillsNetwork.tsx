@@ -211,13 +211,13 @@ export default function SkillsNetwork() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="mx-auto mt-2 flex w-fit max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-md border border-line bg-surface-2/40 px-2 py-1"
           >
-            <span className="mr-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted">
+            <span className="mr-0.5 font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-text-muted">
               {selected.label}
             </span>
             {selected.techs.map((tech) => (
               <span
                 key={tech}
-                className="rounded-md border border-accent/20 bg-accent-dim/30 px-1.5 py-0.5 font-mono text-[10px] text-accent-hover"
+                className="rounded-md border border-accent/20 bg-accent-dim/30 px-1.5 py-0.5 font-mono text-[0.625rem] text-accent-hover"
               >
                 {tech}
               </span>

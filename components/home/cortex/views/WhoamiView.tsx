@@ -151,7 +151,7 @@ export default function WhoamiView() {
           <div
             role="img"
             aria-label="System status radar: a sweep scanning four active signal points"
-            className="relative h-[92px] w-[92px]"
+            className="relative h-[5.75rem] w-[5.75rem]"
           >
             <div
               aria-hidden="true"
@@ -199,7 +199,7 @@ export default function WhoamiView() {
           </div>
         </div>
 
-        <div className="mt-1 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-success">
+        <div className="mt-1 flex items-center justify-center gap-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-success">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" data-cortex-anim />
           system online
         </div>

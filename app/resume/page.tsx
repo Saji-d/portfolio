@@ -74,7 +74,7 @@ export default function ResumePage() {
                   <div key={exp.org}>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{exp.org}</h3>
-                      <span className="font-mono text-[11px] text-text-muted">{exp.period}</span>
+                      <span className="font-mono text-[0.6875rem] text-text-muted">{exp.period}</span>
                     </div>
                     <p className="font-mono text-xs text-accent">
                       {exp.role} · {exp.location}
@@ -110,7 +110,7 @@ export default function ResumePage() {
                         proj.name
                       )}
                     </h3>
-                    <p className="font-mono text-[11px] text-text-muted">{proj.stack}</p>
+                    <p className="font-mono text-[0.6875rem] text-text-muted">{proj.stack}</p>
                     <ul className="mt-1.5 space-y-1">
                       {proj.points.map((p) => (
                         <li key={p} className="flex gap-2 text-xs leading-normal text-text-secondary">
@@ -130,7 +130,7 @@ export default function ResumePage() {
                   <div key={ed.org}>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{ed.org}</h3>
-                      <span className="font-mono text-[11px] text-text-muted">{ed.period}</span>
+                      <span className="font-mono text-[0.6875rem] text-text-muted">{ed.period}</span>
                     </div>
                     <p className="text-xs text-text-secondary">
                       {ed.degree} · <span className="text-accent">{ed.detail}</span>
@@ -142,7 +142,7 @@ export default function ResumePage() {
 
             <Section index="05" title="Thesis & Research">
               <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{resume.thesis.name}</h3>
-              <p className="font-mono text-[11px] text-text-muted">{resume.thesis.stack}</p>
+              <p className="font-mono text-[0.6875rem] text-text-muted">{resume.thesis.stack}</p>
               <ul className="mt-1.5 space-y-1">
                 {resume.thesis.points.map((p) => (
                   <li key={p} className="flex gap-2 text-xs leading-normal text-text-secondary">
@@ -181,7 +181,7 @@ export default function ResumePage() {
                   <div key={h.name}>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{h.name}</h3>
-                      <span className="font-mono text-[11px] text-text-muted">{h.period}</span>
+                      <span className="font-mono text-[0.6875rem] text-text-muted">{h.period}</span>
                     </div>
                     <p className="mt-0.5 text-xs leading-normal text-text-secondary">{h.detail}</p>
                   </div>
@@ -195,7 +195,7 @@ export default function ResumePage() {
                   <div key={l.role}>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{l.role}</h3>
-                      <span className="font-mono text-[11px] text-text-muted">{l.period}</span>
+                      <span className="font-mono text-[0.6875rem] text-text-muted">{l.period}</span>
                     </div>
                     <p className="font-mono text-xs text-accent">{l.org}</p>
                     <p className="mt-0.5 text-xs leading-normal text-text-secondary">{l.detail}</p>
@@ -217,7 +217,7 @@ export default function ResumePage() {
                     ) : null}
                     <a
                       href={`mailto:${ref.email}`}
-                      className="mt-1.5 inline-block font-mono text-[11px] text-accent hover:underline"
+                      className="mt-1.5 inline-block font-mono text-[0.6875rem] text-accent hover:underline"
                     >
                       {ref.email}
                     </a>

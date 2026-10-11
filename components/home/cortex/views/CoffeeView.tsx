@@ -63,7 +63,7 @@ function CoffeeCup() {
     <div className="relative">
       <svg
         viewBox="0 0 100 108"
-        className="h-[104px] w-[96px] overflow-visible"
+        className="h-[6.5rem] w-[6rem] overflow-visible"
         role="img"
         aria-label="A glass cup of coffee filling up and steaming"
       >
@@ -321,7 +321,7 @@ function CoffeeCup() {
 
 export default function CoffeeView() {
   return (
-    <div className="flex min-h-[240px] flex-col items-center justify-center gap-4 text-center">
+    <div className="flex min-h-[15rem] flex-col items-center justify-center gap-4 text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.92, y: 6 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}

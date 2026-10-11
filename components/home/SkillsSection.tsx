@@ -30,7 +30,7 @@ export default function SkillsSection() {
     <section
       id="capabilities"
       aria-label="Skills"
-      className="section-chapter relative pb-6 sm:pb-8"
+      className="section-chapter relative"
     >
       <div className="container-site">
         <Reveal>

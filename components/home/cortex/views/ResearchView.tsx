@@ -49,7 +49,7 @@ export default function ResearchView() {
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+                <div className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
                   <span className="text-accent-hover">{FOLDER_FOR[selected.id]}</span>
                   <span className="h-2.5 w-px bg-line" />
                   <span className="truncate">{selected.file}</span>
@@ -57,13 +57,13 @@ export default function ResearchView() {
                 <h4 className="mt-1.5 truncate font-display text-sm font-medium text-text-primary">
                   {selected.title}
                 </h4>
-                <p className="mt-1 truncate font-mono text-[10px] text-text-muted">
+                <p className="mt-1 truncate font-mono text-[0.625rem] text-text-muted">
                   {study?.field ?? ""}
                 </p>
               </div>
               <a
                 href={selected.href}
-                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-accent-hover transition-opacity hover:opacity-80"
+                className="group inline-flex shrink-0 items-center gap-1 font-mono text-[0.625rem] uppercase tracking-wider text-accent-hover transition-opacity hover:opacity-80"
               >
                 open study
                 <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -84,7 +84,7 @@ export default function ResearchView() {
                     <div className="truncate font-mono text-xs font-medium text-accent-hover">
                       {m.value}
                     </div>
-                    <div className="truncate text-[9px] uppercase tracking-[0.12em] text-text-muted">
+                    <div className="truncate text-[0.5625rem] uppercase tracking-[0.12em] text-text-muted">
                       {m.label}
                     </div>
                   </div>
@@ -92,7 +92,7 @@ export default function ResearchView() {
               </div>
             )}
             {extra.length > 0 && (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 border-t border-line py-1.5 font-mono text-[10px] text-text-muted">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 border-t border-line py-1.5 font-mono text-[0.625rem] text-text-muted">
                 {extra.map((m) => (
                   <span key={m.label}>
                     <span className="text-text-secondary">{m.value}</span>
@@ -106,7 +106,7 @@ export default function ResearchView() {
       </div>
 
       <div className="mt-3">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-text-muted">
+        <div className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-text-muted">
           <span>archive</span>
           <span className="h-px flex-1 bg-line" />
           <span>{LEAVES.length} entries</span>
@@ -124,7 +124,7 @@ export default function ResearchView() {
                   }`}
                 >
                   <span
-                    className={`w-6 shrink-0 font-mono text-[10px] ${
+                    className={`w-6 shrink-0 font-mono text-[0.625rem] ${
                       on ? "text-accent-hover" : "text-text-muted/60"
                     }`}
                   >
@@ -134,18 +134,18 @@ export default function ResearchView() {
                       screens, leaving almost nothing for the title - hide it
                       below sm like the folder badge already does. */}
                   <span
-                    className={`hidden w-40 shrink-0 truncate font-mono text-[10px] sm:inline-block ${
+                    className={`hidden w-40 shrink-0 truncate font-mono text-[0.625rem] sm:inline-block ${
                       on ? "text-accent-hover/80" : "text-text-muted"
                     }`}
                   >
                     {leaf.file}
                   </span>
                   <span className="min-w-0 flex-1 truncate text-xs">{leaf.title}</span>
-                  <span className="shrink-0 font-mono text-[10px] text-text-muted">
+                  <span className="shrink-0 font-mono text-[0.625rem] text-text-muted">
                     {leaf.metrics[0]?.value ?? ""}
                   </span>
                   <span
-                    className={`hidden shrink-0 rounded-sm border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider sm:inline ${
+                    className={`hidden shrink-0 rounded-sm border px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase tracking-wider sm:inline ${
                       on
                         ? "border-accent/40 bg-accent-dim/30 text-accent-hover"
                         : "border-line bg-surface text-text-muted"
@@ -160,7 +160,7 @@ export default function ResearchView() {
         </ul>
       </div>
 
-      <p className="mt-3 font-mono text-[11px] text-text-muted">
+      <p className="mt-3 font-mono text-[0.6875rem] text-text-muted">
         &gt; select an entry to inspect it · every entry links to the full study
       </p>
     </div>

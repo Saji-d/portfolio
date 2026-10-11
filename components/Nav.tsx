@@ -223,6 +223,11 @@ export default function Nav() {
 
   const aboutActive = pathname === "/" && activeSection === ABOUT_LINK.section;
 
+  const pillSkin =
+    scrolled || open
+      ? "border-line-strong bg-bg/85 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)]"
+      : "border-line bg-bg/55 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]";
+
   return (
     <>
       <Link
@@ -238,19 +243,22 @@ export default function Nav() {
       </Link>
       <header
         ref={headerRef}
-        className="pointer-events-none fixed inset-x-0 top-3 z-40 flex justify-center px-4 sm:top-4"
+        className="pointer-events-none fixed inset-x-0 top-3 z-40 flex justify-center px-4 sm:top-4 lg:mx-auto lg:max-w-[76rem] lg:px-6"
       >
         <div
           style={{ animationDelay: "0.08s" }}
-          className={`nav-enter pointer-events-auto w-full max-w-4xl rounded-2xl border backdrop-blur-xl transition-all duration-300 ${
+          className={`nav-enter pointer-events-auto w-full max-w-4xl rounded-2xl border backdrop-blur-xl transition-all duration-300 lg:pointer-events-none lg:w-full lg:max-w-none lg:border-transparent lg:bg-transparent lg:shadow-none lg:backdrop-blur-none ${
             scrolled || open
               ? "border-line-strong bg-bg/85 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)]"
               : "border-line bg-bg/55 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]"
           }`}
         >
-        <div className="flex h-14 items-center gap-1.5 pl-4 pr-2">
+        <div className="relative flex h-14 items-center gap-1.5 pl-4 pr-2 lg:px-0">
+          <div
+            className={`contents lg:pointer-events-auto lg:absolute lg:left-1/2 lg:top-1/2 lg:flex lg:h-11 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:items-center lg:rounded-full lg:border lg:pl-3 lg:pr-1.5 lg:backdrop-blur-xl lg:transition-all lg:duration-300 ${pillSkin}`}
+          >
           <nav
-            className="relative hidden items-center gap-0.5 lg:flex"
+            className="hidden items-center gap-0.5 lg:flex"
             aria-label="Primary"
           >
             <MotionConfig reducedMotion="user">
@@ -303,8 +311,8 @@ export default function Nav() {
             </MotionConfig>
           </nav>
 
-          <div className="ml-auto flex shrink-0 items-center gap-1.5">
-            <div className="flex shrink-0 items-center overflow-hidden rounded-lg border border-line bg-surface/60">
+          <span aria-hidden="true" className="mx-2 hidden h-5 w-px shrink-0 bg-line lg:block" />
+            <div className="flex shrink-0 items-center overflow-hidden rounded-lg border border-line bg-surface/60 max-lg:ml-auto lg:border-transparent lg:bg-transparent lg:rounded-full">
               <button
                 onClick={() => setPaletteOpen(true)}
                 aria-label="Open Cortex, command console"
@@ -340,11 +348,14 @@ export default function Nav() {
                 <LinkedinIcon className="h-4 w-4" />
               </a>
             </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1.5 lg:pointer-events-auto lg:ml-auto">
             <Link
               href={RESUME_LINK.href}
               data-resume
               aria-current={pathname === "/resume" ? "page" : undefined}
-              className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent-hover md:inline-flex"
+              className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 font-mono text-xs font-medium text-text-secondary transition-colors hover:text-accent-hover md:inline-flex lg:h-9 lg:gap-1.5 lg:rounded-lg lg:border lg:border-accent/40 lg:bg-accent-dim lg:px-3.5 lg:text-accent-hover lg:backdrop-blur-xl lg:hover:border-accent lg:hover:bg-accent/25 lg:hover:text-text-primary"
             >
               <span className="relative z-10">{RESUME_LINK.label}</span>
               <ArrowUpRight className="h-3 w-3" />

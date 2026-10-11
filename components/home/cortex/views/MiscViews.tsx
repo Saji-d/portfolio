@@ -22,7 +22,7 @@ export function HelpView() {
         ))}
       </ul>
 
-      <p className="mt-3 font-mono text-[11px] text-text-muted">
+      <p className="mt-3 font-mono text-[0.6875rem] text-text-muted">
         &gt; type a command above, or click it · `clear` resets the session
       </p>
     </div>
@@ -31,7 +31,7 @@ export function HelpView() {
 
 export function ExitView({ onReconnect }: { onReconnect: () => void }) {
   return (
-    <div className="flex min-h-[260px] flex-col items-center justify-center gap-5 text-center">
+    <div className="flex min-h-[16.25rem] flex-col items-center justify-center gap-5 text-center">
       <div className="font-mono text-sm text-text-secondary">
         session ended<span className="animate-caret text-accent-hover" data-cortex-anim>_</span>
       </div>
@@ -56,7 +56,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
-      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+      <span className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
         <Power className="mr-1 inline h-3 w-3" />
         cortex v2.4.1
       </span>
@@ -66,7 +66,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
 
 export function NotFoundView({ cmd }: { cmd: string }) {
   return (
-    <div className="flex min-h-[260px] flex-col items-center justify-center gap-4 text-center">
+    <div className="flex min-h-[16.25rem] flex-col items-center justify-center gap-4 text-center">
       <div className="font-mono text-sm text-danger">
         bash: <span className="text-text-primary">{cmd}</span>: command not found
       </div>

@@ -257,7 +257,7 @@ export default function CommandPalette() {
             spellCheck={false}
             className="w-full bg-transparent py-4 font-mono text-sm text-text-primary caret-accent placeholder:text-text-muted focus:outline-none"
           />
-          <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
+          <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[0.625rem] text-text-muted">
             esc
           </span>
         </div>
@@ -306,7 +306,7 @@ export default function CommandPalette() {
                       </span>
                     )}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                  <span className="font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
                     {item.group}
                   </span>
                   {i === activeIndex && (
@@ -320,7 +320,7 @@ export default function CommandPalette() {
 
         {/* Keyboard hints only - meaningless on a touch device with no arrow/esc
             keys, and three groups plus icons don't fit a narrow phone width. */}
-        <div className="hidden shrink-0 items-center gap-4 border-t border-line px-4 py-2.5 font-mono text-[10px] text-text-muted sm:flex">
+        <div className="hidden shrink-0 items-center gap-4 border-t border-line px-4 py-2.5 font-mono text-[0.625rem] text-text-muted sm:flex">
           <span className="flex items-center gap-1.5">
             <ArrowRight className="h-3 w-3" /> navigate
           </span>

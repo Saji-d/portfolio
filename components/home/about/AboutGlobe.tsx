@@ -119,7 +119,7 @@ function buildMarkerElement(
 
   const tag = document.createElement("span");
   tag.className =
-    "whitespace-nowrap rounded-full border px-2 py-0.5 font-mono text-[9px] font-medium uppercase tracking-wider backdrop-blur-md";
+    "whitespace-nowrap rounded-full border px-2 py-0.5 font-mono text-[0.5625rem] font-medium uppercase tracking-wider backdrop-blur-md";
   tag.textContent = loc.label;
   tag.style.color = palette.label;
   tag.style.backgroundColor = palette.labelBg;

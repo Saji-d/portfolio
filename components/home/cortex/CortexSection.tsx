@@ -13,7 +13,7 @@ export default function CortexSection() {
           rhythm every other section follows. This is the one place on the
           page meant to feel like you've stepped into a different mode, not
           another card section. */}
-      <div className="relative left-1/2 flex h-[100dvh] w-screen -translate-x-1/2 flex-col pb-10 pt-[calc(var(--nav-offset)_+_2.5rem)] sm:pb-12">
+      <div className="relative left-1/2 flex h-[min(100dvh,62rem)] w-screen -translate-x-1/2 flex-col pb-10 pt-[calc(var(--nav-offset)_+_2.5rem)] sm:pb-12">
         <div className="container-site relative flex min-h-0 flex-1 flex-col">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="max-w-2xl">
@@ -27,7 +27,7 @@ export default function CortexSection() {
               </Reveal>
             </div>
             <Reveal delay={0.12}>
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-accent-hover">
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-wider text-accent-hover">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />

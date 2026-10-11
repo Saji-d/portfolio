@@ -165,7 +165,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         {project.architecture && (
           <Section eyebrow={eyebrows.Structure} title="Architecture">
             <div className="card-surface overflow-x-auto">
-              <pre className="min-w-max p-5 font-mono text-[13px] leading-relaxed text-text-secondary">
+              <pre className="min-w-max p-5 font-mono text-[0.8125rem] leading-relaxed text-text-secondary">
                 {project.architecture.join("\n")}
               </pre>
             </div>

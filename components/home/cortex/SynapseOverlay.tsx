@@ -1066,7 +1066,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
       <span className="sr-only">{SYNAPSE_NAME}</span>
       <div
         ref={textRef}
-        className="absolute left-1/2 w-[min(88vw,640px)] min-w-[220px] text-center"
+        className="absolute left-1/2 w-[min(88vw,640px)] min-w-[13.75rem] text-center"
         style={{ opacity: 0, transform: "translate(-50%, 0)" }}
       >
         <div
@@ -1082,7 +1082,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
         </p>
         <p
           data-cortex-anim
-          className="synapse-esc-in mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted/50"
+          className="synapse-esc-in mt-6 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-text-muted/50"
         >
           esc to exit
         </p>

@@ -112,7 +112,7 @@ function BaselineTable({ baselines }: { baselines: { model: string; accuracy: st
           viewport - scope the scroll to the table only so the card's
           rounded corners stay intact. */}
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[420px] text-left">
+        <table className="w-full min-w-[26.25rem] text-left">
           <thead>
             <tr className="border-b border-line font-mono text-xs uppercase tracking-wider text-text-muted">
               <th className="px-5 py-3 font-medium">Model</th>
@@ -136,7 +136,7 @@ function BaselineTable({ baselines }: { baselines: { model: string; accuracy: st
                   <td className="px-5 py-3 text-sm font-medium text-text-primary">
                     {b.model}
                     {isWinner && (
-                      <span className="ml-2 font-mono text-[10px] text-accent">winner</span>
+                      <span className="ml-2 font-mono text-[0.625rem] text-accent">winner</span>
                     )}
                   </td>
                   <td className="px-5 py-3 text-right font-mono text-sm text-text-secondary">
@@ -234,7 +234,7 @@ export default async function ResearchDetailPage({
         <Reveal>
           <div className="flex flex-wrap items-center gap-3">
             {study.featured && (
-              <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent">
+              <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[0.625rem] font-medium tracking-wider text-accent">
                 FEATURED THESIS
               </span>
             )}

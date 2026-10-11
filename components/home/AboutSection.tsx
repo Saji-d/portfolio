@@ -38,7 +38,7 @@ function LocationList({
             aria-pressed={active}
             aria-label={`${loc.label}, ${loc.sublabel}`}
             title={loc.sublabel}
-            className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-wider transition-all duration-300 ${
+            className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-wider transition-all duration-300 ${
               active
                 ? "border-accent/50 bg-accent-dim text-accent-hover"
                 : "border-line bg-surface text-text-secondary hover:border-accent/30 hover:text-text-primary"
@@ -83,7 +83,7 @@ function FloatingLocationPanel({ id }: { id: string }) {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="pointer-events-auto rounded-xl border border-line bg-surface/85 px-4 py-2.5 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.5)] backdrop-blur-md"
         >
-          <p className="font-mono text-[10px] font-medium uppercase tracking-wider text-accent-hover">
+          <p className="font-mono text-[0.625rem] font-medium uppercase tracking-wider text-accent-hover">
             {loc.label}
           </p>
           <p className="mt-0.5 text-sm text-text-secondary">{loc.sublabel}</p>
@@ -102,7 +102,7 @@ export default function AboutSection() {
     <section
       id="about"
       aria-label="About"
-      className="relative scroll-mt-0 flex min-h-screen min-h-dvh flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-6 sm:pb-8"
+      className="relative flex scroll-mt-[var(--nav-offset)] flex-col justify-center overflow-hidden py-[var(--section-y)]"
     >
       <div className="container-site">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start lg:gap-8">
@@ -121,7 +121,7 @@ export default function AboutSection() {
             >
               The world is part of the work.
             </motion.h2>
-            <ul className="mt-3.5 space-y-2 font-mono text-[12px] font-medium uppercase leading-[1.7] tracking-[0.08em] text-text-muted sm:mt-4">
+            <ul className="mt-3.5 space-y-2 font-mono text-[0.75rem] font-medium uppercase leading-[1.7] tracking-[0.08em] text-text-muted sm:mt-4">
               <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
@@ -149,12 +149,12 @@ export default function AboutSection() {
             </ul>
 
             <div className="mt-4 space-y-2.5 sm:mt-5">
-              <motion.p variants={fadeUp} className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
+              <motion.p variants={fadeUp} className="max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]">
                 I&apos;m Sajid, a software engineer in Dhaka. I work across
                 full-stack systems and AI/ML, building software that turns
                 complicated problems into something practical and reliable.
               </motion.p>
-              <motion.p variants={fadeUp} className="max-w-md text-[14px] leading-relaxed text-text-secondary sm:text-[15px]">
+              <motion.p variants={fadeUp} className="max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]">
                 The work reaches past my desk. There&apos;s a growing footprint
                 across America and Europe, and I like software that travels well
                 beyond where it was built.
@@ -166,7 +166,7 @@ export default function AboutSection() {
 
             <motion.div variants={fadeUp} className="mt-8 flex items-center gap-3 sm:mt-9">
               <span className="h-1 w-1 shrink-0 rounded-full bg-accent/70" />
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+              <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
                 {GLOBE_LOCATIONS.length} regions tracked · footprint growing
               </p>
             </motion.div>
@@ -178,7 +178,7 @@ export default function AboutSection() {
                 one scene. The globe's edges dissolve into the page via a
                 radial mask instead of a hard rounded-rectangle clip, so the
                 atmosphere glow and the starfield behind it stay continuous. */}
-            <div className="relative h-[300px] sm:h-[340px] lg:h-[380px]">
+            <div className="relative h-[18.75rem] sm:h-[21.25rem] lg:h-[23.75rem]">
               {/* Only the canvas + its glow sit inside the mask - the "drag
                   to explore" hint and the location panel are UI, not scene,
                   so they stay fully legible even where the globe itself has
@@ -190,7 +190,7 @@ export default function AboutSection() {
                 />
                 <AboutGlobe selectedId={selectedId} onSelect={setSelectedId} />
               </div>
-              <span className="pointer-events-none absolute right-4 top-4 z-10 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+              <span className="pointer-events-none absolute right-4 top-4 z-10 font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
                 drag to explore
               </span>
               <FloatingLocationPanel id={selectedId} />

@@ -725,7 +725,7 @@ export default function FooterSignature() {
         <div className="mt-4 flex flex-col items-center gap-2.5">
           <span
             aria-hidden="true"
-            className={`font-mono text-[10px] uppercase tracking-[0.15em] text-text-muted/60 transition-opacity duration-700 ${
+            className={`font-mono text-[0.625rem] uppercase tracking-[0.15em] text-text-muted/60 transition-opacity duration-700 ${
               hasInteracted ? "opacity-0" : "opacity-100"
             }`}
           >
@@ -733,7 +733,7 @@ export default function FooterSignature() {
           </span>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5">
-            <label className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] text-text-muted">
+            <label className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-text-muted">
               Radius
               <input
                 type="range"
@@ -760,7 +760,7 @@ export default function FooterSignature() {
                   type="button"
                   onClick={() => setMode(m.id)}
                   aria-pressed={mode === m.id}
-                  className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors duration-200 ${
+                  className={`rounded-full px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.1em] transition-colors duration-200 ${
                     mode === m.id
                       ? "bg-accent-dim text-accent-hover"
                       : "text-text-muted hover:text-text-secondary"
@@ -771,7 +771,7 @@ export default function FooterSignature() {
               ))}
             </div>
 
-            <label className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] text-text-muted">
+            <label className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-text-muted">
               Force
               <input
                 type="range"

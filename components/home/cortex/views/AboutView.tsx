@@ -36,14 +36,14 @@ export default function AboutView() {
         </p>
 
         <div className="mt-5 border-t border-line pt-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+          <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
             focus areas
           </p>
           <div className="mt-2.5 flex flex-wrap gap-2">
             {SKILL_NETWORK.disciplines.map((d) => (
               <span
                 key={d.id}
-                className="rounded-full border border-accent/25 bg-accent-dim/40 px-3 py-1 font-mono text-[11px] text-accent-hover"
+                className="rounded-full border border-accent/25 bg-accent-dim/40 px-3 py-1 font-mono text-[0.6875rem] text-accent-hover"
               >
                 {d.label}
               </span>
@@ -77,7 +77,7 @@ export default function AboutView() {
         </dl>
       </div>
 
-      <p className="mt-4 font-mono text-[11px] text-text-muted">
+      <p className="mt-4 font-mono text-[0.6875rem] text-text-muted">
         &gt; {SITE.availability}
       </p>
     </div>

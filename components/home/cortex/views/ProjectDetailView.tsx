@@ -9,7 +9,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
 
   if (!project) {
     return (
-      <div className="flex min-h-[260px] flex-col items-center justify-center gap-4 text-center">
+      <div className="flex min-h-[16.25rem] flex-col items-center justify-center gap-4 text-center">
         <div className="font-mono text-sm text-danger">
           project not found: <span className="text-text-primary">{slug}</span>
         </div>
@@ -31,7 +31,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
       <div className="card-surface mt-4 p-5 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-text-muted">
+            <span className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
               {project.status.toLowerCase()} · {project.category}
             </span>
             <h4 className="mt-1 font-display text-lg font-medium text-text-primary">
@@ -69,7 +69,7 @@ export default function ProjectDetailView({ slug }: { slug: string }) {
         <p className="mt-4 text-sm leading-relaxed text-text-secondary">{project.summary}</p>
       </div>
 
-      <p className="mt-4 font-mono text-[11px] text-text-muted">
+      <p className="mt-4 font-mono text-[0.6875rem] text-text-muted">
         &gt; run <span className="text-accent-hover">projects</span> to go back to the full graph
       </p>
     </div>

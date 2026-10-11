@@ -18,11 +18,11 @@ export default function FullTimeline() {
             <div className="relative pl-10">
               <span className="absolute left-0 top-1.5 h-[15px] w-[15px] rounded-full border border-accent bg-bg" />
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-line bg-surface-2 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                <span className="rounded-full border border-line bg-surface-2 px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
                   {typeLabel[entry.type]}
                 </span>
                 {entry.current && (
-                  <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
+                  <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 font-mono text-[0.625rem] font-medium tracking-wider text-accent-hover">
                     CURRENT
                   </span>
                 )}

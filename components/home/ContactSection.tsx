@@ -42,7 +42,7 @@ export default function ContactSection() {
     <section
       id="contact"
       aria-label="Contact"
-      className="relative min-h-0 scroll-mt-0 overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-4 sm:pb-6 sm:pt-[calc(var(--nav-offset)_+_2rem)]"
+      className="relative overflow-hidden scroll-mt-[var(--nav-offset)] pt-[var(--section-y)] pb-[calc(var(--section-y)*0.6)]"
     >
       <div className="container-site">
         <MotionConfig reducedMotion="user">

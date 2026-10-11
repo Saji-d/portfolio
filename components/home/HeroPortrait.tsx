@@ -30,7 +30,7 @@ export default function HeroPortrait({ src, className, style }: HeroPortraitProp
             priority
             quality={100}
             // Match the actual rendered CSS width at each breakpoint (w-28/w-32
-            // in the mobile Hero block, w-[280px] in the desktop one) - this used
+            // in the mobile Hero block, w-[17.5rem] in the desktop one) - this used
             // to claim 200/260/380px, well above what's ever painted, so the
             // browser fetched an oversized source for this priority/LCP image on
             // every viewport, worst on mobile.

@@ -22,7 +22,7 @@ export default function Hero() {
     <section
       id="home"
       aria-label="Home"
-      className="relative flex min-h-screen min-h-dvh scroll-mt-24 flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-10 sm:pb-14"
+      className="relative flex scroll-mt-24 flex-col justify-center overflow-hidden pt-[calc(var(--nav-offset)_+_1.5rem)] pb-[var(--section-y)] lg:landscape:min-h-[min(100dvh,62rem)]"
     >
       <div className="container-site relative">
         {/* Mobile / tablet: a compact, centered composition purpose-built for
@@ -48,7 +48,7 @@ export default function Hero() {
           </div>
 
           <p
-            className="hero-enter mx-auto mt-2 max-w-[34ch] text-center text-[15px] leading-relaxed text-text-secondary"
+            className="hero-enter mx-auto mt-2 max-w-[34ch] text-center text-[0.9375rem] leading-relaxed text-text-secondary"
             style={{ animationDelay: mobileDelays[2] }}
           >
             I build full-stack systems and production-ready AI/ML solutions,
@@ -57,7 +57,7 @@ export default function Hero() {
           </p>
 
           <div
-            className="hero-enter mx-auto mt-7 flex w-full max-w-[280px] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
+            className="hero-enter mx-auto mt-7 flex w-full max-w-[17.5rem] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
             style={{ animationDelay: mobileDelays[3] }}
           >
             <MagneticButton
@@ -141,7 +141,7 @@ export default function Hero() {
 
             <HeroPortrait
               src={heroPortrait}
-              className="hero-enter mt-[25px] w-[280px] justify-self-end"
+              className="hero-enter mt-[25px] w-[17.5rem] justify-self-end"
               style={{ animationDelay: delays[4] }}
             />
           </div>

@@ -111,7 +111,7 @@ function BaselineTable({
                   <td className="px-5 py-3 text-sm font-medium text-text-primary">
                     {b.model}
                     {isWinner && (
-                      <span className="ml-2 font-mono text-[10px] text-accent-hover">
+                      <span className="ml-2 font-mono text-[0.625rem] text-accent-hover">
                         winner
                       </span>
                     )}
@@ -182,7 +182,7 @@ function MetricPanel({ metrics }: { metrics: ResearchMetric[] }) {
     <div className="card-surface p-6 sm:p-8">
       <div className="flex items-center justify-between gap-3">
         <p className="eyebrow">Measured results</p>
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
           <span
             aria-hidden="true"
             className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse"
@@ -201,7 +201,7 @@ function MetricPanel({ metrics }: { metrics: ResearchMetric[] }) {
               showBar
               className="block font-display text-xl font-medium tracking-tight text-accent-hover sm:text-2xl"
             />
-            <div className="mt-1.5 font-mono text-[11px] uppercase tracking-wide text-text-muted">
+            <div className="mt-1.5 font-mono text-[0.6875rem] uppercase tracking-wide text-text-muted">
               {m.label}
             </div>
           </div>
@@ -407,7 +407,7 @@ export default function ResearchOverlay({
         <header>
           <div className="flex flex-wrap items-center gap-3 pr-12">
             {study.featured && (
-              <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
+              <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[0.625rem] font-medium tracking-wider text-accent-hover">
                 FEATURED THESIS
               </span>
             )}

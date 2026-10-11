@@ -15,7 +15,7 @@ export default function SkillsView() {
         <SkillsNetwork />
       </div>
 
-      <p className="mt-2 font-mono text-[11px] text-text-muted">
+      <p className="mt-2 font-mono text-[0.6875rem] text-text-muted">
         &gt; hover a discipline to trace its connection · click to see its stack
       </p>
     </div>

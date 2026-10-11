@@ -69,7 +69,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
             style={{ objectPosition: entry.imagePosition ?? "center center" }}
           />
 
-          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-bg/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider text-accent-hover backdrop-blur-md">
+          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-bg/70 px-2.5 py-1 font-mono text-[0.625rem] font-medium tracking-wider text-accent-hover backdrop-blur-md">
             <Star className="h-3 w-3 fill-current" />
             Highest qualification
           </span>
@@ -109,7 +109,7 @@ function FeaturedCard({ entry }: { entry: EducationEntry }) {
           <div className="mt-auto flex flex-wrap gap-1.5 border-t border-line pt-2">
             {(entry.badges ?? []).map((badge, i) => (
               <Reveal key={badge} delay={i * 0.07} y={6}>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-accent-hover">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-mono text-[0.625rem] font-medium tracking-wider text-accent-hover">
                   <Award className="h-3 w-3" />
                   {badge}
                 </span>
@@ -176,7 +176,7 @@ export default function EducationSection() {
     <section
       id="education"
       aria-label="Education"
-      className="section-chapter section-chapter-tight relative pb-6 sm:pb-8"
+      className="section-chapter section-chapter-tight relative"
     >
       <div className="container-site">
         <Reveal>

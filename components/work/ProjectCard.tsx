@@ -58,7 +58,7 @@ export function GlassChip({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium tracking-wider backdrop-blur-md ${
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-mono text-[0.625rem] font-medium tracking-wider backdrop-blur-md ${
         accent
           ? "border-accent/50 bg-accent text-accent-ink"
           : "border-white/10 bg-bg/60 text-text-secondary"
@@ -116,7 +116,7 @@ function CoverImage({
       </div>
 
       {showFeatured && (
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-accent-ink shadow-[0_4px_20px_rgba(99,102,241,0.35)]">
+        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-mono text-[0.625rem] font-bold uppercase tracking-wider text-accent-ink shadow-[0_4px_20px_rgba(99,102,241,0.35)]">
           <Star className="h-3 w-3 fill-current" />
           Featured
         </span>

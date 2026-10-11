@@ -259,12 +259,12 @@ export default function CortexConsole() {
         ))}
 
         <div className="relative flex items-center justify-between gap-3 border-b border-line px-4 py-2 sm:px-5">
-          <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-text-muted">
+          <div className="flex items-center gap-2.5 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-text-muted">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" data-cortex-anim />
             {CONSOLE_LABEL}
             <span className="hidden text-text-muted/60 sm:inline">{CONSOLE_VERSION}</span>
           </div>
-          <div className="flex items-center gap-3 font-mono text-[11px] text-text-muted">
+          <div className="flex items-center gap-3 font-mono text-[0.6875rem] text-text-muted">
             <span className="flex items-center gap-1.5 text-success">
               <span className="h-1.5 w-1.5 rounded-full bg-success" />
               online
@@ -296,7 +296,7 @@ export default function CortexConsole() {
             placeholder="type a command…"
             className="min-w-0 flex-1 bg-transparent font-mono text-sm text-text-primary placeholder:text-text-muted/50 focus:outline-none"
           />
-          <kbd className="hidden shrink-0 items-center gap-1 rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[10px] text-text-muted md:inline-flex">
+          <kbd className="hidden shrink-0 items-center gap-1 rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[0.625rem] text-text-muted md:inline-flex">
             <CornerDownLeft className="h-3 w-3" />
           </kbd>
         </form>
@@ -317,7 +317,7 @@ export default function CortexConsole() {
               {cmd.id}
             </button>
           ))}
-          <span className="ml-auto hidden font-mono text-[11px] text-text-muted lg:inline">
+          <span className="ml-auto hidden font-mono text-[0.6875rem] text-text-muted lg:inline">
             type a command · ↑ history
           </span>
         </div>
@@ -347,7 +347,7 @@ export default function CortexConsole() {
               {view === "exit" && <ExitView onReconnect={() => run("clear")} />}
               {view === "not-found" && <NotFoundView cmd={lastCmd ?? ""} />}
               {view === null && (
-                <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 text-center">
+                <div className="flex min-h-[13.75rem] flex-col items-center justify-center gap-3 text-center">
                   <div className="font-mono text-sm text-text-muted">
                     awaiting input<span className="animate-caret text-accent-hover" data-cortex-anim>_</span>
                   </div>
@@ -362,7 +362,7 @@ export default function CortexConsole() {
         </div>
 
         <div className="relative flex flex-wrap items-center gap-2 border-t border-line px-4 py-2 sm:px-5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-text-muted">
+          <span className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-text-muted">
             history
           </span>
           {log.length === 0 && (

@@ -50,7 +50,7 @@ export default function ExperienceTimeline() {
     <section
       id="experience"
       aria-label="Experience"
-      className="section-chapter relative overflow-hidden pt-[calc(var(--nav-offset)_+_1.75rem)] pb-10 sm:pb-14"
+      className="section-chapter relative overflow-hidden"
     >
       <div className="container-site">
         <Reveal>
@@ -123,7 +123,7 @@ export default function ExperienceTimeline() {
                           {experience.period}
                         </span>
                         <span
-                          className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider transition-colors duration-500 ${
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[0.625rem] font-medium uppercase tracking-wider transition-colors duration-500 ${
                             isCurrent
                               ? "border-accent/30 bg-accent-dim text-accent-hover"
                               : "border-line bg-surface text-text-muted"

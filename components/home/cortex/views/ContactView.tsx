@@ -28,7 +28,7 @@ export default function ContactView() {
               <>
                 <Icon className="h-3.5 w-3.5 shrink-0 text-text-muted transition-colors group-hover:text-accent-hover" />
                 <span className="min-w-0">
-                  <span className="block font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                  <span className="block font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
                     {row.label}
                   </span>
                   <span className="block truncate font-mono text-xs text-text-secondary transition-colors group-hover:text-accent-hover">
@@ -59,7 +59,7 @@ export default function ContactView() {
         </ul>
       </div>
 
-      <p className="mt-4 font-mono text-[11px] text-text-muted">
+      <p className="mt-4 font-mono text-[0.6875rem] text-text-muted">
         &gt; usually fastest on email · dhaka, bangladesh (utc+6)
       </p>
     </div>
