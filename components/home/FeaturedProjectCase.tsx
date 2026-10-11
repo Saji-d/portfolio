@@ -68,7 +68,7 @@ function FeaturedImage({
     target: scrollTargetRef,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [-16, 16]);
+  const y = useTransform(scrollYProgress, [0, 1], [-6, 6]);
 
   // A hairline resting tilt (alternating left/right per chapter) is what
   // turns this from "screenshot pasted flat" into "print propped against
@@ -109,11 +109,11 @@ function FeaturedImage({
     <>
       <motion.div
         style={{ y }}
-        initial={{ opacity: 0, scale: 1.1 }}
-        whileInView={{ opacity: 1, scale: 1.03 }}
+        initial={{ opacity: 0, scale: 1.05 }}
+        whileInView={{ opacity: 1, scale: 1.01 }}
         viewport={{ once: true, margin: "-10% 0px" }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-[-10%]"
+        className="absolute inset-[-2%]"
       >
         <Image
           src={project.cover}
@@ -154,7 +154,7 @@ function FeaturedImage({
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           style={{ transform: restTransform, boxShadow: `${shadowSide} 26px 50px -26px rgba(0,0,0,0.62)` }}
-          className="relative h-[11.875rem] w-full overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform sm:h-[15rem] lg:h-auto lg:aspect-[3/2]"
+          className="relative aspect-[2/1] w-full overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform sm:aspect-[2/1] lg:aspect-[2/1]"
         >
           {opensCaseStudy ? (
             <button
@@ -193,13 +193,9 @@ function FeaturedImage({
 
 export default function FeaturedProjectCase({
   project,
-  index,
-  total,
   imageFirst,
   onOpenCaseStudy,
 }: FeaturedProjectCaseProps) {
-  const number = String(index + 1).padStart(2, "0");
-  const totalLabel = String(total).padStart(2, "0");
   const opensCaseStudy = Boolean(project.caseStudy);
   const href = primaryHref(project);
 
@@ -255,20 +251,11 @@ export default function FeaturedProjectCase({
         whileInView="show"
         viewport={{ once: true, margin: "-10% 0px" }}
         variants={stagger}
-        className={`order-2 lg:order-none lg:col-span-5 lg:row-start-1 lg:pt-1 ${infoColStart}`}
+        className={`order-2 lg:order-none lg:col-span-5 lg:row-start-1 lg:self-start ${infoColStart}`}
       >
-        <motion.div variants={fadeUp}>
-          <span
-            className="font-mono text-sm font-medium tracking-wide text-text-muted"
-            aria-label={`Featured project ${number} of ${totalLabel}`}
-          >
-            {number}
-          </span>
-        </motion.div>
-
         <motion.h3
           variants={fadeUp}
-          className="mt-2 font-display text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl lg:text-[2rem] lg:leading-[1.15]"
+          className="font-display text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl lg:text-[2rem] lg:leading-[1.15]"
         >
           {opensCaseStudy ? (
             <button
@@ -296,24 +283,24 @@ export default function FeaturedProjectCase({
 
         <motion.p
           variants={fadeUp}
-          className="mt-3.5 max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]"
+          className="mt-3 max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem] lg:line-clamp-3"
         >
           {project.tagline}
         </motion.p>
 
-        <motion.div variants={pillsContainer} className="mt-5 flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
+        <motion.div variants={pillsContainer} className="mt-4 flex flex-wrap gap-2">
+          {project.stack.map((tech, ti) => (
             <motion.span
               key={tech}
               variants={pillFade}
-              className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2.5 py-0.5 font-mono text-[0.6875rem] text-text-secondary"
+              className={`items-center rounded-full border border-line bg-surface-2 px-2.5 py-0.5 font-mono text-[0.6875rem] text-text-secondary ${ti >= 6 ? "inline-flex lg:hidden" : "inline-flex"}`}
             >
               {tech}
             </motion.span>
           ))}
         </motion.div>
 
-        <motion.div variants={fadeUp} className="mt-5 flex flex-wrap items-center gap-3">
+        <motion.div variants={fadeUp} className="mt-4 flex flex-wrap items-center gap-3">
           {opensCaseStudy ? (
             <MagneticButton
               onClick={() => onOpenCaseStudy(project.slug)}

@@ -31,13 +31,6 @@ export default function ProjectsSection() {
                 Built things. Broke things. Shipped things.
               </h2>
             </div>
-            <Link
-              href="/projects"
-              className="group flex items-center gap-2 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80"
-            >
-              View all projects
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
           </div>
         </Reveal>
 
@@ -65,11 +58,20 @@ export default function ProjectsSection() {
         {archive.length > 0 && (
           <div className="mt-16 sm:mt-20 lg:mt-24">
             <Reveal>
-              <div className="border-t border-line pt-10">
-                <Eyebrow>Archive</Eyebrow>
-                <h3 className="section-title mt-2">
-                  More from the build log.
-                </h3>
+              <div className="flex flex-wrap items-end justify-between gap-4 border-t border-line pt-10">
+                <div>
+                  <Eyebrow>Archive</Eyebrow>
+                  <h3 className="section-title mt-2">
+                    More from the build log.
+                  </h3>
+                </div>
+                <Link
+                  href="/projects"
+                  className="group flex items-center gap-2 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80"
+                >
+                  View all projects
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </div>
             </Reveal>
 

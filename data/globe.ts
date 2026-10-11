@@ -7,14 +7,14 @@ export interface GlobeLocation {
   home?: boolean;
 }
 
-// Regional footprint only, no fabricated cities, offices, or employers.
+// Regional footprint, labelled with the company worked with in each region.
 // Coordinates are geographic-centroid approximations for each region, not
 // literal addresses.
 export const GLOBE_LOCATIONS: GlobeLocation[] = [
-  { id: "bangladesh", label: "Bangladesh", sublabel: "Home / base", lat: 23.685, lng: 90.3563, home: true },
-  { id: "america", label: "America", sublabel: "Professional footprint", lat: 39.8283, lng: -98.5795 },
+  { id: "bangladesh", label: "Bangladesh", sublabel: "Ledgercross · Home base", lat: 23.685, lng: 90.3563, home: true },
+  { id: "america", label: "America", sublabel: "Working with RemoteIntegrity", lat: 39.8283, lng: -98.5795 },
   { id: "dubai", label: "Dubai", sublabel: "Working with 2BitSoft", lat: 25.0957, lng: 55.161 },
-  { id: "europe", label: "Europe", sublabel: "Professional footprint", lat: 50.8, lng: 10.3 },
+  { id: "europe", label: "Europe", sublabel: "Working with RemoteIntegrity", lat: 50.8, lng: 10.3 },
 ];
 
 export const GLOBE_ARCS: { from: string; to: string }[] = [
