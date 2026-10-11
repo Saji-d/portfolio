@@ -86,7 +86,7 @@ export const FLOW_COLUMNS: FlowColumn[] = [
       {
         id: "casevault",
         title: "CaseVault",
-        tag: "production",
+        tag: "project",
         card: "Privacy-first legal research with GraphRAG retrieval and cited AI summaries.",
         tagline: pj("casevault").summary,
         href: "/projects/casevault",
