@@ -10,12 +10,34 @@ export interface TimelineEntry {
 
 export const timeline: TimelineEntry[] = [
   {
-    period: "May 2026 - Present",
-    title: "Software Developer",
-    org: "Ledgercross",
-    location: "Dhaka, Bangladesh",
+    period: "Oct 2026 - Present",
+    title: "Full-Stack Developer",
+    org: "RemoteIntegrity LLC",
+    location: "Clearwater, Florida, USA · Contract · Flexible hours",
     type: "career",
     current: true,
+    points: [
+      "Building front-end and back-end components of web applications, including server-side logic, APIs, and database integrations.",
+      "Working through testing, code review, version control, and deployment to keep applications performant, secure, and reliable.",
+    ],
+  },
+  {
+    period: "Oct 2026 - Present",
+    title: "Full-Stack Developer",
+    org: "2BitSoft",
+    location: "Dubai, UAE · Remote",
+    type: "career",
+    current: true,
+    points: [
+      "Developing full-stack web applications for software, automation, and digital transformation projects.",
+    ],
+  },
+  {
+    period: "May 2026 - Sep 2026",
+    title: "Software Developer",
+    org: "Ledgercross",
+    location: "Dhaka, Bangladesh · On-site",
+    type: "career",
     points: [
       "Engineering production software across the stack for enterprise finance using Python, FastAPI, PostgreSQL, Redis, and cloud infrastructure.",
       "Designing and implementing REST APIs, asynchronous and distributed processing, and automated testing suites.",
@@ -26,6 +48,7 @@ export const timeline: TimelineEntry[] = [
     period: "Feb 2026 - Apr 2026",
     title: "Software Engineer Intern",
     org: "Bangladesh Software Solution (BSS)",
+    location: "Dhaka, Bangladesh · Hybrid",
     type: "career",
     points: [
       "Developed responsive frontend interfaces utilizing HTML5, CSS3, and modern JavaScript (ES6+).",

@@ -141,7 +141,7 @@ export default function AboutSection() {
               <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-wrap items-baseline gap-x-1.5">
-                  <span>BASED IN DHAKA, BANGLADESH</span>
+                  <span>DHAKA, BANGLADESH · WORKING WITH DUBAI, UAE</span>
                   <span className="text-accent-hover">·</span>
                   <span className="text-text-secondary">{SITE.timezone}</span>
                 </span>
@@ -155,8 +155,8 @@ export default function AboutSection() {
                 complicated problems into something practical and reliable.
               </motion.p>
               <motion.p variants={fadeUp} className="max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]">
-                The work reaches past my desk. There&apos;s a growing footprint
-                across America and Europe, and I like software that travels well
+                The work reaches past my desk. I work with teams in Dubai
+                and the US, there&apos;s a growing footprint across Europe, and I like software that travels well
                 beyond where it was built.
               </motion.p>
             </div>

@@ -3,10 +3,29 @@ export const resume = {
     "Software Engineer and AI Developer engineering the bridge between high-throughput backend systems and intelligent machine learning models. Adept at turning complex architectural problems into elegant, production-ready code.",
   experience: [
     {
+      org: "RemoteIntegrity LLC",
+      location: "Clearwater, Florida, USA · Contract · Flexible hours",
+      role: "Full-Stack Developer",
+      period: "Oct 2026 - Present",
+      points: [
+        "Building front-end and back-end components of web applications, including server-side logic, APIs, and database integrations.",
+        "Working through testing, code review, version control, and deployment to keep applications performant, secure, and reliable.",
+      ],
+    },
+    {
+      org: "2BitSoft",
+      location: "Dubai, UAE · Remote",
+      role: "Full-Stack Developer",
+      period: "Oct 2026 - Present",
+      points: [
+        "Developing full-stack web applications for software, automation, and digital transformation projects.",
+      ],
+    },
+    {
       org: "Ledgercross",
-      location: "Dhaka, Bangladesh",
+      location: "Dhaka, Bangladesh · On-site",
       role: "Software Developer",
-      period: "May 2026 - Present",
+      period: "May 2026 - Sep 2026",
       points: [
         "Built MERN-based business systems and authored 246 automated pytest cases for backend workflows.",
         "Engineered AI invoice processing pipelines using Python, FastAPI, Mindee OCR, PostgreSQL, and Redis Streams.",
@@ -15,7 +34,7 @@ export const resume = {
     },
     {
       org: "Bangladesh Software Solution (BSS)",
-      location: "Dhaka, Bangladesh",
+      location: "Dhaka, Bangladesh · Hybrid",
       role: "Software Engineer Intern",
       period: "Feb 2026 - Apr 2026",
       points: [

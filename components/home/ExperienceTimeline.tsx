@@ -7,20 +7,44 @@ import TimelineProgress from "@/components/ui/TimelineProgress";
 
 const experiences = [
   {
-    period: "May 2026 - Present",
+    period: "Oct 2026 - Present",
+    company: "RemoteIntegrity LLC",
+    position: "Full-Stack Developer",
+    location: "Clearwater, Florida, USA · Contract · Flexible hours",
+    detail:
+      "Building and maintaining front-end and back-end components of web applications, designing server-side logic, APIs, and database integrations, and shipping through code review, testing, and deployment.",
+    tag: "Contract",
+    current: true,
+  },
+  {
+    period: "Oct 2026 - Present",
+    company: "2BitSoft",
+    position: "Full-Stack Developer",
+    location: "Dubai, UAE · Remote",
+    detail:
+      "Developing full-stack web applications for software, automation, and digital transformation projects, from responsive interfaces to the services and data layers behind them.",
+    tag: "Present",
+    current: true,
+  },
+  {
+    period: "May 2026 - Sep 2026",
     company: "Ledgercross",
     position: "Software Developer",
+    location: "Dhaka, Bangladesh · On-site",
     detail:
-      "Engineering production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure, and system reliability.",
-    tag: "Present",
+      "Engineered production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure, and system reliability.",
+    tag: "Complete",
+    current: false,
   },
   {
     period: "Feb 2026 - Apr 2026",
     company: "Bangladesh Software Solution",
     position: "Software Engineer Intern",
+    location: "Dhaka, Bangladesh · Hybrid",
     detail:
       "Developed responsive frontend interfaces with HTML5, CSS3, and modern JavaScript (ES6+), integrated them with backend RESTful APIs with robust error handling, and worked in agile, Git-based workflows.",
     tag: "Complete",
+    current: false,
   },
 ];
 
@@ -86,7 +110,8 @@ export default function ExperienceTimeline() {
 
           <div className="space-y-4 lg:space-y-6">
             {experiences.map((experience, i) => {
-              const isCurrent = i === 0;
+              const isCurrent = experience.current;
+              const isLeft = i % 2 === 0;
               const active = isCurrent || activeIndex === i;
               return (
                 <Reveal key={experience.company} delay={i * 0.08} y={16}>
@@ -113,9 +138,12 @@ export default function ExperienceTimeline() {
 
                     <article
                       className={`card-surface ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-0.5 ${
-                        isCurrent
-                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99,102,241,0.4)] lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
-                          : "hover:border-accent/40 lg:ml-[calc(50%_+_2rem)] lg:mr-0"
+                        (isCurrent
+                          ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99,102,241,0.4)] "
+                          : "hover:border-accent/40 ") +
+                        (isLeft
+                          ? "lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
+                          : "lg:ml-[calc(50%_+_2rem)] lg:mr-0")
                       }`}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface-2/60 px-4 py-2.5">
@@ -142,6 +170,9 @@ export default function ExperienceTimeline() {
                         <h3 className="card-title-xl">{experience.company}</h3>
                         <p className="mt-0.5 font-mono text-sm font-medium text-accent-hover">
                           {experience.position}
+                        </p>
+                        <p className="mt-0.5 font-mono text-xs text-text-muted">
+                          {experience.location}
                         </p>
                         <p className="mt-2 body-copy text-text-secondary line-clamp-3">
                           {experience.detail}

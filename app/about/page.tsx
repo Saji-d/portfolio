@@ -7,7 +7,7 @@ import { Award, Sparkles, Scale, Wrench } from "lucide-react";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Software Engineer in Dhaka building full-stack systems and production ML: 5× Dean's Award, thesis on hybrid ML ensembles, now at Ledgercross.",
+    "Software Engineer in Dhaka building full-stack systems and production ML: 5× Dean's Award, thesis on hybrid ML ensembles, now a Full-Stack Developer at RemoteIntegrity and 2BitSoft.",
   alternates: { canonical: "/about" },
 };
 
@@ -48,7 +48,7 @@ export default function AboutPage() {
           <div className="max-w-3xl space-y-5 text-lg leading-relaxed text-text-secondary">
             <p>
               I&apos;m Sajidur Rahman Sajid, a Full-Stack Software Engineer and
-              AI/ML developer in Dhaka. At Ledgercross I work on production
+              AI/ML developer in Dhaka, working with teams in Dubai and the US. At RemoteIntegrity and 2BitSoft I work as a Full-Stack Developer, and at Ledgercross I worked on production
               software across the stack: REST APIs, asynchronous processing, multi-tenant
               data layers, testing, and cloud infrastructure. Before that I interned as a
               Software Engineer at BSS, where I developed responsive web applications and
