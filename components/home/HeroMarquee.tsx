@@ -26,6 +26,22 @@ const ICON_NAMES = [
   "Git",
   "Linux",
   "Vercel",
+  "Java",
+  "C++",
+  "C#",
+  ".NET",
+  "HTML5",
+  "CSS3",
+  "Vite",
+  "Redux",
+  "Framer Motion",
+  "MySQL",
+  "SQLite",
+  "Supabase",
+  "CatBoost",
+  "Jupyter",
+  "GitHub",
+  "pytest",
 ];
 
 function byNames(names: string[]): TechLogo[] {

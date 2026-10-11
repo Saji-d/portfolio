@@ -6,7 +6,7 @@ import { resume } from "@/data/resume";
 import { SKILL_NETWORK } from "@/data/skills";
 import { timeline } from "@/data/timeline";
 
-const current = timeline.find((t) => t.type === "career" && t.current);
+const currentRoles = timeline.filter((t) => t.type === "career" && t.current);
 
 export default function AboutView() {
   return (
@@ -52,15 +52,16 @@ export default function AboutView() {
         </div>
 
         <dl className="mt-5 space-y-2.5 border-t border-line pt-4 font-mono text-xs">
-          {current && (
-            <div className="flex items-start gap-2 text-text-secondary">
+          {currentRoles.map((role) => (
+            <div key={role.org} className="flex items-start gap-2 text-text-secondary">
               <Briefcase className="mt-0.5 h-3.5 w-3.5 shrink-0 text-text-muted" />
               <span>
-                {current.title} · {current.org} ·{" "}
-                <span className="text-text-muted">{current.period}</span>
+                {role.title} · {role.org} ·{" "}
+                <span className="text-text-muted">{role.location}</span> ·{" "}
+                <span className="text-text-muted">{role.period}</span>
               </span>
             </div>
-          )}
+          ))}
           <div className="flex items-start gap-2 text-text-secondary">
             <GraduationCap className="mt-0.5 h-3.5 w-3.5 shrink-0 text-text-muted" />
             <span>

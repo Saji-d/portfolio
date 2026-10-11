@@ -67,7 +67,7 @@ export default function Hero() {
               View projects <ArrowRight className="h-4 w-4" />
             </MagneticButton>
             <MagneticButton
-              href="/Sajidur_Rahman_Sajid.pdf"
+              href="/Sajidur_Rahman_Sajid_Resume.pdf"
               external
               className="w-full justify-center border border-line bg-surface px-6 py-3.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 sm:w-auto"
             >
@@ -123,7 +123,7 @@ export default function Hero() {
                   View projects <ArrowRight className="h-4 w-4" />
                 </MagneticButton>
                 <MagneticButton
-                  href="/Sajidur_Rahman_Sajid.pdf"
+                  href="/Sajidur_Rahman_Sajid_Resume.pdf"
                   external
                   className="border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
                 >

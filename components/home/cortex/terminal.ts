@@ -12,7 +12,7 @@ const skillTotal = skillGroups.reduce((n, g) => n + g.skills.length, 0);
 
 const whoamiLine = "sajid · full-stack & AI";
 const skillsLine = `${skillGroups.length} groups · ${skillTotal} tools`;
-const projectsLine = `${projects.length} shipped · ${projects.filter((p) => p.featured).length} featured`;
+const projectsLine = `${projects.length} projects · ${projects.filter((p) => p.featured && p.category === "Professional").length} featured`;
 const timelineLine = `${career.length} stops · ${firstYear} → ${lastYear}`;
 const researchLine = "neuronscreen · 95.2% acc";
 const helpLine = `${TERMINAL_COMMANDS.length} commands`;

@@ -78,15 +78,9 @@ export default function ExperienceTimeline() {
     >
       <div className="container-site">
         <Reveal>
-          {/* No max-w-2xl here on purpose - at 71 characters this is by far
-              the longest section title on the page, so it gets the full
-              content width and the smallest size in the section-title
-              range to still land on one line at desktop widths. */}
-          <div>
+          <div className="max-w-2xl">
             <Eyebrow index="02">Experience</Eyebrow>
-            <h2 className="section-title lg:text-[1.5rem]">
-              Engineering scalable applications and enterprise production software.
-            </h2>
+            <h2 className="section-title">Shipping software across time zones.</h2>
           </div>
         </Reveal>
 

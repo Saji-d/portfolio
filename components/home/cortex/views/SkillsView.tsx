@@ -1,6 +1,7 @@
 "use client";
 
 import SkillsNetwork from "../SkillsNetwork";
+import { SKILL_NETWORK } from "@/data/skills";
 
 export default function SkillsView() {
   return (
@@ -8,7 +9,7 @@ export default function SkillsView() {
       <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
         <span className="text-accent-hover">$ skills</span>
         <span className="h-px flex-1 bg-line" />
-        <span>{"// the engineer · 7 disciplines"}</span>
+        <span>{`// the engineer · ${SKILL_NETWORK.disciplines.length} disciplines`}</span>
       </div>
 
       <div className="mt-2">

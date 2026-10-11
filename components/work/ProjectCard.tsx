@@ -9,9 +9,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Project } from "@/data/projects";
-import { Pill, StatusBadge } from "@/components/ui/Badge";
+import { StatusBadge } from "@/components/ui/Badge";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import TiltCard from "@/components/ui/TiltCard";
+import StackPills from "@/components/work/StackPills";
 
 export function primaryHref(project: Project): string | undefined {
   if (project.caseStudy) return `/projects/${project.slug}`;
@@ -307,21 +308,18 @@ export function ProjectCard({
             <StatusBadge status={project.status} />
           </div>
           <p
-            className={`flex-1 body-copy text-text-muted ${
+            className={`flex-1 line-clamp-3 body-copy text-text-muted ${
               compact ? "mt-1" : "mt-1.5"
             }`}
           >
             {project.tagline}
           </p>
-          <div
-            className={`flex flex-wrap gap-1.5 ${
-              compact ? "mt-3" : "mt-4"
-            }`}
-          >
-            {project.stack.map((tech) => (
-              <Pill key={tech}>{tech}</Pill>
-            ))}
-          </div>
+          <StackPills
+            key={project.slug}
+            tags={project.stack}
+            maxRows={compact ? 1 : 2}
+            className={compact ? "mt-3" : "mt-4"}
+          />
           <ProjectActions
             project={project}
             compact={compact}

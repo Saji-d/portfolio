@@ -16,6 +16,10 @@ const ROW_1_NAMES = [
   "Tailwind CSS",
   "HTML5",
   "CSS3",
+  "Vite",
+  "Redux",
+  "Framer Motion",
+  "Jupyter",
 ];
 
 const ROW_2_NAMES = [
@@ -34,6 +38,16 @@ const ROW_2_NAMES = [
   "Vercel",
   "Cloudflare",
   "Solidity",
+  "MySQL",
+  "SQLite",
+  "Microsoft SQL Server",
+  "Supabase",
+  "SQLAlchemy",
+  "CatBoost",
+  "Pandas",
+  "NumPy",
+  "GitHub",
+  "pytest",
 ];
 
 function byNames(names: string[]): TechLogo[] {

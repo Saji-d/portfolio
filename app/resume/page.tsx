@@ -48,8 +48,8 @@ export default function ResumePage() {
           <Reveal>
             <div className="flex flex-wrap items-center gap-2.5">
               <a
-                href="/Sajidur_Rahman_Sajid.pdf"
-                download="Sajidur_Rahman_Sajid.pdf"
+                href="/Sajidur_Rahman_Sajid_Resume.pdf"
+                download="Sajidur_Rahman_Sajid_Resume.pdf"
                 className="inline-flex items-center gap-1.5 rounded-md bg-accent px-4 py-2 font-mono text-xs font-medium text-accent-ink transition-colors hover:bg-accent/90"
               >
                 <Download className="h-3.5 w-3.5" /> Download PDF

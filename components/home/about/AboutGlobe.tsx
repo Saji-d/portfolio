@@ -93,7 +93,7 @@ function buildMarkerElement(
   wrap.style.pointerEvents = "auto";
   wrap.style.setProperty("--marker-glow", dotColor);
   wrap.setAttribute("role", "button");
-  wrap.setAttribute("aria-label", `${loc.label}, ${loc.sublabel}`);
+  wrap.setAttribute("aria-label", `${loc.label}, ${loc.initialSublabel ?? loc.sublabel}`);
   wrap.setAttribute("tabindex", "0");
 
   const dotWrap = document.createElement("span");

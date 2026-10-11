@@ -34,6 +34,7 @@ const caveat = Caveat({
   subsets: ["latin"],
   weight: "700",
   display: "swap",
+  preload: false,
 });
 
 const ephesis = Ephesis({

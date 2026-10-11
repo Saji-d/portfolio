@@ -36,8 +36,8 @@ function LocationList({
             type="button"
             onClick={() => onSelect(loc.id)}
             aria-pressed={active}
-            aria-label={`${loc.label}, ${loc.sublabel}`}
-            title={loc.sublabel}
+            aria-label={`${loc.label}, ${loc.initialSublabel ?? loc.sublabel}`}
+            title={loc.initialSublabel ?? loc.sublabel}
             className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-wider transition-all duration-300 ${
               active
                 ? "border-accent/50 bg-accent-dim text-accent-hover"
@@ -69,9 +69,10 @@ const stagger: Variants = {
   show: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
 };
 
-function FloatingLocationPanel({ id }: { id: string }) {
+function FloatingLocationPanel({ id, interacted }: { id: string; interacted: boolean }) {
   const loc = GLOBE_LOCATIONS.find((l) => l.id === id);
   if (!loc) return null;
+  const sublabel = !interacted && loc.initialSublabel ? loc.initialSublabel : loc.sublabel;
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-4 sm:justify-start sm:p-5">
       <AnimatePresence mode="wait">
@@ -86,7 +87,7 @@ function FloatingLocationPanel({ id }: { id: string }) {
           <p className="font-mono text-[0.625rem] font-medium uppercase tracking-wider text-accent-hover">
             {loc.label}
           </p>
-          <p className="mt-0.5 text-sm text-text-secondary">{loc.sublabel}</p>
+          <p className="mt-0.5 text-sm text-text-secondary">{sublabel}</p>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -97,6 +98,11 @@ export default function AboutSection() {
   const [selectedId, setSelectedId] = useState<string>(
     GLOBE_LOCATIONS.find((l) => l.home)?.id ?? GLOBE_LOCATIONS[0].id
   );
+  const [interacted, setInteracted] = useState(false);
+  const selectLocation = (id: string) => {
+    setInteracted(true);
+    setSelectedId(id);
+  };
 
   return (
     <section
@@ -117,7 +123,7 @@ export default function AboutSection() {
             </motion.div>
             <motion.h2
               variants={fadeUp}
-              className="section-title text-gradient mt-2 sm:mt-2.5 sm:text-[1.4rem] lg:text-[1.5rem]"
+              className="section-title text-gradient mt-2 sm:mt-2.5 sm:text-[1.4rem] lg:w-max lg:whitespace-nowrap lg:text-[1.5rem]"
             >
               The world is part of the work.
             </motion.h2>
@@ -140,9 +146,8 @@ export default function AboutSection() {
               </motion.li>
               <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span className="flex flex-wrap items-baseline gap-x-1.5">
-                  <span>DHAKA, BANGLADESH · WORKING WITH DUBAI, UAE</span>
-                  <span className="text-accent-hover">·</span>
+                <span className="flex flex-col">
+                  <span>DHAKA, BANGLADESH · REMOTE TO DUBAI + USA</span>
                   <span className="text-text-secondary">{SITE.timezone}</span>
                 </span>
               </motion.li>
@@ -155,13 +160,13 @@ export default function AboutSection() {
                 complicated problems into something practical and reliable.
               </motion.p>
               <motion.p variants={fadeUp} className="max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]">
-                The work reaches past my desk. I work with teams in Dubai
-                and the US, there&apos;s a growing footprint across Europe, and I like software that travels well
+                The work reaches past my desk. Remote teams across time zones, a
+                growing footprint across Europe, and a taste for software that travels well
                 beyond where it was built.
               </motion.p>
             </div>
             <motion.div variants={fadeUp} className="mt-4 sm:mt-4.5">
-              <LocationList selectedId={selectedId} onSelect={setSelectedId} />
+              <LocationList selectedId={selectedId} onSelect={selectLocation} />
             </motion.div>
 
             <motion.div variants={fadeUp} className="mt-8 flex items-center gap-3 sm:mt-9">
@@ -172,13 +177,13 @@ export default function AboutSection() {
             </motion.div>
           </motion.div>
 
-          <Reveal delay={0.08} className="min-w-0 lg:mt-12">
+          <Reveal delay={0.08} className="min-w-0 lg:self-center">
             {/* No card border/fill here on purpose - a boxed panel is what
                 made this read as "a widget next to some text" rather than
                 one scene. The globe's edges dissolve into the page via a
                 radial mask instead of a hard rounded-rectangle clip, so the
                 atmosphere glow and the starfield behind it stay continuous. */}
-            <div className="relative h-[18.75rem] sm:h-[21.25rem] lg:h-[23.75rem]">
+            <div className="relative h-[20rem] sm:h-[24rem] lg:h-[31rem]">
               {/* Only the canvas + its glow sit inside the mask - the "drag
                   to explore" hint and the location panel are UI, not scene,
                   so they stay fully legible even where the globe itself has
@@ -188,12 +193,12 @@ export default function AboutSection() {
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,var(--accent-dim),transparent)] opacity-50"
                 />
-                <AboutGlobe selectedId={selectedId} onSelect={setSelectedId} />
+                <AboutGlobe selectedId={selectedId} onSelect={selectLocation} />
               </div>
               <span className="pointer-events-none absolute right-4 top-4 z-10 font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
                 drag to explore
               </span>
-              <FloatingLocationPanel id={selectedId} />
+              <FloatingLocationPanel id={selectedId} interacted={interacted} />
             </div>
           </Reveal>
         </div>

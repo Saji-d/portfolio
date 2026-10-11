@@ -125,7 +125,7 @@ export default function CommandPalette() {
         icon: ArrowUp,
         keywords: "resume cv pdf download",
         external: true,
-        run: () => go("/Sajidur_Rahman_Sajid.pdf", true),
+        run: () => go("/Sajidur_Rahman_Sajid_Resume.pdf", true),
       },
       ...projects.map((p) => {
         const href = primaryHref(p);

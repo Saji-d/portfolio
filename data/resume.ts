@@ -1,15 +1,15 @@
 export const resume = {
   about:
-    "Software Engineer and AI Developer engineering the bridge between high-throughput backend systems and intelligent machine learning models. Adept at turning complex architectural problems into elegant, production-ready code.",
+    "Full-Stack Developer and AI engineer building production web, mobile, and voice-AI systems for teams across Dhaka, Dubai, and the US. Adept at turning complex architectural problems into reliable, production-ready code.",
   experience: [
     {
       org: "RemoteIntegrity LLC",
-      location: "Clearwater, Florida, USA · Contract · Flexible hours",
-      role: "Full-Stack Developer",
+      location: "USA · Remote · Contract",
+      role: "Full-Stack Developer (Contract)",
       period: "Oct 2026 - Present",
       points: [
-        "Building front-end and back-end components of web applications, including server-side logic, APIs, and database integrations.",
-        "Working through testing, code review, version control, and deployment to keep applications performant, secure, and reliable.",
+        "Build front-end and back-end components, APIs and database integrations for client web applications.",
+        "Ship through code review, testing and deployment on agreed timelines.",
       ],
     },
     {
@@ -18,7 +18,8 @@ export const resume = {
       role: "Full-Stack Developer",
       period: "Oct 2026 - Present",
       points: [
-        "Developing full-stack web applications for software, automation, and digital transformation projects.",
+        "Develop full-stack web applications for software, automation and digital transformation projects.",
+        "Delivered VoiceCon's credit-based billing API, React admin panel and RunPod GPU deployment tooling.",
       ],
     },
     {
@@ -27,9 +28,9 @@ export const resume = {
       role: "Software Developer",
       period: "May 2026 - Sep 2026",
       points: [
-        "Built MERN-based business systems and authored 246 automated pytest cases for backend workflows.",
-        "Engineered AI invoice processing pipelines using Python, FastAPI, Mindee OCR, PostgreSQL, and Redis Streams.",
-        "Developed FUMAK, a client inventory and POS system with Android barcode scanning and stock management.",
+        "Built the team's FastAPI OCR and fraud-detection service for InvoicePilot, migrating Mindee to V2.",
+        "Delivered FUMAK, a client inventory and POS system, as sole developer (Android + Next.js).",
+        "Built the public landing page for a NITOR unit's Convex, React patient system in production use.",
       ],
     },
     {
@@ -38,58 +39,72 @@ export const resume = {
       role: "Software Engineer Intern",
       period: "Feb 2026 - Apr 2026",
       points: [
-        "Developed responsive frontend interfaces utilizing HTML5, CSS3, and modern JavaScript (ES6+).",
-        "Integrated frontend layout structures with backend RESTful APIs with robust error handling.",
-        "Collaborated in agile development workflows utilizing Git for version control and system deployment.",
+        "Built responsive UIs with HTML5, CSS3, Bootstrap 5 and JavaScript (ES6+), wired to REST APIs.",
       ],
     },
   ],
   projects: [
     {
-      name: "InvoicePilot (Ledgercross Product)",
+      name: "VoiceCon",
       link: null,
-      stack: "Python, FastAPI, Mindee OCR, PostgreSQL, Redis",
+      stack: "Kotlin, Jetpack Compose, Fastify, Prisma, PostgreSQL, Python, PyTorch, Twilio",
       points: [
-        "Built an AI invoice processing microservice for OCR extraction and structured data generation.",
-        "Implemented invoice normalization, validation, duplicate, fraud, and anomaly detection rules.",
-        "Developed an 11-stage pipeline with Redis Streams for synchronous and asynchronous processing.",
+        "Built the Kotlin, Jetpack Compose Android app and Fastify, Prisma API for realtime AI voice calling.",
+        "Bridged Twilio call legs through a Python gateway to a Seed-VC GPU worker, failing closed on errors.",
       ],
     },
     {
-      name: "FUMAK Inventory & POS System (Client Project)",
-      link: "https://fumak-inventory.vercel.app/",
-      stack: "Kotlin, Android, Next.js, PostgreSQL",
+      name: "InvoicePilot",
+      link: null,
+      stack: "Python, FastAPI, Redis Streams, Supabase, Cloudflare R2",
       points: [
-        "Built an inventory and POS platform with Android barcode scanning and a Next.js web application.",
-        "Implemented real-time product lookup, stock management, checkout, and sales analytics.",
-        "Integrated ML Kit, Prisma, Neon PostgreSQL, and Cloudflare R2 for core workflows.",
+        "Built an 11-stage OCR pipeline with duplicate, 9-rule fraud and 19-rule anomaly detection.",
+        "Added Redis Streams workers, Supabase (PostgreSQL) storage, Cloudflare R2 files and 246 pytest tests.",
+      ],
+    },
+    {
+      name: "FUMAK Inventory & POS",
+      link: "https://fumak-inventory.vercel.app/",
+      stack: "Kotlin, Jetpack Compose, ML Kit, Next.js, Prisma, PostgreSQL",
+      points: [
+        "Built a Kotlin, Jetpack Compose app that decodes barcodes on-device with CameraX and ML Kit.",
+        "Built the Next.js app on Prisma and Neon PostgreSQL with transactional checkout, receipts and R2 product images.",
       ],
     },
     {
       name: "LedgerTurf",
       link: "https://ledgerturf.vercel.app/",
-      stack: "React, Node.js, Express, MongoDB Atlas, Redux",
+      stack: "MongoDB, Express, React, Node.js, JWT, Redux Toolkit, Google Maps",
       points: [
-        "Built a full-stack MERN turf booking ecosystem featuring geo-spatial MongoDB 2dsphere indexing.",
-        "Eliminated booking race conditions and scheduling conflicts via atomic database query validations.",
+        "Built a MERN booking app with JWT, bcrypt auth and player, owner and admin role-based access.",
+        "Added slot-overlap validation, GeoJSON venues with a 2dsphere index and Google Maps.",
       ],
     },
     {
-      name: "FinBERT Financial Sentiment Analysis",
-      link: "https://github.com/Saji-d/financial-sentiment-analysis-bert",
-      stack: "PyTorch, Hugging Face, NLP",
+      name: "CaseVault",
+      link: "https://casevault-bd.vercel.app",
+      stack: "Python, FastAPI, SQLAlchemy, Next.js, Tailwind CSS",
       points: [
-        "Fine-tuned domain-specific transformer models (FinBERT) to classify sentiment in financial text datasets.",
-        "Implemented comprehensive NLP preprocessing pipelines for tokenization and model optimization.",
+        "Built a FastAPI, SQLAlchemy REST API (9 endpoints) with paginated, ranked keyword search and filters.",
+        "Built the Next.js and Tailwind CSS search UI with advanced filters over 46 legal documents.",
       ],
     },
     {
-      name: "Face Recognition System",
-      link: "https://github.com/Saji-d/face-recognition-system",
-      stack: "Python, OpenCV, LBPH",
+      name: "Zenji Storefront",
+      link: "https://zenji-webstore.vercel.app",
+      stack: "React 19, TypeScript, Vite, Vitest, Playwright, axe-core",
       points: [
-        "Developed a real-time face recognition system leveraging OpenCV and Local Binary Patterns Histograms (LBPH).",
-        "Engineered efficient image processing pipelines for accurate feature extraction and identification.",
+        "Built an 11-route React 19, TypeScript storefront with a useReducer cart persisted to localStorage.",
+        "Wrote 27 Vitest tests and Playwright, axe-core QA at 8 viewports with 0 WCAG 2.1 AA violations.",
+      ],
+    },
+    {
+      name: "Mini Kanban Board",
+      link: "https://mini-kanban-board-frontend.vercel.app",
+      stack: "Next.js, NestJS, Prisma, PostgreSQL, Docker",
+      points: [
+        "Built a Next.js, NestJS, Prisma, PostgreSQL app with JWT auth and OWNER, EDITOR and VIEWER roles.",
+        "Kept drag-and-drop order consistent via midpoint ordering and row-level locking, with 40 unit and e2e tests.",
       ],
     },
   ],
@@ -127,11 +142,11 @@ export const resume = {
     "Blockchain, Ethereum & Solidity Development (Udemy)",
   ],
   skills: [
-    { group: "AI & Machine Learning", items: "PyTorch, Hugging Face, Scikit-learn, OpenCV, CatBoost" },
-    { group: "Programming Languages", items: "Python, Java, C/C++, C# (.NET), SQL, TypeScript, JavaScript, Solidity" },
-    { group: "Web Development", items: "React, Next.js, FastAPI, Node.js, Express, HTML5, CSS3" },
-    { group: "Backend & Databases", items: "PostgreSQL, MySQL, SQL Server, MongoDB, Redis Streams" },
-    { group: "Tools & DevOps", items: "Git, Docker, Jupyter Notebook, Cloudflare R2" },
+    { group: "Programming Languages", items: "Python, TypeScript, JavaScript, SQL, Kotlin, Java, C#, C++" },
+    { group: "Backend & Databases", items: "FastAPI, Node.js, Express, NestJS, REST APIs, PostgreSQL, MongoDB, Redis, Prisma" },
+    { group: "Frontend & Mobile", items: "React, Next.js, Redux Toolkit, Tailwind CSS, HTML5, CSS3, Android, Jetpack Compose" },
+    { group: "Testing & Tools", items: "pytest, Jest, Vitest, Playwright, Supertest, Git, Docker Compose, Vercel, Render" },
+    { group: "AI / ML", items: "Machine Learning, Deep Learning, NLP, OCR, PyTorch, Hugging Face, scikit-learn, CatBoost, OpenCV" },
   ],
   honors: [
     { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "Awarded 70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 - 2026" },

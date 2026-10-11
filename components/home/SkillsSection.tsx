@@ -1,11 +1,12 @@
 "use client";
 
 import {
-  Blocks,
+  Code2,
   Cpu,
   Database,
   MonitorSmartphone,
   Server,
+  Smartphone,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
@@ -17,11 +18,12 @@ import NeonRing from "@/components/ui/NeonRing";
 import { skillGroups } from "@/data/skills";
 
 const GROUP_ICON: Record<string, LucideIcon> = {
+  Languages: Code2,
+  "Mobile & Desktop": Smartphone,
   Backend: Server,
   "AI / ML": Cpu,
   Frontend: MonitorSmartphone,
   "Data & Databases": Database,
-  Blockchain: Blocks,
   "Tooling & Practice": Wrench,
 };
 
@@ -52,7 +54,11 @@ export default function SkillsSection() {
           {skillGroups.map((group, i) => {
             const Icon = GROUP_ICON[group.label] ?? Server;
             return (
-              <Reveal key={group.label} delay={i * 0.04}>
+              <Reveal
+                key={group.label}
+                delay={i * 0.04}
+                className={group.label === "Tooling & Practice" ? "lg:col-start-2" : undefined}
+              >
                 <TiltCard max={2.5} className="h-full">
                   <div
                     tabIndex={0}

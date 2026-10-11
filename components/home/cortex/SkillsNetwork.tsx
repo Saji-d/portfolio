@@ -7,6 +7,8 @@ import { SKILL_NETWORK, type SkillNetworkNode } from "@/data/skills";
 
 const POSITIONS: Record<string, { x: number; y: number }> = {
   nlp: { x: 50, y: 13 },
+  mobile: { x: 19, y: 12 },
+  frontend: { x: 81, y: 12 },
   "ai-engineering": { x: 21, y: 30 },
   "computer-vision": { x: 79, y: 30 },
   "machine-learning": { x: 17, y: 59 },

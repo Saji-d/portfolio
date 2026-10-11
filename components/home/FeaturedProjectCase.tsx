@@ -8,6 +8,7 @@ import type { Project } from "@/data/projects";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import MagneticButton from "@/components/ui/MagneticButton";
 import { primaryHref, SmartLink } from "@/components/work/ProjectCard";
+import StackPills from "@/components/work/StackPills";
 
 const reducedMotionQuery =
   typeof window !== "undefined"
@@ -29,20 +30,6 @@ const fadeUp: Variants = {
 const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
-};
-
-const pillsContainer: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.04, delayChildren: 0.08 } },
-};
-
-const pillFade: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-  },
 };
 
 interface FeaturedProjectCaseProps {
@@ -283,21 +270,13 @@ export default function FeaturedProjectCase({
 
         <motion.p
           variants={fadeUp}
-          className="mt-3 max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem] lg:line-clamp-3"
+          className="mt-3 max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem] line-clamp-3"
         >
-          {project.tagline}
+          {project.featuredTagline ?? project.tagline}
         </motion.p>
 
-        <motion.div variants={pillsContainer} className="mt-4 flex flex-wrap gap-2">
-          {project.stack.map((tech, ti) => (
-            <motion.span
-              key={tech}
-              variants={pillFade}
-              className={`items-center rounded-full border border-line bg-surface-2 px-2.5 py-0.5 font-mono text-[0.6875rem] text-text-secondary ${ti >= 6 ? "inline-flex lg:hidden" : "inline-flex"}`}
-            >
-              {tech}
-            </motion.span>
-          ))}
+        <motion.div variants={fadeUp} className="mt-4">
+          <StackPills key={project.slug} tags={project.stack} maxRows={1} />
         </motion.div>
 
         <motion.div variants={fadeUp} className="mt-4 flex flex-wrap items-center gap-3">

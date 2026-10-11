@@ -254,7 +254,7 @@ export default function ProjectsView() {
       </AnimatePresence>
 
       <p className="mt-2 font-mono text-[0.6875rem] text-text-muted">
-        &gt; the graph follows a build path: production, research, vision, craft ·
+        &gt; the graph follows a build path: professional, full-stack, research, vision ·
         click a node
       </p>
     </div>
