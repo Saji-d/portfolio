@@ -145,7 +145,7 @@ export const projects: Project[] = [
     name: "ZENJI Storefront",
     tagline: "Anime streetwear storefront with quick view, a cart drawer with shipping meter, a saved wishlist and a campaign-style homepage.",
     summary:
-      "A limited-drop shopping experience on React 19, strict TypeScript and Vite: ten designs with quick view and size picking, a cart drawer and page with a free-shipping meter, a persisted wishlist and a Vitest suite plus axe-core accessibility scans. No backend, no payments.",
+      "A limited-drop shopping experience on React 19, strict TypeScript and Vite: ten designs with quick view and size picking, a cart drawer and page with a free-shipping meter, a persisted wishlist and a Vitest suite plus axe-core accessibility scans. Built as a frontend technical assessment. No backend, no payments.",
     role: "Frontend Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -177,7 +177,7 @@ export const projects: Project[] = [
     name: "ByteSpace",
     tagline: "Pixel-faithful recreation of a course-platform landing page from Figma, with live course search and login pages.",
     summary:
-      "A responsive Next.js recreation of an online-learning landing page: hero with live course search, topic-chip filtering driven by shareable URL params, course and category grids, testimonials and bonus login and register pages, statically prerendered with Tailwind CSS v4 design tokens.",
+      "A responsive Next.js recreation of an online-learning landing page: hero with live course search, topic-chip filtering driven by shareable URL params, course and category grids, testimonials and bonus login and register pages, statically prerendered with Tailwind CSS v4 design tokens. Built as a frontend technical assessment from a Figma design.",
     role: "Frontend Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -316,7 +316,7 @@ export const projects: Project[] = [
     name: "Employee & Family Registry",
     tagline: "Employee registry with spouse and children records, fast search and one-click PDF exports from an ASP.NET Core API.",
     summary:
-      "An employee registry with spouse and children records, case-insensitive search across name, NID and department and QuestPDF-generated CV and list exports, one ASP.NET Core API serving a React workspace.",
+      "An employee registry with spouse and children records, case-insensitive search across name, NID and department and QuestPDF-generated CV and list exports, one ASP.NET Core API serving a React workspace. Built as a technical assessment.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Web",
