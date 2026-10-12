@@ -19,7 +19,7 @@ export async function generateMetadata({
   const project = getProject(slug);
   if (!project) return { title: "Not found" };
   const url = `/projects/${project.slug}`;
-  const image = project.cover ?? "/og-image.webp";
+  const image = project.caseStudy ? `/images/og/${project.slug}.jpg` : "/og-image.jpg";
   // Own openGraph block: otherwise the layout's og:url (the homepage) is
   // inherited and link previews such as LinkedIn resolve to the homepage.
   return {
@@ -32,7 +32,7 @@ export async function generateMetadata({
       siteName: SITE.name,
       title: `${project.name} · ${SITE.name}`,
       description: project.tagline,
-      images: [{ url: image, alt: project.name }],
+      images: [{ url: image, width: 1200, height: 630, alt: project.name }],
     },
     twitter: {
       card: "summary_large_image",
