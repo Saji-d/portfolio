@@ -1,82 +1,183 @@
 <div align="center">
 
-# Sajidur Rahman Sajid — Portfolio
+<img src="assets/banner.svg" alt="sajidur.me portfolio banner" width="100%">
 
-Full-stack software engineer & AI/ML developer. One-page site with searchable project/research archives, case studies, and an interactive terminal console.
+<p><code>Personal portfolio of a Full-Stack Developer and AI engineer, built as a single fast Next.js site</code></p>
 
-[![Live Site](https://img.shields.io/badge/live-sajidur.me-6366f1?style=flat-square)](https://sajidur.me)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
-[![React](https://img.shields.io/badge/React-19-149eca?style=flat-square&logo=react&logoColor=white)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+<a href="https://www.sajidur.me"><img src="https://img.shields.io/badge/LIVE-sajidur.me-8B7CF6?style=for-the-badge&labelColor=0B0E1A" alt="Live site"/></a>
+<a href="https://github.com/Saji-d/portfolio"><img src="https://img.shields.io/badge/SOURCE-GitHub-0B0E1A?style=for-the-badge&logo=github&logoColor=EEF0FA" alt="Source code"/></a>
+<a href="https://www.sajidur.me/resume"><img src="https://img.shields.io/badge/RESUME-PDF-0B0E1A?style=for-the-badge&logo=readme&logoColor=9B8CFA" alt="Resume"/></a>
 
-![Portfolio preview](.github/readme-banner.png)
+<p>
+<img src="https://img.shields.io/badge/Next.js-16-0B0E1A?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16"/>
+<img src="https://img.shields.io/badge/React-19-0B0E1A?style=flat-square&logo=react&logoColor=61DAFB" alt="React 19"/>
+<img src="https://img.shields.io/badge/TypeScript-5-0B0E1A?style=flat-square&logo=typescript&logoColor=3178C6" alt="TypeScript"/>
+<img src="https://img.shields.io/badge/Tailwind-v4-0B0E1A?style=flat-square&logo=tailwindcss&logoColor=38BDF8" alt="Tailwind CSS v4"/>
+<img src="https://img.shields.io/badge/Motion-12-0B0E1A?style=flat-square&logo=framer&logoColor=0055FF" alt="Motion"/>
+<img src="https://img.shields.io/badge/Three.js-globe-0B0E1A?style=flat-square&logo=threedotjs&logoColor=white" alt="Three.js"/>
+<img src="https://img.shields.io/badge/Vercel-deployed-0B0E1A?style=flat-square&logo=vercel&logoColor=white" alt="Vercel"/>
+</p>
+
+<a href="#-overview">Overview</a> ·
+<a href="#-highlights">Highlights</a> ·
+<a href="#-architecture">Architecture</a> ·
+<a href="#-tech-stack">Tech Stack</a> ·
+<a href="#-getting-started">Getting Started</a> ·
+<a href="#-project-structure">Structure</a> ·
+<a href="#-author">Author</a>
 
 </div>
 
+<img src="assets/divider.svg" width="100%" alt="">
 
-## Highlights
+## ◈ Overview
 
-- 🖥️ **Cortex** — a boot-sequence overlay and terminal console (`projects <slug>`, `whoami`, …) layered over the site
-- 📄 In-depth case studies for flagship projects: problem, solution, architecture, trade-offs, and results
-- 🔍 Searchable, filterable archives for every project and research write-up, not just the homepage highlights
-- 🌍 A 3D globe on the experience section, built with `react-globe.gl` and `three.js`
-- 📑 A dedicated resume page backed by structured data, with a downloadable CV
+This is the source of [sajidur.me](https://www.sajidur.me), the portfolio of Sajidur Rahman Sajid. It presents experience, projects, research and skills in one scrolling page, then goes deeper through searchable archives and full case studies.
 
-## Stack
+The goal is a site that feels like an engineer built it: fast static pages, honest numbers, one coherent visual system and a few playful touches such as a terminal console and a 3D globe.
 
-- **Framework** — Next.js 16 (App Router), React 19, TypeScript
-- **Styling** — Tailwind CSS v4 (utility-based, no config file)
-- **Motion** — Motion (formerly Framer Motion)
-- **Icons** — lucide-react
-- **3D globe** — react-globe.gl with three.js + world-atlas (topojson)
+<img src="assets/divider.svg" width="100%" alt="">
 
-## Getting started
+## ◈ Highlights
+
+<table width="100%">
+<tr>
+<td width="33%" valign="top">
+
+**Cortex terminal**
+<br/>
+A self-inspection console with commands such as `whoami`, `projects`, `skills` and `timeline`, plus a neural-network "synapse" view of the work.
+
+</td>
+<td width="33%" valign="top">
+
+**Case studies**
+<br/>
+Deep write-ups for flagship projects: problem, solution, architecture, decisions and results, each with its own link preview image.
+
+</td>
+<td width="33%" valign="top">
+
+**Searchable archives**
+<br/>
+Every project and research paper is filterable by discipline and searchable by title and stack, with tags that adapt to the card width.
+
+</td>
+</tr>
+<tr>
+<td width="33%" valign="top">
+
+**3D globe**
+<br/>
+An interactive globe built on `react-globe.gl` and `three.js` that shows where the work reaches.
+
+</td>
+<td width="33%" valign="top">
+
+**Resume page**
+<br/>
+A structured resume rendered from data and kept in sync with the downloadable PDF, which is always served uncached.
+
+</td>
+<td width="33%" valign="top">
+
+**Command palette**
+<br/>
+Press <kbd>Ctrl</kbd> + <kbd>K</kbd> to jump to any section or project and to open links without touching the mouse.
+
+</td>
+</tr>
+</table>
+
+<img src="assets/divider.svg" width="100%" alt="">
+
+## ◈ Architecture
+
+Everything is statically generated. Content lives in typed data files that pages and components read from. A project is added by editing data rather than markup.
+
+```mermaid
+flowchart LR
+    D[data/*.ts\nprojects · research · resume · skills] --> P[app/ routes\nstatic generation]
+    D --> C[components/\nhome · work · research · cortex]
+    P --> H[Home page]
+    P --> A[Projects and research archives]
+    P --> S[Case study pages]
+    P --> R[Resume page]
+    C --> H
+    C --> A
+    C --> S
+    U[public/\nimages · resume PDF] --> P
+    N[next.config.ts\nredirects · cache headers] --> P
+    P --> V[(Vercel CDN)]
+```
+
+- **Static first:** every route is prerendered. Heavy parts such as the globe and the Cortex console load lazily after the page is interactive.
+- **Typed content:** project, research and resume data are TypeScript objects, so the compiler catches broken links and missing fields.
+- **Cache rules:** the resume PDF is served with `no-store` so visitors never see an old copy. Static images are cached for a day with background refresh.
+
+<img src="assets/divider.svg" width="100%" alt="">
+
+## ◈ Tech Stack
+
+| Layer | Technologies | Purpose |
+| :-- | :-- | :-- |
+| Framework | Next.js 16 (App Router) · React 19 · TypeScript | Static pages with typed content |
+| Styling | Tailwind CSS v4 · CSS design tokens | One visual system across every section |
+| Motion | Motion · IntersectionObserver reveals | Scroll reveals and micro-interactions |
+| 3D | react-globe.gl · three.js · world-atlas · topojson-client | The interactive globe |
+| Images | next/image · sharp | Responsive covers and share previews |
+| Tooling | ESLint · Vercel | Linting and zero-config deployment |
+
+<img src="assets/divider.svg" width="100%" alt="">
+
+## ◈ Getting Started
+
+**Prerequisites:** Node.js 20 or newer.
 
 ```bash
+git clone https://github.com/Saji-d/portfolio.git
+cd portfolio
 npm install
-npm run dev
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-| Script | Purpose |
-| ------ | ------- |
-| `npm run dev` | Development server with hot reload |
-| `npm run build` | Production build |
-| `npm start` | Serve the production build |
-| `npm run lint` | ESLint |
-
-## Project structure
-
+```bash
+npm run build      # production build
+npm run start      # serve the production build
+npm run lint       # ESLint
 ```
-app/                 Routes (App Router): /, /projects, /projects/[slug], /research, /research/[slug], /resume
+
+No environment variables are required.
+
+<img src="assets/divider.svg" width="100%" alt="">
+
+## ◈ Project Structure
+
+<details>
+<summary>Open the folder map</summary>
+
+```text
+app/                 routes: home, projects, research, resume, about, contact
 components/
-  home/              One-page sections (hero, about, projects, research, cortex, etc.)
-  work/              Project cards, grid, case study renderer
-  research/          Research cards, featured showcase, research overlay
-  case-study/        ProjectOverlay used by the home page's project modal
-  cortex/            "Cortex" console: the boot synapse overlay, terminal shell, and command views
-  ui/                Shared primitives (Reveal, Eyebrow, MagneticButton, AnimatedMetric, …)
-data/                Content: projects, research, resume, site metadata (slim + `.full` variants)
-public/              Static assets: CV PDF, images (thumbnails, artwork, case-study screenshots)
+  home/              hero, about, experience, projects, skills, cortex console
+  work/              project cards, case study layout, stack tags
+  research/          research overlay and showcase
+  ui/                shared primitives such as Reveal, badges and tech icons
+data/                typed content: projects, research, resume, skills, timeline
+public/
+  images/            covers, share previews and gallery images
+  *.pdf              the current resume
+scripts/             image optimisation helpers
 ```
 
-## Content model
+</details>
 
-- **Projects** — `data/projects.ts` is the source of truth used by cards and the `/projects` grid. The home chapter renders `primaryProjects` (a curated subset) while `/projects` shows the full collection. `data/projects.full.ts` extends entries with case-study sections (`problem`, `solution`, `architecture`, `decisions`, `highlights`, `metrics`, …) rendered at `/projects/[slug]`.
-- **Research** — `data/research.ts` for cards, `data/research.full.ts` for the full study pages/overlays.
-- **Resume** — `data/resume.ts` feeds `/resume`; the downloadable CV lives at `public/Sajidur_Rahman_Sajid.pdf`.
+<img src="assets/divider.svg" width="100%" alt="">
 
-## Notes
+## ◈ Author
 
-- The site is a single-page experience at `/` with additional archive pages (`/projects`, `/research`, `/resume`). Section navigation is hash-based with a tracked active state in the navbar.
-- Covers live under `public/images/thumbnails/`. A project's `cover` must point to a file that exists; add the asset before marking the entry visible.
+**Sajidur Rahman Sajid** · Full-Stack Developer and AI engineer · Dhaka, Bangladesh
 
----
+[Portfolio](https://www.sajidur.me) · [GitHub](https://github.com/Saji-d) · [LinkedIn](https://www.linkedin.com/in/sajidur-rahman-sajid/) · [Email](mailto:sajidsajidurrahman99@gmail.com)
 
-<div align="center">
-
-[GitHub](https://github.com/Saji-d) · [LinkedIn](https://www.linkedin.com/in/sajidur-rahman-sajid/) · [Live Site](https://sajidur.me)
-
-</div>
+<sub>Released under the MIT License.</sub>

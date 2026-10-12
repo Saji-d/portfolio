@@ -1,0 +1,55 @@
+<svg width="1200" height="240" viewBox="0 0 1200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="sajidur.me portfolio banner">
+  <defs>
+    <pattern id="grid-d" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#ffffff" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow-d" cx="26%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#8b7cf6" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#8b7cf6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="240" fill="#0b0e1a"/>
+  <rect width="1200" height="240" fill="url(#grid-d)"/>
+  <rect width="1200" height="240" fill="url(#glow-d)"/>
+
+  <g stroke="#6a63a8" stroke-opacity="0.28" stroke-width="1">
+    <line x1="700" y1="55" x2="762" y2="95"/>
+    <line x1="762" y1="95" x2="832" y2="58"/>
+    <line x1="832" y1="58" x2="900" y2="102"/>
+    <line x1="900" y1="102" x2="962" y2="60"/>
+    <line x1="962" y1="60" x2="1032" y2="112"/>
+    <line x1="1032" y1="112" x2="1092" y2="66"/>
+    <line x1="762" y1="95" x2="742" y2="168"/>
+    <line x1="900" y1="102" x2="898" y2="162"/>
+    <line x1="742" y1="168" x2="820" y2="192"/>
+    <line x1="820" y1="192" x2="898" y2="162"/>
+    <line x1="898" y1="162" x2="984" y2="196"/>
+    <line x1="984" y1="196" x2="1058" y2="172"/>
+    <line x1="1032" y1="112" x2="1058" y2="172"/>
+    <line x1="1058" y1="172" x2="1118" y2="138"/>
+  </g>
+  <g fill="#9b8cfa">
+    <circle cx="700" cy="55" r="2.6" fill-opacity="0.55"/>
+    <circle cx="762" cy="95" r="3" fill-opacity="0.7"/>
+    <circle cx="832" cy="58" r="2.6" fill-opacity="0.5"/>
+    <circle cx="900" cy="102" r="3.2" fill-opacity="0.75"/>
+    <circle cx="962" cy="60" r="2.6" fill-opacity="0.5"/>
+    <circle cx="1032" cy="112" r="3" fill-opacity="0.65"/>
+    <circle cx="1092" cy="66" r="2.4" fill-opacity="0.45"/>
+    <circle cx="742" cy="168" r="2.6" fill-opacity="0.5"/>
+    <circle cx="820" cy="192" r="2.6" fill-opacity="0.5"/>
+    <circle cx="898" cy="162" r="3" fill-opacity="0.65"/>
+    <circle cx="984" cy="196" r="2.6" fill-opacity="0.5"/>
+    <circle cx="1058" cy="172" r="2.8" fill-opacity="0.6"/>
+    <circle cx="1118" cy="138" r="2.4" fill-opacity="0.45"/>
+  </g>
+
+  <text x="60" y="104" font-family="'JetBrains Mono','Fira Code',ui-monospace,'SFMono-Regular',Consolas,monospace" font-size="40" font-weight="700" letter-spacing="0.5" fill="#eef0fa">sajidur.me</text>
+
+  <text x="60" y="138" font-family="'JetBrains Mono','Fira Code',ui-monospace,'SFMono-Regular',Consolas,monospace" font-size="17" font-weight="600" letter-spacing="0.5" fill="#9b8cfa">Portfolio | Next.js 16 | React 19 | Motion</text>
+
+  <text x="60" y="166" font-family="'JetBrains Mono','Fira Code',ui-monospace,'SFMono-Regular',Consolas,monospace" font-size="12.5" fill="#5b6272">Case studies, Cortex terminal, 3D globe</text>
+
+  <line x1="0" y1="239" x2="1200" y2="239" stroke="#1c2030" stroke-width="1"/>
+</svg>
