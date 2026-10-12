@@ -15,7 +15,7 @@ const values = [
   {
     icon: Scale,
     title: "Honesty over hype",
-    body: "Every project lists its real numbers, and its real limitations. My thesis ensemble reaches 95.20% accuracy, beating either model alone; I also tell you where it can't.",
+    body: "Every project lists its real numbers and its real limitations. My thesis ensemble reaches 95.20% accuracy, beating either model alone; I also tell you where it can't.",
   },
   {
     icon: Wrench,
@@ -30,7 +30,7 @@ const values = [
   {
     icon: Award,
     title: "Engineering receipts",
-    body: "Automated test suites, benchmark evaluations, and empirical validation. I keep the evidence that a claim is true.",
+    body: "Automated test suites, benchmark evaluations and empirical validation. I keep the evidence that a claim is true.",
   },
 ];
 
@@ -39,8 +39,8 @@ export default function AboutPage() {
     <>
       <PageHeader
         eyebrow="[ 01 ] · About"
-        title="Engineer, thesis author, and reluctant trust-builder."
-        lede="I work where full-stack engineering meets machine-learning rigor, and I care that the numbers you see are real."
+        title="Engineer, thesis author and reluctant trust-builder."
+        lede="I work where full-stack engineering meets machine-learning rigor and I care that the numbers you see are real."
       />
 
       <section className="container-site py-12">
@@ -48,9 +48,9 @@ export default function AboutPage() {
           <div className="max-w-3xl space-y-5 text-lg leading-relaxed text-text-secondary">
             <p>
               I&apos;m Sajidur Rahman Sajid, a Full-Stack Software Engineer and
-              AI/ML developer in Dhaka, working with teams in Dubai and the US. At RemoteIntegrity and 2BitSoft I work as a Full-Stack Developer, and at Ledgercross I worked on production
+              AI/ML developer in Dhaka, working with teams in Dubai and the US. At RemoteIntegrity and 2BitSoft I work as a Full-Stack Developer and at Ledgercross I worked on production
               software across the stack: REST APIs, asynchronous processing, multi-tenant
-              data layers, testing, and cloud infrastructure. Before that I interned as a
+              data layers, testing and cloud infrastructure. Before that I interned as a
               Software Engineer at BSS, where I developed responsive web applications and
               worked across frontend and backend development.
             </p>
@@ -59,7 +59,7 @@ export default function AboutPage() {
               trained a hybrid CatBoost + ANN ensemble on 2,237 student surveys
               to detect cognitive impairment: 95.20% accuracy and a 0.982
               ROC-AUC, beating both standalone models. It taught me that the
-              best ML systems combine complementary strengths, and that real
+              best ML systems combine complementary strengths and that real
               datasets beat toy ones.
             </p>
             <p>

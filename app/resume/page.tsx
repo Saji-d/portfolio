@@ -12,23 +12,27 @@ export const metadata: Metadata = {
 };
 
 function Section({
-  index,
   title,
   children,
 }: {
-  index: string;
   title: string;
   children: React.ReactNode;
 }) {
   return (
     <Reveal>
-      <section className="mt-8 first:mt-0">
-        <div aria-hidden="true" className="border-t border-line/60" />
-        <h2 className="mt-4 flex items-baseline gap-2 font-display text-base font-semibold tracking-tight text-text-primary">
-          <span className="font-mono text-base text-accent">{index}</span>
-          <span className="uppercase tracking-[0.06em]">{title}</span>
+      <section className="mt-9 first:mt-0">
+        {/* A thin indigo line with a slow light running along it. The sweep is
+            hidden for reduced-motion users, who just see the static line. */}
+        <div
+          aria-hidden="true"
+          className="relative h-px w-full overflow-hidden bg-gradient-to-r from-accent/10 via-accent/40 to-accent/10"
+        >
+          <span className="animate-trace-sweep absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-accent-hover to-transparent motion-reduce:hidden" />
+        </div>
+        <h2 className="mt-5 font-display text-xl font-bold uppercase tracking-[0.06em] text-text-primary sm:text-2xl">
+          {title}
         </h2>
-        <div className="mt-3">{children}</div>
+        <div className="mt-4">{children}</div>
       </section>
     </Reveal>
   );
@@ -40,7 +44,8 @@ export default function ResumePage() {
       <PageHeader
         eyebrow="[ 09 ] · Resume"
         title="The source of truth."
-        lede="Everything on this site traces back to this document. Download it, or read it inline below."
+        lede="Everything on this site traces back to this document. Download it or read it inline below."
+        wideLede
       />
 
       <section className="container-site py-8 sm:py-10">
@@ -64,11 +69,11 @@ export default function ResumePage() {
           </Reveal>
 
           <div className="card-surface mt-6 p-5 sm:p-8">
-            <Section index="01" title="About">
+            <Section title="About">
               <p className="text-xs sm:text-sm leading-relaxed text-text-secondary">{resume.about}</p>
             </Section>
 
-            <Section index="02" title="Experience">
+            <Section title="Experience">
               <div className="space-y-4">
                 {resume.experience.map((exp) => (
                   <div key={exp.org}>
@@ -92,7 +97,7 @@ export default function ResumePage() {
               </div>
             </Section>
 
-            <Section index="03" title="Projects">
+            <Section title="Projects">
               <div className="space-y-4">
                 {resume.projects.map((proj) => (
                   <div key={proj.name}>
@@ -124,7 +129,7 @@ export default function ResumePage() {
               </div>
             </Section>
 
-            <Section index="04" title="Education">
+            <Section title="Education">
               <div className="space-y-3">
                 {resume.education.map((ed) => (
                   <div key={ed.org}>
@@ -140,7 +145,7 @@ export default function ResumePage() {
               </div>
             </Section>
 
-            <Section index="05" title="Thesis & Research">
+            <Section title="Thesis & Research">
               <h3 className="font-semibold text-text-primary text-xs sm:text-sm">{resume.thesis.name}</h3>
               <p className="font-mono text-[0.6875rem] text-text-muted">{resume.thesis.stack}</p>
               <ul className="mt-1.5 space-y-1">
@@ -153,7 +158,7 @@ export default function ResumePage() {
               </ul>
             </Section>
 
-            <Section index="06" title="Certifications & Training">
+            <Section title="Certifications & Training">
               <ul className="space-y-1">
                 {resume.certifications.map((c) => (
                   <li key={c} className="flex gap-2 text-xs leading-normal text-text-secondary">
@@ -164,7 +169,7 @@ export default function ResumePage() {
               </ul>
             </Section>
 
-            <Section index="07" title="Technical Skills">
+            <Section title="Technical Skills">
               <div className="space-y-2">
                 {resume.skills.map((s) => (
                   <p key={s.group} className="text-xs leading-normal text-text-secondary">
@@ -175,7 +180,7 @@ export default function ResumePage() {
               </div>
             </Section>
 
-            <Section index="08" title="Honors & Awards">
+            <Section title="Honors & Awards">
               <div className="space-y-3">
                 {resume.honors.map((h) => (
                   <div key={h.name}>
@@ -189,7 +194,7 @@ export default function ResumePage() {
               </div>
             </Section>
 
-            <Section index="09" title="Leadership & Activities">
+            <Section title="Leadership & Activities">
               <div className="space-y-3">
                 {resume.leadership.map((l) => (
                   <div key={l.role}>
@@ -204,7 +209,7 @@ export default function ResumePage() {
               </div>
             </Section>
 
-            <Section index="10" title="References">
+            <Section title="References">
               <div className="grid gap-3 sm:grid-cols-2">
                 {resume.references.map((ref) => (
                   <div key={ref.name} className="rounded-lg border border-line bg-surface p-3.5">

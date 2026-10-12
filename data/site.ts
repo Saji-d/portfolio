@@ -3,7 +3,7 @@ export const SITE = {
   firstName: "Sajid",
   role: "Full-Stack Software Engineer | AI/ML.",
   tagline:
-    "I build full-stack software and production AI/ML pipelines that are fast, reliable, and worth trusting.",
+    "I build full-stack software and production AI/ML pipelines that are fast, reliable and worth trusting.",
   email: "sajidsajidurrahman99@gmail.com",
   phone: "+8801954832959",
   phoneHref: "+8801954832959",
@@ -14,7 +14,7 @@ export const SITE = {
   githubHandle: "Saji-d",
   url: "https://www.sajidur.me",
   availability:
-    "I'm open to software engineering roles across full-stack, platform, and applied ML, plus select freelance and product work if it's interesting.",
+    "I'm open to software engineering roles across full-stack, platform and applied ML, plus select freelance and product work if it's interesting.",
 } as const;
 
 export interface NavSectionLink {

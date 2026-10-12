@@ -52,7 +52,7 @@ export const researchPapers: ResearchStudy[] = [
     oneLiner:
       "A classical NLP pipeline on 200k balanced tweets: TF-IDF (10k unigrams + bigrams) into Multinomial Naïve Bayes, 74.84% accuracy.",
     summary:
-      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming, and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
+      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
     metrics: [
       { value: "74.84%", label: "accuracy" },
       { value: "200,000", label: "balanced tweets" },
@@ -67,7 +67,7 @@ export const researchPapers: ResearchStudy[] = [
     field: "Data Science · Customer Analytics",
     tags: ["Machine Learning", "Predictive Analytics", "Business Intelligence"],
     oneLiner:
-      "RFM profiling plus clustering (KMeans++, BisectingKMeans, GMM) on the Online Retail dataset isolates 776 high-value customers, and a Random Forest flags drop-off risk with 0.788 ROC-AUC.",
+      "RFM profiling plus clustering (KMeans++, BisectingKMeans, GMM) on the Online Retail dataset isolates 776 high-value customers and a Random Forest flags drop-off risk with 0.788 ROC-AUC.",
     summary:
       "Course research in Data Science. Cleans 541,909 transactions into a 4,338-customer RFM matrix, segments customers with unsupervised clustering compared across three algorithms, then builds a supervised early-warning classifier on month-over-month RFM decay to flag high-value customers at risk of churn.",
     metrics: [
@@ -87,7 +87,7 @@ export const researchPapers: ResearchStudy[] = [
     oneLiner:
       "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images, an honest look at how hard field generalization is.",
     summary:
-      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity, and the paper candidly reports the limits of doing so from photos alone.",
+      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity and the paper candidly reports the limits of doing so from photos alone.",
     metrics: [
       { value: "300+", label: "real-world images" },
       { value: "3", label: "turbidity classes" },

@@ -348,7 +348,7 @@ function StudyBody({
           <div className="card-surface flex flex-wrap items-center justify-between gap-6 p-6">
             <p className="max-w-xl text-sm leading-relaxed text-text-secondary">
               The complete thesis report covers the literature review, dataset
-              construction, full feature set, and 16 reference papers. Reach out
+              construction, full feature set and 16 reference papers. Reach out
               and I&apos;ll share it.
             </p>
             <a

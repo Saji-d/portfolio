@@ -161,7 +161,7 @@ export default function AboutSection() {
               </motion.p>
               <motion.p variants={fadeUp} className="max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]">
                 The work reaches past my desk. Remote teams across time zones, a
-                growing footprint across Europe, and a taste for software that travels well
+                growing footprint across Europe and a taste for software that travels well
                 beyond where it was built.
               </motion.p>
             </div>

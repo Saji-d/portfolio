@@ -5,9 +5,10 @@ interface PageHeaderProps {
   title: string;
   lede?: string;
   wideTitle?: boolean;
+  wideLede?: boolean;
 }
 
-export default function PageHeader({ eyebrow, title, lede, wideTitle }: PageHeaderProps) {
+export default function PageHeader({ eyebrow, title, lede, wideTitle, wideLede }: PageHeaderProps) {
   return (
     <div className="container-site pt-32 sm:pt-40">
       <Reveal>
@@ -16,7 +17,9 @@ export default function PageHeader({ eyebrow, title, lede, wideTitle }: PageHead
           {title}
         </h1>
         {lede && (
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-text-secondary">
+          <p
+            className={`mt-5 ${wideLede ? "max-w-none" : "max-w-2xl"} text-lg leading-relaxed text-text-secondary`}
+          >
             {lede}
           </p>
         )}

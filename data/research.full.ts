@@ -74,25 +74,25 @@ export const neuronscreen: ResearchStudy = {
   overview: [
     "Cognitive impairment linked to insomnia is widespread among university students but rarely screened for. Existing computational work stops at diagnosing sleep disorders or general mental-health distress. It does not classify the cognitive decline that poor sleep produces.",
     "Neuro-Screen fills that gap with a hybrid ensemble: a CatBoost gradient-boosting classifier, which is strong on categorical, structured survey data, combined with a three-layer ANN, which is strong on non-linear feature interactions. The two paths run in parallel and their probability outputs are averaged into a final Healthy / Impaired decision.",
-    "Evaluated on a stratified 80/20 holdout, the ensemble reaches 95.20% accuracy and a 0.982 ROC-AUC, higher than either component alone, and is packaged as a Streamlit screening dashboard with a conversational check-in.",
+    "Evaluated on a stratified 80/20 holdout, the ensemble reaches 95.20% accuracy and a 0.982 ROC-AUC, higher than either component alone and is packaged as a Streamlit screening dashboard with a conversational check-in.",
   ],
   problem: [
-    "Most university students get insufficient sleep and a substantial share meet clinical insomnia criteria. Both conditions measurably impair attention, memory, and academic performance.",
-    "Existing ML studies target sleep disorders themselves (insomnia, apnea) or general mental health, not the cognitive decline insomnia causes, and they rely on standalone classifiers rather than hybrid ML-DL designs.",
+    "Most university students get insufficient sleep and a substantial share meet clinical insomnia criteria. Both conditions measurably impair attention, memory and academic performance.",
+    "Existing ML studies target sleep disorders themselves (insomnia, apnea) or general mental health, not the cognitive decline insomnia causes and they rely on standalone classifiers rather than hybrid ML-DL designs.",
     "As a result, no automated framework exists for early detection of cognitive impairment among insomniac university students.",
   ],
   objective: [
     "Develop a hybrid CatBoost + ANN ensemble that fuses both models' probability outputs into a binary cognitive-health classification.",
-    "Benchmark the ensemble against standalone CatBoost and ANN across accuracy, precision, recall, F1-score, and ROC-AUC.",
-    "Identify which behavioral, psychological, and sleep-related features most strongly predict cognitive impairment.",
+    "Benchmark the ensemble against standalone CatBoost and ANN across accuracy, precision, recall, F1-score and ROC-AUC.",
+    "Identify which behavioral, psychological and sleep-related features most strongly predict cognitive impairment.",
     "Provide a practical, data-driven screening approach that helps universities flag at-risk students early.",
   ],
   methodology: [
-    "Survey design and collection: 2,237 responses from students at 30+ Bangladeshi universities, capturing demographics, lifestyle and behavioural habits, mental stamina, insomnia indicators, and cognitive-symptom indicators.",
+    "Survey design and collection: 2,237 responses from students at 30+ Bangladeshi universities, capturing demographics, lifestyle and behavioural habits, mental stamina, insomnia indicators and cognitive-symptom indicators.",
     "Preprocessing and target engineering: prepared the 21 survey input features (20 categorical + age), then aggregated multiple cognitive-symptom indicators into a single binary Healthy / Impaired target.",
     "Dual-path training: CatBoost on the raw categorical answers and a three-layer ANN (128-64-1 MLP) on a 104-dimension one-hot encoding of the same features, trained in parallel.",
     "Ensemble blending: the final decision is the arithmetic mean of both models' predicted probabilities.",
-    "Evaluation: an 80/20 stratified split (1,790 train / 447 test) scored with accuracy, precision, recall, F1-score, and ROC-AUC, plus confusion-matrix and learning-curve analysis.",
+    "Evaluation: an 80/20 stratified split (1,790 train / 447 test) scored with accuracy, precision, recall, F1-score and ROC-AUC, plus confusion-matrix and learning-curve analysis.",
   ],
   models: [
     {
@@ -110,11 +110,11 @@ export const neuronscreen: ResearchStudy = {
   ],
   dataset: [
     "2,237 survey responses from students at 30+ Bangladeshi universities.",
-    "21 input features spanning demographics, caffeine intake, bedtime device use, cognitive load, stress frequency, mental stamina, spacing-out / audio-lag episodes, sleep hours, night awakenings, sleep quality, forgetfulness, reminder reliance, brain fog, missed deadlines, GPA impact, and fatigue.",
+    "21 input features spanning demographics, caffeine intake, bedtime device use, cognitive load, stress frequency, mental stamina, spacing-out / audio-lag episodes, sleep hours, night awakenings, sleep quality, forgetfulness, reminder reliance, brain fog, missed deadlines, GPA impact and fatigue.",
     "A binary target engineered by aggregating multiple cognitive-symptom indicators into Healthy / Impaired.",
   ],
   implementation: [
-    "Built in Python on Google Colab with pandas (data manipulation), CatBoost (gradient boosting), and PyTorch (ANN).",
+    "Built in Python on Google Colab with pandas (data manipulation), CatBoost (gradient boosting) and PyTorch (ANN).",
     "Both modules trained in parallel, then combined with probability-level ensemble blending for the final binary prediction.",
     "Validated on the 447-response held-out test set with a confusion matrix and ROC-AUC analysis.",
     "Deployed as a Streamlit screening prototype: a slider-based Quick Check-in and a conversational check-in assistant that both return a 0–100 risk score with model confidence and the driving factors.",
@@ -122,7 +122,7 @@ export const neuronscreen: ResearchStudy = {
   keyFeatures: [
     "Parallel CatBoost + ANN architecture with an averaged ensemble decision.",
     "Target engineering that turns multiple cognitive-symptom signals into one robust binary label.",
-    "Stratified evaluation with confusion matrix, ROC-AUC, and per-model comparison.",
+    "Stratified evaluation with confusion matrix, ROC-AUC and per-model comparison.",
     "Feature-importance analysis surfacing the strongest predictors of impairment.",
     "Streamlit prototype with both a form-based and a conversational screening interface.",
   ],
@@ -140,7 +140,7 @@ export const neuronscreen: ResearchStudy = {
   ],
   outcome: [
     "A validated, cost-effective screening framework for university health surveillance that flags at-risk students for academic and psychological intervention.",
-    "Identified mental/physical fatigue, stress frequency, and GPA impact as the strongest predictors (0.095), with sleep quality (0.093) outweighing sleep duration (0.092).",
+    "Identified mental/physical fatigue, stress frequency and GPA impact as the strongest predictors (0.095), with sleep quality (0.093) outweighing sleep duration (0.092).",
     "Positioned as a screening aid rather than a medical diagnostic, following privacy-by-design and responsible-AI principles on anonymized data.",
   ],
   tools: ["Python", "Google Colab", "Pandas", "CatBoost", "PyTorch", "Streamlit", "scikit-learn"],
@@ -186,7 +186,7 @@ export const researchPapers: ResearchStudy[] = [
     oneLiner:
       "A classical NLP pipeline on 200k balanced tweets: TF-IDF (10k unigrams + bigrams) into Multinomial Naïve Bayes, 74.84% accuracy.",
     summary:
-      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming, and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
+      "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
     metrics: [
       { value: "74.84%", label: "accuracy" },
       { value: "200,000", label: "balanced tweets" },
@@ -194,11 +194,11 @@ export const researchPapers: ResearchStudy[] = [
       { value: "40,000", label: "test tweets" },
     ],
     overview: [
-      "Sentiment classification on short, noisy social-media text is a classic NLP task: casual language, hashtags, mentions, and slang make it harder than formal text.",
-      "This study builds an end-to-end classical pipeline: an aggressive text-cleaning stage, a rich TF-IDF representation with unigrams and bigrams, and a fast, interpretable Multinomial Naïve Bayes classifier.",
+      "Sentiment classification on short, noisy social-media text is a classic NLP task: casual language, hashtags, mentions and slang make it harder than formal text.",
+      "This study builds an end-to-end classical pipeline: an aggressive text-cleaning stage, a rich TF-IDF representation with unigrams and bigrams and a fast, interpretable Multinomial Naïve Bayes classifier.",
     ],
     problem: [
-      "Raw tweets are filled with URLs, mentions, hashtags, punctuation, and case differences that add noise rather than signal.",
+      "Raw tweets are filled with URLs, mentions, hashtags, punctuation and case differences that add noise rather than signal.",
       "Class imbalance and neutral labels can bias a sentiment model toward the majority class.",
       "Classical (non-transformer) pipelines need disciplined normalization to stay competitive.",
     ],
@@ -209,14 +209,14 @@ export const researchPapers: ResearchStudy[] = [
     ],
     methodology: [
       "Balanced sampling: 100,000 positive and 100,000 negative tweets drawn with random_state=42 from the 1.6M-row Sentiment140 corpus, with the neutral class excluded.",
-      "Preprocessing chain: lowercase → strip URLs, @mentions, #hashtags, and non-alphabetic characters → remove punctuation → tokenize → remove English stopwords → WordNet synonym substitution → Porter stemming → WordNet lemmatization (noun / verb / adjective).",
+      "Preprocessing chain: lowercase → strip URLs, @mentions, #hashtags and non-alphabetic characters → remove punctuation → tokenize → remove English stopwords → WordNet synonym substitution → Porter stemming → WordNet lemmatization (noun / verb / adjective).",
       "Vectorization: TF-IDF with max_features=10,000 and ngram_range=(1,2).",
       "Classification: Multinomial Naïve Bayes (alpha=1.0, fit_prior=True) on a stratified 80/20 split (160k train / 40k test).",
     ],
     models: [
       {
         name: "Multinomial Naïve Bayes",
-        role: "Probabilistic classifier over TF-IDF counts; fast, lightweight, and interpretable for text.",
+        role: "Probabilistic classifier over TF-IDF counts; fast, lightweight and interpretable for text.",
       },
       {
         name: "TF-IDF (unigrams + bigrams)",
@@ -228,16 +228,16 @@ export const researchPapers: ResearchStudy[] = [
       "Balanced to 200,000 rows (100k per class) with a 50/50 class distribution confirmed by a pie-chart check before training.",
     ],
     implementation: [
-      "Pipeline in Python with pandas, NLTK (stopwords, punkt, wordnet), and scikit-learn (TfidfVectorizer, MultinomialNB, train_test_split, metrics).",
-      "Per-class sentiment distribution visualized, null values dropped, and the balanced 200k rows saved to a CSV.",
-      "Evaluation outputs a confusion-matrix heatmap, a classification report, and accuracy.",
+      "Pipeline in Python with pandas, NLTK (stopwords, punkt, wordnet) and scikit-learn (TfidfVectorizer, MultinomialNB, train_test_split, metrics).",
+      "Per-class sentiment distribution visualized, null values dropped and the balanced 200k rows saved to a CSV.",
+      "Evaluation outputs a confusion-matrix heatmap, a classification report and accuracy.",
       "Sanity-checked on unseen sentences: 'good' classifies positive and 'I hate this' classifies negative.",
     ],
     keyFeatures: [
       "Balanced two-class dataset with reproducible sampling (random_state=42).",
       "Deep normalization: synonym substitution + Porter stemming + multi-POS lemmatization.",
       "TF-IDF with unigrams and bigrams capped at 10,000 features.",
-      "Stratified evaluation with per-class precision, recall, and F1 reporting.",
+      "Stratified evaluation with per-class precision, recall and F1 reporting.",
     ],
     results: [
       { value: "74.84%", label: "accuracy" },
@@ -254,7 +254,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "pandas", "NLTK", "scikit-learn", "matplotlib", "seaborn"],
     challenges: [
-      "Twitter slang, abbreviations, and emojis resist rule-based cleaning.",
+      "Twitter slang, abbreviations and emojis resist rule-based cleaning.",
       "Sentiment140 is noisy by construction (distant-supervision labels), capping the achievable accuracy.",
       "Classical models cannot capture the long-range contextual meaning that transformers handle.",
     ],
@@ -272,7 +272,7 @@ export const researchPapers: ResearchStudy[] = [
     field: "Data Science · Customer Analytics",
     tags: ["Machine Learning", "Predictive Analytics", "Business Intelligence"],
     oneLiner:
-      "RFM profiling plus clustering (KMeans++, BisectingKMeans, GMM) on the Online Retail dataset isolates 776 high-value customers, and a Random Forest flags drop-off risk with 0.788 ROC-AUC.",
+      "RFM profiling plus clustering (KMeans++, BisectingKMeans, GMM) on the Online Retail dataset isolates 776 high-value customers and a Random Forest flags drop-off risk with 0.788 ROC-AUC.",
     summary:
       "Course research in Data Science. Cleans 541,909 transactions into a 4,338-customer RFM matrix, segments customers with unsupervised clustering compared across three algorithms, then builds a supervised early-warning classifier on month-over-month RFM decay to flag high-value customers at risk of churn.",
     metrics: [
@@ -283,7 +283,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     overview: [
       "Losing high-value customers is disproportionately costly. Retaining them depends on spotting the decay before they leave.",
-      "This project converts raw transactional data into an RFM (Recency, Frequency, Monetary) view, segments customers into value tiers via clustering, and trains a supervised classifier that raises an early-warning flag when a high-value customer's engagement starts dropping.",
+      "This project converts raw transactional data into an RFM (Recency, Frequency, Monetary) view, segments customers into value tiers via clustering and trains a supervised classifier that raises an early-warning flag when a high-value customer's engagement starts dropping.",
     ],
     problem: [
       "Churn is only obvious after it happens. Reactive retention campaigns arrive too late.",
@@ -292,15 +292,15 @@ export const researchPapers: ResearchStudy[] = [
     ],
     objective: [
       "Build a clean RFM dataset from the Online Retail corpus (541,909 transactions).",
-      "Segment customers with clustering and compare KMeans++, BisectingKMeans, and Gaussian Mixture Models.",
+      "Segment customers with clustering and compare KMeans++, BisectingKMeans and Gaussian Mixture Models.",
       "Define and engineer an early-risk label from month-over-month RFM decay for high-value customers.",
       "Train a classifier that predicts drop-off risk early enough to act.",
     ],
     methodology: [
-      "Data cleaning: cancelled invoices, invalid transactions, and rows without a customer ID are removed, reducing 541,909 rows to 397,884.",
-      "RFM engineering: Recency, Frequency, and Monetary computed per customer, then log-scaled with log1p to tame heavy tails.",
-      "Clustering comparison: KMeans++, BisectingKMeans, and GMM over k=2..7 scored with Silhouette and Davies-Bouldin; k=3 is fixed for stable, interpretable High / Mid / Low segments.",
-      "Early-risk engineering: RFM rolled up per customer-month, month-over-month drop signals counted (1,917 total), and a high-value customer is labeled at risk when signals accumulate.",
+      "Data cleaning: cancelled invoices, invalid transactions and rows without a customer ID are removed, reducing 541,909 rows to 397,884.",
+      "RFM engineering: Recency, Frequency and Monetary computed per customer, then log-scaled with log1p to tame heavy tails.",
+      "Clustering comparison: KMeans++, BisectingKMeans and GMM over k=2..7 scored with Silhouette and Davies-Bouldin; k=3 is fixed for stable, interpretable High / Mid / Low segments.",
+      "Early-risk engineering: RFM rolled up per customer-month, month-over-month drop signals counted (1,917 total) and a high-value customer is labeled at risk when signals accumulate.",
       "Classification: a Random Forest (300 trees, max_depth=8, class_weight=balanced) trained on the 776 high-value customers with log-scaled RFM features and the early-risk label.",
     ],
     models: [
@@ -318,10 +318,10 @@ export const researchPapers: ResearchStudy[] = [
       "Cleaned to 397,884 rows and aggregated into a per-customer RFM matrix, then into a customer-month panel for signal counting.",
     ],
     implementation: [
-      "Data cleaning, RFM aggregation, and monthly rollups in Python with pandas and NumPy.",
+      "Data cleaning, RFM aggregation and monthly rollups in Python with pandas and NumPy.",
       "Clustering evaluated on Silhouette + Davies-Bouldin across models and k values; KMeans++ with k=3 retained.",
       "Early-risk labels built from 1,917 month-over-month decay signals across the customer-month panel.",
-      "Random Forest evaluated on a stratified 25% holdout with a confusion matrix, classification report, ROC curve, and feature-importance bar chart.",
+      "Random Forest evaluated on a stratified 25% holdout with a confusion matrix, classification report, ROC curve and feature-importance bar chart.",
     ],
     keyFeatures: [
       "log1p-scaled RFM features for robust distance-based clustering.",
@@ -336,7 +336,7 @@ export const researchPapers: ResearchStudy[] = [
       { value: "0.51", label: "frequency importance" },
     ],
     resultNotes: [
-      "The high-value segment averages 17 days since the last order, 13.3 orders, and ~7,866 in monetary value versus 168 days and 1.3 orders for low-value customers.",
+      "The high-value segment averages 17 days since the last order, 13.3 orders and ~7,866 in monetary value versus 168 days and 1.3 orders for low-value customers.",
       "70.9% of high-value customers carry a positive early-risk label, underlining how quickly engagement decays without intervention.",
       "Frequency decay is by far the strongest risk signal (importance 0.51), ahead of monetary (0.28) and recency (0.20); the raw cluster label adds nothing on top.",
     ],
@@ -346,12 +346,12 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "pandas", "NumPy", "scikit-learn", "seaborn", "matplotlib"],
     challenges: [
-      "Raw retail data is noisy: cancelled invoices, missing customer IDs, and returns require careful cleaning.",
+      "Raw retail data is noisy: cancelled invoices, missing customer IDs and returns require careful cleaning.",
       "RFM values are heavily skewed, so naive scaling distorts clustering.",
       "Early-risk labels are derived and imbalanced, which caps the classifier's ceiling.",
     ],
     futureWork: [
-      "Add customer tenure, product-category diversity, and seasonality features.",
+      "Add customer tenure, product-category diversity and seasonality features.",
       "Test gradient-boosting classifiers (CatBoost / XGBoost) and time-to-event (survival) models.",
       "Validate the early-warning signals against actual churn in a longitudinal holdout.",
     ],
@@ -367,7 +367,7 @@ export const researchPapers: ResearchStudy[] = [
     oneLiner:
       "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images, an honest look at how hard field generalization is.",
     summary:
-      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity, and the paper candidly reports the limits of doing so from photos alone.",
+      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity and the paper candidly reports the limits of doing so from photos alone.",
     metrics: [
       { value: "300+", label: "real-world images" },
       { value: "3", label: "turbidity classes" },
@@ -375,11 +375,11 @@ export const researchPapers: ResearchStudy[] = [
       { value: "224×224", label: "input size" },
     ],
     overview: [
-      "Turbidity (how cloudy water is) is a key water-quality signal, but conventional nephelometer measurement is expensive, slow, and lab-bound.",
-      "This paper proposes a lightweight deep-learning alternative: classify turbidity directly from smartphone photos taken in the field. It collects a real-world dataset, fine-tunes an EfficientNet-B0 backbone, and reports what works and what does not.",
+      "Turbidity (how cloudy water is) is a key water-quality signal, but conventional nephelometer measurement is expensive, slow and lab-bound.",
+      "This paper proposes a lightweight deep-learning alternative: classify turbidity directly from smartphone photos taken in the field. It collects a real-world dataset, fine-tunes an EfficientNet-B0 backbone and reports what works and what does not.",
     ],
     problem: [
-      "Lab-collected turbidity datasets do not reflect real field conditions: reflections, shadows, container edges, and colour distortion.",
+      "Lab-collected turbidity datasets do not reflect real field conditions: reflections, shadows, container edges and colour distortion.",
       "Collecting enough labeled real-world images for deep learning is hard, so the dataset is small and class-imbalanced.",
       "Prior image-based work evaluated only under controlled imaging environments.",
     ],
@@ -389,9 +389,9 @@ export const researchPapers: ResearchStudy[] = [
       "Analyze generalization honestly: where the model succeeds and where real-world noise defeats it.",
     ],
     methodology: [
-      "Dataset collection: 300+ photos taken with three smartphones (two iPhones, one Android) in natural light, manually sorted into Low, Medium, and High turbidity, and resized to 224×224.",
+      "Dataset collection: 300+ photos taken with three smartphones (two iPhones, one Android) in natural light, manually sorted into Low, Medium and High turbidity and resized to 224×224.",
       "Architecture: EfficientNet-B0 backbone pretrained on ImageNet with a custom head (global average pooling + fully connected layer + 3-class softmax); higher-level layers unfrozen for fine-tuning.",
-      "Training: Adam optimizer, categorical cross-entropy loss, class weights to counter imbalance, and a reduced learning rate during fine-tuning.",
+      "Training: Adam optimizer, categorical cross-entropy loss, class weights to counter imbalance and a reduced learning rate during fine-tuning.",
     ],
     models: [
       {
@@ -405,12 +405,12 @@ export const researchPapers: ResearchStudy[] = [
     ],
     dataset: [
       "Custom dataset of 300+ photos taken with three different smartphones (two iPhones, one Android) in uncontrolled outdoor lighting.",
-      "Three classes (Low, Medium, and High turbidity) resized to 224×224.",
+      "Three classes (Low, Medium and High turbidity) resized to 224×224.",
     ],
     implementation: [
       "Images standardized to 224×224 and split by class; class-weighted training to mitigate imbalance.",
       "Partial fine-tuning of the backbone's higher layers with a low learning rate.",
-      "Evaluated with a confusion matrix, per-class precision / recall / F1, and train-versus-validation learning curves.",
+      "Evaluated with a confusion matrix, per-class precision / recall / F1 and train-versus-validation learning curves.",
     ],
     keyFeatures: [
       "Real-world capture protocol across multiple devices and natural-light conditions.",
@@ -424,8 +424,8 @@ export const researchPapers: ResearchStudy[] = [
     ],
     resultNotes: [
       "Validation accuracy fluctuated between roughly 18% and 47% across fine-tuning phases while training accuracy kept climbing, the signature of a small, noisy, imbalanced dataset.",
-      "Predictions skew heavily toward the high-turbidity class, and the model struggles to separate medium from low turbidity.",
-      "Qualitatively, the model reliably recognizes visually cloudy water; most errors trace to reflections, container edges, and lighting artifacts rather than to the water itself.",
+      "Predictions skew heavily toward the high-turbidity class and the model struggles to separate medium from low turbidity.",
+      "Qualitatively, the model reliably recognizes visually cloudy water; most errors trace to reflections, container edges and lighting artifacts rather than to the water itself.",
     ],
     outcome: [
       "A preliminary, low-cost, portable turbidity-assessment approach that demonstrates feasibility and, just as importantly, documents the real-world failure modes.",
@@ -435,11 +435,11 @@ export const researchPapers: ResearchStudy[] = [
     challenges: [
       "Small, imbalanced dataset from a hard-to-control capture environment.",
       "Visual similarity between classes under variable lighting.",
-      "Reflections, shadows, and container edges corrupt the signal.",
+      "Reflections, shadows and container edges corrupt the signal.",
       "Validation instability when fine-tuning a deep network on limited data.",
     ],
     futureWork: [
-      "Augment the dataset substantially across more devices, scenes, and lighting conditions.",
+      "Augment the dataset substantially across more devices, scenes and lighting conditions.",
       "Move from classification to regression-based turbidity estimation.",
       "Investigate physics-informed colour correction to remove lighting and reflection effects.",
     ],
@@ -462,11 +462,11 @@ export const researchPapers: ResearchStudy[] = [
       { value: "5-fold", label: "stratified CV" },
     ],
     overview: [
-      "Toxic and hateful comments are rampant on Bengali social media, and the mental-health toll on adolescents is real. Most existing detection systems optimize accuracy alone and offer no explanation for their verdicts.",
+      "Toxic and hateful comments are rampant on Bengali social media and the mental-health toll on adolescents is real. Most existing detection systems optimize accuracy alone and offer no explanation for their verdicts.",
       "This study fine-tunes BanglaBERT for toxic-comment classification and wraps it in an explainability mechanism (LIME and SHAP) so moderators can see exactly which tokens triggered a flag.",
     ],
     problem: [
-      "Bengali toxicity detection is underserved: the language is low-resource, and informal writing, acronyms, and context-dependent insults defeat keyword rules and classical ML.",
+      "Bengali toxicity detection is underserved: the language is low-resource and informal writing, acronyms and context-dependent insults defeat keyword rules and classical ML.",
       "Transformer models detect toxicity well but act as black boxes, which undermines trust in automated moderation.",
       "Applying both SHAP and LIME to a transformer-based Bangla toxicity framework had rarely been explored.",
     ],
@@ -479,7 +479,7 @@ export const researchPapers: ResearchStudy[] = [
     methodology: [
       "Data: multiple Bengali toxicity corpora compiled into a labeled benchmark for fine-tuning and evaluation.",
       "Model: BanglaBERT, the Bengali member of the BERT family, fine-tuned for sequence classification.",
-      "Training: 5-fold stratified cross-validation with averaged accuracy, F1, and ROC-AUC reported.",
+      "Training: 5-fold stratified cross-validation with averaged accuracy, F1 and ROC-AUC reported.",
       "Explainability: LIME and SHAP both applied to individual predictions to identify important toxic words and validate model behaviour.",
     ],
     models: [
@@ -511,7 +511,7 @@ export const researchPapers: ResearchStudy[] = [
       { value: "0.91", label: "ROC-AUC" },
     ],
     resultNotes: [
-      "Averaged over the five folds, the fine-tuned BanglaBERT reaches 86% accuracy, 87% F1-score, and 0.91 ROC-AUC.",
+      "Averaged over the five folds, the fine-tuned BanglaBERT reaches 86% accuracy, 87% F1-score and 0.91 ROC-AUC.",
       "SHAP and LIME attributions align with toxic keywords, showing the model reasons over the expected linguistic signals rather than spurious cues.",
     ],
     outcome: [
@@ -520,7 +520,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "Hugging Face Transformers", "BanglaBERT", "SHAP", "LIME", "PyTorch", "scikit-learn"],
     challenges: [
-      "Bengali linguistic nuance: context-dependent insults, slang, and transliterated forms.",
+      "Bengali linguistic nuance: context-dependent insults, slang and transliterated forms.",
       "Limited high-quality labeled Bengali toxicity data; augmentation was needed.",
       "Explainability tools are compute-heavy over transformer embeddings.",
     ],

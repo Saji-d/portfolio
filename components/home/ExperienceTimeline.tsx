@@ -12,7 +12,7 @@ const experiences = [
     position: "Full-Stack Developer",
     location: "Clearwater, Florida, USA · Contract · Flexible hours",
     detail:
-      "Building and maintaining front-end and back-end components of web applications, designing server-side logic, APIs, and database integrations, and shipping through code review, testing, and deployment.",
+      "Building and maintaining front-end and back-end components of web applications, designing server-side logic, APIs and database integrations and shipping through code review, testing and deployment.",
     tag: "Contract",
     current: true,
   },
@@ -22,7 +22,7 @@ const experiences = [
     position: "Full-Stack Developer",
     location: "Dubai, UAE · Remote",
     detail:
-      "Developing full-stack web applications for software, automation, and digital transformation projects, from responsive interfaces to the services and data layers behind them.",
+      "Developing full-stack web applications for software, automation and digital transformation projects, from responsive interfaces to the services and data layers behind them.",
     tag: "Present",
     current: true,
   },
@@ -32,7 +32,7 @@ const experiences = [
     position: "Software Developer",
     location: "Dhaka, Bangladesh · On-site",
     detail:
-      "Engineered production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure, and system reliability.",
+      "Engineered production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure and system reliability.",
     tag: "Complete",
     current: false,
   },
@@ -42,7 +42,7 @@ const experiences = [
     position: "Software Engineer Intern",
     location: "Dhaka, Bangladesh · Hybrid",
     detail:
-      "Developed responsive frontend interfaces with HTML5, CSS3, and modern JavaScript (ES6+), integrated them with backend RESTful APIs with robust error handling, and worked in agile, Git-based workflows.",
+      "Developed responsive frontend interfaces with HTML5, CSS3 and modern JavaScript (ES6+), integrated them with backend RESTful APIs with robust error handling and worked in agile, Git-based workflows.",
     tag: "Complete",
     current: false,
   },

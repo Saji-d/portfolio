@@ -48,7 +48,7 @@ export default function WorkGrid() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Search projects"
-            placeholder="Search by title, stack, or tagline…"
+            placeholder="Search by title, stack or tagline…"
             className="w-full rounded-lg border border-line bg-surface py-2.5 pl-10 pr-10 font-mono text-sm text-text-primary placeholder:text-text-muted transition-colors focus:border-accent/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
           />
           {query && (

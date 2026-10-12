@@ -17,8 +17,8 @@ export const timeline: TimelineEntry[] = [
     type: "career",
     current: true,
     points: [
-      "Building front-end and back-end components of web applications, including server-side logic, APIs, and database integrations.",
-      "Working through testing, code review, version control, and deployment to keep applications performant, secure, and reliable.",
+      "Building front-end and back-end components of web applications, including server-side logic, APIs and database integrations.",
+      "Working through testing, code review, version control and deployment to keep applications performant, secure and reliable.",
     ],
   },
   {
@@ -29,7 +29,7 @@ export const timeline: TimelineEntry[] = [
     type: "career",
     current: true,
     points: [
-      "Developing full-stack web applications for software, automation, and digital transformation projects.",
+      "Developing full-stack web applications for software, automation and digital transformation projects.",
     ],
   },
   {
@@ -39,9 +39,9 @@ export const timeline: TimelineEntry[] = [
     location: "Dhaka, Bangladesh · On-site",
     type: "career",
     points: [
-      "Engineering production software across the stack for enterprise finance using Python, FastAPI, PostgreSQL, Redis, and cloud infrastructure.",
-      "Designing and implementing REST APIs, asynchronous and distributed processing, and automated testing suites.",
-      "Collaborating with the engineering team to build scalable services, optimize system reliability, and maintain operational security standards.",
+      "Engineering production software across the stack for enterprise finance using Python, FastAPI, PostgreSQL, Redis and cloud infrastructure.",
+      "Designing and implementing REST APIs, asynchronous and distributed processing and automated testing suites.",
+      "Collaborating with the engineering team to build scalable services, optimize system reliability and maintain operational security standards.",
     ],
   },
   {
@@ -51,7 +51,7 @@ export const timeline: TimelineEntry[] = [
     location: "Dhaka, Bangladesh · Hybrid",
     type: "career",
     points: [
-      "Developed responsive frontend interfaces utilizing HTML5, CSS3, and modern JavaScript (ES6+).",
+      "Developed responsive frontend interfaces utilizing HTML5, CSS3 and modern JavaScript (ES6+).",
       "Integrated frontend layout structures with backend RESTful APIs with robust error handling.",
       "Collaborated in agile development workflows utilizing Git for version control and system deployment.",
     ],

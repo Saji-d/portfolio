@@ -42,7 +42,7 @@ export const projects: Project[] = [
     name: "VoiceCon",
     tagline: "Android-first AI voice calling that converts your voice live on a GPU and delivers it over a normal phone call.",
     summary:
-      "An Android app, a billing-aware backend, an admin panel, a realtime media gateway, and a Seed-VC GPU worker, bridged through Twilio so a call's audio is converted live and delivered over the phone network, failing closed so raw caller audio is never forwarded.",
+      "An Android app, a billing-aware backend, an admin panel, a realtime media gateway and a Seed-VC GPU worker, bridged through Twilio so a call's audio is converted live and delivered over the phone network, failing closed so raw caller audio is never forwarded.",
     role: "Full-stack Engineer",
     status: "ACTIVE",
     category: "Professional",
@@ -55,15 +55,15 @@ export const projects: Project[] = [
     problem: [
       "Changing a voice during a phone call has to happen in real time: the converted audio must reach the recipient with conversational latency, over a normal phone line, from a phone app.",
       "Twilio's media streams return audio only to the call leg they run on, so a single leg that dials the phone network cannot carry converted audio to the recipient.",
-      "Voice conversion is gated: a caller may only speak as a voice profile they are authorized to use, and every conversion minute has to be metered against an active package.",
+      "Voice conversion is gated: a caller may only speak as a voice profile they are authorized to use and every conversion minute has to be metered against an active package.",
     ],
     solution: [
-      "VoiceCon splits the product into a control plane and a media plane. A Fastify + Prisma backend on PostgreSQL owns accounts, voice profiles, packages, credits, and call authorization; a Python gateway handles realtime audio over Twilio Media Streams; and a GPU worker runs Seed-VC inference. The backend never touches audio packets, and the gateway and worker never decide billing or authorization: they ask the backend over HMAC-signed internal APIs.",
-      "Each call is a two-leg bridge. The Android app places a VoIP leg into Twilio, the gateway streams that audio to the GPU worker as PCM, and the converted audio is sent out on a second leg that dials the recipient on the phone network. The recipient's voice returns to the caller as passthrough.",
+      "VoiceCon splits the product into a control plane and a media plane. A Fastify + Prisma backend on PostgreSQL owns accounts, voice profiles, packages, credits and call authorization; a Python gateway handles realtime audio over Twilio Media Streams; and a GPU worker runs Seed-VC inference. The backend never touches audio packets and the gateway and worker never decide billing or authorization: they ask the backend over HMAC-signed internal APIs.",
+      "Each call is a two-leg bridge. The Android app places a VoIP leg into Twilio, the gateway streams that audio to the GPU worker as PCM and the converted audio is sent out on a second leg that dials the recipient on the phone network. The recipient's voice returns to the caller as passthrough.",
       "Conversion fails closed: if the worker errors, both legs end instead of forwarding the caller's raw voice.",
     ],
     contribution: [
-      "I build across the stack: the Kotlin and Jetpack Compose Android app (voice lab, packages, profile and KYC flows), the backend API and its tests, the React admin panel, and the deployment and migration tooling.",
+      "I build across the stack: the Kotlin and Jetpack Compose Android app (voice lab, packages, profile and KYC flows), the backend API and its tests, the React admin panel and the deployment and migration tooling.",
       "I wrote the access rules around conversion (an active package plus callable minutes) and the user-facing messaging that explains why conversion is unavailable, with a shortcut to the packages screen.",
     ],
     architecture: [
@@ -73,7 +73,7 @@ export const projects: Project[] = [
       "                   leg B audio ──▶ Gateway ──▶ leg A   (recipient voice → caller, passthrough)",
       "",
       "Backend (Fastify + Prisma + PostgreSQL): accounts, voice profiles, billing ledger, call authorization",
-      "Admin panel (React + Vite)  ·  HMAC-signed internal APIs between gateway, worker, and backend",
+      "Admin panel (React + Vite)  ·  HMAC-signed internal APIs between gateway, worker and backend",
     ],
     decisions: [
       {
@@ -86,11 +86,11 @@ export const projects: Project[] = [
       },
       {
         title: "PostgreSQL is the only source of truth",
-        body: "Credits and transactions live in the database, and call deadlines are derived from stored timestamps so a reconciler can enforce them even if an in-process timer is lost. Redis was deliberately left out until a second instance needs shared rate limits.",
+        body: "Credits and transactions live in the database and call deadlines are derived from stored timestamps so a reconciler can enforce them even if an in-process timer is lost. Redis was deliberately left out until a second instance needs shared rate limits.",
       },
       {
         title: "Pick the GPU from a benchmark",
-        body: "The RunPod GPU was chosen from a recorded benchmark of candidate cards, and the worker loads the model once at startup so a call never pays model-load latency.",
+        body: "The RunPod GPU was chosen from a recorded benchmark of candidate cards and the worker loads the model once at startup so a call never pays model-load latency.",
       },
     ],
     highlights: [
@@ -117,7 +117,7 @@ Recipient ◀─PSTN── Twilio leg B ◀──<Connect><Stream>────�
   {
     slug: "invoicepilot",
     name: "InvoicePilot",
-    tagline: "AI invoice platform that extracts, validates, and flags duplicate or anomalous invoices before they reach finance teams.",
+    tagline: "AI invoice platform that extracts, validates and flags duplicate or anomalous invoices before they reach finance teams.",
     summary:
       "A team-built, audit-ready invoice operations platform: capture → OCR extraction → normalization → validation → duplicate and fraud checks → human approval → a cryptographic on-chain seal of the exact uploaded bytes → billing sync, end to end for finance teams.",
     role: "AI/ML Engineer · AI extraction service",
@@ -128,24 +128,24 @@ Recipient ◀─PSTN── Twilio leg B ◀──<Connect><Stream>────�
     cover: "/images/thumbnails/invoicepilot-cover-3.webp",
     caseStudy: true,
     stack: ["FastAPI", "Python", "Mindee OCR", "PostgreSQL", "Redis Streams", "Cloudflare R2"],
-    featuredTagline: "AI-powered invoice platform that extracts data with OCR, validates and normalizes it, and flags duplicates, fraud, and anomalies before invoices reach finance teams for approval.",
+    featuredTagline: "AI-powered invoice platform that extracts data with OCR, validates and normalizes it and flags duplicates, fraud and anomalies before invoices reach finance teams for approval.",
     problem: [
-      "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders, and hunting for duplicates, an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
-      "Duplicate payments and fraud slip through because there is no structured audit trail, and any claim that an invoice was processed rests on someone's word.",
+      "Bookkeeping firms process invoices by hand: transcribing totals, matching purchase orders and hunting for duplicates, an error-prone paper trail that takes hours and leaves no proof of what was actually done.",
+      "Duplicate payments and fraud slip through because there is no structured audit trail and any claim that an invoice was processed rests on someone's word.",
       "Generic extraction tools pull fields but cannot vouch that the extracted data matches the file, so automation stops before approval, exactly where the hours get saved.",
     ],
     solution: [
-      "InvoicePilot is a team-built platform for audit-ready invoice operations. A React frontend handles upload, extraction review, and approval; a Fastify API coordinates the workflow; the FastAPI invoice-ai-service performs OCR extraction, normalization, and validation; BullMQ workers run duplicate checks, fraud checks, and the on-chain seal; and a SolidInvoice sync worker hands approved invoices to billing. Auth is Supabase; the database is PostgreSQL with row-level security.",
-      "One end-to-end pipeline runs per document: capture → extraction → normalization → duplicate, business, and fraud checks → human approval → on-chain cryptographic seal → accounting sync. A sha-256 of the exact uploaded bytes is the document's identity, re-verified by the AI service, so a seal can never cover a file that doesn't match its hash.",
+      "InvoicePilot is a team-built platform for audit-ready invoice operations. A React frontend handles upload, extraction review and approval; a Fastify API coordinates the workflow; the FastAPI invoice-ai-service performs OCR extraction, normalization and validation; BullMQ workers run duplicate checks, fraud checks and the on-chain seal; and a SolidInvoice sync worker hands approved invoices to billing. Auth is Supabase; the database is PostgreSQL with row-level security.",
+      "One end-to-end pipeline runs per document: capture → extraction → normalization → duplicate, business and fraud checks → human approval → on-chain cryptographic seal → accounting sync. A sha-256 of the exact uploaded bytes is the document's identity, re-verified by the AI service, so a seal can never cover a file that doesn't match its hash.",
       "OCR and sealing are deliberately one pipeline: what the OCR extracts is what gets sealed on-chain. Two ingest routes (sync and async) fold onto the same invoices row through a single shared, frozen mapper, so the same document always produces the same on-chain hash.",
       "Async work runs on BullMQ queues (extraction, duplicate-check, anomaly-check, blockchain-seal, solidinvoice-sync) while PostgreSQL row-level security FORCE policies keep every tenant's data isolated at the database, not the ORM.",
     ],
     contribution: [
       "I built the invoice-ai-service, the platform's extraction backbone: a FastAPI pipeline that turns an uploaded invoice into a structured, validated record: R2 ingest → OCR → transform → normalize → validate → persist.",
-      "Designed the provider-agnostic OCR layer (base provider plus the Mindee V2 adapter; teammates later added a local Tesseract provider) so the extraction engine can swap OCR vendors without touching app code, and integrated the OCR path with Cloudflare R2 storage.",
+      "Designed the provider-agnostic OCR layer (base provider plus the Mindee V2 adapter; teammates later added a local Tesseract provider) so the extraction engine can swap OCR vendors without touching app code and integrated the OCR path with Cloudflare R2 storage.",
       "Authored the structured invoice schema and the normalization/transformer services (money normalization, field coercion), including the {value, confidence, present} field contract the frontend's extraction review consumes.",
-      "Implemented the validation layer and the 12-rule business scoring (empty invoice, non-positive totals, date/currency mismatches, OCR-confidence floors, duplicate line items, and more).",
-      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date) and the fraud rule set: 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches, and repeated-volume patterns once enough history exists.",
+      "Implemented the validation layer and the 12-rule business scoring (empty invoice, non-positive totals, date/currency mismatches, OCR-confidence floors, duplicate line items and more).",
+      "Implemented duplicate detection (exact match on normalized vendor + invoice number + date) and the fraud rule set: 9 historical/statistical rules with risk levels that flag amount spikes, invoice-number/counterpart mismatches and repeated-volume patterns once enough history exists.",
       "My invoice-ai-service history was merged into the team monorepo and continues as the extraction backbone; the rest of the stack (frontend, API, worker, contracts, billing sync) was built by teammates.",
     ],
     architecture: [
@@ -172,7 +172,7 @@ Recipient ◀─PSTN── Twilio leg B ◀──<Connect><Stream>────�
     decisions: [
       {
         title: "Hash-only on-chain (privacy by design) (team)",
-        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. The contract stores only {recordHash, recordType, sealedAt, sealedBy}, never amounts, PII, or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. The contract stores only {recordHash, recordType, sealedAt, sealedBy}, never amounts, PII or vendor data. Each hash is sha-256 over RFC 8785 (JCS) canonical JSON (NFC-normalized, money in integer minor units) tagged with a versioned domain string, so a document can be verified without any sensitive data leaving its owner's control.",
       },
       {
         title: "The frozen anti-fabrication mapper (team)",
@@ -180,11 +180,11 @@ Recipient ◀─PSTN── Twilio leg B ◀──<Connect><Stream>────�
       },
       {
         title: "RLS FORCE + service-role split (team)",
-        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. Tenant isolation is enforced at the database, not the ORM. The API sets per-request GUCs, the worker connects with app.current_role='service' under a NOBYPASSRLS production role, and FORCE ROW LEVEL SECURITY keeps reads tenant-scoped however the query is written.",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. Tenant isolation is enforced at the database, not the ORM. The API sets per-request GUCs, the worker connects with app.current_role='service' under a NOBYPASSRLS production role and FORCE ROW LEVEL SECURITY keeps reads tenant-scoped however the query is written.",
       },
       {
         title: "AES-256-GCM for PII at rest (team)",
-        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized, and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext. The rest of the system never sees it.",
+        body: "Built by my teammates on the platform side; my AI service supplies the fields it seals. Vendor bank details and firm tax IDs are encrypted field-level with aes-256-gcm, stored hex-serialized and tied to a referenced KMS key alias. Decryption happens only where a route genuinely needs the plaintext. The rest of the system never sees it.",
       },
       {
         title: "Versioned, frozen approval hashes (team)",
@@ -273,9 +273,9 @@ const txHash = await walletClient.writeContract({
   {
     slug: "fumak-inventory",
     name: "FUMAK Inventory",
-    tagline: "Inventory and POS system for a real retail shop: a phone scans barcodes, a web app handles stock, sales, and analytics.",
+    tagline: "Inventory and POS system for a real retail shop: a phone scans barcodes, a web app handles stock, sales and analytics.",
     summary:
-      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales, and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",
+      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",
     role: "Full-stack Engineer",
     status: "ACTIVE",
     category: "Professional",
@@ -286,22 +286,22 @@ const txHash = await walletClient.writeContract({
     github: "https://github.com/Saji-d/fumak-inventory",
     demo: "https://fumak-inventory.vercel.app/",
     stack: ["Kotlin", "Jetpack Compose", "Next.js", "Prisma", "Neon PostgreSQL", "CameraX", "ML Kit", "Cloudflare R2"],
-    featuredTagline: "Inventory and POS system for a real retail shop: a phone barcode scanner feeds a web app that manages products, stock, sales, and revenue analytics over the local network.",
+    featuredTagline: "Inventory and POS system for a real retail shop: a phone barcode scanner feeds a web app that manages products, stock, sales and revenue analytics over the local network.",
     problem: [
-      "A single-shop retail business kept inventory and revenue on paper and in memory: stock counts drifted, and nobody could say how much revenue a given period actually produced.",
+      "A single-shop retail business kept inventory and revenue on paper and in memory: stock counts drifted and nobody could say how much revenue a given period actually produced.",
       "The products already carry manufacturer barcodes, so generating new labels was never the answer: the shop just had no way to read those barcodes at the counter and tie a scan to a stock count or a sale.",
       "A general-purpose POS or accounting suite was the wrong size of solution: the shop needed a narrow inventory + point-of-sale companion where a phone scans while a desktop or tablet runs the shop, without adopting a full accounting system.",
     ],
     solution: [
-      "The system is two-part, talking over the shop's local network. The Android app is a thin barcode-scanner remote: CameraX + Google ML Kit decode barcodes on-device, and the app POSTs each value to the desktop web app, which holds no database of its own.",
-      "The Next.js web app is the actual inventory, POS, and analytics application. It owns all data in a Neon PostgreSQL database (via Prisma), stores product photos in Cloudflare R2, and is where a staff member runs the shop from a browser while a phone on the counter feeds it scanned barcodes in real time.",
-      "The product catalog covers name, category, color, size/variant, buying and selling prices, stock, barcode, and photo. Every stock change (add, remove, adjust-to-counted-value, and automatic deductions from a sale) is written to a full inventory-transaction audit log with the resulting stock level snapshotted on each entry.",
-      "The POS checkout builds a multi-item cart (with per-line discounts), computes total / amount due / change live, then completes in one atomic database transaction: sale header + line items inserted, stock decremented, and a SALE inventory transaction logged per item. Dashboard KPIs and period-filtered revenue analytics (Today / Month / 3M / 6M / Year / custom) aggregate over the same ledger.",
+      "The system is two-part, talking over the shop's local network. The Android app is a thin barcode-scanner remote: CameraX + Google ML Kit decode barcodes on-device and the app POSTs each value to the desktop web app, which holds no database of its own.",
+      "The Next.js web app is the actual inventory, POS and analytics application. It owns all data in a Neon PostgreSQL database (via Prisma), stores product photos in Cloudflare R2 and is where a staff member runs the shop from a browser while a phone on the counter feeds it scanned barcodes in real time.",
+      "The product catalog covers name, category, color, size/variant, buying and selling prices, stock, barcode and photo. Every stock change (add, remove, adjust-to-counted-value and automatic deductions from a sale) is written to a full inventory-transaction audit log with the resulting stock level snapshotted on each entry.",
+      "The POS checkout builds a multi-item cart (with per-line discounts), computes total / amount due / change live, then completes in one atomic database transaction: sale header + line items inserted, stock decremented and a SALE inventory transaction logged per item. Dashboard KPIs and period-filtered revenue analytics (Today / Month / 3M / 6M / Year / custom) aggregate over the same ledger.",
     ],
     contribution: [
       "I designed and built the system end-to-end as the sole developer: the Android scanner remote (CameraX + ML Kit on-device decoding, saved desktop connection profiles, LAN heartbeat) and the Next.js web app (Prisma schema, inventory audit log, atomic POS checkout, dashboard and revenue analytics).",
       "I owned the LAN integration contract between the two apps: the /api/scanner/events short-polling feed that turns a phone scan into a live product lookup at the counter, including the connected/disconnected heartbeat state shown in the POS.",
-      "I defined the data model (products, inventory transactions, sales, sale items, settings) with money stored as integer poisha, and the checkout/analytics logic over it.",
+      "I defined the data model (products, inventory transactions, sales, sale items, settings) with money stored as integer poisha and the checkout/analytics logic over it.",
     ],
     architecture: [
       "┌──────────────────────────┐      LAN Wi-Fi (HTTP POST)      ┌─────────────────────────────────┐",
@@ -321,15 +321,15 @@ const txHash = await walletClient.writeContract({
     decisions: [
       {
         title: "Data lives in the web app, not the phone",
-        body: "The scanner is deliberately stateless: it only decodes a barcode and POSTs it to the desktop's LAN IP and port. All business logic, validation, and persistence live in the Next.js API routes, so the phone never touches the database or object storage directly.",
+        body: "The scanner is deliberately stateless: it only decodes a barcode and POSTs it to the desktop's LAN IP and port. All business logic, validation and persistence live in the Next.js API routes, so the phone never touches the database or object storage directly.",
       },
       {
         title: "Stock is an audit ledger, not a number",
-        body: "Every stock-affecting event (ADD, REMOVE, ADJUST, or the automatic SALE deduction) is an InventoryTransaction row with the resulting stock level snapshotted on each entry, so the current count is provable from history rather than a mutable field.",
+        body: "Every stock-affecting event (ADD, REMOVE, ADJUST or the automatic SALE deduction) is an InventoryTransaction row with the resulting stock level snapshotted on each entry, so the current count is provable from history rather than a mutable field.",
       },
       {
         title: "Atomic checkout",
-        body: "Completing a sale inserts the header and line items, decrements stock, and logs the SALE inventory transactions in a single database transaction. Prices are snapshotted at sale time, so historical gross-profit figures stay correct even after a product's prices later change.",
+        body: "Completing a sale inserts the header and line items, decrements stock and logs the SALE inventory transactions in a single database transaction. Prices are snapshotted at sale time, so historical gross-profit figures stay correct even after a product's prices later change.",
       },
       {
         title: "Integer poisha, never floats",
@@ -405,7 +405,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     name: "CaseVault",
     tagline: "Legal research workspace for Bangladeshi law: relevance-ranked search over statutes and judgements, with AI summaries planned.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results, and read in a document viewer whose AI tabs (summaries, citations) are Phase 2 placeholders, built around 'verify, don't trust AI.'",
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results and read in a document viewer whose AI tabs (summaries, citations) are Phase 2 placeholders, built around 'verify, don't trust AI.'",
     role: "Full-Stack / AI Engineer",
     status: "ACTIVE",
     category: "Web",
@@ -418,12 +418,12 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     stack: ["FastAPI", "Python", "Next.js", "TypeScript", "SQLAlchemy", "Tailwind CSS", "SQLite", "Pydantic", "Alembic", "Framer Motion"],
     problem: [
       "Bangladeshi law firms work with thousands of handwritten and scanned documents, losing annotations and struggling to find relevant precedents.",
-      "Generic AI chatbots hallucinate citations, and firms cannot upload confidential client files to public AI tools without risking privacy.",
+      "Generic AI chatbots hallucinate citations and firms cannot upload confidential client files to public AI tools without risking privacy.",
     ],
     solution: [
       "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related) that are Phase 2 placeholders, query highlighting, and an XSS-safe hand-rolled markdown renderer.",
-      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings, and sub-graph context injected into a reranker, targeting ~790ms to first token.",
+      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related) that are Phase 2 placeholders, query highlighting and an XSS-safe hand-rolled markdown renderer.",
+      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings and sub-graph context injected into a reranker, targeting ~790ms to first token.",
     ],
     architecture: [
       "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
@@ -447,7 +447,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       },
       {
         title: "Phase-2 placeholders designed up front",
-        body: "Routes like /admin, /chat, and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
+        body: "Routes like /admin, /chat and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
       },
     ],
     highlights: [
@@ -480,7 +480,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     name: "LedgerTurf",
     tagline: "Turf booking platform where players find grounds on a Google Map and owners manage slots with overlap checks.",
     summary:
-      "Turf booking for Dhaka: players find grounds on a Google Map, owners publish slots, and every reservation is checked for overlaps, live on Vercel.",
+      "Turf booking for Dhaka: players find grounds on a Google Map, owners publish slots and every reservation is checked for overlaps, live on Vercel.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -492,12 +492,12 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     demo: "https://ledgerturf.vercel.app",
     stack: ["React", "Express", "Node.js", "MongoDB Atlas", "Redux Toolkit", "Tailwind CSS", "Google Maps", "Vite", "Mongoose", "Cloudinary", "JWT"],
     problem: [
-      "Turf owners in Dhaka booked slots over phone and WhatsApp: double-booking was routine, availability was never current, and players had no way to compare grounds.",
+      "Turf owners in Dhaka booked slots over phone and WhatsApp: double-booking was routine, availability was never current and players had no way to compare grounds.",
       "Timezones and 24-hour clock confusion made 'is this slot free right now' a genuinely hard query to answer correctly.",
     ],
     solution: [
-      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on Google Maps (owners pin their location with a map picker), locations carry a GeoJSON 2dsphere index (the radius geo search is currently disabled), owners publish and manage slots, and admins get full visibility, with JWT auth and role-based access at every layer.",
-      "Bookings are checked for overlapping slots before a Mongoose transaction writes them, and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly, so 'available now' means the same thing to everyone.",
+      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on Google Maps (owners pin their location with a map picker), locations carry a GeoJSON 2dsphere index (the radius geo search is currently disabled), owners publish and manage slots and admins get full visibility, with JWT auth and role-based access at every layer.",
+      "Bookings are checked for overlapping slots before a Mongoose transaction writes them and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly, so 'available now' means the same thing to everyone.",
       "SPA deep links are handled with Vercel rewrite rules so refreshing /turf/:id never 404s.",
     ],
     architecture: [
@@ -521,7 +521,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       },
       {
         title: "Npm workspaces monorepo",
-        body: "frontend, backend, and an api-shim share the repo so type shapes stay in sync while each package deploys independently to Vercel.",
+        body: "frontend, backend and an api-shim share the repo so type shapes stay in sync while each package deploys independently to Vercel.",
       },
     ],
     highlights: [
@@ -556,9 +556,9 @@ try {
   {
     slug: "zenji-storefront",
     name: "ZENJI Storefront",
-    tagline: "Anime streetwear storefront with quick view, a cart drawer with shipping meter, a saved wishlist, and a campaign-style homepage.",
+    tagline: "Anime streetwear storefront with quick view, a cart drawer with shipping meter, a saved wishlist and a campaign-style homepage.",
     summary:
-      "A limited-drop shopping experience on React 19, strict TypeScript, and Vite: ten designs with quick view and size picking, a cart drawer and page with a free-shipping meter, a persisted wishlist, and a Vitest suite plus axe-core accessibility scans. No backend, no payments.",
+      "A limited-drop shopping experience on React 19, strict TypeScript and Vite: ten designs with quick view and size picking, a cart drawer and page with a free-shipping meter, a persisted wishlist and a Vitest suite plus axe-core accessibility scans. No backend, no payments.",
     role: "Frontend Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -572,9 +572,9 @@ try {
   {
     slug: "doctor-tracker",
     name: "Doctor Tracker",
-    tagline: "Admin console for managing doctors and patients, with search, filters, pagination, and an analytics dashboard.",
+    tagline: "Admin console for managing doctors and patients, with search, filters, pagination and an analytics dashboard.",
     summary:
-      "A Next.js frontend (TanStack Query) over a TypeScript Express API on MongoDB Atlas: doctor and patient CRUD, URL-synced search, filters and pagination, patient reassignment, a Recharts analytics dashboard, rate-limited JWT cookie auth, and Jest + Supertest integration tests. Built for a full-stack take-home task.",
+      "A Next.js frontend (TanStack Query) over a TypeScript Express API on MongoDB Atlas: doctor and patient CRUD, URL-synced search, filters and pagination, patient reassignment, a Recharts analytics dashboard, rate-limited JWT cookie auth and Jest + Supertest integration tests. Built for a full-stack take-home task.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Mini Project",
@@ -590,7 +590,7 @@ try {
     name: "ByteSpace",
     tagline: "Pixel-faithful recreation of a course-platform landing page from Figma, with live course search and login pages.",
     summary:
-      "A responsive Next.js recreation of an online-learning landing page: hero with live course search, topic-chip filtering driven by shareable URL params, course and category grids, testimonials, and bonus login and register pages, statically prerendered with Tailwind CSS v4 design tokens.",
+      "A responsive Next.js recreation of an online-learning landing page: hero with live course search, topic-chip filtering driven by shareable URL params, course and category grids, testimonials and bonus login and register pages, statically prerendered with Tailwind CSS v4 design tokens.",
     role: "Frontend Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -604,9 +604,9 @@ try {
   {
     slug: "mini-kanban-board",
     name: "Mini Kanban Board",
-    tagline: "Multi-user Kanban board with owner, editor, and viewer roles and drag-and-drop task ordering, built as an assessment.",
+    tagline: "Multi-user Kanban board with owner, editor and viewer roles and drag-and-drop task ordering, built as an assessment.",
     summary:
-      "A NestJS + Prisma + PostgreSQL API with a Next.js 14 frontend: boards shared under a three-role RBAC model enforced at the route-guard and service layers, drag-and-drop task reordering with float-midpoint positions and row-locked moves, and 40 unit + e2e tests.",
+      "A NestJS + Prisma + PostgreSQL API with a Next.js 14 frontend: boards shared under a three-role RBAC model enforced at the route-guard and service layers, drag-and-drop task reordering with float-midpoint positions and row-locked moves and 40 unit + e2e tests.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Mini Project",
@@ -620,7 +620,7 @@ try {
   {
     slug: "face-recognition-system",
     name: "Face Recognition System",
-    tagline: "Face recognition with OpenCV: Haar cascade detection, LBPH training per identity, and recognition of known faces.",
+    tagline: "Face recognition with OpenCV: Haar cascade detection, LBPH training per identity and recognition of known faces.",
     summary:
       "A complete face identification pipeline: detect faces with a Haar cascade, train an LBPH recognizer on a known set, then identify people in real time, from dataset to inference in one reproducible notebook.",
     role: "CV Engineer",
@@ -668,7 +668,7 @@ try {
     name: "City Simulator",
     tagline: "Animated OpenGL city scene by a team of three; I built the animation: day and night, rain and snow, traffic lights, vehicles.",
     summary:
-      "An animated 2D OpenGL + GLUT city scene from a 3-person graphics course project. My part was the animation: day/night toggle, particle rain and snow, a keyboard-driven traffic light that stops the vehicles, and moving cars, a bus, pedestrians, birds and clouds.",
+      "An animated 2D OpenGL + GLUT city scene from a 3-person graphics course project. My part was the animation: day/night toggle, particle rain and snow, a keyboard-driven traffic light that stops the vehicles and moving cars, a bus, pedestrians, birds and clouds.",
     role: "Animation lead (team of 3)",
     status: "COMPLETE",
     category: "Graphics",
@@ -678,7 +678,7 @@ try {
     github: "https://github.com/Saji-d/3d-city-simulation-opengl",
     stack: ["C++", "OpenGL", "GLUT"],
     problem: [
-      "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline (geometry, lighting, and interaction) rather than a single static scene.",
+      "Computer graphics coursework needed to demonstrate mastery of the full graphics pipeline (geometry, lighting and interaction) rather than a single static scene.",
     ],
     solution: [
       "The scene draws roads, buildings and vehicles with legacy immediate-mode OpenGL on a 2D orthographic view. A day/night toggle (n/d keys) switches object colors and headlights; weather modes run particle systems for rain and snow; and a red/yellow/green traffic light, switched by keyboard, makes the bus and car stop at the crosswalk.",
@@ -730,9 +730,9 @@ for (auto &p : particles) {
   {
     slug: "my-wedding-invitation",
     name: "My Wedding Invitation",
-    tagline: "Cinematic wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps, designed and deployed live.",
+    tagline: "Cinematic wedding invitation with RSVP, live countdown, polaroid gallery and venue maps, designed and deployed live.",
     summary:
-      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery, and venue maps, designed from scratch and deployed live.",
+      "A cinematic digital wedding invitation with RSVP, live countdown, polaroid gallery and venue maps, designed from scratch and deployed live.",
     role: "Creative Developer",
     status: "COMPLETE",
     category: "Creative",
@@ -746,7 +746,7 @@ for (auto &p : particles) {
   {
     slug: "codingvibes-java-gui",
     name: "CodingVibes",
-    tagline: "Java Swing course storefront with admin and user logins, course browsing, and a cart, storing accounts in flat files.",
+    tagline: "Java Swing course storefront with admin and user logins, course browsing and a cart, storing accounts in flat files.",
     summary:
       "A desktop Java Swing storefront for programming courses: admin and user login and signup, course browsing and a cart, with accounts persisted to flat text files through plain file I/O.",
     role: "Desktop Developer",
@@ -761,9 +761,9 @@ for (auto &p : particles) {
   {
     slug: "spark-powerhouse-gym-csharp",
     name: "Spark Powerhouse",
-    tagline: "Windows gym management app separating member and admin workflows for memberships, payments, and daily records.",
+    tagline: "Windows gym management app separating member and admin workflows for memberships, payments and daily records.",
     summary:
-      "A Windows gym-management app that separates member and admin workflows: memberships, payments, and daily records kept in one role-aware system.",
+      "A Windows gym-management app that separates member and admin workflows: memberships, payments and daily records kept in one role-aware system.",
     role: "Desktop Developer",
     status: "COMPLETE",
     category: "Desktop",
@@ -776,9 +776,9 @@ for (auto &p : particles) {
   {
     slug: "employee-family-registry",
     name: "Employee & Family Registry",
-    tagline: "Employee registry with spouse and children records, fast search, and one-click PDF exports from an ASP.NET Core API.",
+    tagline: "Employee registry with spouse and children records, fast search and one-click PDF exports from an ASP.NET Core API.",
     summary:
-      "An employee registry with spouse and children records, case-insensitive search across name, NID and department, and QuestPDF-generated CV and list exports, one ASP.NET Core API serving a React workspace.",
+      "An employee registry with spouse and children records, case-insensitive search across name, NID and department and QuestPDF-generated CV and list exports, one ASP.NET Core API serving a React workspace.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -791,9 +791,9 @@ for (auto &p : particles) {
   {
     slug: "online-bookstore-database-design",
     name: "Bookstore Database",
-    tagline: "Online bookstore database designed from UNF to 3NF, with an ER diagram, Oracle SQL schema, and catalog, order, and payment queries.",
+    tagline: "Online bookstore database designed from UNF to 3NF, with an ER diagram, Oracle SQL schema and catalog, order and payment queries.",
     summary:
-      "A relational design for an online bookstore, worked from UNF through 3NF, with an ER diagram, the Oracle SQL schema, and the queries that run the catalog, orders and payments.",
+      "A relational design for an online bookstore, worked from UNF through 3NF, with an ER diagram, the Oracle SQL schema and the queries that run the catalog, orders and payments.",
     role: "Database Designer",
     status: "COMPLETE",
     category: "Database",

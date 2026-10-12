@@ -1,6 +1,6 @@
 export const resume = {
   about:
-    "Full-Stack Developer and AI engineer building production web, mobile, and voice-AI systems for teams across Dhaka, Dubai, and the US. Adept at turning complex architectural problems into reliable, production-ready code.",
+    "Full-Stack Developer and AI engineer building production web, mobile and voice-AI systems for teams across Dhaka, Dubai and the US. Adept at turning complex architectural problems into reliable, production-ready code.",
   experience: [
     {
       org: "RemoteIntegrity LLC",
@@ -134,7 +134,7 @@ export const resume = {
     points: [
       "Engineered a dual-path hybrid ensemble fusing gradient boosting classifiers and deep neural networks.",
       "Achieved 95.20% accuracy and 0.982 ROC-AUC on a held-out test set from 2,237 student survey responses.",
-      "Identified mental fatigue, stress frequency, and sleep quality as top predictors of cognitive-impairment risk.",
+      "Identified mental fatigue, stress frequency and sleep quality as top predictors of cognitive-impairment risk.",
     ],
   },
   certifications: [
@@ -150,7 +150,7 @@ export const resume = {
   ],
   honors: [
     { name: "5× Dean's Award Recipient & AIUB Merit Scholar", detail: "Awarded 70% tuition waiver for academic excellence alongside 5 consecutive Dean's Award recognitions.", period: "2022 - 2026" },
-    { name: "The Duke of Edinburgh's Bronze Award", detail: "Completed rigorous requirements encompassing community service, skill development, and expedition tasks.", period: "2025 - 2026" },
+    { name: "The Duke of Edinburgh's Bronze Award", detail: "Completed rigorous requirements encompassing community service, skill development and expedition tasks.", period: "2025 - 2026" },
   ],
   leadership: [
     { role: "Student Activity Coordinator", org: "Space Innovation Camp", period: "2022 - 2025", detail: "Led robotics and UAV engineering workshops mentoring over 500 students." },
