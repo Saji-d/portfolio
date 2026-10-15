@@ -39,8 +39,8 @@ export const resume = {
       link: null,
       stack: "Kotlin, Jetpack Compose, Fastify, Prisma, PostgreSQL, Python, PyTorch, Twilio",
       points: [
-        "Built the Kotlin, Jetpack Compose Android app and Fastify, Prisma API for realtime AI voice calling.",
-        "Bridged Twilio call legs through a Python gateway to a Seed-VC GPU worker, ending the call on any error so raw caller audio is never forwarded.",
+        "Built the Kotlin, Jetpack Compose Android app, Fastify, Prisma billing API and React admin panel for realtime AI voice calling.",
+        "Bridged Twilio call legs through a Python gateway to a Seed-VC GPU worker; any worker error ends the call, so raw audio is never forwarded.",
       ],
     },
     {
