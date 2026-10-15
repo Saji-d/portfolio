@@ -36,7 +36,7 @@ export const resume = {
   projects: [
     {
       name: "VoiceCon",
-      link: null,
+      link: "https://voicecon.app/",
       stack: "Kotlin, Jetpack Compose, Fastify, Prisma, PostgreSQL, Python, PyTorch, Twilio",
       points: [
         "Built the Kotlin Android app, Fastify billing API and React admin panel for realtime AI voice calling.",
