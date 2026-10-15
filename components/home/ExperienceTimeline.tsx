@@ -17,16 +17,6 @@ const experiences = [
     current: true,
   },
   {
-    period: "Oct 2026 - Present",
-    company: "2BitSoft",
-    position: "Full-Stack Developer",
-    location: "Dubai, UAE · Remote",
-    detail:
-      "Developing full-stack web applications for software, automation and digital transformation projects, from responsive interfaces to the services and data layers behind them.",
-    tag: "Present",
-    current: true,
-  },
-  {
     period: "May 2026 - Sep 2026",
     company: "Ledgercross",
     position: "Software Developer",

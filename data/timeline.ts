@@ -22,17 +22,6 @@ export const timeline: TimelineEntry[] = [
     ],
   },
   {
-    period: "Oct 2026 - Present",
-    title: "Full-Stack Developer",
-    org: "2BitSoft",
-    location: "Dubai, UAE · Remote",
-    type: "career",
-    current: true,
-    points: [
-      "Developing full-stack web applications for software, automation and digital transformation projects.",
-    ],
-  },
-  {
     period: "May 2026 - Sep 2026",
     title: "Software Developer",
     org: "Ledgercross",

@@ -147,7 +147,7 @@ export default function AboutSection() {
               <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-col">
-                  <span>DHAKA, BANGLADESH · REMOTE TO DUBAI + USA</span>
+                  <span>DHAKA, BANGLADESH · REMOTE TO USA</span>
                   <span className="text-text-secondary">{SITE.timezone}</span>
                 </span>
               </motion.li>

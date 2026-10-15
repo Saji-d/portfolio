@@ -1,6 +1,6 @@
 export const resume = {
   about:
-    "Full-Stack Developer and AI engineer building production web, mobile and voice-AI systems for teams across Dhaka, Dubai and the US. Adept at turning complex architectural problems into reliable, production-ready code.",
+    "Full-Stack Developer and AI engineer building production web, mobile and voice-AI systems for teams across Dhaka and the US. Adept at turning complex architectural problems into reliable, production-ready code.",
   experience: [
     {
       org: "RemoteIntegrity LLC",
@@ -10,16 +10,6 @@ export const resume = {
       points: [
         "Build front-end and back-end components, APIs and database integrations for client web applications.",
         "Ship through code review, testing and deployment on agreed timelines.",
-      ],
-    },
-    {
-      org: "2BitSoft",
-      location: "Dubai, UAE · Remote",
-      role: "Full-Stack Developer",
-      period: "Oct 2026 - Present",
-      points: [
-        "Develop full-stack web applications for software, automation and digital transformation projects.",
-        "Delivered VoiceCon's credit-based billing API, React admin panel and RunPod GPU deployment tooling.",
       ],
     },
     {
@@ -50,7 +40,7 @@ export const resume = {
       stack: "Kotlin, Jetpack Compose, Fastify, Prisma, PostgreSQL, Python, PyTorch, Twilio",
       points: [
         "Built the Kotlin, Jetpack Compose Android app and Fastify, Prisma API for realtime AI voice calling.",
-        "Bridged Twilio call legs through a Python gateway to a Seed-VC GPU worker, failing closed on errors.",
+        "Bridged Twilio call legs through a Python gateway to a Seed-VC GPU worker, ending the call on any error so raw caller audio is never forwarded.",
       ],
     },
     {
