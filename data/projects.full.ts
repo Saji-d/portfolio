@@ -42,30 +42,33 @@ export const projects: Project[] = [
     name: "VoiceCon",
     tagline: "Android-first AI voice calling that converts your voice live on a GPU and delivers it over a normal phone call.",
     summary:
-      "An Android app, a billing-aware backend, an admin panel, a realtime media gateway and a Seed-VC GPU worker, bridged through Twilio so a call's audio is converted live and delivered over the phone network, failing closed so raw caller audio is never forwarded.",
+      "An Android app, a billing-aware backend, an admin panel, a realtime media gateway and a Seed-VC GPU worker, bridged through Twilio so a call's audio is converted live and delivered over the phone network. If conversion ever fails the call ends, so the caller's raw voice is never sent to the recipient.",
     role: "Full-stack Engineer",
     status: "ACTIVE",
     category: "Professional",
-    badges: ["Production"],
+    badges: ["Professional"],
     featured: true,
     cover: "/images/thumbnails/voicecon-cover-3.webp",
     demo: "https://voicecon.app/",
     caseStudy: true,
-    stack: ["Kotlin", "Jetpack Compose", "Fastify", "Prisma", "PostgreSQL", "Twilio", "Python", "PyTorch", "Seed-VC", "React", "Vite", "Hilt", "Retrofit"],
-    featuredTagline: "Android-first AI voice calling: live speech is converted on a GPU into an authorized voice and delivered over a normal phone call, via a Twilio bridge that fails closed.",
+    stack: ["Kotlin", "Jetpack Compose", "Fastify", "Prisma", "PostgreSQL", "Twilio", "Python", "PyTorch", "Seed-VC", "React", "Vite", "Hilt", "Retrofit", "RunPod"],
+    featuredTagline: "Android-first AI voice calling: live speech is converted on a GPU into an authorized voice and delivered over a normal phone call, via a Twilio bridge that ends the call rather than ever forwarding raw audio.",
     problem: [
       "Changing a voice during a phone call has to happen in real time: the converted audio must reach the recipient with conversational latency, over a normal phone line, from a phone app.",
       "Twilio's media streams return audio only to the call leg they run on, so a single leg that dials the phone network cannot carry converted audio to the recipient.",
-      "Voice conversion is gated: a caller may only speak as a voice profile they are authorized to use and every conversion minute has to be metered against an active package.",
+      "Voice conversion is sensitive. A caller may only speak as a voice profile they are authorized to use, every conversion minute has to be metered against a package or credits, and a failure must never expose the caller's real voice to the other person.",
+      "Realtime GPU inference is expensive and bursty, so the system has to be measured, not guessed: which card, how many diffusion steps, how large a block and how much delay is acceptable.",
     ],
     solution: [
-      "VoiceCon splits the product into a control plane and a media plane. A Fastify + Prisma backend on PostgreSQL owns accounts, voice profiles, packages, credits and call authorization; a Python gateway handles realtime audio over Twilio Media Streams; and a GPU worker runs Seed-VC inference. The backend never touches audio packets and the gateway and worker never decide billing or authorization: they ask the backend over HMAC-signed internal APIs.",
-      "Each call is a two-leg bridge. The Android app places a VoIP leg into Twilio, the gateway streams that audio to the GPU worker as PCM and the converted audio is sent out on a second leg that dials the recipient on the phone network. The recipient's voice returns to the caller as passthrough.",
-      "Conversion fails closed: if the worker errors, both legs end instead of forwarding the caller's raw voice.",
+      "VoiceCon splits the product into a control plane and a media plane. A Fastify and Prisma backend on PostgreSQL owns accounts, KYC, voice profiles, packages, credits and call authorization. A Python asyncio gateway handles realtime audio over Twilio Media Streams, and a GPU worker runs Seed-VC inference. The backend never touches audio packets, and the gateway and worker never decide billing or authorization: they ask the backend over HMAC-signed internal APIs.",
+      "Each call is a two-leg bridge. The Android app places a VoIP leg into Twilio, the gateway streams that audio to the GPU worker as 16 kHz PCM, and the converted audio goes out on a second leg that dials the recipient on the phone network. The recipient's voice returns to the caller as passthrough. The backend dials the second leg only after the first is authorized and a GPU session is ready, so the recipient never hears dead air.",
+      "Conversion fails safe: if the worker errors or disconnects, the bridge enters a failed state, clears the recipient-side audio queue, reports the error and tears the call down. There is no code path that routes the caller's raw audio to the recipient.",
+      "Money is handled like a ledger: package minutes are spent first, then credits, every change is an append-only row written under a wallet row lock with an idempotency key, and call deadlines are derived from stored timestamps so a reconciler can enforce them even after a restart.",
     ],
     contribution: [
-      "I build across the stack: the Kotlin and Jetpack Compose Android app (voice lab, packages, profile and KYC flows), the backend API and its tests, the React admin panel and the deployment and migration tooling.",
-      "I wrote the access rules around conversion (an active package plus callable minutes) and the user-facing messaging that explains why conversion is unavailable, with a shortcut to the packages screen.",
+      "I build across the stack: the Kotlin and Jetpack Compose Android app (dialer, Voice Studio, Voice Lab, profile, KYC and package flows), the backend call, billing and credit services with their tests, the React admin panel, and the deployment, migration and RunPod bootstrap tooling.",
+      "I wrote the access rules around calls and conversion (KYC, an active package, callable minutes, an approved and owned voice) and the user-facing messaging that explains why something is unavailable, with a shortcut to the packages screen.",
+      "I ran the GPU benchmarks and the quality and latency sweeps that picked the card and the streaming settings, and I documented the results together with their limits.",
     ],
     architecture: [
       "Android ──VoIP──▶ Twilio leg A ──Connect/Stream──▶ Gateway ──PCM 16k──▶ GPU worker (Seed-VC)",
@@ -73,7 +76,8 @@ export const projects: Project[] = [
       "Recipient ◀─PSTN── Twilio leg B ◀──Connect/Stream──────┘   (A converted → B)",
       "                   leg B audio ──▶ Gateway ──▶ leg A   (recipient voice → caller, passthrough)",
       "",
-      "Backend (Fastify + Prisma + PostgreSQL): accounts, voice profiles, billing ledger, call authorization",
+      "Control plane: Fastify + Prisma + PostgreSQL (accounts, KYC, voice profiles, packages, credits, call state machine, audit log)",
+      "Media plane: Python asyncio gateway + GPU worker on RunPod (model loaded once, kept in VRAM)",
       "Admin panel (React + Vite)  ·  HMAC-signed internal APIs between gateway, worker and backend",
     ],
     decisions: [
@@ -82,16 +86,28 @@ export const projects: Project[] = [
         body: "The backend decides who may convert and how many minutes remain; the gateway and worker only move and transform audio. Keeping billing and authorization out of the audio path means a slow database call can never glitch a live call.",
       },
       {
-        title: "Fail closed on conversion errors",
-        body: "If voice conversion fails mid-call, both legs end with an explicit error. The caller's unconverted audio is never forwarded to the recipient.",
+        title: "Fail safe on conversion errors",
+        body: "If voice conversion fails mid-call, the bridge clears the recipient's audio queue, flushes what Twilio has buffered and ends the call. A fallback to the caller's real voice was rejected on purpose: it is exactly what the product must never do.",
       },
       {
         title: "PostgreSQL is the only source of truth",
-        body: "Credits and transactions live in the database and call deadlines are derived from stored timestamps so a reconciler can enforce them even if an in-process timer is lost. Redis was deliberately left out until a second instance needs shared rate limits.",
+        body: "Credits and call state live in the database. Call deadlines are derived from connected_at plus the maximum duration, so a reconciler can end a call even if an in-process timer is lost. Redis was deliberately left out until a second backend instance needs shared rate limits.",
+      },
+      {
+        title: "A ledger, not a counter",
+        body: "Every credit change is an append-only row that stores the balance after it, written inside a transaction that locks the wallet row and checks an idempotency key twice. A retried request or duplicate webhook cannot charge twice, and any balance can be explained from its history.",
+      },
+      {
+        title: "Signed internal APIs",
+        body: "Gateway and backend authenticate each other with HMAC over the timestamp, method, path and body hash, reject requests older than 60 seconds and compare signatures in constant time. Public WebSocket streams use per-call, per-leg tokens that can be authorized once.",
       },
       {
         title: "Pick the GPU from a benchmark",
-        body: "The RunPod GPU was chosen from a recorded benchmark of candidate cards and the worker loads the model once at startup so a call never pays model-load latency.",
+        body: "An RTX A5000 on RunPod ($0.27 an hour) was chosen from recorded runs of the real worker: one call per GPU at a real-time factor of about 0.5, no dropped audio over a five-minute run. The model loads once at startup so a call never pays load time.",
+      },
+      {
+        title: "Measure quality, and write down the limits",
+        body: "A later sweep varied diffusion steps, block size, lookahead, prompt length and context one at a time, then re-scored the outputs with independent speaker encoders. One tuned configuration cut server-side delay by about 95 ms with equal or better similarity, and the write-up states what was not measured: no listening panel, one target voice and no real phone call yet.",
       },
     ],
     highlights: [
@@ -102,17 +118,53 @@ export const projects: Project[] = [
 Recipient ◀─PSTN── Twilio leg B ◀──<Connect><Stream>──────┘   (A converted → B)`,
         caption: "A media stream returns audio only to its own leg, so converted audio is carried to the recipient on a second leg that the backend dials only after leg A is authorized and a GPU session is ready.",
       },
+      {
+        title: "Fail safe by construction",
+        code: `# gateway/voicecon_gateway/bridge.py
+A -> worker -> B : converted audio only.
+B -> A           : passthrough.
+
+FAIL-CLOSED: once the worker errors or disconnects the bridge enters FAILED;
+from then on nothing derived from leg A can reach leg B (the B pacer queue is
+cleared and only silence is paced until the sockets close).`,
+        caption: "Leg A audio is only ever passed to the worker, and leg B receives only what the worker returns. After a failure the pacer emits silence, so a bug would have to add a route, not forget a check.",
+      },
+      {
+        title: "Billing arithmetic",
+        code: `// backend/src/calls/billing.ts
+billableMinutes    = ceil(durationSeconds / 60)
+packageMinutesUsed = min(billableMinutes, remainingPackageMinutes)
+creditMinutes      = billableMinutes - packageMinutesUsed
+creditsConsumed    = creditMinutes * creditsPerMinute`,
+        caption: "Billing starts when the recipient answers, never at dialing, and a call that never connects costs nothing. Settlement runs once, inside a transaction, against the package that was valid when the call was answered.",
+      },
+      {
+        title: "Measured on the real worker",
+        code: `RTX A5000, Seed-VC, 6 diffusion steps, 180 ms blocks, 5-minute run
+inference p50 ~86 ms, p95 ~106 ms per 180 ms block
+real-time factor 0.50, audio dropped 0 ms (11 of 1490 blocks over budget)
+server-side delay ~480-500 ms (block + lookahead + crossfade + jitter buffer + inference)`,
+        caption: "Twilio, the RunPod proxy and the phone network add their own delay on top, which can only be measured on a real call.",
+      },
     ],
     metrics: [
       { value: "6", label: "layers: app, API, admin, gateway, GPU worker, database" },
       { value: "2", label: "Twilio legs bridged per call" },
-      { value: "0", label: "raw caller audio forwarded on failure" },
-      { value: "HMAC", label: "signed internal service APIs" },
+      { value: "~85 ms", label: "GPU inference per 180 ms block (p50)" },
+      { value: "~0.5 s", label: "server-side conversion delay" },
+      { value: "0 ms", label: "audio dropped over a 5-minute run" },
+      { value: "336", label: "backend tests, plus 53 admin and 103 Android" },
     ],
-    screenshots: [],
+    screenshots: [
+      { src: "/images/voicecon/website-home.webp", alt: "VoiceCon website: live voice conversion for phone calls" },
+      { src: "/images/voicecon/app-screens.webp", alt: "VoiceCon Android app: Dialer, Voice Studio, Voice Lab and Profile (emulator, seeded demo account)" },
+    ],
     nextSteps: [
+      "Place real phone-network calls and sign off on physical devices: so far the GPU path is verified end to end through the API and the app on emulators.",
+      "Add an automated failure-injection test that kills the worker mid-call and asserts nothing derived from the caller's audio reaches the recipient.",
       "A shared rate-limit store and a Postgres advisory lock for the reconciler, to run more than one backend instance.",
       "Shared worker and session state so several gateways can schedule across the same GPU pool.",
+      "Run a listening panel on the tuned streaming configuration and revisit the model choice: Seed-VC is GPL-3.0 and archived upstream, so a commercial launch needs legal review.",
     ],
   },
   {
