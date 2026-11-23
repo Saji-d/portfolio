@@ -343,19 +343,19 @@ function StudyBody({
       {study.thesisCta && (
         <Section
           eyebrow={`[ ${String(numbered.length + 2).padStart(2, "0")} ]`}
-          title="Get the thesis"
+          title="Get the paper"
         >
           <div className="card-surface flex flex-wrap items-center justify-between gap-6 p-6">
             <p className="max-w-xl text-sm leading-relaxed text-text-secondary">
-              The complete thesis report covers the literature review, dataset
-              construction, full feature set and 16 reference papers. Reach out
+              The paper covers the related work, the leakage controls, the full
+              validation design and the reference list. Reach out
               and I&apos;ll share it.
             </p>
             <a
-              href={`mailto:${SITE.email}?subject=NeuroScreen thesis request`}
+              href={`mailto:${SITE.email}?subject=Neuro-Screen paper request`}
               className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent/90"
             >
-              Request the thesis <ArrowRight className="h-4 w-4" />
+              Request the paper <ArrowRight className="h-4 w-4" />
             </a>
           </div>
         </Section>

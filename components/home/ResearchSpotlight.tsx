@@ -19,7 +19,7 @@ export default function ResearchSpotlight() {
           <div className="max-w-2xl">
             <Eyebrow index="06">Research</Eyebrow>
             <h2 className="section-title lg:text-[1.625rem]">
-              Where the models meet the messy real world.
+              Research that starts with data and ends in a working tool.
             </h2>
           </div>
         </Reveal>

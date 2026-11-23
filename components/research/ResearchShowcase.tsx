@@ -5,7 +5,6 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { motion, type Variants } from "motion/react";
 import Reveal from "@/components/ui/Reveal";
 import ResearchCard from "@/components/research/ResearchCard";
-import AnimatedMetric from "@/components/ui/AnimatedMetric";
 import { researchPapers } from "@/data/research";
 
 const fadeUp: Variants = {
@@ -27,7 +26,7 @@ export default function ResearchShowcase({
   const rest = researchPapers.filter((p) => p.slug !== "neuronscreen");
 
   const featuredClasses =
-    "card-surface group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-6";
+    "card-surface group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 sm:p-5";
 
   return (
     <>
@@ -46,7 +45,7 @@ export default function ResearchShowcase({
         </motion.div>
       )}
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
         {rest.map((paper, i) => (
           <Reveal key={paper.slug} delay={(i % 2) * 0.05}>
             <ResearchCard paper={paper} onOpen={onOpenResearch} />
@@ -81,7 +80,7 @@ function FeaturedCardBody({
         className="animate-trace-sweep pointer-events-none absolute -top-px left-0 h-px w-1/4 bg-gradient-to-r from-transparent via-accent to-transparent"
       />
       <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-between gap-3">
-        <p className="eyebrow">Featured thesis</p>
+        <p className="eyebrow">Featured research</p>
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {featured.live && (
             <a
@@ -108,31 +107,24 @@ function FeaturedCardBody({
           )}
         </div>
       </motion.div>
-      <div className="mt-3 lg:grid lg:grid-cols-[1fr_260px] lg:items-start lg:gap-8">
-        <div className="min-w-0">
-          <motion.h2
-            variants={fadeUp}
-            className="max-w-3xl font-display text-xl font-medium leading-7 tracking-tight text-text-primary sm:text-2xl sm:leading-8"
-          >
-            {featured.title}
-          </motion.h2>
-          <motion.p variants={fadeUp} className="mt-2 max-w-2xl body-copy text-text-secondary">
-            {featured.summary}
-          </motion.p>
-        </div>
+      <div className="mt-2.5 min-w-0">
+        <motion.h2
+          variants={fadeUp}
+          className="max-w-3xl font-display text-lg font-medium leading-6 tracking-tight text-text-primary sm:text-xl"
+        >
+          {featured.title}
+        </motion.h2>
+        <motion.p variants={fadeUp} className="mt-1.5 max-w-3xl line-clamp-2 body-copy text-text-secondary">
+          {featured.oneLiner}
+        </motion.p>
         {featured.metrics && (
-          <motion.div variants={fadeUp} className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:mt-0 lg:grid-cols-2">
-            {featured.metrics.map((m) => (
-              <div
-                key={m.label}
-                className="rounded-lg border border-line bg-surface-2 px-2.5 py-2"
-              >
-                <AnimatedMetric
-                  value={m.value}
-                  showBar
-                  className="block font-display text-base font-medium tracking-tight text-accent-hover sm:text-lg"
-                />
-                <div className="mt-0.5 card-meta">{m.label}</div>
+          <motion.div variants={fadeUp} className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1">
+            {featured.metrics.slice(0, 2).map((m) => (
+              <div key={m.label} className="flex items-baseline gap-1.5">
+                <span className="font-display text-sm font-medium tracking-tight text-accent-hover">
+                  {m.value}
+                </span>
+                <span className="card-meta">{m.label}</span>
               </div>
             ))}
           </motion.div>
