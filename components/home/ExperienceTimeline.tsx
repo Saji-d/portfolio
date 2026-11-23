@@ -1,42 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MapPin } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TimelineProgress from "@/components/ui/TimelineProgress";
+import { EXPERIENCE } from "@/data/experience";
 
-const experiences = [
-  {
-    period: "Oct 2026 - Present",
-    company: "RemoteIntegrity LLC",
-    position: "Full-Stack Developer",
-    location: "Clearwater, Florida, USA · Contract · Flexible hours",
-    detail:
-      "Building and maintaining front-end and back-end components of web applications, designing server-side logic, APIs and database integrations and shipping through code review, testing and deployment.",
-    tag: "Contract",
-    current: true,
-  },
-  {
-    period: "May 2026 - Sep 2026",
-    company: "Ledgercross",
-    position: "Software Developer",
-    location: "Dhaka, Bangladesh · On-site",
-    detail:
-      "Engineered production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure and system reliability.",
-    tag: "Complete",
-    current: false,
-  },
-  {
-    period: "Feb 2026 - Apr 2026",
-    company: "Bangladesh Software Solution",
-    position: "Software Engineer Intern",
-    location: "Dhaka, Bangladesh · Hybrid",
-    detail:
-      "Developed responsive frontend interfaces with HTML5, CSS3 and modern JavaScript (ES6+), integrated them with backend RESTful APIs with robust error handling and worked in agile, Git-based workflows.",
-    tag: "Complete",
-    current: false,
-  },
-];
+const experiences = EXPERIENCE.map((e) => ({
+  period: e.period,
+  company: e.shortOrg ?? e.org,
+  position: e.role,
+  location: e.location,
+  detail: e.detail,
+  tag: e.tag,
+  current: e.current,
+}));
 
 export default function ExperienceTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -121,16 +100,22 @@ export default function ExperienceTimeline() {
                     </span>
 
                     <article
-                      className={`card-surface ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-0.5 ${
+                      className={`card-surface group relative ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-1 ${
                         (isCurrent
                           ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99,102,241,0.4)] "
                           : "hover:border-accent/40 ") +
                         (isLeft
-                          ? "lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
-                          : "lg:ml-[calc(50%_+_2rem)] lg:mr-0")
+                          ? "lg:ml-0 lg:mr-[calc(50%_+_1.25rem)]"
+                          : "lg:ml-[calc(50%_+_1.25rem)] lg:mr-0")
                       }`}
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface-2/60 px-4 py-2.5">
+                      <span
+                        aria-hidden="true"
+                        className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent transition-opacity duration-500 ${
+                          isCurrent ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                        }`}
+                      />
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface-2/60 px-5 py-3">
                         <span className="font-mono text-xs text-text-muted">
                           {experience.period}
                         </span>
@@ -150,17 +135,30 @@ export default function ExperienceTimeline() {
                         </span>
                       </div>
 
-                      <div className="p-4 sm:p-5">
-                        <h3 className="card-title-xl">{experience.company}</h3>
-                        <p className="mt-0.5 font-mono text-sm font-medium text-accent-hover">
-                          {experience.position}
-                        </p>
-                        <p className="mt-0.5 font-mono text-xs text-text-muted">
-                          {experience.location}
-                        </p>
-                        <p className="mt-2 body-copy text-text-secondary line-clamp-3">
-                          {experience.detail}
-                        </p>
+                      <div className="flex gap-4 p-5 sm:p-6">
+                        <span
+                          aria-hidden="true"
+                          className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border font-display text-base font-semibold ${
+                            isCurrent
+                              ? "border-accent/40 bg-accent-dim text-accent-hover"
+                              : "border-line bg-surface-2 text-text-secondary"
+                          }`}
+                        >
+                          {experience.company.charAt(0)}
+                        </span>
+                        <div className="min-w-0">
+                          <h3 className="card-title-xl">{experience.company}</h3>
+                          <p className="mt-0.5 font-mono text-sm font-medium text-accent-hover">
+                            {experience.position}
+                          </p>
+                          <p className="mt-1 flex items-center gap-1.5 font-mono text-xs text-text-muted">
+                            <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                            {experience.location}
+                          </p>
+                          <p className="mt-3 body-copy text-text-secondary">
+                            {experience.detail}
+                          </p>
+                        </div>
                       </div>
                     </article>
                   </div>

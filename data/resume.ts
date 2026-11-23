@@ -1,38 +1,15 @@
+import { EXPERIENCE } from "./experience";
+
 export const resume = {
   about:
-    "Full-Stack Developer and AI engineer building production web, mobile and voice-AI systems for teams across Dhaka and the US. Adept at turning complex architectural problems into reliable, production-ready code.",
-  experience: [
-    {
-      org: "RemoteIntegrity LLC",
-      location: "USA · Remote · Contract",
-      role: "Full-Stack Developer (Contract)",
-      period: "Oct 2026 - Present",
-      points: [
-        "Build front-end and back-end components, APIs and database integrations for client web applications.",
-        "Ship through code review, testing and deployment on agreed timelines.",
-      ],
-    },
-    {
-      org: "Ledgercross",
-      location: "Dhaka, Bangladesh · On-site",
-      role: "Software Developer",
-      period: "May 2026 - Sep 2026",
-      points: [
-        "Built the team's FastAPI OCR and fraud-detection service for InvoicePilot, migrating Mindee to V2.",
-        "Delivered FUMAK, a client inventory and POS system, as sole developer (Android + Next.js).",
-        "Built the public landing page for a NITOR unit's Convex, React patient system in production use.",
-      ],
-    },
-    {
-      org: "Bangladesh Software Solution (BSS)",
-      location: "Dhaka, Bangladesh · Hybrid",
-      role: "Software Engineer Intern",
-      period: "Feb 2026 - Apr 2026",
-      points: [
-        "Built responsive UIs with HTML5, CSS3, Bootstrap 5 and JavaScript (ES6+), wired to REST APIs.",
-      ],
-    },
-  ],
+    "Full-Stack Developer and AI engineer building production web, mobile and voice-AI systems for teams in Australia and the US from Dhaka. Currently a Full-Stack Developer at Lumifi Solutions, with an ongoing contract at RemoteIntegrity.",
+  experience: EXPERIENCE.map((e) => ({
+    org: e.org,
+    location: e.resumeLocation,
+    role: e.tag === "Contract" ? `${e.role} (Contract)` : e.role,
+    period: e.period,
+    points: e.resumePoints,
+  })),
   projects: [
     {
       name: "VoiceCon",
@@ -119,12 +96,12 @@ export const resume = {
     },
   ],
   thesis: {
-    name: "Neuro-Screen: Hybrid AI Framework for Cognitive Impairment Detection",
-    stack: "CatBoost, PyTorch",
+    name: "Neuro-Screen: Evaluating Stacked Ensemble for Predicting Cognitive Symptoms in University Students at Sleep Risk",
+    stack: "CatBoost, XGBoost, LightGBM, PyTorch, Streamlit",
     points: [
-      "Engineered a dual-path hybrid ensemble fusing gradient boosting classifiers and deep neural networks.",
-      "Achieved 95.20% accuracy and 0.982 ROC-AUC on a held-out test set from 2,237 student survey responses.",
-      "Identified mental fatigue, stress frequency and sleep quality as top predictors of cognitive-impairment risk.",
+      "Group research project at AIUB: built the Streamlit app and ran the re-analysis of 2,236 student survey responses.",
+      "Leakage-controlled design: excluded all nine outcome-defining items and evaluated a four-model stack with 5x3 nested cross-validation.",
+      "Reported metrics against a majority baseline (accuracy 0.621 vs 0.621; ROC-AUC 0.480); paper in preparation.",
     ],
   },
   certifications: [
@@ -143,7 +120,7 @@ export const resume = {
     { name: "The Duke of Edinburgh's Bronze Award", detail: "Completed rigorous requirements encompassing community service, skill development and expedition tasks.", period: "2025 - 2026" },
   ],
   leadership: [
-    { role: "Student Activity Coordinator", org: "Space Innovation Camp", period: "2022 - 2025", detail: "Led robotics and UAV engineering workshops mentoring over 500 students." },
+    { role: "Student Activity Coordinator", org: "Space Innovation Camp", period: "2022 - 2025", detail: "Coordinated student activities and robotics and UAV workshops across three years." },
     { role: "Public Relations Representative", org: "WRO Bangladesh", period: "2023 - 2024", detail: "Coordinated media communications and logistics for national robotics competitions." },
   ],
   references: [
