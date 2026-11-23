@@ -13,12 +13,14 @@ export interface GlobeLocation {
 // Coordinates are geographic-centroid approximations for each region, not
 // literal addresses.
 export const GLOBE_LOCATIONS: GlobeLocation[] = [
-  { id: "bangladesh", label: "Bangladesh", sublabel: "Ledgercross · Home base", initialSublabel: "Home base", lat: 23.685, lng: 90.3563, home: true },
+  { id: "bangladesh", label: "Bangladesh", sublabel: "Home base · Worked with Ledgercross and BSS", initialSublabel: "Home base · Worked with Ledgercross and BSS", lat: 23.685, lng: 90.3563, home: true },
   { id: "america", label: "America", sublabel: "Working with RemoteIntegrity", lat: 39.8283, lng: -98.5795 },
   { id: "europe", label: "Europe", sublabel: "Working with RemoteIntegrity", lat: 50.8, lng: 10.3 },
+  { id: "australia", label: "Australia", sublabel: "Working with Lumifi Solutions", lat: -25.2744, lng: 133.7751 },
 ];
 
 export const GLOBE_ARCS: { from: string; to: string }[] = [
   { from: "bangladesh", to: "america" },
   { from: "bangladesh", to: "europe" },
+  { from: "bangladesh", to: "australia" },
 ];

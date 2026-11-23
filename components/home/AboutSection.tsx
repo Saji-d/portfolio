@@ -147,8 +147,10 @@ export default function AboutSection() {
               <motion.li variants={fadeUp} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="flex flex-col">
-                  <span>DHAKA, BANGLADESH · REMOTE TO USA</span>
-                  <span className="text-text-secondary">{SITE.timezone}</span>
+                  <span>{SITE.location}</span>
+                  <span className="text-[0.6875rem] normal-case tracking-normal text-text-secondary">
+                    {SITE.timezone} · remote with US and Australian teams
+                  </span>
                 </span>
               </motion.li>
             </ul>
@@ -160,9 +162,8 @@ export default function AboutSection() {
                 complicated problems into something practical and reliable.
               </motion.p>
               <motion.p variants={fadeUp} className="max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem]">
-                The work reaches past my desk. Remote teams across time zones, a
-                growing footprint across Europe and a taste for software that travels well
-                beyond where it was built.
+                The work reaches past my desk. I work remotely with teams in
+                Australia and the US from Dhaka.
               </motion.p>
             </div>
             <motion.div variants={fadeUp} className="mt-4 sm:mt-4.5">
