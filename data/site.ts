@@ -1,7 +1,7 @@
 export const SITE = {
   name: "Sajidur Rahman Sajid",
   firstName: "Sajid",
-  role: "Full-Stack Software Engineer | AI/ML.",
+  role: "Full-Stack Software Engineer | AI/ML",
   tagline:
     "I build full-stack software and production AI/ML pipelines that are fast, reliable and worth trusting.",
   email: "sajidsajidurrahman99@gmail.com",
@@ -9,12 +9,15 @@ export const SITE = {
   phoneHref: "+8801954832959",
   location: "Dhaka, Bangladesh",
   timezone: "UTC+6",
+  // Based in Dhaka (UTC+6), working remotely with teams in Australia and the US.
+  // Exact hours intentionally not stated.
+  workingNote: "Based in Dhaka, working Australian hours remotely for Lumifi Solutions and with a US team at RemoteIntegrity.",
   linkedin: "https://www.linkedin.com/in/sajidur-rahman-sajid/",
   github: "https://github.com/Saji-d",
   githubHandle: "Saji-d",
   url: "https://www.sajidur.me",
   availability:
-    "I'm open to software engineering roles across full-stack, platform and applied ML, plus select freelance and product work if it's interesting.",
+    "Open to software engineering roles across full-stack, platform and applied ML, and to select freelance work. I work remotely with teams in Australia and the US.",
 } as const;
 
 export interface NavSectionLink {

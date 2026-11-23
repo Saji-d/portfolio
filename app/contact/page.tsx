@@ -109,8 +109,7 @@ export default function ContactPage() {
                 Prefer a quick call?
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                I&apos;m usually available on {SITE.timezone} business hours. Emails
-                get a reply within a day.
+                {SITE.workingNote} Emails get a reply within a day.
               </p>
             </div>
             <a
