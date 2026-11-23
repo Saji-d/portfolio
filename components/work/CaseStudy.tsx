@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LiveBadge from "@/components/ui/LiveBadge";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/data/projects.full";
 import { getCaseStudyProjects } from "@/data/projects.full";
@@ -64,7 +65,7 @@ export default function CaseStudy({ project }: { project: Project }) {
 
   const actionLinks = [
     ...(project.github ? [{ label: "View Code", href: project.github }] : []),
-    ...(project.demo ? [{ label: "Live Demo", href: project.demo }] : []),
+    ...(project.demo ? [{ label: "LIVE", href: project.demo }] : []),
     ...(project.thesis ? [{ label: "Thesis", href: project.thesis, internal: true }] : []),
   ];
 
@@ -113,7 +114,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                   >
-                    {link.label}
+                    {link.label === "LIVE" ? <LiveBadge /> : link.label}
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 )

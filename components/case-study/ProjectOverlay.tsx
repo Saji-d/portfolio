@@ -1,5 +1,6 @@
 "use client";
 
+import LiveBadge from "@/components/ui/LiveBadge";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { getProject } from "@/data/projects.full";
@@ -96,7 +97,7 @@ export default function ProjectOverlay({
 
   const actionLinks = [
     ...(project.github ? [{ label: "View Code", href: project.github }] : []),
-    ...(project.demo ? [{ label: "Live Demo", href: project.demo }] : []),
+    ...(project.demo ? [{ label: "LIVE", href: project.demo }] : []),
     ...(project.thesis
       ? [{ label: "Thesis", href: project.thesis, internal: true }]
       : []),
@@ -154,7 +155,7 @@ export default function ProjectOverlay({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
                   >
-                    {link.label}
+                    {link.label === "LIVE" ? <LiveBadge /> : link.label}
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 )

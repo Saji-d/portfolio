@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LiveBadge from "@/components/ui/LiveBadge";
 import Image from "next/image";
 import type { ComponentType, ReactNode } from "react";
 import {
@@ -226,7 +227,7 @@ function ProjectActions({
       )}
       {project.demo && (
         <CardButton href={project.demo} external icon={ExternalLink}>
-          Live Demo
+          <LiveBadge />
         </CardButton>
       )}
       {project.caseStudy &&

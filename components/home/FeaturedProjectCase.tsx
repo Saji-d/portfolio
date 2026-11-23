@@ -1,5 +1,6 @@
 "use client";
 
+import LiveBadge from "@/components/ui/LiveBadge";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, BookOpen, ExternalLink } from "lucide-react";
@@ -305,7 +306,7 @@ export default function FeaturedProjectCase({
               className="border border-line bg-surface px-5 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
             >
               <ExternalLink className="h-4 w-4" />
-              Live Demo
+              <LiveBadge />
             </MagneticButton>
           )}
           {project.github && (
