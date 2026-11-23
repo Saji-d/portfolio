@@ -89,7 +89,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Tooling & Practice",
-    skills: ["Git", "GitHub", "pytest", "Jest", "Vitest", "Vercel", "Linux", "Npm Workspaces"],
+    skills: ["Git", "GitHub", "pytest", "Jest", "Vitest", "Vercel", "Linux", "cPanel", "VPS Hosting", "Npm Workspaces"],
   },
 ];
 
