@@ -22,7 +22,7 @@ export const COMMANDS: CommandDef[] = TERMINAL_COMMANDS.filter(
 export const WHOAMI_ROLES: string[] = [
   "full-stack software engineer",
   "ai engineer",
-  "builds production-ready systems",
+  "ships full-stack and voice-ai systems",
   "works across ml, cv & nlp",
   "research-driven problem solver",
 ];
@@ -137,9 +137,9 @@ export const FLOW_COLUMNS: FlowColumn[] = [
     items: [
       {
         id: "neuronscreen",
-        title: "NeuroScreen",
+        title: "Neuro-Screen",
         tag: "research",
-        card: "CatBoost + ANN ensemble for cognitive-impairment detection.",
+        card: "Leakage-controlled stacked ensemble evaluated with nested cross-validation.",
         tagline: rs("neuronscreen").oneLiner,
         href: "/research/neuronscreen",
       },
@@ -226,7 +226,7 @@ const leaf = (r: ResearchStudy, ext: string): ResearchLeaf => ({
 });
 
 export const RESEARCH_TREE: ResearchFolder[] = [
-  { name: "thesis", leaves: [leaf(rs("neuronscreen"), "pdf")] },
+  { name: "group-project", leaves: [leaf(rs("neuronscreen"), "pdf")] },
   { name: "nlp", leaves: [leaf(rs("twitter-sentiment"), "ipynb"), leaf(rs("banglabert"), "ipynb")] },
   { name: "data-science", leaves: [leaf(rs("early-warning-customer-churn"), "ipynb")] },
   { name: "computer-vision", leaves: [leaf(rs("water-turbidity"), "pdf")] },

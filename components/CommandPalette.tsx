@@ -146,7 +146,7 @@ export default function CommandPalette() {
         label: neuronscreen.title,
         hint: neuronscreen.oneLiner,
         icon: GraduationCap,
-        keywords: `${neuronscreen.title} thesis cognitive impairment`,
+        keywords: `${neuronscreen.title} group research project cognitive symptoms sleep risk stacked ensemble nested cross-validation`,
         run: () => go("/research/neuronscreen"),
       },
     ],

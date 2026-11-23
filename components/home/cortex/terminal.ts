@@ -14,7 +14,7 @@ const whoamiLine = "sajid · full-stack & AI";
 const skillsLine = `${skillGroups.length} groups · ${skillTotal} tools`;
 const projectsLine = `${projects.length} projects · ${projects.filter((p) => p.featured && p.category === "Professional").length} featured`;
 const timelineLine = `${career.length} stops · ${firstYear} → ${lastYear}`;
-const researchLine = "neuronscreen · 95.2% acc";
+const researchLine = "neuro-screen · nested-CV stacked ensemble";
 const helpLine = `${TERMINAL_COMMANDS.length} commands`;
 
 export const TERMINAL_SCRIPT: string[] = [
