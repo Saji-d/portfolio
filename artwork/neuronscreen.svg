@@ -47,12 +47,10 @@
       <path d="M900 300 q40 40 80 0 q40 -40 80 0" stroke="#A95C3D" stroke-width="4" fill="none" opacity="0.7"/>
       <path d="M900 350 q40 40 80 0 q40 -40 80 0" stroke="#A95C3D" stroke-width="4" fill="none" opacity="0.45"/>
       <rect x="1080" y="300" width="330" height="330" rx="26" fill="#191919" stroke="rgba(255,255,255,0.10)" filter="url(#sh)"/>
-      <circle cx="1245" cy="465" r="105" fill="none" />
-      <path d="M1245 360 a105 105 0 1 1 -99 63" fill="none" stroke="#D97A4F" stroke-width="18" stroke-linecap="round" opacity="0.14"/>
-      <path d="M1245 360 a105 105 0 1 1 -99 63" fill="none" stroke="#D97A4F" stroke-width="18" stroke-linecap="round" stroke-dasharray="620" stroke-dashoffset="30"/>
-      <g><line x1="1365" y1="465" x2="1381" y2="465" stroke="#706B64" stroke-width="4"/><line x1="1327.5096679918781" y1="555.5096679918781" x2="1343.5096679918781" y2="555.5096679918781" stroke="#706B64" stroke-width="4"/><line x1="1237" y1="593" x2="1253" y2="593" stroke="#706B64" stroke-width="4"/><line x1="1146.4903320081219" y1="555.5096679918781" x2="1162.4903320081219" y2="555.5096679918781" stroke="#706B64" stroke-width="4"/><line x1="1109" y1="465" x2="1125" y2="465" stroke="#706B64" stroke-width="4"/><line x1="1146.4903320081219" y1="374.4903320081219" x2="1162.4903320081219" y2="374.4903320081219" stroke="#706B64" stroke-width="4"/><line x1="1237" y1="337" x2="1253" y2="337" stroke="#706B64" stroke-width="4"/><line x1="1327.5096679918781" y1="374.49033200812187" x2="1343.5096679918781" y2="374.49033200812187" stroke="#706B64" stroke-width="4"/></g>
-      <circle cx="1245" cy="465" r="22" fill="#202020" stroke="#D97A4F"/>
-      <circle cx="1245" cy="465" r="8" fill="#D97A4F" />
+      <path d="M1110 380 l30 0 l14 -38 l22 76 l18 -96 l20 120 l16 -62 l18 0 l30 0 l22 0 l30 0" fill="none" stroke="#D97A4F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M1110 470 q20 -34 40 0 q20 34 40 0 q20 -34 40 0 q20 34 40 0 q20 -34 40 0 q20 34 40 0" fill="none" stroke="#A95C3D" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+      <path d="M1110 550 q25 -50 50 0 q25 50 50 0 q25 -50 50 0 q25 50 50 0 q25 -50 50 0" fill="none" stroke="#D97A4F" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M1110 610 l40 0 l10 -22 l16 44 l12 -22 l40 0 l30 0 l10 -16 l12 32 l10 -16 l30 0" fill="none" stroke="#A95C3D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
       <rect x="1100" y="700" width="210" height="44" rx="22" fill="#191919" stroke="rgba(255,255,255,0.10)"/>
       <rect x="1116" y="712" width="120" height="20" rx="10" fill="#D97A4F" fill-opacity="0.25"/>
       <circle cx="1258" cy="722" r="6" fill="#D97A4F" />

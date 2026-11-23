@@ -593,7 +593,7 @@ arts.casevault = svg(
 );
 
 // ---------------------------------------------------------------------------
-// NeuroScreen - brain + EEG waves + accuracy ring
+// NeuroScreen - brain + EEG waves
 // ---------------------------------------------------------------------------
 arts.neuronscreen = svg(
   bg(T, I) +
@@ -617,19 +617,10 @@ arts.neuronscreen = svg(
       <path d="M900 300 q40 40 80 0 q40 -40 80 0" stroke="${I}" stroke-width="4" fill="none" opacity="0.7"/>
       <path d="M900 350 q40 40 80 0 q40 -40 80 0" stroke="${I}" stroke-width="4" fill="none" opacity="0.45"/>
       ${rr(1080, 300, 330, 330, 26, S2, `stroke="${LINE}" filter="url(#sh)"`)}
-      ${c(1245, 465, 105, "none", "")}
-      <path d="M1245 360 a105 105 0 1 1 -99 63" fill="none" stroke="${T}" stroke-width="18" stroke-linecap="round" opacity="0.14"/>
-      <path d="M1245 360 a105 105 0 1 1 -99 63" fill="none" stroke="${T}" stroke-width="18" stroke-linecap="round" stroke-dasharray="620" stroke-dashoffset="30"/>
-      ${g(
-        [0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
-          const a = (i * 45 * Math.PI) / 180;
-          const x = 1245 + 128 * Math.cos(a);
-          const y = 465 + 128 * Math.sin(a);
-          return `<line x1="${x - 8}" y1="${y}" x2="${x + 8}" y2="${y}" stroke="${MUT}" stroke-width="4"/>`;
-        }).join("")
-      )}
-      ${c(1245, 465, 22, S3, `stroke="${T}"`)}
-      ${c(1245, 465, 8, T)}
+      <path d="M1110 380 l30 0 l14 -38 l22 76 l18 -96 l20 120 l16 -62 l18 0 l30 0 l22 0 l30 0" fill="none" stroke="${T}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M1110 470 q20 -34 40 0 q20 34 40 0 q20 -34 40 0 q20 34 40 0 q20 -34 40 0 q20 34 40 0" fill="none" stroke="${I}" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+      <path d="M1110 550 q25 -50 50 0 q25 50 50 0 q25 -50 50 0 q25 50 50 0 q25 -50 50 0" fill="none" stroke="${T}" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M1110 610 l40 0 l10 -22 l16 44 l12 -22 l40 0 l30 0 l10 -16 l12 32 l10 -16 l30 0" fill="none" stroke="${I}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
       ${rr(1100, 700, 210, 44, 22, S2, `stroke="${LINE}"`)}
       ${rr(1116, 712, 120, 20, 10, T, `fill-opacity="0.25"`)}
       ${c(1258, 722, 6, T)}
