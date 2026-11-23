@@ -20,24 +20,24 @@ export interface ResearchStudy {
 export const neuronscreen: ResearchStudy = {
   slug: "neuronscreen",
   title:
-    "Neuro-Screen: A Hybrid Ensemble Framework for Detection of Cognitive Impairment in Insomniac University Students",
-  shortTitle: "NeuroScreen (Thesis)",
-  field: "Undergraduate Thesis · Healthcare ML / DL",
+    "Neuro-Screen: Evaluating Stacked Ensemble for Predicting Cognitive Symptoms in University Students at Sleep Risk",
+  shortTitle: "Neuro-Screen",
+  field: "Group Research Project (AIUB) · Applied ML",
   featured: true,
-  tags: ["Machine Learning", "Deep Learning", "Healthcare AI", "CatBoost", "ANN"],
+  tags: ["Machine Learning", "Healthcare AI", "Stacked Ensemble", "Nested Cross-Validation", "CatBoost", "XGBoost", "LightGBM", "PyTorch"],
   github: "https://github.com/Saji-d/neuro-screen",
   live: "https://neuro-screen.streamlit.app/",
   oneLiner:
-    "A CatBoost + ANN hybrid ensemble that detects cognitive impairment in insomniac university students: 95.20% accuracy, 0.982 ROC-AUC.",
+    "A leakage-controlled, rigorously evaluated stacked-ensemble study on sleep and cognitive symptoms in 2,236 student survey responses, with a Streamlit prototype.",
   summary:
-    "Thesis that fuses a gradient-boosting classifier with a three-layer neural network by averaging their probability outputs. Trained on 2,237 survey responses from Bangladeshi university students, the ensemble beats every standalone model across all metrics and pinpoints the lifestyle factors that most strongly predict cognitive decline.",
+    "Group research project at AIUB (paper in preparation). I built the Streamlit app and ran the re-analysis. A CatBoost, XGBoost, LightGBM and PyTorch stack is evaluated with nested cross-validation on a leakage-controlled predictor set.",
   metrics: [
-    { value: "95.20%", label: "accuracy" },
-    { value: "94.40%", label: "precision" },
-    { value: "96.10%", label: "recall" },
-    { value: "95.24%", label: "F1" },
-    { value: "0.982", label: "ROC-AUC" },
-    { value: "2,237", label: "survey responses" },
+    { value: "0.621", label: "cognitive accuracy (= baseline)" },
+    { value: "0.480", label: "cognitive ROC-AUC" },
+    { value: "0.757", label: "sleep-risk accuracy (= baseline)" },
+    { value: "0.482", label: "sleep-risk ROC-AUC" },
+    { value: "2,236", label: "survey responses" },
+    { value: "1,692", label: "meet the sleep-risk rule" },
   ],
 };
 
@@ -54,11 +54,9 @@ export const researchPapers: ResearchStudy[] = [
     summary:
       "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
     metrics: [
-      { value: "74.84%", label: "accuracy" },
-      { value: "200,000", label: "balanced tweets" },
-      { value: "10,000", label: "TF-IDF features" },
-      { value: "40,000", label: "test tweets" },
-    ],
+    { value: "2,236", label: "survey responses" },
+    { value: "5x3", label: "nested CV" },
+  ],
   },
   {
     slug: "early-warning-customer-churn",
