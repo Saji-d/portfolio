@@ -172,9 +172,9 @@ server-side delay ~480-500 ms (block + lookahead + crossfade + jitter buffer + i
     name: "InvoicePilot",
     tagline: "AI invoice platform that extracts, validates and flags duplicate or anomalous invoices before they reach finance teams.",
     summary:
-      "A team-built, audit-ready invoice operations platform: capture → OCR extraction → normalization → validation → duplicate and fraud checks → human approval → a cryptographic on-chain seal of the exact uploaded bytes → billing sync, end to end for finance teams.",
+      "A team-built invoice platform. I built the FastAPI AI extraction service: OCR extraction, normalization, validation and duplicate, fraud and anomaly checks. Teammates built the approval workflow, the on-chain seal of the uploaded bytes and the billing sync.",
     role: "AI/ML Engineer · AI extraction service",
-    status: "ACTIVE",
+    status: "COMPLETE",
     category: "Professional",
     badges: ["Production"],
     featured: true,
@@ -330,7 +330,7 @@ const txHash = await walletClient.writeContract({
     summary:
       "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",
     role: "Full-stack Engineer",
-    status: "ACTIVE",
+    status: "COMPLETE",
     category: "Professional",
     badges: ["Production"],
     featured: true,
@@ -459,7 +459,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     tagline: "Legal research workspace for Bangladeshi law: relevance-ranked search over statutes and judgements, with AI summaries planned.",
     summary:
       "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results and read in a document viewer whose AI tabs (summaries, citations) are Phase 2 placeholders, built around 'verify, don't trust AI.'",
-    role: "Full-Stack / AI Engineer",
+    role: "Full-Stack Engineer",
     status: "ACTIVE",
     category: "Web",
     badges: [],
@@ -688,10 +688,10 @@ try {
   {
     slug: "neuro-screen",
     name: "Neuro-Screen",
-    tagline: "Hybrid CatBoost and neural network that screens cognitive-impairment risk in university students, with explainable results.",
+    tagline: "Streamlit research prototype from a group project at AIUB: a leakage-controlled stacked-ensemble study on sleep risk and cognitive symptoms in students, with a Streamlit app.",
     summary:
-      "Undergraduate thesis (AIUB) fusing a CatBoost gradient-boosting classifier with a three-layer PyTorch MLP, blended by averaging their probabilities. Trained on 2,237 survey responses, the hybrid reaches 95.20% accuracy / 0.982 ROC-AUC and explains every prediction through its contributing factors. Ships as an interactive Streamlit research prototype.",
-    role: "ML / DL Researcher",
+      "Group research project at AIUB (paper in preparation). I built the Streamlit app (five-step assessment, results with reasons, a Reliability page) and ran the re-analysis. A stack of CatBoost, XGBoost, LightGBM and a PyTorch ANN, combined by logistic regression, is evaluated with nested cross-validation on 2,236 survey responses (cognitive accuracy 0.621 vs majority baseline 0.621; ROC-AUC 0.480). Not a medical device; no data is stored.",
+    role: "Group research project · app and re-analysis",
     status: "COMPLETE",
     category: "Research",
     badges: [],
@@ -699,7 +699,7 @@ try {
     cover: "/images/thumbnails/neuro-screen-thumbnail.webp",
     github: "https://github.com/Saji-d/neuro-screen",
     demo: "https://neuro-screen.streamlit.app/",
-    stack: ["Python", "CatBoost", "PyTorch", "Streamlit", "scikit-learn", "Pandas", "NumPy", "Plotly"],
+    stack: ["Python", "CatBoost", "XGBoost", "LightGBM", "PyTorch", "Streamlit", "scikit-learn", "Pandas", "NumPy", "Plotly"],
   },
   {
     slug: "finbert",
