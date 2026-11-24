@@ -52,7 +52,7 @@ export function ExitView({ onReconnect }: { onReconnect: () => void }) {
           href="/resume"
           className="group inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-mono text-xs font-medium text-accent-ink transition-opacity hover:opacity-90"
         >
-          view resume
+          view résumé
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>

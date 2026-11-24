@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MapPin } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
 import TimelineProgress from "@/components/ui/TimelineProgress";
@@ -15,6 +14,7 @@ const experiences = EXPERIENCE.map((e) => ({
   detail: e.detail,
   tag: e.tag,
   current: e.current,
+  logo: e.logo,
 }));
 
 export default function ExperienceTimeline() {
@@ -71,7 +71,7 @@ export default function ExperienceTimeline() {
             <TimelineProgress center />
           </div>
 
-          <div className="space-y-4 lg:space-y-6">
+          <div className="space-y-4 lg:space-y-4">
             {experiences.map((experience, i) => {
               const isCurrent = experience.current;
               const isLeft = i % 2 === 0;
@@ -100,22 +100,16 @@ export default function ExperienceTimeline() {
                     </span>
 
                     <article
-                      className={`card-surface group relative ml-10 overflow-hidden transition-all duration-500 hover:-translate-y-1 ${
+                      className={`card-surface group ml-10 flex flex-col overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_18px_44px_-26px_rgba(99,102,241,0.5)] lg:min-h-[10.5rem] ${
                         (isCurrent
                           ? "border-accent/40 shadow-[0_16px_50px_-28px_rgba(99,102,241,0.4)] "
                           : "hover:border-accent/40 ") +
                         (isLeft
-                          ? "lg:ml-0 lg:mr-[calc(50%_+_1.25rem)]"
-                          : "lg:ml-[calc(50%_+_1.25rem)] lg:mr-0")
+                          ? "lg:ml-0 lg:mr-[calc(50%_+_2rem)]"
+                          : "lg:ml-[calc(50%_+_2rem)] lg:mr-0")
                       }`}
                     >
-                      <span
-                        aria-hidden="true"
-                        className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent transition-opacity duration-500 ${
-                          isCurrent ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                        }`}
-                      />
-                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface-2/60 px-5 py-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-surface-2/60 px-4 py-2.5">
                         <span className="font-mono text-xs text-text-muted">
                           {experience.period}
                         </span>
@@ -135,27 +129,34 @@ export default function ExperienceTimeline() {
                         </span>
                       </div>
 
-                      <div className="flex gap-4 p-5 sm:p-6">
-                        <span
-                          aria-hidden="true"
-                          className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border font-display text-base font-semibold ${
-                            isCurrent
-                              ? "border-accent/40 bg-accent-dim text-accent-hover"
-                              : "border-line bg-surface-2 text-text-secondary"
-                          }`}
-                        >
-                          {experience.company.charAt(0)}
-                        </span>
+                      <div className="flex flex-1 items-start gap-4 p-4 sm:p-5">
+                        {experience.logo && (
+                          <span
+                            className={`grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl border transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 ${
+                              experience.logo.onLight
+                                ? "border-white/20 bg-white p-1.5"
+                                : "border-line bg-surface-2"
+                            }`}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={experience.logo.src}
+                              alt={experience.logo.alt}
+                              width={experience.logo.width}
+                              height={experience.logo.height}
+                              className="h-full w-full object-contain"
+                            />
+                          </span>
+                        )}
                         <div className="min-w-0">
                           <h3 className="card-title-xl">{experience.company}</h3>
                           <p className="mt-0.5 font-mono text-sm font-medium text-accent-hover">
                             {experience.position}
                           </p>
-                          <p className="mt-1 flex items-center gap-1.5 font-mono text-xs text-text-muted">
-                            <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <p className="mt-0.5 font-mono text-xs text-text-muted">
                             {experience.location}
                           </p>
-                          <p className="mt-3 body-copy text-text-secondary">
+                          <p className="mt-2 body-copy text-text-secondary">
                             {experience.detail}
                           </p>
                         </div>

@@ -1,3 +1,4 @@
+import CopyButton from "@/components/ui/CopyButton";
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin, ArrowUpRight, Clock } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
@@ -16,12 +17,14 @@ const channels = [
     icon: Mail,
     label: "Email",
     value: SITE.email,
+    copy: SITE.email,
     href: `mailto:${SITE.email}`,
   },
   {
     icon: Phone,
     label: "Phone",
     value: SITE.phone,
+    copy: SITE.phone,
     href: `tel:${SITE.phoneHref}`,
   },
   {
@@ -51,11 +54,12 @@ export default function ContactPage() {
         <div className="grid gap-5 sm:grid-cols-2">
           {channels.map((c, i) => (
             <Reveal key={c.label} delay={i * 0.04}>
+              <div className="relative h-full">
               <a
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="card-surface group flex h-full items-start justify-between gap-4 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40"
+                className={`card-surface group flex h-full items-start justify-between gap-4 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 ${c.copy ? "pb-14" : ""}`}
               >
                 <div className="flex items-start gap-4">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-accent">
@@ -70,6 +74,14 @@ export default function ContactPage() {
                 </div>
                 <ArrowUpRight className="mt-2 h-4 w-4 shrink-0 text-text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
               </a>
+              {c.copy && (
+                <CopyButton
+                  value={c.copy}
+                  label={c.label === "Email" ? "email address" : "phone number"}
+                  className="absolute bottom-4 right-4"
+                />
+              )}
+              </div>
             </Reveal>
           ))}
         </div>

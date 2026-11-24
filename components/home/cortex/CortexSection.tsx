@@ -45,7 +45,7 @@ export default function CortexSection() {
             <p className="mt-4 font-mono text-xs text-text-muted">
               The console needs JavaScript. See{" "}
               <a href="/resume" className="text-accent-hover">
-                the resume
+                the résumé
               </a>{" "}
               instead.
             </p>

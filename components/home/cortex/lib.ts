@@ -45,7 +45,7 @@ export const WHOAMI_LINKS = [
   },
 ];
 
-export type FlowTag = "production" | "research" | "project";
+export type FlowTag = "production" | "building" | "research" | "project";
 
 export interface FlowItem {
   id: string;
@@ -71,6 +71,36 @@ const pj = (slug: string): Project => projects.find((p) => p.slug === slug)!;
 const rs = (slug: string): ResearchStudy => researchPapers.find((r) => r.slug === slug)!;
 
 export const FLOW_COLUMNS: FlowColumn[] = [
+  {
+    label: "Building now",
+    tone: "accent",
+    items: [
+      {
+        id: "lumifi-sms",
+        title: "Lumifi SMS",
+        tag: "building",
+        card: "Student and learning platform for Australian colleges, from application to certificate.",
+        tagline: pj("lumifi-sms").summary,
+        href: "/projects/lumifi-sms",
+      },
+      {
+        id: "world-bridge",
+        title: "World Bridge",
+        tag: "building",
+        card: "Staffing site and résumé bank for Australian employers and Bangladeshi candidates.",
+        tagline: pj("world-bridge").summary,
+        href: "/projects/world-bridge",
+      },
+      {
+        id: "aria-erp",
+        title: "Aria ERP",
+        tag: "building",
+        card: "ERP with quote-to-invoice, purchasing, stock and finance in one workspace.",
+        tagline: pj("aria-erp").summary,
+        href: "/projects/aria-erp",
+      },
+    ],
+  },
   {
     label: "Professional",
     tone: "accent",
@@ -98,6 +128,14 @@ export const FLOW_COLUMNS: FlowColumn[] = [
         card: "Retail inventory and POS with phone barcode scanning and revenue analytics.",
         tagline: pj("fumak-inventory").summary,
         href: "/projects/fumak-inventory",
+      },
+      {
+        id: "nitor",
+        title: "NITOR Patient Mgmt",
+        tag: "production",
+        card: "Patient records and bed occupancy for a trauma unit: frontend plus Convex backend.",
+        tagline: pj("nitor-patient-management").summary,
+        href: "/projects/nitor-patient-management",
       },
     ],
   },

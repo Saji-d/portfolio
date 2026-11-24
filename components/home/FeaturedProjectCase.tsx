@@ -1,14 +1,17 @@
 "use client";
 
 import LiveBadge from "@/components/ui/LiveBadge";
+import PrivateRepoIcon, { isRepoLocked } from "@/components/ui/PrivateRepoIcon";
+import { AttributionBadge } from "@/components/ui/Badge";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, BookOpen, ExternalLink } from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { motion, useScroll, useTransform, type Variants } from "motion/react";
 import type { Project } from "@/data/projects";
+import { stageLabel } from "@/data/projects";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import MagneticButton from "@/components/ui/MagneticButton";
-import { primaryHref, SmartLink } from "@/components/work/ProjectCard";
+import { primaryHref, ProjectCoverScan, SmartLink } from "@/components/work/ProjectCard";
 import StackPills from "@/components/work/StackPills";
 
 const reducedMotionQuery =
@@ -45,10 +48,12 @@ function FeaturedImage({
   project,
   onOpenCaseStudy,
   tiltSign,
+  className,
 }: {
   project: Project;
   onOpenCaseStudy: (slug: string) => void;
   tiltSign: 1 | -1;
+  className: string;
 }) {
   const scrollTargetRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -95,24 +100,36 @@ function FeaturedImage({
 
   const art = (
     <>
-      <motion.div
-        style={{ y }}
-        initial={{ opacity: 0, scale: 1.05 }}
-        whileInView={{ opacity: 1, scale: 1.01 }}
-        viewport={{ once: true, margin: "-10% 0px" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-[-2%]"
-      >
+      {project.preserveCoverFrame ? (
         <Image
           src={project.cover}
           alt={`${project.name}: ${project.tagline}`}
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
+          className="object-fill"
         />
-      </motion.div>
+      ) : (
+        <motion.div
+          style={{ y }}
+          initial={{ opacity: 0, scale: 1.05 }}
+          whileInView={{ opacity: 1, scale: 1.01 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-[-2%]"
+        >
+          <Image
+            src={project.cover}
+            alt={`${project.name}: ${project.tagline}`}
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
+          />
+        </motion.div>
+      )}
 
       <div className="pointer-events-none absolute inset-0 bg-bg/0 transition-colors duration-300 group-hover:bg-bg/5" />
+
+      <ProjectCoverScan />
 
       <span className="pointer-events-none absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-accent text-accent-ink opacity-0 shadow-[0_10px_28px_rgba(99,102,241,0.4)] transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <ArrowUpRight className="h-4 w-4" />
@@ -123,8 +140,8 @@ function FeaturedImage({
   const shadowSide = tiltSign > 0 ? "12px" : "-12px";
 
   return (
-    <div className="group relative">
-      <div ref={scrollTargetRef} className="relative" style={{ perspective: "1400px" }}>
+    <div className={`group relative ${className}`}>
+      <div ref={scrollTargetRef} className="relative lg:self-center" style={{ perspective: "1400px" }}>
         {/* Contact shadow - a soft blurred ellipse grounding the card, plus an
             accent-tinted bloom behind it that intensifies on hover, giving the
             mockup a "floating above the page" depth cue without a container. */}
@@ -142,7 +159,7 @@ function FeaturedImage({
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           style={{ transform: restTransform, boxShadow: `${shadowSide} 26px 50px -26px rgba(0,0,0,0.62)` }}
-          className="relative aspect-[2/1] w-full overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform sm:aspect-[2/1] lg:aspect-[2/1]"
+          className="relative aspect-[2/1] w-full overflow-hidden [contain:paint] border border-line/80 bg-surface-2 transition-transform duration-500 ease-out will-change-transform rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-lg rounded-bl-lg"
         >
           {opensCaseStudy ? (
             <button
@@ -171,10 +188,21 @@ function FeaturedImage({
           the image frame rather than another line inside a card - keeps
           image and metadata "compositionally connected, visually distinct"
           per the brief rather than fusing them into one bordered block. */}
-      <p className="mt-3 flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-text-muted">
-        <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/70" />
-        {project.status.toLowerCase()} build · {project.category.toLowerCase()}
-      </p>
+      <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-text-muted lg:mt-0">
+        {project.attribution ? (
+          <>
+            <AttributionBadge>{project.attribution}</AttributionBadge>
+            <span aria-hidden="true">·</span>
+          </>
+        ) : (
+          <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/70" />
+        )}
+        <span>
+          {project.status === "ACTIVE" && project.category === "Professional"
+            ? "active build"
+            : `${project.status.toLowerCase()} build · ${stageLabel(project).toLowerCase()}`}
+        </span>
+      </div>
     </div>
   );
 }
@@ -224,22 +252,21 @@ export default function FeaturedProjectCase({
     <motion.div
       ref={chapterRef}
       style={scrollLinked ? { opacity: chapterOpacity } : undefined}
-      className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-14"
+      className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-center lg:gap-x-14 lg:gap-y-3"
     >
-      <div className={`order-1 lg:order-none lg:col-span-6 lg:row-start-1 ${imageColStart}`}>
-        <FeaturedImage
-          project={project}
-          onOpenCaseStudy={onOpenCaseStudy}
-          tiltSign={imageFirst ? -1 : 1}
-        />
-      </div>
+      <FeaturedImage
+        project={project}
+        onOpenCaseStudy={onOpenCaseStudy}
+        tiltSign={imageFirst ? -1 : 1}
+        className={`order-1 lg:order-none lg:col-span-6 lg:row-span-2 lg:row-start-1 lg:grid lg:grid-rows-subgrid lg:self-stretch ${imageColStart}`}
+      />
 
       <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-10% 0px" }}
         variants={stagger}
-        className={`order-2 lg:order-none lg:col-span-5 lg:row-start-1 lg:self-start ${infoColStart}`}
+        className={`order-2 lg:order-none lg:col-span-5 lg:row-start-1 lg:self-center ${infoColStart}`}
       >
         <motion.h3
           variants={fadeUp}
@@ -264,23 +291,28 @@ export default function FeaturedProjectCase({
 
         <motion.p
           variants={fadeUp}
-          className="mt-2 font-mono text-xs font-medium uppercase tracking-[0.14em] text-accent-hover sm:text-sm"
-        >
-          {project.role}
-        </motion.p>
-
-        <motion.p
-          variants={fadeUp}
           className="mt-3 max-w-md text-[0.875rem] leading-relaxed text-text-secondary sm:text-[0.9375rem] line-clamp-3"
         >
           {project.featuredTagline ?? project.tagline}
         </motion.p>
 
         <motion.div variants={fadeUp} className="mt-4">
-          <StackPills key={project.slug} tags={project.stack} maxRows={1} />
+          <StackPills key={project.slug} tags={project.stack} planned={project.plannedStack} maxRows={1} />
         </motion.div>
 
         <motion.div variants={fadeUp} className="mt-4 flex flex-wrap items-center gap-3">
+          {isRepoLocked(project) ? (
+            <PrivateRepoIcon access={project.repoAccess === "unavailable" ? "unavailable" : "private"} />
+          ) : project.github && (
+            <MagneticButton
+              href={project.github}
+              external
+              className="border border-line bg-surface px-5 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
+            >
+              <GithubIcon className="h-4 w-4" />
+              GitHub
+            </MagneticButton>
+          )}
           {opensCaseStudy ? (
             <MagneticButton
               onClick={() => onOpenCaseStudy(project.slug)}
@@ -289,34 +321,14 @@ export default function FeaturedProjectCase({
               <BookOpen className="h-4 w-4" />
               Case study
             </MagneticButton>
-          ) : href ? (
-            <MagneticButton
-              href={href}
-              external={href.startsWith("http")}
-              className="border border-accent/40 bg-surface px-5 py-2.5 text-sm font-medium text-accent-hover transition-colors hover:border-accent hover:bg-accent-dim"
-            >
-              <BookOpen className="h-4 w-4" />
-              View project
-            </MagneticButton>
           ) : null}
           {project.demo && (
             <MagneticButton
               href={project.demo}
               external
-              className="border border-line bg-surface px-5 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
+              className="px-1 py-2.5"
             >
-              <ExternalLink className="h-4 w-4" />
               <LiveBadge />
-            </MagneticButton>
-          )}
-          {project.github && (
-            <MagneticButton
-              href={project.github}
-              external
-              className="border border-line bg-surface px-5 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
-            >
-              <GithubIcon className="h-4 w-4" />
-              Code
             </MagneticButton>
           )}
         </motion.div>

@@ -28,7 +28,7 @@ export default function ProjectsSection() {
             <div className="max-w-2xl">
               <Eyebrow index="03">Projects</Eyebrow>
               <h2 className="section-title lg:text-[1.625rem]">
-                Built things. Broke things. Shipped things.
+                Products and systems I’ve built.
               </h2>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function ProjectsSection() {
                   href="/projects"
                   className="group flex items-center gap-2 text-sm font-medium text-accent-hover transition-opacity hover:opacity-80"
                 >
-                  View all projects
+                  Explore more on the Projects page
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

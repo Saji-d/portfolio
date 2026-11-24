@@ -33,7 +33,7 @@ interface Item {
 function primaryHref(project: (typeof projects)[number]): string | undefined {
   if (project.caseStudy) return `/projects/${project.slug}`;
   if (project.thesis) return project.thesis;
-  return project.github;
+  return project.github ?? project.demo;
 }
 
 function fuzzyScore(query: string, text: string): number {
@@ -120,10 +120,10 @@ export default function CommandPalette() {
       {
         id: "act-resume",
         group: "Actions",
-        label: "Download CV",
+        label: "Download Résumé",
         hint: "PDF",
         icon: ArrowUp,
-        keywords: "resume cv pdf download",
+        keywords: "resume résumé cv pdf download",
         external: true,
         run: () => go("/Sajidur_Rahman_Sajid_Resume.pdf", true),
       },

@@ -1078,7 +1078,7 @@ export default function SynapseOverlay({ onDone }: { onDone: () => void }) {
           data-cortex-anim
           className="synapse-subtitle-in mt-4 font-mono text-xs tracking-[0.12em] text-text-secondary sm:text-sm"
         >
-          AI Engineer &amp; Full-Stack Software Developer
+          Full-Stack Software Engineer · AI/ML
         </p>
         <p
           data-cortex-anim

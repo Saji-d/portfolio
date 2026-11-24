@@ -6,6 +6,7 @@ import { MotionConfig, motion, type Variants } from "motion/react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import Eyebrow from "@/components/ui/Eyebrow";
 import NeonRing from "@/components/ui/NeonRing";
+import CopyButton from "@/components/ui/CopyButton";
 import { SITE } from "@/data/site";
 
 interface Channel {
@@ -13,11 +14,13 @@ interface Channel {
   label: string;
   value: string;
   href: string;
+  /** When set, a small copy button is shown for this value. */
+  copy?: string;
 }
 
 const channels: Channel[] = [
-  { icon: Mail, label: "Email", value: SITE.email, href: `mailto:${SITE.email}` },
-  { icon: Phone, label: "Phone", value: SITE.phone, href: `tel:${SITE.phoneHref}` },
+  { icon: Mail, label: "Email", value: SITE.email, copy: SITE.email, href: `mailto:${SITE.email}` },
+  { icon: Phone, label: "Phone", value: SITE.phone, copy: SITE.phone, href: `tel:${SITE.phoneHref}` },
   {
     icon: LinkedinIcon,
     label: "LinkedIn",
@@ -67,7 +70,7 @@ export default function ContactSection() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
                 </span>
-                Open to opportunities
+                Open to better opportunities
               </span>
             </motion.div>
 
@@ -75,14 +78,17 @@ export default function ContactSection() {
               {channels.map((c) => {
                 const external = c.href.startsWith("http");
                 return (
-                  <motion.a
+                  <motion.div
                     key={c.label}
                     variants={fadeUp}
                     whileHover={{ y: -3 }}
+                    className="relative h-full"
+                  >
+                  <a
                     href={c.href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
-                    className="card-surface group relative flex h-full items-center gap-3 overflow-hidden px-4 py-3.5 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(99,102,241,0.35)]"
+                    className={`card-surface group relative flex h-full items-center gap-3 overflow-hidden py-3.5 pl-4 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_32px_-20px_rgba(99,102,241,0.35)] pr-4`}
                   >
                     <NeonRing />
                     <span
@@ -100,7 +106,16 @@ export default function ContactSection() {
                         {c.value}
                       </span>
                     </span>
-                  </motion.a>
+                  </a>
+                  {c.copy && (
+                    <CopyButton
+                      value={c.copy}
+                      label={c.label === "Email" ? "email address" : "phone number"}
+                      iconOnly
+                      className="absolute right-2.5 top-2.5"
+                    />
+                  )}
+                  </motion.div>
                 );
               })}
             </div>

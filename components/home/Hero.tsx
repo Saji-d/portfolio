@@ -41,7 +41,7 @@ export default function Hero() {
             className="hero-enter mt-6 text-center"
             style={{ animationDelay: mobileDelays[1] }}
           >
-            <Eyebrow className="text-center">AI Engineer &amp; Full-Stack Developer</Eyebrow>
+            <Eyebrow className="text-center">Full-Stack Software Engineer · AI/ML</Eyebrow>
             <h1 className="hero-name-signature mt-1 whitespace-nowrap text-[2.7rem] font-bold leading-[1.3] sm:text-[3rem]">
               Sajidur Rahman <span>Sajid</span>
             </h1>
@@ -51,7 +51,7 @@ export default function Hero() {
             className="hero-enter mx-auto mt-2 max-w-[34ch] text-center text-[0.9375rem] leading-relaxed text-text-secondary"
             style={{ animationDelay: mobileDelays[2] }}
           >
-            I build full-stack systems and production-ready AI/ML solutions,
+            I build full-stack web and mobile systems, with AI/ML as a specialty,
             turning complex problems into reliable software for the real
             world.
           </p>
@@ -71,7 +71,7 @@ export default function Hero() {
               external
               className="w-full justify-center border border-line bg-surface px-6 py-3.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 sm:w-auto"
             >
-              <Download className="h-4 w-4" /> Download CV
+              <Download className="h-4 w-4" /> Download Résumé
             </MagneticButton>
           </div>
 
@@ -97,7 +97,7 @@ export default function Hero() {
           <div className="grid items-start gap-10 lg:grid-cols-2 xl:gap-14">
             <div className="max-w-xl">
               <div className="hero-enter" style={{ animationDelay: delays[0] }}>
-                <Eyebrow>AI Engineer &amp; Full-Stack Developer</Eyebrow>
+                <Eyebrow>Full-Stack Software Engineer · AI/ML</Eyebrow>
                 <h1 className="hero-name-signature mt-2 whitespace-nowrap text-[3.5rem] font-bold leading-[1.25] sm:text-[3.75rem] lg:text-[4rem]">
                   Sajidur Rahman <span>Sajid</span>
                 </h1>
@@ -107,8 +107,8 @@ export default function Hero() {
                 className="hero-enter mt-3 -mr-3 max-w-md text-base leading-relaxed text-text-secondary sm:max-w-[36rem] sm:text-lg"
                 style={{ animationDelay: delays[1] }}
               >
-                I build full-stack systems and production-ready AI/ML
-                solutions, turning complex problems into reliable software
+                I build full-stack web and mobile systems, with AI/ML as a
+                specialty, turning complex problems into reliable software
                 for the real world.
               </p>
 
@@ -127,7 +127,7 @@ export default function Hero() {
                   external
                   className="border border-line bg-surface px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent/50"
                 >
-                  <Download className="h-4 w-4" /> Download CV
+                  <Download className="h-4 w-4" /> Download Résumé
                 </MagneticButton>
               </div>
 

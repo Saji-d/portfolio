@@ -15,6 +15,7 @@ interface MeasuredEdge {
 
 const TAG_STYLE: Record<FlowTag, string> = {
   production: "border-accent/30 bg-accent-dim text-accent-hover",
+  building: "border-warning/30 bg-warning/10 text-warning",
   research: "border-accent-2/30 bg-accent-2/10 text-accent-2",
   project: "border-line bg-surface-2 text-text-muted",
 };
@@ -254,7 +255,7 @@ export default function ProjectsView() {
       </AnimatePresence>
 
       <p className="mt-2 font-mono text-[0.6875rem] text-text-muted">
-        &gt; the graph follows a build path: professional, full-stack, research, vision ·
+        &gt; the graph follows a build path: building now, professional, full-stack, research, vision ·
         click a node
       </p>
     </div>

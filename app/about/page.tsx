@@ -50,7 +50,9 @@ export default function AboutPage() {
               organisations. I also have an ongoing contract with RemoteIntegrity
               in the US. At Ledgercross I built the
               FastAPI OCR and fraud-detection service for InvoicePilot and
-              delivered the FUMAK inventory and POS system as sole developer.
+              delivered the FUMAK inventory and POS system as sole developer. I also
+              built the frontend and contributed patient and bed occupancy backend
+              logic for NITOR’s Blue-II Trauma Unit.
               Before that I interned at Bangladesh Software Solution, building
               responsive interfaces against REST APIs.
             </p>
@@ -58,9 +60,9 @@ export default function AboutPage() {
               Neuro-Screen was a group research project at AIUB. I built the
               Streamlit app and ran the re-analysis. A stack of CatBoost,
               XGBoost, LightGBM and a neural network was evaluated with nested
-              cross-validation on a leakage-controlled predictor set (cognitive
-              accuracy 0.621 vs majority baseline 0.621; ROC-AUC 0.480) across
-              2,236 survey responses. The paper is in preparation.
+              cross-validation on a leakage-controlled predictor set, with every
+              metric reported against a majority-class baseline, across 2,236
+              survey responses. The paper is in preparation.
             </p>
             <p>
               At AIUB I received the Dean&apos;s Award five times and an AIUB Merit
