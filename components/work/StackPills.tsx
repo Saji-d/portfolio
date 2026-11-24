@@ -8,17 +8,32 @@ import { Pill } from "@/components/ui/Badge";
  * whatever doesn't fit collapses into a "+N" chip (full list on hover).
  * Re-fits whenever the card's width changes.
  */
+type Item = { kind: "tag" | "planned" | "label"; text: string };
+
 export default function StackPills({
   tags,
+  planned = [],
   maxRows = 2,
   className = "",
 }: {
   tags: string[];
+  /** Planned (not yet shipped) stack, shown after a muted "Next up" label. */
+  planned?: string[];
   maxRows?: number;
   className?: string;
 }) {
+  const items: Item[] = [
+    ...tags.map((text): Item => ({ kind: "tag", text })),
+    ...(planned.length > 0
+      ? [
+          { kind: "label", text: "Next up" } as Item,
+          ...planned.map((text): Item => ({ kind: "planned", text })),
+        ]
+      : []),
+  ];
+  const total = items.length;
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(tags.length);
+  const [visible, setVisible] = useState(total);
   const [fitKey, setFitKey] = useState(0);
   const widthRef = useRef(0);
 
@@ -41,7 +56,7 @@ export default function StackPills({
     const ro = new ResizeObserver(() => {
       if (Math.abs(el.clientWidth - widthRef.current) > 1) {
         widthRef.current = el.clientWidth;
-        setVisible(tags.length);
+        setVisible(total);
         setFitKey((k) => k + 1);
       }
     });
@@ -52,7 +67,7 @@ export default function StackPills({
     let cancelled = false;
     const refit = () => {
       if (cancelled) return;
-      setVisible(tags.length);
+      setVisible(total);
       setFitKey((k) => k + 1);
     };
     document.fonts?.ready.then(refit);
@@ -63,17 +78,32 @@ export default function StackPills({
       ro.disconnect();
       document.fonts?.removeEventListener?.("loadingdone", refit);
     };
-  }, [tags.length]);
+  }, [total]);
 
-  const hidden = tags.length - visible;
+  // Never end on a dangling "Next up" label with no chips after it.
+  let shown = items.slice(0, visible);
+  if (shown.length > 0 && shown[shown.length - 1].kind === "label") shown = shown.slice(0, -1);
+  const rest = items.slice(shown.length).filter((i) => i.kind !== "label");
+  const hidden = rest.length;
 
   return (
     <div ref={ref} className={`flex flex-wrap gap-1.5 ${className}`}>
-      {tags.slice(0, visible).map((tech) => (
-        <Pill key={tech}>{tech}</Pill>
-      ))}
+      {shown.map((item) =>
+        item.kind === "label" ? (
+          <span
+            key="__planned-label"
+            className="ml-1 inline-flex items-center border border-transparent py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted"
+          >
+            {item.text}
+          </span>
+        ) : (
+          <Pill key={`${item.kind}-${item.text}`} planned={item.kind === "planned"}>
+            {item.text}
+          </Pill>
+        ),
+      )}
       {hidden > 0 && (
-        <span title={tags.slice(visible).join(", ")}>
+        <span title={rest.map((i) => i.text).join(", ")}>
           <Pill>{`+${hidden}`}</Pill>
         </span>
       )}

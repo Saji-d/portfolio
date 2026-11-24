@@ -14,7 +14,7 @@ export default function ProjectsPage() {
     <>
       <PageHeader
         eyebrow="[ 03 ] · Projects"
-        title="Every project, with the code attached."
+        title="Selected projects, with code where it is public."
         wideTitle
         lede="A curated collection of software engineering, AI, computer vision, graphics, database and production systems I've built."
       />

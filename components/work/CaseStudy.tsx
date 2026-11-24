@@ -3,7 +3,10 @@ import LiveBadge from "@/components/ui/LiveBadge";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/data/projects.full";
 import { getCaseStudyProjects } from "@/data/projects.full";
-import { StatusBadge, Pill, ProjectBadgeChip } from "@/components/ui/Badge";
+import { stageLabel } from "@/data/projects";
+import CaseGlance from "@/components/work/CaseGlance";
+import { AttributionBadge, StatusBadge, Pill, ProjectBadgeChip } from "@/components/ui/Badge";
+import PrivateRepoIcon, { isRepoLocked } from "@/components/ui/PrivateRepoIcon";
 import CodeBlock from "@/components/ui/CodeBlock";
 import Gallery from "@/components/work/Gallery";
 import Reveal from "@/components/ui/Reveal";
@@ -59,12 +62,12 @@ export default function CaseStudy({ project }: { project: Project }) {
     { label: "Under the hood", present: !!project.highlights },
     { label: "Outcomes", present: !!project.metrics },
     { label: "Visuals", present: !!project.screenshots?.length },
-    { label: "Where it's going", present: !!project.nextSteps },
+    { label: "Where it's going", present: !!project.nextSteps?.length },
     { label: "Keep exploring", present: true },
   ]);
 
   const actionLinks = [
-    ...(project.github ? [{ label: "View Code", href: project.github }] : []),
+    ...(project.github && !isRepoLocked(project) ? [{ label: "GitHub", href: project.github }] : []),
     ...(project.demo ? [{ label: "LIVE", href: project.demo }] : []),
     ...(project.thesis ? [{ label: "Thesis", href: project.thesis, internal: true }] : []),
   ];
@@ -75,11 +78,14 @@ export default function CaseStudy({ project }: { project: Project }) {
         <Reveal>
           <div className="flex flex-wrap items-center gap-3">
             <StatusBadge status={project.status} />
+            {project.attribution && <AttributionBadge>{project.attribution}</AttributionBadge>}
             <span className="font-mono text-xs text-text-muted">{project.role}</span>
-            <ProjectBadgeChip>{project.category}</ProjectBadgeChip>
-            {project.badges.map((badge) => (
-              <ProjectBadgeChip key={badge}>{badge}</ProjectBadgeChip>
-            ))}
+            <ProjectBadgeChip>{stageLabel(project)}</ProjectBadgeChip>
+            {project.badges
+              .filter((badge) => badge !== "Production" && badge !== "Professional")
+              .map((badge) => (
+                <ProjectBadgeChip key={badge}>{badge}</ProjectBadgeChip>
+              ))}
           </div>
           <h1 className="mt-5 max-w-4xl font-display text-4xl font-medium leading-[1.05] tracking-tight text-gradient sm:text-5xl lg:text-6xl">
             {project.name}
@@ -88,14 +94,33 @@ export default function CaseStudy({ project }: { project: Project }) {
             {project.tagline}
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <Pill key={tech}>{tech}</Pill>
-            ))}
-          </div>
+          <CaseGlance project={project} />
 
-          {actionLinks.length > 0 && (
+          {(project.stack.length > 0 || (project.plannedStack?.length ?? 0) > 0) && (
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              {project.stack.map((tech) => (
+                <Pill key={tech}>{tech}</Pill>
+              ))}
+              {project.plannedStack && project.plannedStack.length > 0 && (
+                <>
+                  <span className="ml-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
+                    Next up
+                  </span>
+                  {project.plannedStack.map((tech) => (
+                    <Pill key={`planned-${tech}`} planned>
+                      {tech}
+                    </Pill>
+                  ))}
+                </>
+              )}
+            </div>
+          )}
+
+          {(actionLinks.length > 0 || isRepoLocked(project)) && (
             <div className="mt-8 flex flex-wrap gap-3">
+              {isRepoLocked(project) && (
+                <PrivateRepoIcon access={project.repoAccess === "unavailable" ? "unavailable" : "private"} />
+              )}
               {actionLinks.map((link) =>
                 (link as { internal?: boolean }).internal ? (
                   <Link
@@ -112,10 +137,16 @@ export default function CaseStudy({ project }: { project: Project }) {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
+                    className={link.label === "LIVE" ? "inline-flex items-center py-2" : "inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"}
                   >
-                    {link.label === "LIVE" ? <LiveBadge /> : link.label}
-                    <ExternalLink className="h-3.5 w-3.5" />
+                    {link.label === "LIVE" ? (
+                      <LiveBadge />
+                    ) : (
+                      <>
+                        {link.label}
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </>
+                    )}
                   </a>
                 )
               )}
@@ -222,7 +253,7 @@ export default function CaseStudy({ project }: { project: Project }) {
           </Section>
         )}
 
-        {project.nextSteps && (
+        {project.nextSteps && project.nextSteps.length > 0 && (
           <Section eyebrow={eyebrows["Where it's going"]} title="Status & next steps">
             <ul className="space-y-3">
               {project.nextSteps.map((s) => (

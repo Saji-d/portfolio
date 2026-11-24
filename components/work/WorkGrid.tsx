@@ -2,12 +2,12 @@
 
 import { memo, useDeferredValue, useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
-import { projects, projectCategories, type ProjectCategory } from "@/data/projects";
+import { allProjects, projectCategories, UNIVERSITY_WORK, type ProjectCategory } from "@/data/projects";
 import { ProjectCard } from "@/components/work/ProjectCard";
 
 const MemoCard = memo(ProjectCard);
 
-function matchesQuery(p: (typeof projects)[number], q: string): boolean {
+function matchesQuery(p: (typeof allProjects)[number], q: string): boolean {
   if (!q) return true;
   const haystack = [
     p.name,
@@ -31,12 +31,17 @@ export default function WorkGrid() {
 
   const filtered = useMemo(
     () =>
-      projects.filter((p) => {
+      allProjects.filter((p) => {
         const matchesCategory = active === "All" || p.category === active;
         return matchesCategory && matchesQuery(p, normalized);
       }),
     [active, normalized]
   );
+
+  // Unfiltered view: university projects drop into their own group below the main grid.
+  const grouped = active === "All" && !normalized;
+  const mainProjects = grouped ? filtered.filter((p) => !UNIVERSITY_WORK.has(p.slug)) : filtered;
+  const universityProjects = grouped ? filtered.filter((p) => UNIVERSITY_WORK.has(p.slug)) : [];
 
   return (
     <div>
@@ -63,7 +68,7 @@ export default function WorkGrid() {
           )}
         </label>
         <p aria-live="polite" className="font-mono text-xs text-text-muted">
-          {filtered.length} / {projects.length} projects
+          {filtered.length} / {allProjects.length} projects
         </p>
       </div>
 
@@ -90,7 +95,7 @@ export default function WorkGrid() {
           key={`${active}-${normalized}`}
           className="grid-enter mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {filtered.map((p) => (
+          {mainProjects.map((p) => (
             <MemoCard
               key={p.slug}
               project={p}
@@ -98,7 +103,27 @@ export default function WorkGrid() {
             />
           ))}
         </div>
-      ) : (
+      ) : null}
+
+      {filtered.length > 0 && universityProjects.length > 0 && (
+        <section className="mt-14" aria-labelledby="university-work-heading">
+          <h3 id="university-work-heading" className="font-display text-xl font-medium tracking-tight text-text-primary">
+            University projects
+          </h3>
+          <p className="mt-1 text-sm text-text-muted">Coursework and projects from my time at AIUB, before my focus on full-stack engineering.</p>
+          <div className="grid-enter mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {universityProjects.map((p) => (
+              <MemoCard
+                key={p.slug}
+                project={p}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {filtered.length === 0 ? (
         <div className="card-surface mt-8 px-6 py-16 text-center">
           <p className="font-display text-lg font-medium tracking-tight text-text-primary">
             No projects match{query ? ` “${query}”` : ""}.
@@ -114,7 +139,7 @@ export default function WorkGrid() {
             Clear search & filters
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

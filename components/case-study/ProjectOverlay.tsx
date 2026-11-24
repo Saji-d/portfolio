@@ -4,7 +4,10 @@ import LiveBadge from "@/components/ui/LiveBadge";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { getProject } from "@/data/projects.full";
-import { Pill, ProjectBadgeChip, StatusBadge } from "@/components/ui/Badge";
+import { stageLabel } from "@/data/projects";
+import CaseGlance from "@/components/work/CaseGlance";
+import { AttributionBadge, Pill, ProjectBadgeChip, StatusBadge } from "@/components/ui/Badge";
+import PrivateRepoIcon, { isRepoLocked } from "@/components/ui/PrivateRepoIcon";
 import CodeBlock from "@/components/ui/CodeBlock";
 import Gallery from "@/components/work/Gallery";
 import OverlayShell from "@/components/ui/OverlayShell";
@@ -92,11 +95,11 @@ export default function ProjectOverlay({
     { label: "Under the hood", present: !!project.highlights },
     { label: "Outcomes", present: !!project.metrics },
     { label: "Visuals", present: !!project.screenshots?.length },
-    { label: "Where it's going", present: !!project.nextSteps },
+    { label: "Where it's going", present: !!project.nextSteps?.length },
   ]);
 
   const actionLinks = [
-    ...(project.github ? [{ label: "View Code", href: project.github }] : []),
+    ...(project.github && !isRepoLocked(project) ? [{ label: "GitHub", href: project.github }] : []),
     ...(project.demo ? [{ label: "LIVE", href: project.demo }] : []),
     ...(project.thesis
       ? [{ label: "Thesis", href: project.thesis, internal: true }]
@@ -112,13 +115,16 @@ export default function ProjectOverlay({
         <header>
           <div className="flex flex-wrap items-center gap-3 pr-12">
             <StatusBadge status={project.status} />
+            {project.attribution && <AttributionBadge>{project.attribution}</AttributionBadge>}
             <span className="font-mono text-xs text-text-muted">
               {project.role}
             </span>
-            <ProjectBadgeChip>{project.category}</ProjectBadgeChip>
-            {project.badges.map((badge) => (
-              <ProjectBadgeChip key={badge}>{badge}</ProjectBadgeChip>
-            ))}
+            <ProjectBadgeChip>{stageLabel(project)}</ProjectBadgeChip>
+            {project.badges
+              .filter((badge) => badge !== "Production" && badge !== "Professional")
+              .map((badge) => (
+                <ProjectBadgeChip key={badge}>{badge}</ProjectBadgeChip>
+              ))}
           </div>
           <h1 className="mt-4 font-display text-2xl font-medium leading-tight tracking-tight text-gradient sm:text-3xl">
             {project.name}
@@ -127,16 +133,33 @@ export default function ProjectOverlay({
             {project.tagline}
           </p>
 
-          {project.stack.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
+          <CaseGlance project={project} compact />
+
+          {(project.stack.length > 0 || (project.plannedStack?.length ?? 0) > 0) && (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               {project.stack.map((tech) => (
                 <Pill key={tech}>{tech}</Pill>
               ))}
+              {project.plannedStack && project.plannedStack.length > 0 && (
+                <>
+                  <span className="ml-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-text-muted">
+                    Next up
+                  </span>
+                  {project.plannedStack.map((tech) => (
+                    <Pill key={`planned-${tech}`} planned>
+                      {tech}
+                    </Pill>
+                  ))}
+                </>
+              )}
             </div>
           )}
 
-          {actionLinks.length > 0 && (
+          {(actionLinks.length > 0 || isRepoLocked(project)) && (
             <div className="mt-6 flex flex-wrap gap-3">
+              {isRepoLocked(project) && (
+                <PrivateRepoIcon access={project.repoAccess === "unavailable" ? "unavailable" : "private"} />
+              )}
               {actionLinks.map((link) =>
                 (link as { internal?: boolean }).internal ? (
                   <Link
@@ -153,10 +176,16 @@ export default function ProjectOverlay({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"
+                    className={link.label === "LIVE" ? "inline-flex items-center py-2" : "inline-flex items-center gap-2 rounded-md border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent-hover"}
                   >
-                    {link.label === "LIVE" ? <LiveBadge /> : link.label}
-                    <ExternalLink className="h-3.5 w-3.5" />
+                    {link.label === "LIVE" ? (
+                      <LiveBadge />
+                    ) : (
+                      <>
+                        {link.label}
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </>
+                    )}
                   </a>
                 )
               )}
@@ -251,7 +280,7 @@ export default function ProjectOverlay({
             </Section>
           )}
 
-          {project.nextSteps && (
+          {project.nextSteps && project.nextSteps.length > 0 && (
             <Section eyebrow={eyebrows["Where it's going"]} title="Status & next steps">
               <Bullets items={project.nextSteps} accent="bg-accent-2" />
             </Section>

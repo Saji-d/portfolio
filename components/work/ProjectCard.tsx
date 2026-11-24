@@ -5,12 +5,13 @@ import type { ComponentType, ReactNode } from "react";
 import {
   ArrowUpRight,
   BookOpen,
-  ExternalLink,
   Star,
   type LucideIcon,
 } from "lucide-react";
 import type { Project } from "@/data/projects";
-import { StatusBadge } from "@/components/ui/Badge";
+import { stageLabel } from "@/data/projects";
+import { AttributionBadge, StatusBadge } from "@/components/ui/Badge";
+import PrivateRepoIcon, { isRepoLocked } from "@/components/ui/PrivateRepoIcon";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import TiltCard from "@/components/ui/TiltCard";
 import StackPills from "@/components/work/StackPills";
@@ -18,7 +19,7 @@ import StackPills from "@/components/work/StackPills";
 export function primaryHref(project: Project): string | undefined {
   if (project.caseStudy) return `/projects/${project.slug}`;
   if (project.thesis) return project.thesis;
-  return project.github;
+  return project.github ?? project.demo;
 }
 
 function isProfessional(project: Project): boolean {
@@ -71,6 +72,16 @@ export function GlassChip({
   );
 }
 
+export function ProjectCoverScan() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden opacity-0 transition-opacity duration-300 motion-safe:group-hover:opacity-100">
+      <span className="animate-project-cover-scan absolute inset-0">
+        <span className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-transparent via-accent/25 to-transparent" />
+      </span>
+    </div>
+  );
+}
+
 function CoverImage({
   project,
   sizes,
@@ -89,32 +100,42 @@ function CoverImage({
 
   const art = (
     <>
-      <Image
-        src={project.cover}
-        alt={`${project.name}: ${project.tagline}`}
-        fill
-        sizes={sizes}
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg/85 via-bg/10 to-bg/20" />
-      <div className="absolute inset-0 bg-bg/0 transition-colors duration-300 group-hover:bg-bg/20" />
-
-      {/* Inspection scan-line: a thin light band sweeping the cover on
-          hover, reinforcing "running system being inspected" rather than a
-          static screenshot. The animation always runs; only its opacity is
-          hover-gated, so there's no start/stop jank. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      >
-        <span className="animate-scan-sweep absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-accent/25 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden [clip-path:inset(0)] [contain:paint]">
+        {project.preserveCoverFrame ? (
+          <Image
+            src={project.cover}
+            alt={`${project.name}: ${project.tagline}`}
+            fill
+            sizes={sizes}
+            className="object-fill"
+          />
+        ) : (
+          <>
+            <Image
+              src={project.cover}
+              alt={`${project.name}: ${project.tagline}`}
+              fill
+              sizes={sizes}
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-bg/85 via-bg/10 to-bg/20" />
+            <div className="absolute inset-0 bg-bg/0 transition-colors duration-300 group-hover:bg-bg/20" />
+          </>
+        )}
+        <ProjectCoverScan />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-2 bg-linear-to-t from-surface-2 from-25% to-transparent"
+        />
       </div>
 
       <div className="absolute left-3 top-3 flex max-w-[calc(100%-6rem)] flex-wrap gap-1.5">
-        <GlassChip accent={pro}>{project.category}</GlassChip>
-        {project.badges.map((badge) => (
-          <GlassChip key={badge}>{badge}</GlassChip>
-        ))}
+        <GlassChip accent={pro}>{stageLabel(project)}</GlassChip>
+        {project.badges
+          .filter((badge) => badge !== "Production" && badge !== "Professional")
+          .map((badge) => (
+            <GlassChip key={badge}>{badge}</GlassChip>
+          ))}
       </div>
 
       {showFeatured && (
@@ -130,7 +151,7 @@ function CoverImage({
     </>
   );
 
-  const coverClass = compact
+  const coverClass = compact || showFeatured || project.preserveCoverFrame
     ? "relative block aspect-[16/8] overflow-hidden bg-surface-2"
     : "relative block aspect-video overflow-hidden bg-surface-2";
 
@@ -168,16 +189,20 @@ function CardButton({
   icon: Icon,
   children,
   primary = false,
+  bare = false,
   onClick,
 }: {
   href?: string;
   external?: boolean;
-  icon: LucideIcon | ComponentType<{ className?: string }>;
+  icon?: LucideIcon | ComponentType<{ className?: string }>;
   children: ReactNode;
   primary?: boolean;
+  bare?: boolean;
   onClick?: () => void;
 }) {
-  const classes = `inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-all ${
+  const classes = bare
+    ? "inline-flex items-center"
+    : `inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-all ${
     primary
       ? "border-accent/40 bg-accent-dim text-accent-hover hover:border-accent hover:bg-accent/20"
       : "border-line bg-surface-2 text-text-secondary hover:border-accent/50 hover:text-accent-hover"
@@ -220,16 +245,13 @@ function ProjectActions({
         compact ? "mt-3 pt-3" : "mt-4 pt-4"
       }`}
     >
-      {project.github && (
+      {project.github && !isRepoLocked(project) ? (
         <CardButton href={project.github} external icon={GithubIcon} primary>
           GitHub
         </CardButton>
-      )}
-      {project.demo && (
-        <CardButton href={project.demo} external icon={ExternalLink}>
-          <LiveBadge />
-        </CardButton>
-      )}
+      ) : isRepoLocked(project) ? (
+        <PrivateRepoIcon access={project.repoAccess === "unavailable" ? "unavailable" : "private"} size="sm" />
+      ) : null}
       {project.caseStudy &&
         (onOpenCaseStudy ? (
           <CardButton
@@ -243,6 +265,11 @@ function ProjectActions({
             Case Study
           </CardButton>
         ))}
+      {project.demo && (
+        <CardButton href={project.demo} external bare>
+          <LiveBadge />
+        </CardButton>
+      )}
     </div>
   );
 }
@@ -284,9 +311,16 @@ export function ProjectCard({
           compact={compact}
           onOpenCaseStudy={onOpenCaseStudy}
         />
-        <div className={`flex flex-1 flex-col ${compact ? "p-4" : "p-5"}`}>
+        <div className={`relative z-10 -mt-0.5 flex flex-1 flex-col bg-linear-to-b from-surface-2 to-surface ${compact ? "p-4" : "p-5"}`}>
+          {project.attribution && (
+            <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+              <AttributionBadge>{project.attribution}</AttributionBadge>
+              <span aria-hidden="true" className="text-text-muted">·</span>
+              <StatusBadge status={project.status} />
+            </div>
+          )}
           <div className="flex items-start justify-between gap-3">
-            <h3 className="card-title">
+            <h3 className="card-title min-w-0">
               {opensCaseStudy ? (
                 <button
                   type="button"
@@ -306,7 +340,11 @@ export function ProjectCard({
                 project.name
               )}
             </h3>
-            <StatusBadge status={project.status} />
+            {!project.attribution && (
+              <div className="flex shrink-0 flex-wrap justify-end gap-1.5">
+                <StatusBadge status={project.status} />
+              </div>
+            )}
           </div>
           <p
             className={`flex-1 line-clamp-3 body-copy text-text-muted ${
@@ -318,6 +356,7 @@ export function ProjectCard({
           <StackPills
             key={project.slug}
             tags={project.stack}
+            planned={project.plannedStack}
             maxRows={compact ? 1 : 2}
             className={compact ? "mt-3" : "mt-4"}
           />
