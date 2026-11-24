@@ -6,8 +6,8 @@ import { resume } from "@/data/resume";
 import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Resume",
-  description: `Full resume of ${SITE.name}: Full-Stack Software Engineer | AI/ML. Downloadable PDF.`,
+  title: "Résumé",
+  description: `Full résumé of ${SITE.name}: Full-Stack Software Engineer | AI/ML. Downloadable PDF.`,
   alternates: { canonical: "/resume" },
 };
 
@@ -42,7 +42,7 @@ export default function ResumePage() {
   return (
     <>
       <PageHeader
-        eyebrow="[ 09 ] · Resume"
+        eyebrow="[ 09 ] · Résumé"
         title="The source of truth."
         lede="Everything on this site traces back to this document. Download it or read it inline below."
         wideLede
@@ -57,7 +57,7 @@ export default function ResumePage() {
                 download="Sajidur_Rahman_Sajid_Resume.pdf"
                 className="inline-flex items-center gap-1.5 rounded-md bg-accent px-4 py-2 font-mono text-xs font-medium text-accent-ink transition-colors hover:bg-accent/90"
               >
-                <Download className="h-3.5 w-3.5" /> Download PDF
+                <Download className="h-3.5 w-3.5" /> Download Résumé (PDF)
               </a>
               <a
                 href={`mailto:${SITE.email}?subject=Resume request`}
