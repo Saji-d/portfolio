@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/projects/dr-stone",
+        destination: "/projects/nitor-patient-management",
+        permanent: true,
+      },
+      {
         source: "/work/:path*",
         destination: "/projects/:path*",
         permanent: true,

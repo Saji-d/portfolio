@@ -225,8 +225,8 @@ export default async function ResearchDetailPage({
     add("What predicts impairment", <FeatureGrid features={study.featureImportance} />);
   add("Outcome", <Bullets items={study.outcome} />);
   add("Tools & Technologies", <Chips items={study.tools} />);
-  add("Challenges", <Bullets items={study.challenges} />);
-  add("Future Improvements", <Bullets items={study.futureWork} />);
+  if (study.challenges.length > 0) add("Challenges", <Bullets items={study.challenges} />);
+  if (study.futureWork.length > 0) add("Future Improvements", <Bullets items={study.futureWork} />);
 
   return (
     <article>

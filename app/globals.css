@@ -670,6 +670,22 @@
   animation: scan-sweep 3.4s linear infinite;
 }
 
+@keyframes project-cover-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  10%, 90% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translateY(calc(100% - 2.5rem));
+  }
+}
+
+@utility animate-project-cover-scan {
+  animation: project-cover-scan 3.4s linear infinite;
+}
+
 @keyframes caret-blink {
   0%,
   100% {
