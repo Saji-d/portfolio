@@ -17,7 +17,7 @@ export const SITE = {
   githubHandle: "Saji-d",
   url: "https://www.sajidur.me",
   availability:
-    "Open to software engineering roles across full-stack, platform and applied ML, and to select freelance work. I work remotely with teams in Australia and the US.",
+    "Open to better full-stack and applied ML roles, plus select freelance work. I work remotely with Australian and US teams.",
 } as const;
 
 export interface NavSectionLink {
@@ -57,6 +57,6 @@ export const ALL_SECTION_LINKS: readonly NavSectionLink[] = [
 ] as const;
 
 export const RESUME_LINK = {
-  label: "Resume",
+  label: "Résumé",
   href: "/resume",
 } as const;

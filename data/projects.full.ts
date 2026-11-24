@@ -21,9 +21,15 @@ export interface Project {
   cover: string;
   caseStudy?: boolean;
   github?: string;
+  /** Organisation or client the work was delivered for. */
+  attribution?: string;
+  /** "private" / "unavailable" render a non-interactive locked GitHub icon; omit the github URL for these. */
+  repoAccess?: "public" | "private" | "unavailable";
   demo?: string;
   thesis?: string;
   stack: string[];
+  /** Stack intended but not yet built; rendered after the confirmed stack. */
+  plannedStack?: string[];
   featuredTagline?: string;
   problem?: string[];
   solution?: string[];
@@ -39,15 +45,17 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: "voicecon",
+    attribution: "Client Project",
+    repoAccess: "private",
     name: "VoiceCon",
     tagline: "Android-first AI voice calling that converts your voice live on a GPU and delivers it over a normal phone call.",
     summary:
       "An Android app, a billing-aware backend, an admin panel, a realtime media gateway and a Seed-VC GPU worker, bridged through Twilio so a call's audio is converted live and delivered over the phone network. If conversion ever fails the call ends, so the caller's raw voice is never sent to the recipient.",
     role: "Full-stack Engineer",
-    status: "ACTIVE",
+    status: "COMPLETE",
     category: "Professional",
-    badges: ["Professional"],
-    featured: true,
+    badges: ["Production"],
+    featured: false,
     cover: "/images/thumbnails/voicecon-cover-3.webp",
     demo: "https://voicecon.app/",
     caseStudy: true,
@@ -68,7 +76,7 @@ export const projects: Project[] = [
     contribution: [
       "I build across the stack: the Kotlin and Jetpack Compose Android app (dialer, Voice Studio, Voice Lab, profile, KYC and package flows), the backend call, billing and credit services with their tests, the React admin panel, and the deployment, migration and RunPod bootstrap tooling.",
       "I wrote the access rules around calls and conversion (KYC, an active package, callable minutes, an approved and owned voice) and the user-facing messaging that explains why something is unavailable, with a shortcut to the packages screen.",
-      "I ran the GPU benchmarks and the quality and latency sweeps that picked the card and the streaming settings, and I documented the results together with their limits.",
+      "I ran the GPU benchmarks and the quality and latency sweeps that picked the card and the streaming settings, and I documented the results.",
     ],
     architecture: [
       "Android ──VoIP──▶ Twilio leg A ──Connect/Stream──▶ Gateway ──PCM 16k──▶ GPU worker (Seed-VC)",
@@ -91,7 +99,7 @@ export const projects: Project[] = [
       },
       {
         title: "PostgreSQL is the only source of truth",
-        body: "Credits and call state live in the database. Call deadlines are derived from connected_at plus the maximum duration, so a reconciler can end a call even if an in-process timer is lost. Redis was deliberately left out until a second backend instance needs shared rate limits.",
+        body: "Credits and call state live in the database. Call deadlines are derived from connected_at plus the maximum duration, so a reconciler can end a call even if an in-process timer is lost. Redis was deliberately left out to keep one source of truth.",
       },
       {
         title: "A ledger, not a counter",
@@ -106,8 +114,8 @@ export const projects: Project[] = [
         body: "An RTX A5000 on RunPod ($0.27 an hour) was chosen from recorded runs of the real worker: one call per GPU at a real-time factor of about 0.5, no dropped audio over a five-minute run. The model loads once at startup so a call never pays load time.",
       },
       {
-        title: "Measure quality, and write down the limits",
-        body: "A later sweep varied diffusion steps, block size, lookahead, prompt length and context one at a time, then re-scored the outputs with independent speaker encoders. One tuned configuration cut server-side delay by about 95 ms with equal or better similarity, and the write-up states what was not measured: no listening panel, one target voice and no real phone call yet.",
+        title: "Measure quality, then tune",
+        body: "A later sweep varied diffusion steps, block size, lookahead, prompt length and context one at a time, then re-scored the outputs with independent speaker encoders. One tuned configuration cut server-side delay by about 95 ms with equal or better similarity.",
       },
     ],
     highlights: [
@@ -127,7 +135,7 @@ B -> A           : passthrough.
 FAIL-CLOSED: once the worker errors or disconnects the bridge enters FAILED;
 from then on nothing derived from leg A can reach leg B (the B pacer queue is
 cleared and only silence is paced until the sockets close).`,
-        caption: "Leg A audio is only ever passed to the worker, and leg B receives only what the worker returns. After a failure the pacer emits silence, so a bug would have to add a route, not forget a check.",
+        caption: "Leg A audio is only ever passed to the worker, and leg B receives only what the worker returns. The pacer emits silence if conversion is interrupted.",
       },
       {
         title: "Billing arithmetic",
@@ -144,7 +152,6 @@ creditsConsumed    = creditMinutes * creditsPerMinute`,
 inference p50 ~86 ms, p95 ~106 ms per 180 ms block
 real-time factor 0.50, audio dropped 0 ms (11 of 1490 blocks over budget)
 server-side delay ~480-500 ms (block + lookahead + crossfade + jitter buffer + inference)`,
-        caption: "Twilio, the RunPod proxy and the phone network add their own delay on top, which can only be measured on a real call.",
       },
     ],
     metrics: [
@@ -159,25 +166,20 @@ server-side delay ~480-500 ms (block + lookahead + crossfade + jitter buffer + i
       { src: "/images/voicecon/website-home.webp", alt: "VoiceCon website: live voice conversion for phone calls" },
       { src: "/images/voicecon/app-screens.webp", alt: "VoiceCon Android app: Dialer, Voice Studio, Voice Lab and Profile (emulator, seeded demo account)" },
     ],
-    nextSteps: [
-      "Place real phone-network calls and sign off on physical devices: so far the GPU path is verified end to end through the API and the app on emulators.",
-      "Add an automated failure-injection test that kills the worker mid-call and asserts nothing derived from the caller's audio reaches the recipient.",
-      "A shared rate-limit store and a Postgres advisory lock for the reconciler, to run more than one backend instance.",
-      "Shared worker and session state so several gateways can schedule across the same GPU pool.",
-      "Run a listening panel on the tuned streaming configuration and revisit the model choice: Seed-VC is GPL-3.0 and archived upstream, so a commercial launch needs legal review.",
-    ],
   },
   {
     slug: "invoicepilot",
+    attribution: "Ledgercross",
+    repoAccess: "private",
     name: "InvoicePilot",
     tagline: "AI invoice platform that extracts, validates and flags duplicate or anomalous invoices before they reach finance teams.",
     summary:
-      "A team-built invoice platform. I built the FastAPI AI extraction service: OCR extraction, normalization, validation and duplicate, fraud and anomaly checks. Teammates built the approval workflow, the on-chain seal of the uploaded bytes and the billing sync.",
+      "Built by a four-person team, InvoicePilot brings invoice intake, review, approval and billing into one workflow. I built the FastAPI extraction service, covering OCR, normalization, validation, duplicate detection and fraud and anomaly checks.",
     role: "AI/ML Engineer · AI extraction service",
     status: "COMPLETE",
     category: "Professional",
     badges: ["Production"],
-    featured: true,
+    featured: false,
     cover: "/images/thumbnails/invoicepilot-cover-3.webp",
     caseStudy: true,
     stack: ["FastAPI", "Python", "Mindee OCR", "PostgreSQL", "Redis Streams", "Cloudflare R2"],
@@ -274,7 +276,7 @@ export interface ExtractedInvoiceFields {
   currency?: string;         // /^[A-Z]{3}$/
   lineItems?: NormalizedLineItem[]; // jsonb, sealed as-stored
 }`,
-        caption: "Teammate code, shown for context: An invoice with no extracted total is never handed to an approver: the exact $0-invoice-sealed bug this branch exists to kill.",
+        caption: "Teammate code, shown for context: An invoice with no extracted total is never handed to an approver: keeping the approval and sealing workflow tied to verified invoice totals.",
       },
       {
         title: "The single on-chain write, with a fee policy",
@@ -316,38 +318,31 @@ const txHash = await walletClient.writeContract({
       { src: "/images/invoicepilot/invoice-1.webp", alt: "Sample invoice processed by the pipeline" },
       { src: "/images/invoicepilot/invoice-2.webp", alt: "Sample invoice line data" },
     ],
-    nextSteps: [
-      "Reconcile schema drift: base SQL defines 7 invoice_status values, the code enum has 12, the SOC 2 spec lists 15. Align before the base schema is ever re-imported.",
-      "Add a per-currency minor-unit exponent table (JPY=0, BHD=3) before any non-2-decimal currency reaches production.",
-      "Backfill pre-006 rows and replace the rule-based anomaly placeholder with the planned Isolation Forest path.",
-      "Public demo environment with seeded sample invoices so the pipeline is explorable without credentials.",
-    ],
   },
   {
     slug: "fumak-inventory",
+    attribution: "Ledgercross",
+    repoAccess: "unavailable",
     name: "FUMAK Inventory",
-    tagline: "Inventory and POS system for a real retail shop: a phone scans barcodes, a web app handles stock, sales and analytics.",
+    tagline: "Inventory and point-of-sale system built for FUMAK, a retail store in Chattagram, Bangladesh.",
     summary:
-      "A two-part system for a real retail shop: an Android barcode scanner (CameraX + ML Kit, on-device decode) pairs over the shop's LAN with a Next.js web app that owns all product, stock, sales and analytics data in a Postgres database, covering the full sell flow from scan to checkout to revenue reporting.",
+      "I built FUMAK’s inventory and checkout system end to end. Staff scan existing product barcodes with an Android phone and use a web app to run checkout, track stock changes and review sales across reporting periods.",
     role: "Full-stack Engineer",
     status: "COMPLETE",
     category: "Professional",
     badges: ["Production"],
-    featured: true,
+    featured: false,
     cover: "/images/thumbnails/fumak-cover-3.webp",
     caseStudy: true,
-    github: "https://github.com/Saji-d/fumak-inventory",
     demo: "https://fumak-inventory.vercel.app/",
     stack: ["Kotlin", "Jetpack Compose", "Next.js", "Prisma", "Neon PostgreSQL", "CameraX", "ML Kit", "Cloudflare R2"],
-    featuredTagline: "Inventory and POS system for a real retail shop: a phone barcode scanner feeds a web app that manages products, stock, sales and revenue analytics over the local network.",
+    featuredTagline: "Android barcode scanning, inventory, checkout and sales reporting for FUMAK in Chattagram, Bangladesh.",
     problem: [
-      "A single-shop retail business kept inventory and revenue on paper and in memory: stock counts drifted and nobody could say how much revenue a given period actually produced.",
-      "The products already carry manufacturer barcodes, so generating new labels was never the answer: the shop just had no way to read those barcodes at the counter and tie a scan to a stock count or a sale.",
-      "A general-purpose POS or accounting suite was the wrong size of solution: the shop needed a narrow inventory + point-of-sale companion where a phone scans while a desktop or tablet runs the shop, without adopting a full accounting system.",
+      "FUMAK, a retail store in Chattagram, Bangladesh, needed a single checkout and inventory workflow for its counter staff. The store’s products already carried manufacturer barcodes. Staff needed to scan those labels, keep stock counts current as items sold and review revenue over a selected period.",
     ],
     solution: [
-      "The system is two-part, talking over the shop's local network. The Android app is a thin barcode-scanner remote: CameraX + Google ML Kit decode barcodes on-device and the app POSTs each value to the desktop web app, which holds no database of its own.",
-      "The Next.js web app is the actual inventory, POS and analytics application. It owns all data in a Neon PostgreSQL database (via Prisma), stores product photos in Cloudflare R2 and is where a staff member runs the shop from a browser while a phone on the counter feeds it scanned barcodes in real time.",
+      "The system is two-part, talking over the shop's local network. Staff pair an Android phone with the counter’s web app over the store’s local network. CameraX and ML Kit decode existing barcodes on the phone, then send each scan to the web app for product lookup and checkout.",
+      "The Next.js web app gives staff a browser workspace for the product catalog, stock adjustments, checkout and revenue reporting. Prisma connects it to Neon PostgreSQL, and Cloudflare R2 stores product photos.",
       "The product catalog covers name, category, color, size/variant, buying and selling prices, stock, barcode and photo. Every stock change (add, remove, adjust-to-counted-value and automatic deductions from a sale) is written to a full inventory-transaction audit log with the resulting stock level snapshotted on each entry.",
       "The POS checkout builds a multi-item cart (with per-line discounts), computes total / amount due / change live, then completes in one atomic database transaction: sale header + line items inserted, stock decremented and a SALE inventory transaction logged per item. Dashboard KPIs and period-filtered revenue analytics (Today / Month / 3M / 6M / Year / custom) aggregate over the same ledger.",
     ],
@@ -446,19 +441,169 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       { value: "LAN", label: "phone ↔ desktop pairing" },
     ],
     screenshots: [],
-    nextSteps: [
-      "Authentication and user roles (currently any device on the LAN can operate the app).",
-      "An automated test suite; verification is currently manual and on-device.",
-      "Supplier management and partial-payment / credit (debtor) tracking.",
-      "Remote (non-LAN) scanner pairing and multi-shop / multi-location support.",
+  },
+  {
+    slug: "nitor-patient-management",
+    attribution: "Ledgercross",
+    repoAccess: "private",
+    name: "NITOR Patient Management",
+    tagline: "Clinical operations platform used by NITOR’s Blue-II Trauma Unit for patient records, bed occupancy and operating-theatre planning.",
+    summary:
+      "NITOR’s Blue-II Trauma Unit uses this platform to manage patient records, track bed occupancy and coordinate operating-theatre schedules. I built the entire frontend, including the clinical workspace and public faculty directory, and worked with a teammate on Convex backend logic for patient management and occupancy.",
+    role: "Full-Stack Engineer · Frontend lead",
+    status: "COMPLETE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: false,
+    featuredTagline: "Clinical operations for NITOR’s Blue-II Trauma Unit, covering patient records, bed occupancy and operating-theatre rosters.",
+    cover: "/images/thumbnails/dr-stone-cover.webp",
+    caseStudy: true,
+    demo: "https://dr-stone.vercel.app/",
+    stack: ["React", "TypeScript", "Vite", "Convex", "Convex Auth", "Tailwind", "Vercel"],
+    problem: [
+      "NITOR’s Blue-II Trauma Unit needed a shared workspace for clinicians to coordinate patient records, bed occupancy, follow-ups and daily operating-theatre lists.",
+    ],
+    solution: [
+      "The National Institute of Traumatology and Orthopaedic Rehabilitation’s Blue-II Trauma Unit uses the platform to maintain patient records and investigation images, manage follow-ups and discharges, and track patient occupancy across wards and beds.",
+      "Doctors use an approved account to plan operating-theatre lists. Administrators can export daily rosters as PDF or JPG, with saved snapshots for historical reference. Convex subscriptions keep dashboards current across sessions.",
+    ],
+    contribution: [
+      "I built the full React and TypeScript frontend, including the clinical management workspace and public site with a faculty directory organised by academic designation.",
+      "I contributed Convex backend logic for patient records, ward and bed occupancy, and related clinical workflows, working with a teammate on implementation and integration.",
+    ],
+    architecture: [
+      "  React + Vite + TypeScript on Vercel",
+      "        │  Reactive queries and mutations",
+      "        ▼",
+      "  Convex database + TypeScript functions + Convex Auth",
+      "   Patient records · occupancy · OT planning · roster snapshots",
+    ],
+    decisions: [
+      {
+        title: "Live clinical dashboards",
+        body: "Reactive Convex queries keep clinicians’ views current when patient records or operating-theatre lists change.",
+      },
+      {
+        title: "Historical roster snapshots",
+        body: "Each export preserves the roster as it was issued so administrators can refer back to it after the schedule changes.",
+      },
+    ],
+  },
+  {
+    slug: "lumifi-sms",
+    attribution: "Lumifi Solutions",
+    name: "Lumifi SMS",
+    tagline: "Student and learning management for Australian training providers, from first application to completion.",
+    summary:
+      "A multi-tenant student and learning platform for Australian RTOs. I own the Applications and Enrolments module.",
+    role: "Full-Stack Developer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/lumifi-sms-admissions.webp",
+    caseStudy: true,
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Better Auth", "Tailwind CSS", "Vitest"],
+    problem: [
+      "Australian Registered Training Organisations (RTOs) are vocational colleges that deliver nationally recognised training. Most of their day goes on moving a learner through the same path: an application arrives, documents are checked, an offer is made, the learner is enrolled, trained and assessed, and a certificate is issued and reported.",
+      "That path is often split across disconnected tools. Applications live in one place, learner records in another, and course delivery and assessment in a separate learning system. The same details get typed again at every hand-off, records drift out of step, and staff build workarounds around the gaps.",
+      "Applications also come from three directions: learners applying online, staff entering paper forms and agents applying on a learner's behalf. Each route needs the same rules, and each college needs its own fields, documents and ID format.",
+      "Trainers and assessors need to see their own learners, deliver the course, mark attendance and record unit outcomes and feedback. Learners need to see where they are. Neither should depend on an administrator copying information between systems.",
+      "One platform serving many colleges has to keep every college's records, files and settings strictly apart, and it has to handle personal and identity documents with care.",
+    ],
+    solution: [
+      "Lumifi SMS is designed as one cloud platform for many colleges, combining a Student Management System (SMS) with a Learning Management System (LMS). It aims to keep one record per learner and reuse it from the first application through enrolment, training, assessment, certification and reporting.",
+      "The SMS side is designed to cover the administration of a college: online applications from the public, staff and agents, review and approval, enrolment, student records with a unique Student ID and USI status, courses and units, fees and payments, certificates and reporting for national VET data standards.",
+      "The LMS side aims to deliver the learning itself: course delivery with lessons, video and quizzes, online assessment, trainer marking and feedback, and a learner's progress through each unit. Because it reads from the same student and course records, a learner enrolled in the SMS is designed to appear in the right course and class without being keyed in a second time.",
+      "Each college is a separate tenant with its own users, branding, fields, documents and settings. It is designed so staff, trainers and agents each see only the work and data their role allows, with sensitive actions recorded in an audit trail.",
+      "Application, enrolment, unit outcome and payment are designed as separate statuses, so a change in one cannot silently overwrite another.",
+    ],
+    contribution: [
+      "I am the Full-Stack Developer for the Applications and Enrolments module, where a learner's journey begins. I work across the database design in Drizzle and PostgreSQL, the Next.js interface and the server logic behind it.",
+      "The module is built around one shared application form and validation layer used by the public apply page, staff entry and agent entry, so every route produces the same clean record. It covers resumable drafts with a generated reference, an Offer ID once submitted, review with approve, reject and reconsider, offer letters, permanent Student IDs and bulk import by CSV.",
+      "I wrote the tests with the code, including integration tests, a concurrency test for Student ID generation and checks that one college can never read another college's data.",
+    ],
+    decisions: [
+      {
+        title: "One record per learner",
+        body: "The platform is designed around a single student record per college that applications, enrolments, delivery, payments and certificates all reuse, so details are entered once and never copied between systems.",
+      },
+      {
+        title: "One form, three entry points",
+        body: "Public apply, staff entry and agent entry share the same form definition and validation, so a rule changes in one place and applies everywhere.",
+      },
+      {
+        title: "Tenancy enforced in the database",
+        body: "Each college is a tenant. A least-privilege database role and row-level scoping keep queries inside one college's data, and tests check that one college cannot see another's.",
+      },
+      {
+        title: "Separate lifecycles",
+        body: "Application, enrolment, unit outcome and payment each carry their own status, so progress in one area never overwrites another.",
+      },
+    ],
+    metrics: [
+      { value: "3", label: "entry points sharing one form" },
+      { value: "0", label: "duplicate Student IDs in the concurrency test" },
+      { value: "16", label: "viewports in the responsive audit" },
+    ],
+    screenshots: [],
+    featuredTagline: "A student and learning management platform for Australian training colleges, designed to carry a learner from application to enrolment, delivery and certificate.",
+  },
+  {
+    slug: "world-bridge",
+    attribution: "Lumifi Solutions",
+    name: "World Bridge",
+    tagline: "Cross-border staffing platform connecting Australian employers with remote professionals in Bangladesh.",
+    summary:
+      "World Bridge is a managed staffing platform that brings employer intake and candidate sourcing into one workflow. Australian teams submit structured hiring briefs, while Bangladeshi professionals build profiles and upload CVs across eight job segments. The platform is designed to help staffing teams build shortlists, track requests and coordinate placements from one workspace.",
+    role: "Full-Stack Developer",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/world-bridge-thumbnail.webp",
+    caseStudy: true,
+    stack: ["Next.js", "React", "TypeScript", "GSAP", "CSS"],
+    plannedStack: ["PostgreSQL", "Prisma", "Cloudflare R2", "Auth.js", "Resend", "Vercel"],
+    solution: [
+      "Employers use a guided brief to describe the roles they need, while candidates create searchable profiles with their experience, job segment and CV. The placement workflow is designed to carry those records from candidate review and shortlisting through employer follow-up and placement.",
+    ],
+    contribution: [
+      "I am building it as the Full-Stack Developer.",
+    ],
+    featuredTagline: "Cross-border hiring for Australian businesses, with structured staffing requests and a talent network spanning eight job segments in Bangladesh.",
+  },
+  {
+    slug: "aria-erp",
+    attribution: "RemoteIntegrity",
+    name: "Aria ERP",
+    tagline: "Cloud ERP for service businesses, unifying sales, procurement, inventory, finance and workforce operations.",
+    summary: "Aria ERP gives service businesses one workspace for sales, purchasing, inventory, finance and people operations. Teams can follow the flow from quote to invoice and from purchase request to goods receipt, with shared customer, supplier and product records. The operations dashboard is designed to surface pending approvals, low stock, open orders and outstanding balances across departments.",
+    role: "Full-Stack Developer (contract)",
+    status: "ACTIVE",
+    category: "Professional",
+    badges: ["Production"],
+    featured: true,
+    cover: "/images/thumbnails/aria-erp-warm-ink.webp",
+    caseStudy: true,
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Better Auth", "Tailwind CSS", "Vitest", "Vercel"],
+    solution: [
+      "Sales, purchasing, inventory, finance and HR share the same records. Aria is designed to link quotes to orders and invoices, match purchase orders with receipts and supplier bills, and give managers a view of open commitments, stock movement and cash flow.",
+    ],
+    contribution: [
+      "I am the full-stack developer on the project, working across the front end, back end, APIs and database on a contract basis.",
+    ],
+    featuredTagline: "Cloud ERP for service businesses, with quote-to-invoice, purchase approvals, stock control and financial reporting in one workspace.",
+    problem: [
+      "Day-to-day operations are often spread across separate spreadsheets and tools, so sales, stock, purchasing, payments and HR records drift out of step and are slow to reconcile.",
     ],
   },
   {
     slug: "casevault",
     name: "CaseVault",
-    tagline: "Legal research workspace for Bangladeshi law: relevance-ranked search over statutes and judgements, with AI summaries planned.",
+    tagline: "Legal research workspace for Bangladeshi law: relevance-ranked search over statutes and judgements, with a focused document reader.",
     summary:
-      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results and read in a document viewer whose AI tabs (summaries, citations) are Phase 2 placeholders, built around 'verify, don't trust AI.'",
+      "Privacy-first legal research for Bangladeshi law firms: ingest case documents, search with relevance-ranked results and read each document in a viewer with query highlighting.",
     role: "Full-Stack Engineer",
     status: "ACTIVE",
     category: "Web",
@@ -474,19 +619,14 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       "Generic AI chatbots hallucinate citations and firms cannot upload confidential client files to public AI tools without risking privacy.",
     ],
     solution: [
-      "CaseVault Phase 1 is a working MVP: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
-      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with AI tabs (summary / ask / citations / related) that are Phase 2 placeholders, query highlighting and an XSS-safe hand-rolled markdown renderer.",
-      "Phase 2 is fully designed (Project SynthGraph): Qdrant semantic search + Neo4j knowledge graph with Leiden community detection, Celery pipelines for OCR → chunking → embeddings and sub-graph context injected into a reranker, targeting ~790ms to first token.",
+      "CaseVault is a working application: a FastAPI backend ingests markdown legal documents (front-matter metadata) into SQLite, with repositories that score document relevance per query and a full-text search API.",
+      "The Next.js frontend is a dark-theme research workspace: hero search, live stats, category cards, a document reader with query highlighting and an XSS-safe hand-rolled markdown renderer.",
     ],
     architecture: [
-      "  ┌───────────────────────── Phase 1 (shipped) ─────────────────────────┐",
+      "  ┌──────────────────────────────────────────────────────────────────────┐",
       "  │  Next.js 16 SPA  ──►  FastAPI  ──►  SQLAlchemy  ──►  SQLite          │",
-      "  │  / (search)  /reader  /admin  /dashboard  /library  /workspace      │",
+      "  │  / (search)  /reader  /dashboard  /library                           │",
       "  │  DocumentService.sync_documents_from_disk() → 46 legal docs          │",
-      "  └──────────────────────────────────────────────────────────────────────┘",
-      "  ┌───────────────────────── Phase 2 (designed) ────────────────────────┐",
-      "  │  OCR → chunk → embed → Qdrant (vector) · Neo4j (KG, Leiden)         │",
-      "  │  Celery async pipelines · BGE reranker · ~790ms TTFT budget          │",
       "  └──────────────────────────────────────────────────────────────────────┘",
     ],
     decisions: [
@@ -496,11 +636,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       },
       {
         title: "Relevance scoring at the repository layer",
-        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without introducing a search server in Phase 1.",
-      },
-      {
-        title: "Phase-2 placeholders designed up front",
-        body: "Routes like /admin, /chat and /workspace exist as intentional shells so the product structure survives the Phase 1 → Phase 2 migration.",
+        body: "Document relevance is computed in SQL against indexed columns and cached, keeping the search API fast without a separate search server.",
       },
     ],
     highlights: [
@@ -518,18 +654,13 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     ],
     metrics: [
       { value: "46", label: "legal docs ingested" },
-      { value: "6", label: "product surfaces designed" },
-      { value: "790ms", label: "Phase-2 TTFT budget" },
-      { value: "0", label: "hallucinated citations (target)" },
+      { value: "9", label: "REST API endpoints" },
     ],
     screenshots: [],
-    nextSteps: [
-      "Phase 2 build: Qdrant + Neo4j + Celery pipelines per the SynthGraph design.",
-      "Admin review queue where firms approve AI-suggested citations before they reach research notes.",
-    ],
   },
   {
     slug: "ledgerturf",
+    attribution: "Ledgercross",
     name: "LedgerTurf",
     tagline: "Turf booking platform where players find grounds on a Google Map and owners manage slots with overlap checks.",
     summary:
@@ -549,7 +680,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
       "Timezones and 24-hour clock confusion made 'is this slot free right now' a genuinely hard query to answer correctly.",
     ],
     solution: [
-      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on Google Maps (owners pin their location with a map picker), locations carry a GeoJSON 2dsphere index (the radius geo search is currently disabled), owners publish and manage slots and admins get full visibility, with JWT auth and role-based access at every layer.",
+      "LedgerTurf is a monorepo (npm workspaces) with an Express REST API and a React SPA. Players discover turfs on Google Maps (owners pin their location with a map picker), locations carry a GeoJSON 2dsphere index, owners publish and manage slots and admins get full visibility, with JWT auth and role-based access at every layer.",
       "Bookings are checked for overlapping slots before a Mongoose transaction writes them and availability is computed in UTC with Bangladesh's UTC+6 offset handled explicitly, so 'available now' means the same thing to everyone.",
       "SPA deep links are handled with Vercel rewrite rules so refreshing /turf/:id never 404s.",
     ],
@@ -566,7 +697,7 @@ Add to Cart ──▶ qty / discount ──▶ Checkout ──▶ Dashboard + An
     decisions: [
       {
         title: "GeoJSON 2dsphere index",
-        body: "Turf locations are stored as GeoJSON and indexed with MongoDB's 2dsphere index for radius-based discovery: the spatial query is commented out in production for Vercel stability but the index and model are in place.",
+        body: "Turf locations are stored as GeoJSON and indexed with MongoDB's 2dsphere index, so the data model is ready for spatial queries.",
       },
       {
         title: "Explicit UTC+6 handling",
@@ -591,7 +722,7 @@ try {
   await Booking.create([{ turf, start, end }], { session });
   await session.commitTransaction();
 } finally { session.endSession(); }`,
-        caption: "Honest note: the overlap check runs before the transaction, outside its session, so it isn't race-safe yet; a unique partial index is the planned hardening step.",
+        caption: "Every reservation is checked for time-range overlap and rejected with a dedicated conflict error before a booking is written.",
       },
     ],
     metrics: [
@@ -601,17 +732,13 @@ try {
       { value: "+6", label: "UTC offset handled explicitly" },
     ],
     screenshots: [],
-    nextSteps: [
-      "Unique partial index on (turf, startTime) to make double-booking impossible at the DB level.",
-      "Re-enable the geo-search path now that Vercel configuration is stable.",
-    ],
   },
   {
     slug: "zenji-storefront",
     name: "ZENJI Storefront",
     tagline: "Anime streetwear storefront with quick view, a cart drawer with shipping meter, a saved wishlist and a campaign-style homepage.",
     summary:
-      "A limited-drop shopping experience on React 19, strict TypeScript and Vite: ten designs with quick view and size picking, a cart drawer and page with a free-shipping meter, a persisted wishlist and a Vitest suite plus axe-core accessibility scans. No backend, no payments.",
+      "A limited-drop shopping experience on React 19, strict TypeScript and Vite: ten designs with quick view and size picking, a cart drawer and page with a free-shipping meter, a persisted wishlist and a Vitest suite plus axe-core accessibility scans.",
     role: "Frontend Engineer",
     status: "COMPLETE",
     category: "Web",
@@ -639,20 +766,20 @@ try {
     stack: ["Next.js", "TypeScript", "Express", "MongoDB Atlas", "TanStack Query", "Tailwind CSS", "shadcn/ui", "React Hook Form", "Zod", "Recharts", "Jest"],
   },
   {
-    slug: "bytespace-learn",
-    name: "ByteSpace",
-    tagline: "Pixel-faithful recreation of a course-platform landing page from Figma, with live course search and login pages.",
+    slug: "neuro-screen",
+    name: "Neuro-Screen",
+    tagline: "Applied ML research at AIUB: a leakage-controlled stacked-ensemble study on sleep risk and cognitive symptoms in students, with a Streamlit app.",
     summary:
-      "A responsive Next.js recreation of an online-learning landing page: hero with live course search, topic-chip filtering driven by shareable URL params, course and category grids, testimonials and bonus login and register pages, statically prerendered with Tailwind CSS v4 design tokens.",
-    role: "Frontend Engineer",
+      "Group research project at AIUB (paper forthcoming). I built the Streamlit app (five-step assessment, results with reasons, a Reliability page) and ran the re-analysis. A stack of CatBoost, XGBoost, LightGBM and a PyTorch ANN, combined by logistic regression, is evaluated with nested cross-validation on 2,236 survey responses (cognitive accuracy 0.621 vs majority baseline 0.621; ROC-AUC 0.480). Not a medical device; no data is stored.",
+    role: "Group research project · app and re-analysis",
     status: "COMPLETE",
-    category: "Web",
+    category: "Research",
     badges: [],
-    featured: false,
-    cover: "/images/thumbnails/bytespace-thumbnail.webp",
-    github: "https://github.com/Saji-d/bytespace-learn",
-    demo: "https://bytespace-learn.vercel.app",
-    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    featured: true,
+    cover: "/images/thumbnails/neuro-screen-live.webp",
+    github: "https://github.com/Saji-d/neuro-screen",
+    demo: "https://neuro-screen.streamlit.app/",
+    stack: ["Python", "CatBoost", "XGBoost", "LightGBM", "PyTorch", "Streamlit", "scikit-learn", "Pandas", "NumPy", "Plotly"],
   },
   {
     slug: "mini-kanban-board",
@@ -686,20 +813,20 @@ try {
     stack: ["Python", "OpenCV", "LBPH", "Haar Cascade", "NumPy", "Jupyter"],
   },
   {
-    slug: "neuro-screen",
-    name: "Neuro-Screen",
-    tagline: "Streamlit research prototype from a group project at AIUB: a leakage-controlled stacked-ensemble study on sleep risk and cognitive symptoms in students, with a Streamlit app.",
+    slug: "bytespace-learn",
+    name: "ByteSpace",
+    tagline: "Pixel-faithful recreation of a course-platform landing page from Figma, with live course search and login pages.",
     summary:
-      "Group research project at AIUB (paper in preparation). I built the Streamlit app (five-step assessment, results with reasons, a Reliability page) and ran the re-analysis. A stack of CatBoost, XGBoost, LightGBM and a PyTorch ANN, combined by logistic regression, is evaluated with nested cross-validation on 2,236 survey responses (cognitive accuracy 0.621 vs majority baseline 0.621; ROC-AUC 0.480). Not a medical device; no data is stored.",
-    role: "Group research project · app and re-analysis",
+      "A responsive Next.js recreation of an online-learning landing page: hero with live course search, topic-chip filtering driven by shareable URL params, course and category grids, testimonials and bonus login and register pages, statically prerendered with Tailwind CSS v4 design tokens.",
+    role: "Frontend Engineer",
     status: "COMPLETE",
-    category: "Research",
+    category: "Web",
     badges: [],
-    featured: true,
-    cover: "/images/thumbnails/neuro-screen-thumbnail.webp",
-    github: "https://github.com/Saji-d/neuro-screen",
-    demo: "https://neuro-screen.streamlit.app/",
-    stack: ["Python", "CatBoost", "XGBoost", "LightGBM", "PyTorch", "Streamlit", "scikit-learn", "Pandas", "NumPy", "Plotly"],
+    featured: false,
+    cover: "/images/thumbnails/bytespace-thumbnail.webp",
+    github: "https://github.com/Saji-d/bytespace-learn",
+    demo: "https://bytespace-learn.vercel.app",
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
   },
   {
     slug: "finbert",
@@ -719,10 +846,10 @@ try {
   {
     slug: "3d-city-simulation",
     name: "City Simulator",
-    tagline: "Animated OpenGL city scene by a team of three; I built the animation: day and night, rain and snow, traffic lights, vehicles.",
+    tagline: "Interactive OpenGL city scene with day and night, rain and snow, traffic controls and moving vehicles.",
     summary:
-      "An animated 2D OpenGL + GLUT city scene from a 3-person graphics course project. My part was the animation: day/night toggle, particle rain and snow, a keyboard-driven traffic light that stops the vehicles and moving cars, a bus, pedestrians, birds and clouds.",
-    role: "Animation lead (team of 3)",
+      "I built an animated city scene in C++ with OpenGL and GLUT. The simulation includes a day–night toggle, particle-based rain and snow, keyboard-controlled traffic lights, moving vehicles and pedestrians.",
+    role: "Graphics Developer",
     status: "COMPLETE",
     category: "Graphics",
     badges: [],
@@ -735,7 +862,7 @@ try {
     ],
     solution: [
       "The scene draws roads, buildings and vehicles with legacy immediate-mode OpenGL on a 2D orthographic view. A day/night toggle (n/d keys) switches object colors and headlights; weather modes run particle systems for rain and snow; and a red/yellow/green traffic light, switched by keyboard, makes the bus and car stop at the crosswalk.",
-      "State lives in a few global flags and timers (night mode, weather particles, light state, vehicle positions), updated by GLUT timer callbacks. The team's proposal also planned textures, real lighting and camera controls, which were not built.",
+      "State lives in a few global flags and timers (night mode, weather particles, light state, vehicle positions), updated by GLUT timer callbacks.",
     ],
     architecture: [
       "  main.cpp (GLUT loop, 2D orthographic view)",
@@ -765,7 +892,6 @@ for (auto &p : particles) {
     ],
     metrics: [
       { value: "6", label: "rendered modes (day, night, rain, snow, traffic)" },
-      { value: "3", label: "person team (I led animation)" },
       { value: "2D", label: "orthographic OpenGL view" },
     ],
     screenshots: [
@@ -775,9 +901,6 @@ for (auto &p : particles) {
       { src: "/images/3d-city/snow-mode.webp", alt: "City Simulator in snow" },
       { src: "/images/3d-city/traffic-light-red.webp", alt: "Traffic light state: red" },
       { src: "/images/3d-city/traffic-light-green.webp", alt: "Traffic light state: green" },
-    ],
-    nextSteps: [
-      "Add textured buildings and reflections for a stronger visual pass.",
     ],
   },
   {

@@ -22,39 +22,43 @@ export interface ExperienceEntry {
   timelinePoints: string[];
   /** Bullets for the resume page. */
   resumePoints: string[];
+  /** Real company logo under /public. Omit to fall back to a monogram. */
+  logo?: { src: string; alt: string; width: number; height: number; onLight?: boolean };
 }
 
 export const EXPERIENCE: readonly ExperienceEntry[] = [
   {
     id: "lumifi",
+    logo: { src: "/images/logos/lumifi.svg", alt: "Lumifi Solutions logo", width: 64, height: 64 },
     org: "Lumifi Solutions",
     role: "Full-Stack Developer",
     period: "Nov 2026 - Present",
-    location: "Sydney, Australia · Remote · Australian hours",
+    location: "Sydney, Australia · Remote",
     resumeLocation: "Sydney, Australia · Remote",
     current: true,
     tag: "Current",
     detail:
-      "Owning full-stack features end to end for an Australian software company, from database design to the interface, with tested, secure and accessible code, clear documentation and steady daily delivery on Australian hours.",
+      "Building Lumifi SMS, a multi-tenant student and learning platform for Australian training colleges, and World Bridge's two-market staffing site, from database design to the interface, on Australian hours.",
     timelinePoints: [
-      "Owning features end to end across the stack, from schema and migrations to server logic and UI, using Next.js, TypeScript and PostgreSQL.",
+      "Building Lumifi SMS, a multi-tenant student and learning platform for Australian training colleges, and owning its Applications and Enrolments module from schema and migrations to server logic and UI.",
+      "Building World Bridge, a staffing site with separate Australian-employer and Bangladeshi-candidate experiences on one domain, with geolocation-based routing in progress.",
       "Writing integration and concurrency tests alongside the code, and running accessibility and responsive checks before work is handed over.",
       "Applying least-privilege database access and strict per-tenant data isolation, and keeping documentation and changelogs current with every change.",
       "Working remotely on Australian hours, planning each day's work and reporting progress clearly.",
     ],
     resumePoints: [
-      "Own full-stack features end to end for an Australian software company: schema design and migrations, server logic and UI (Next.js, TypeScript, PostgreSQL).",
-      "Write integration and concurrency tests with the code and run accessibility, contrast and responsive audits before handover.",
-      "Apply least-privilege database access and per-tenant data isolation; keep documentation and changelogs updated with every change.",
+      "Building Lumifi SMS, a multi-tenant student and learning platform for Australian RTOs.",
+      "Building World Bridge's two-market staffing site on one domain with geolocation routing.",
     ],
   },
   {
     id: "remoteintegrity",
+    logo: { src: "/images/logos/remoteintegrity.png", alt: "RemoteIntegrity logo", width: 192, height: 192, onLight: true },
     org: "RemoteIntegrity LLC",
     shortOrg: "RemoteIntegrity",
     role: "Full-Stack Developer",
     period: "Oct 2026 - Present",
-    location: "Clearwater, Florida, USA · Contract · Flexible hours",
+    location: "Clearwater, Florida, USA · Remote",
     resumeLocation: "USA · Remote · Contract",
     current: true,
     tag: "Contract",
@@ -67,12 +71,12 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
     ],
     resumePoints: [
       "Maintain and extend the company's existing ERP system, fixing issues and adding features.",
-      "Design and build a separate external ERP system for partner organisations.",
-      "Coordinate remotely with a US-based team across time zones.",
+      "Building an external ERP for partners, linking quotes to invoices and purchase orders to receipts.",
     ],
   },
   {
     id: "ledgercross",
+    logo: { src: "/images/logos/ledgercross.svg", alt: "Ledgercross logo", width: 2048, height: 2048 },
     org: "Ledgercross",
     role: "Software Developer",
     period: "May 2026 - Sep 2026",
@@ -81,20 +85,20 @@ export const EXPERIENCE: readonly ExperienceEntry[] = [
     current: false,
     tag: "Complete",
     detail:
-      "Engineered production software across the stack for enterprise finance, working with APIs, asynchronous processing, data layers, automated testing, cloud infrastructure and system reliability.",
+      "Built the FastAPI OCR and fraud-detection service for InvoicePilot, delivered the FUMAK inventory and POS system as sole developer, and worked on the frontend and Convex backend of a NITOR trauma-unit patient system.",
     timelinePoints: [
-      "Engineering production software across the stack for enterprise finance using Python, FastAPI, PostgreSQL, Redis and cloud infrastructure.",
-      "Designing and implementing REST APIs, asynchronous and distributed processing and automated testing suites.",
-      "Collaborating with the engineering team to build scalable services, optimize system reliability and maintain operational security standards.",
+      "Built the team's FastAPI OCR and fraud-detection service for InvoicePilot, migrating Mindee to V2.",
+      "Delivered FUMAK, an Android and Next.js inventory and POS system with a stock and sales dashboard, as sole developer.",
+      "Built the frontend and contributed Convex backend logic for a NITOR trauma unit's patient management and bed occupancy system.",
     ],
     resumePoints: [
       "Built the team's FastAPI OCR and fraud-detection service for InvoicePilot, migrating Mindee to V2.",
-      "Delivered FUMAK, a client inventory and POS system, as sole developer (Android + Next.js).",
-      "Built the public landing page for a NITOR unit's Convex, React patient system in production use.",
+      "Delivered FUMAK, an Android + Next.js inventory and POS system, as sole developer.",
     ],
   },
   {
     id: "bss",
+    logo: { src: "/images/logos/bss.webp", alt: "Bangladesh Software Solution logo", width: 192, height: 192, onLight: true },
     org: "Bangladesh Software Solution (BSS)",
     shortOrg: "Bangladesh Software Solution",
     role: "Software Engineer Intern",

@@ -12,12 +12,27 @@ export const resume = {
   })),
   projects: [
     {
-      name: "VoiceCon",
-      link: "https://voicecon.app/",
-      stack: "Kotlin, Jetpack Compose, Fastify, Prisma, PostgreSQL, Python, PyTorch, Twilio",
+      name: "Lumifi SMS",
+      link: null,
+      stack: "Next.js, TypeScript, PostgreSQL, Drizzle ORM, Better Auth, Vitest",
       points: [
-        "Built the Kotlin Android app, Fastify billing API and React admin panel for realtime AI voice calling.",
-        "Bridged Twilio legs via a Python gateway to a Seed-VC GPU worker; any error ends the call, so no raw audio is sent.",
+        "Building a multi-tenant SMS + LMS for Australian RTOs, from applications to certification.",
+      ],
+    },
+    {
+      name: "Aria ERP",
+      link: null,
+      stack: "Next.js, TypeScript, PostgreSQL, Prisma, Better Auth, Vitest",
+      points: [
+        "Building a full-stack ERP for a BPO team, designed to unite quote-to-invoice and purchase-to-receipt flows.",
+      ],
+    },
+    {
+      name: "World Bridge",
+      link: null,
+      stack: "Next.js, React, TypeScript, GSAP; planned: PostgreSQL, Prisma, Cloudflare R2",
+      points: [
+        "Building a staffing website and résumé bank for Australian employers and Bangladeshi candidates.",
       ],
     },
     {
@@ -25,26 +40,31 @@ export const resume = {
       link: null,
       stack: "Python, FastAPI, Redis Streams, Supabase, Cloudflare R2",
       points: [
-        "Built an 11-stage OCR pipeline with duplicate, 9-rule fraud and 19-rule anomaly detection.",
-        "Added Redis Streams workers, Supabase (PostgreSQL) storage, Cloudflare R2 files and 246 pytest tests.",
+        "Built an 11-stage OCR pipeline with fraud detection, Redis Streams workers and 246 pytest tests.",
       ],
     },
     {
-      name: "FUMAK Inventory & POS",
+      name: "VoiceCon",
+      link: "https://voicecon.app/",
+      stack: "Kotlin, Jetpack Compose, Fastify, Prisma, PostgreSQL, Python, PyTorch, Twilio",
+      points: [
+        "Built the Kotlin app, billing API and admin panel, bridging Twilio to a GPU voice-conversion worker.",
+      ],
+    },
+    {
+      name: "FUMAK Inventory",
       link: "https://fumak-inventory.vercel.app/",
       stack: "Kotlin, Jetpack Compose, ML Kit, Next.js, Prisma, PostgreSQL",
       points: [
-        "Built a Kotlin, Jetpack Compose app that decodes barcodes on-device with CameraX and ML Kit.",
-        "Built the Next.js app on Prisma and Neon PostgreSQL with transactional checkout, receipts and R2 product images.",
+        "Built a stock and sales dashboard with low-stock alerts, profit tracking and Android barcode-scan checkout.",
       ],
     },
     {
-      name: "LedgerTurf",
-      link: "https://ledgerturf.vercel.app/",
-      stack: "MongoDB, Express, React, Node.js, JWT, Redux Toolkit, Google Maps",
+      name: "NITOR Patient Management",
+      link: "https://dr-stone.vercel.app/",
+      stack: "React 18, TypeScript, Vite, Framer Motion, Convex",
       points: [
-        "Built a MERN booking app with JWT, bcrypt auth and player, owner and admin role-based access.",
-        "Added slot-overlap validation, GeoJSON venues with a 2dsphere index and Google Maps.",
+        "Built the React frontend and contributed Convex backend logic for patient management and bed occupancy at NITOR.",
       ],
     },
     {
@@ -52,26 +72,23 @@ export const resume = {
       link: "https://casevault-bd.vercel.app",
       stack: "Python, FastAPI, SQLAlchemy, Next.js, Tailwind CSS",
       points: [
-        "Built a FastAPI, SQLAlchemy REST API (9 endpoints) with paginated, ranked keyword search and filters.",
-        "Built the Next.js and Tailwind CSS search UI with advanced filters over 46 legal documents.",
+        "Built a FastAPI and Next.js app (9 API endpoints) for ranked search over 46 legal documents.",
       ],
     },
     {
-      name: "Zenji Storefront",
-      link: "https://zenji-webstore.vercel.app",
-      stack: "React 19, TypeScript, Vite, Vitest, Playwright, axe-core",
+      name: "LedgerTurf",
+      link: "https://ledgerturf.vercel.app/",
+      stack: "MongoDB, Express, React, Node.js, JWT, Redux Toolkit, Google Maps",
       points: [
-        "Built an 11-route React 19, TypeScript storefront with a useReducer cart persisted to localStorage.",
-        "Wrote 27 Vitest tests and Playwright, axe-core QA at 8 viewports with 0 WCAG 2.1 AA violations.",
+        "Built a MERN turf-booking app with JWT auth, role-based access, slot-overlap checks and Google Maps.",
       ],
     },
     {
-      name: "Mini Kanban Board",
-      link: "https://mini-kanban-board-frontend.vercel.app",
-      stack: "Next.js, NestJS, Prisma, PostgreSQL, Docker",
+      name: "Neuro-Screen (Thesis)",
+      link: "https://neuro-screen.streamlit.app/",
+      stack: "Python, CatBoost, PyTorch, SHAP, scikit-learn, Streamlit",
       points: [
-        "Built a Next.js, NestJS, Prisma, PostgreSQL app with JWT auth and OWNER, EDITOR and VIEWER roles.",
-        "Kept drag-and-drop order consistent via midpoint ordering and row-level locking, with 40 unit and e2e tests.",
+        "Built a leakage-controlled stacked ensemble with nested cross-validation on 2,236 survey responses.",
       ],
     },
   ],
@@ -101,7 +118,7 @@ export const resume = {
     points: [
       "Group research project at AIUB: built the Streamlit app and ran the re-analysis of 2,236 student survey responses.",
       "Leakage-controlled design: excluded all nine outcome-defining items and evaluated a four-model stack with 5x3 nested cross-validation.",
-      "Reported metrics against a majority baseline (accuracy 0.621 vs 0.621; ROC-AUC 0.480); paper in preparation.",
+      "Reported metrics against a majority baseline (accuracy 0.621 vs 0.621; ROC-AUC 0.480); paper forthcoming.",
     ],
   },
   certifications: [

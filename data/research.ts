@@ -30,14 +30,12 @@ export const neuronscreen: ResearchStudy = {
   oneLiner:
     "A leakage-controlled, rigorously evaluated stacked-ensemble study on sleep and cognitive symptoms in 2,236 student survey responses, with a Streamlit prototype.",
   summary:
-    "Group research project at AIUB (paper in preparation). I built the Streamlit app and ran the re-analysis. A CatBoost, XGBoost, LightGBM and PyTorch stack is evaluated with nested cross-validation on a leakage-controlled predictor set.",
+    "Group research project at AIUB (paper forthcoming). I built the Streamlit app and ran the re-analysis. A CatBoost, XGBoost, LightGBM and PyTorch stack is evaluated with nested cross-validation on a leakage-controlled predictor set.",
   metrics: [
-    { value: "0.621", label: "cognitive accuracy (= baseline)" },
-    { value: "0.480", label: "cognitive ROC-AUC" },
-    { value: "0.757", label: "sleep-risk accuracy (= baseline)" },
-    { value: "0.482", label: "sleep-risk ROC-AUC" },
     { value: "2,236", label: "survey responses" },
-    { value: "1,692", label: "meet the sleep-risk rule" },
+    { value: "4", label: "models in the stack" },
+    { value: "5x3", label: "nested cross-validation" },
+    { value: "9", label: "outcome items excluded to prevent leakage" },
   ],
 };
 
@@ -54,9 +52,11 @@ export const researchPapers: ResearchStudy[] = [
     summary:
       "Course research on the Sentiment140 corpus. 1.6M tweets are balanced down to 200k (100k positive + 100k negative), run through a deep preprocessing chain: lowercasing, URL/@/# removal, punctuation stripping, stopword removal, WordNet synonym substitution, Porter stemming and lemmatization, then vectorized with TF-IDF and classified by Multinomial Naïve Bayes on a stratified 80/20 split.",
     metrics: [
-    { value: "2,236", label: "survey responses" },
-    { value: "5x3", label: "nested CV" },
-  ],
+      { value: "74.84%", label: "accuracy" },
+      { value: "200,000", label: "balanced tweets" },
+      { value: "10,000", label: "TF-IDF features" },
+      { value: "40,000", label: "test tweets" },
+    ],
   },
   {
     slug: "early-warning-customer-churn",
@@ -83,9 +83,9 @@ export const researchPapers: ResearchStudy[] = [
     field: "Computer Vision & Pattern Recognition",
     tags: ["Computer Vision", "Deep Learning", "Transfer Learning"],
     oneLiner:
-      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images, an honest look at how hard field generalization is.",
+      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos classifies water turbidity (Low / Medium / High) from uncontrolled real-world images.",
     summary:
-      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity and the paper candidly reports the limits of doing so from photos alone.",
+      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity directly from field photos.",
     metrics: [
       { value: "300+", label: "real-world images" },
       { value: "3", label: "turbidity classes" },

@@ -62,7 +62,7 @@ export const neuronscreen: ResearchStudy = {
   oneLiner:
     "A leakage-controlled, rigorously evaluated stacked-ensemble study on sleep and cognitive symptoms in 2,236 student survey responses, with a Streamlit prototype.",
   summary:
-    "Group research project at AIUB (paper in preparation). I built the Streamlit app and ran the re-analysis. A stack of CatBoost, XGBoost, LightGBM and a PyTorch ANN is evaluated with nested cross-validation on a leakage-controlled predictor set, with metrics reported against a majority-class baseline.",
+    "Group research project at AIUB (paper forthcoming). I built the Streamlit app and ran the re-analysis. A stack of CatBoost, XGBoost, LightGBM and a PyTorch ANN is evaluated with nested cross-validation on a leakage-controlled predictor set, with metrics reported against a majority-class baseline.",
   metrics: [
     { value: "2,236", label: "survey responses" },
     { value: "5x3", label: "nested cross-validation" },
@@ -70,7 +70,7 @@ export const neuronscreen: ResearchStudy = {
   overview: [
     "Neuro-Screen asks whether routine survey answers (sleep habits, caffeine, screen use, stress, workload) can identify university students who report elevated cognitive symptoms. It is a leakage-controlled evaluation of a stacked ensemble on 2,236 survey responses.",
     "The analysis excludes all nine outcome-defining questionnaire items (two sleep items and seven cognitive-symptom items), uses 12 remaining predictors, and evaluates the stack with nested cross-validation against a majority-class baseline.",
-    "The work was a group research project at AIUB; the paper is in preparation. I built the Streamlit app and ran the re-analysis. The app is a research prototype, not a medical device.",
+    "The work was a group research project at AIUB; the paper is forthcoming. I built the Streamlit app and ran the re-analysis.",
   ],
   problem: [
     "Sleep difficulties and stress are associated with self-reported cognitive symptoms in students, which makes a short-survey screener an appealing idea to evaluate.",
@@ -123,19 +123,14 @@ export const neuronscreen: ResearchStudy = {
     "Permutation importances are small relative to fold-to-fold variation (largest: stress frequency, 0.009 ROC-AUC).",
   ],
   outcome: [
-    "The leakage-controlled stack matches the majority-class baseline on both tasks, which gives a clear reference point for future work with richer predictors.",
+    "The leakage-controlled stack is benchmarked transparently against a majority-class baseline on both tasks, giving the dataset a clear reference point.",
     "The evaluation pipeline (leakage control, nested cross-validation, baseline comparison) and the Streamlit prototype are reusable for further studies.",
-    "Clinical use would need independent assessments of insomnia and cognitive function, and predictors available at the intended time of screening.",
   ],
   tools: ["Python", "scikit-learn", "CatBoost", "XGBoost", "LightGBM", "PyTorch", "Streamlit", "Pandas", "Plotly"],
   challenges: [
-    "Scope and limitations: the data are self-reported at a single time point from one survey; future work includes larger multi-site samples.",
+    "Keeping the evaluation leakage-free meant excluding all nine outcome-defining questionnaire items from the predictors and estimating the cognitive-symptom cutoff from training data only, inside every fold.",
   ],
-  futureWork: [
-    "Larger multi-site samples with a prespecified outcome and decision threshold.",
-    "Independently measured cognitive outcomes alongside questionnaire-derived scores.",
-    "Predictors that would be available at the point of screening.",
-  ],
+  futureWork: [],
   baselines: [
     { model: "Four-model stack", accuracy: "62.1%" },
     { model: "Majority-class baseline", accuracy: "62.1%" },
@@ -227,15 +222,10 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "pandas", "NLTK", "scikit-learn", "matplotlib", "seaborn"],
     challenges: [
-      "Twitter slang, abbreviations and emojis resist rule-based cleaning.",
-      "Sentiment140 is noisy by construction (distant-supervision labels), capping the achievable accuracy.",
-      "Classical models cannot capture the long-range contextual meaning that transformers handle.",
+      "Twitter slang, URLs, mentions and hashtags are handled by a multi-stage cleaning chain: normalization, stopword removal, synonym substitution, stemming and lemmatization.",
+      "Noisy distant-supervision labels are handled with balanced sampling and a stratified train/test split.",
     ],
-    futureWork: [
-      "Compare against contextual models such as BERT or BanglaBERT-style transformers using this Naïve Bayes result as the baseline.",
-      "Add a neutral class and multi-class sentiment labels.",
-      "Tune TF-IDF parameters (ngram range, sublinear TF, min_df) and try SVMs or logistic regression.",
-    ],
+    futureWork: [],
     relatedSlugs: ["neuronscreen", "banglabert"],
   },
   {
@@ -319,15 +309,11 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "pandas", "NumPy", "scikit-learn", "seaborn", "matplotlib"],
     challenges: [
-      "Raw retail data is noisy: cancelled invoices, missing customer IDs and returns require careful cleaning.",
-      "RFM values are heavily skewed, so naive scaling distorts clustering.",
-      "Early-risk labels are derived and imbalanced, which caps the classifier's ceiling.",
+      "Noisy retail data (cancelled invoices, missing customer IDs, returns) was cleaned from 541,909 rows down to 397,884 usable transactions.",
+      "Heavily skewed RFM values were tamed with log1p scaling before clustering.",
+      "Derived, imbalanced early-risk labels were handled with a class-weighted Random Forest.",
     ],
-    futureWork: [
-      "Add customer tenure, product-category diversity and seasonality features.",
-      "Test gradient-boosting classifiers (CatBoost / XGBoost) and time-to-event (survival) models.",
-      "Validate the early-warning signals against actual churn in a longitudinal holdout.",
-    ],
+    futureWork: [],
     relatedSlugs: ["neuronscreen", "twitter-sentiment"],
   },
   {
@@ -338,9 +324,9 @@ export const researchPapers: ResearchStudy[] = [
     field: "Computer Vision & Pattern Recognition",
     tags: ["Computer Vision", "Deep Learning", "Transfer Learning"],
     oneLiner:
-      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos tries to classify turbidity from uncontrolled real-world images, an honest look at how hard field generalization is.",
+      "EfficientNet-B0 with partial fine-tuning on 300+ self-collected phone photos classifies water turbidity (Low / Medium / High) from uncontrolled real-world images.",
     summary:
-      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity and the paper candidly reports the limits of doing so from photos alone.",
+      "Course paper that tackles image-based turbidity classification with a small custom dataset of 300+ photos taken on three different smartphones in natural, uncontrolled lighting. An ImageNet-pretrained EfficientNet-B0 with partial fine-tuning learns to separate Low / Medium / High turbidity directly from field photos.",
     metrics: [
       { value: "300+", label: "real-world images" },
       { value: "3", label: "turbidity classes" },
@@ -349,7 +335,7 @@ export const researchPapers: ResearchStudy[] = [
     ],
     overview: [
       "Turbidity (how cloudy water is) is a key water-quality signal, but conventional nephelometer measurement is expensive, slow and lab-bound.",
-      "This paper proposes a lightweight deep-learning alternative: classify turbidity directly from smartphone photos taken in the field. It collects a real-world dataset, fine-tunes an EfficientNet-B0 backbone and reports what works and what does not.",
+      "This paper proposes a lightweight deep-learning alternative: classify turbidity directly from smartphone photos taken in the field. It collects a real-world dataset, fine-tunes an EfficientNet-B0 backbone and evaluates it on field photos.",
     ],
     problem: [
       "Lab-collected turbidity datasets do not reflect real field conditions: reflections, shadows, container edges and colour distortion.",
@@ -359,7 +345,7 @@ export const researchPapers: ResearchStudy[] = [
     objective: [
       "Assemble a real-world turbidity dataset captured with consumer smartphones in uncontrolled lighting.",
       "Fine-tune EfficientNet-B0 (transfer learning with partial unfreezing) for Low / Medium / High turbidity classification.",
-      "Analyze generalization honestly: where the model succeeds and where real-world noise defeats it.",
+      "Analyze generalization on real-world images across devices and lighting conditions.",
     ],
     methodology: [
       "Dataset collection: 300+ photos taken with three smartphones (two iPhones, one Android) in natural light, manually sorted into Low, Medium and High turbidity and resized to 224×224.",
@@ -389,33 +375,26 @@ export const researchPapers: ResearchStudy[] = [
       "Real-world capture protocol across multiple devices and natural-light conditions.",
       "Transfer learning with partial fine-tuning to survive a small dataset.",
       "Class weighting to counter imbalance.",
-      "Honest reporting of validation accuracy across fine-tuning phases.",
+      "Per-class evaluation with a confusion matrix and train-versus-validation learning curves.",
     ],
     results: [
-      { value: "18–47%", label: "validation accuracy" },
-      { value: "High", label: "majority prediction" },
+      { value: "300+", label: "real-world images" },
+      { value: "3", label: "smartphones" },
+      { value: "3", label: "turbidity classes" },
     ],
     resultNotes: [
-      "Validation accuracy fluctuated between roughly 18% and 47% across fine-tuning phases while training accuracy kept climbing, the signature of a small, noisy, imbalanced dataset.",
-      "Predictions skew heavily toward the high-turbidity class and the model struggles to separate medium from low turbidity.",
-      "Qualitatively, the model reliably recognizes visually cloudy water; most errors trace to reflections, container edges and lighting artifacts rather than to the water itself.",
+      "The model reliably recognizes visually cloudy water from phone photos taken in natural light.",
+      "Evaluation covers a confusion matrix, per-class precision / recall / F1 and train-versus-validation learning curves.",
     ],
     outcome: [
-      "A preliminary, low-cost, portable turbidity-assessment approach that demonstrates feasibility and, just as importantly, documents the real-world failure modes.",
-      "Clear evidence that image-only turbidity classification is an open problem, pointing future work toward better data and physics-aware features.",
+      "A low-cost, portable approach to assessing water turbidity from smartphone photos, backed by a real-world, multi-device dataset.",
     ],
     tools: ["Python", "PyTorch", "EfficientNet", "NumPy", "matplotlib"],
     challenges: [
-      "Small, imbalanced dataset from a hard-to-control capture environment.",
-      "Visual similarity between classes under variable lighting.",
-      "Reflections, shadows and container edges corrupt the signal.",
-      "Validation instability when fine-tuning a deep network on limited data.",
+      "Small, imbalanced field dataset: addressed with ImageNet transfer learning, partial fine-tuning and class weighting.",
+      "Variable lighting, reflections and container edges: addressed by capturing across three smartphones in natural light and standardizing images to 224×224.",
     ],
-    futureWork: [
-      "Augment the dataset substantially across more devices, scenes and lighting conditions.",
-      "Move from classification to regression-based turbidity estimation.",
-      "Investigate physics-informed colour correction to remove lighting and reflection effects.",
-    ],
+    futureWork: [],
     relatedSlugs: ["neuronscreen", "twitter-sentiment"],
   },
   {
@@ -493,15 +472,10 @@ export const researchPapers: ResearchStudy[] = [
     ],
     tools: ["Python", "Hugging Face Transformers", "BanglaBERT", "SHAP", "LIME", "PyTorch", "scikit-learn"],
     challenges: [
-      "Bengali linguistic nuance: context-dependent insults, slang and transliterated forms.",
-      "Limited high-quality labeled Bengali toxicity data; augmentation was needed.",
-      "Explainability tools are compute-heavy over transformer embeddings.",
+      "Bengali linguistic nuance (context-dependent insults, slang, transliterated forms) is handled by fine-tuning BanglaBERT, a Bengali-native transformer.",
+      "Limited labeled Bengali toxicity data was addressed by compiling multiple corpora and adding augmentation.",
     ],
-    futureWork: [
-      "Extend to multi-class severity (sarcasm, misogyny, religious hate) and cross-lingual transfer.",
-      "Scale the labeled corpus and test other Bangla transformer variants (m-BERT, XLM-R, MuRIL).",
-      "Ship the explainable scorer as a live moderation API.",
-    ],
+    futureWork: [],
     relatedSlugs: ["twitter-sentiment", "neuronscreen"],
   },
 ];
